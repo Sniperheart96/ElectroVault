@@ -69,7 +69,7 @@ export class KeycloakClient {
   extractUserInfo(payload: TokenPayload): UserInfo {
     const clientRoles = payload.resource_access?.[this.config.clientId]?.roles ?? [];
     const realmRoles = payload.realm_access?.roles ?? [];
-    const allRoles = [...new Set([...clientRoles, ...realmRoles])];
+    const allRoles = Array.from(new Set([...clientRoles, ...realmRoles]));
 
     return {
       id: payload.sub,

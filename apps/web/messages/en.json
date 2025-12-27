@@ -1,0 +1,139 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "noResults": "No results found",
+    "all": "All"
+  },
+  "nav": {
+    "home": "Home",
+    "components": "Components",
+    "categories": "Categories",
+    "manufacturers": "Manufacturers",
+    "search": "Search",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Community-maintained database for electronic components",
+    "searchPlaceholder": "Search components...",
+    "featuredCategories": "Featured Categories",
+    "recentComponents": "Recent Components",
+    "stats": {
+      "components": "Components",
+      "manufacturers": "Manufacturers",
+      "categories": "Categories"
+    }
+  },
+  "components": {
+    "title": "Components",
+    "description": "Browse our extensive database of electronic components",
+    "filters": {
+      "category": "Category",
+      "manufacturer": "Manufacturer",
+      "status": "Status",
+      "mountingType": "Mounting Type"
+    },
+    "detail": {
+      "overview": "Overview",
+      "specifications": "Specifications",
+      "datasheets": "Datasheets",
+      "parts": "Manufacturer Parts",
+      "history": "Version History"
+    },
+    "status": {
+      "ACTIVE": "Active",
+      "NRND": "Not Recommended for New Designs",
+      "EOL": "End of Life",
+      "OBSOLETE": "Obsolete"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "browseAll": "Browse all categories",
+    "subcategories": "Subcategories",
+    "componentsInCategory": "Components in this category"
+  },
+  "manufacturers": {
+    "title": "Manufacturers",
+    "status": {
+      "ACTIVE": "Active",
+      "ACQUIRED": "Acquired",
+      "DEFUNCT": "Defunct"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "loginWith": "Login with {provider}",
+    "welcome": "Welcome back",
+    "signInToContinue": "Sign in to continue",
+    "signIn": {
+      "title": "Sign In",
+      "description": "Sign in to your account",
+      "button": "Sign in with Keycloak",
+      "loading": "Signing in...",
+      "hint": "You will be redirected to Keycloak"
+    },
+    "signOut": {
+      "title": "Sign Out",
+      "description": "Are you sure you want to sign out?",
+      "button": "Sign Out",
+      "loading": "Signing out...",
+      "cancel": "Cancel"
+    },
+    "error": {
+      "title": "Authentication Error",
+      "description": "An error occurred during sign in",
+      "tryAgain": "Try Again",
+      "backHome": "Back to Home"
+    },
+    "errors": {
+      "configuration": "Server configuration error. Please contact the administrator.",
+      "accessDenied": "Access denied. You do not have permission.",
+      "verification": "The verification link has expired or has already been used.",
+      "oauthSignin": "Error starting OAuth sign-in.",
+      "oauthCallback": "Error processing OAuth callback.",
+      "oauthCreateAccount": "Error creating user account.",
+      "emailCreateAccount": "Error creating email account.",
+      "callback": "Error processing callback.",
+      "oauthAccountNotLinked": "This email is already linked to another account.",
+      "sessionRequired": "Please sign in to access this page.",
+      "default": "An unknown error occurred. Please try again."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "components": {
+      "title": "Manage Components",
+      "new": "New Component",
+      "edit": "Edit Component"
+    },
+    "moderation": {
+      "title": "Moderation",
+      "pendingReviews": "Pending Reviews"
+    },
+    "users": {
+      "title": "Users",
+      "manage": "Manage Users"
+    }
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized",
+    "serverError": "Server error"
+  }
+}

@@ -1,23 +1,19 @@
 # Installation Guide
 
-## ⚠️ Important: UNC Path Limitation
+## Entwicklungsumgebung
 
-This project is currently located on a network share (`\\ITME-SERVER\Projekte\ElectroVault`), which has limitations for Node.js tooling.
+Das Projekt befindet sich auf dem Windows Server (ITME-SERVER) und kann dort direkt entwickelt werden.
 
-**Problem:** `pnpm install` cannot be executed directly from a UNC path in Windows.
-
-**Solution:** Clone to a local path for development.
+**Arbeitsverzeichnis:** `C:\Users\Administrator.ITME-SERVER\Documents\Projekte\ElectroVault`
 
 ---
 
-## Local Setup (Recommended)
+## Setup auf ITME-SERVER (Empfohlen)
 
-### 1. Clone to Local Path
+### 1. Verzeichnis öffnen
 
 ```powershell
-# Clone to local drive
-git clone https://github.com/Sniperheart96/ElectroVault.git C:\Dev\ElectroVault
-cd C:\Dev\ElectroVault
+cd C:\Users\Administrator.ITME-SERVER\Documents\Projekte\ElectroVault
 ```
 
 ### 2. Install Dependencies
@@ -94,25 +90,29 @@ pnpm test:coverage
 
 ---
 
-## Network Path Usage
+## Externer Zugriff (über Netzwerk)
 
-If you must work from the network path (`\\ITME-SERVER\Projekte\ElectroVault`):
+Falls du von einem externen PC aus arbeiten möchtest:
 
-### Limitations
+### Option A: Remote Desktop (RDP)
 
-- ❌ Cannot run `pnpm install`
-- ❌ Cannot run `pnpm db:migrate`
-- ❌ Cannot start dev servers
-- ✅ Can edit files
-- ✅ Can commit changes
-- ✅ Can push to GitHub
+Verbinde dich per RDP zum Server und arbeite direkt dort.
 
-### Workflow
+### Option B: Git Clone auf lokalem PC
 
-1. Make code changes on network path
-2. Commit and push to GitHub
-3. GitHub Actions will run tests automatically
-4. For local testing, pull changes to local clone
+```powershell
+# Auf deinem lokalen PC
+git clone https://github.com/Sniperheart96/ElectroVault.git C:\Dev\ElectroVault
+cd C:\Dev\ElectroVault
+pnpm install
+```
+
+**Hinweis:** Für lokale Entwicklung benötigst du Zugriff auf die Server-Dienste:
+- PostgreSQL: `ITME-SERVER:5432`
+- Keycloak: `ITME-SERVER:8080`
+- MinIO: `ITME-SERVER:9000`
+
+Oder nutze das lokale Docker-Setup (siehe [docker/README.md](docker/README.md)).
 
 ---
 
@@ -124,7 +124,7 @@ GitHub Actions automatically:
 - Generates coverage reports
 - Uploads to Codecov
 
-**Note:** After adding new dependencies, you MUST run `pnpm install` locally and commit the updated `pnpm-lock.yaml` file.
+**Hinweis:** Nach dem Hinzufügen neuer Dependencies `pnpm install` ausführen und die aktualisierte `pnpm-lock.yaml` committen.
 
 ---
 
@@ -175,6 +175,6 @@ pnpm db:generate
 
 For more information, see:
 - [README.md](README.md) - Project overview
-- [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) - Full implementation plan
-- [docs/PHASE_0_STATUS.md](docs/PHASE_0_STATUS.md) - Phase 0 status
-- [docs/database/PHASE-1-COMPLETE.md](docs/database/PHASE-1-COMPLETE.md) - Phase 1 status
+- [docs/README.md](docs/README.md) - Documentation overview
+- [docs/phases/phase-0-setup.md](docs/phases/phase-0-setup.md) - Phase 0 status
+- [docs/phases/phase-1-database-auth.md](docs/phases/phase-1-database-auth.md) - Phase 1 status

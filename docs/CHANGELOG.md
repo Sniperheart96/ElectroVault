@@ -4,6 +4,148 @@ Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokume
 
 ## [Unreleased]
 
+### Geändert
+- **Entwicklungsumgebung:** Claude Code läuft jetzt direkt auf ITME-SERVER
+  - Alle UNC-Pfad-Referenzen entfernt
+  - Dokumentation für direkten Server-Betrieb aktualisiert
+  - Befehle können ohne Workarounds ausgeführt werden
+
+### Aktualisierte Dateien
+- `.claude/CLAUDE.md` - Neuer Abschnitt "Ausführungsumgebung" und "Wichtige Hinweise"
+- `.claude/agents/infrastructure-agent.md` - Lokale Pfade statt Netzwerk-Pfade
+- `INSTALL.md` - Überarbeitet für direkten Server-Zugriff
+
+---
+
+## [0.4.0] - 2025-12-27 - Phase 3: Frontend Basis (In Arbeit)
+
+### Hinzugefügt
+- **Next.js 15 Frontend** (`@electrovault/web`)
+  - App Router mit Server Components
+  - TailwindCSS + shadcn/ui Design System
+  - next-intl für Mehrsprachigkeit (DE/EN)
+  - React 19 mit neuesten Features
+
+- **Seiten**
+  - Homepage mit Suchfeld, Statistiken, Featured Categories
+  - Komponenten-Liste mit Pagination
+  - Kategorie-Browser mit rekursiver Baum-Darstellung
+  - Hersteller-Liste mit Pagination und Status-Badges
+  - Auth-Seiten (Sign-in, Sign-out, Error)
+
+- **NextAuth Integration**
+  - KeycloakProvider konfiguriert
+  - JWT Token Refresh
+  - Rollen-Extraktion aus Keycloak Token
+  - Session mit accessToken und Rollen
+  - Logout-Sync mit Keycloak
+
+- **Route Protection** (`middleware.ts`)
+  - `/admin/*` erfordert admin oder moderator Rolle
+  - `/profile/*` erfordert Authentifizierung
+  - `/contribute/*` erfordert contributor Rolle
+
+- **UI-Komponenten**
+  - Button (alle Varianten)
+  - Input
+  - Card (Header, Content, Footer)
+  - Badge (success, warning, destructive)
+
+- **Utilities**
+  - API-Client mit Auth-Support
+  - Server-side Auth Utilities
+  - cn() Helper für Tailwind
+
+### Neue Dateien
+```
+apps/web/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx                  # Homepage
+│   │   ├── components/page.tsx       # Komponenten-Liste
+│   │   ├── categories/page.tsx       # Kategorie-Browser
+│   │   ├── manufacturers/page.tsx    # Hersteller-Liste
+│   │   ├── auth/signin/page.tsx      # Login
+│   │   ├── auth/signout/page.tsx     # Logout
+│   │   ├── auth/error/page.tsx       # Auth-Fehler
+│   │   └── api/auth/[...nextauth]/route.ts
+│   ├── components/
+│   │   ├── ui/{button,input,card,badge}.tsx
+│   │   ├── layout/{header,footer}.tsx
+│   │   └── providers/session-provider.tsx
+│   ├── lib/
+│   │   ├── api.ts                    # API-Client
+│   │   ├── auth.ts                   # NextAuth Config
+│   │   ├── auth-server.ts            # Server-side Auth
+│   │   └── utils.ts
+│   ├── middleware.ts                 # Route Protection
+│   └── i18n/request.ts               # next-intl Config
+├── messages/{de,en}.json             # Übersetzungen
+└── {next,tailwind,postcss}.config.*  # Konfiguration
+```
+
+### Technische Details
+- **Next.js:** 15.1.3 mit App Router
+- **React:** 19.0.0
+- **Auth:** NextAuth 4.24.0 + Keycloak
+- **i18n:** next-intl 3.20.0
+- **Styling:** TailwindCSS 3.4.0 + Radix UI
+
+### Dokumentiert
+- `docs/phases/phase-3-frontend.md` - Vollständig aktualisiert (90%)
+
+### Ausstehend
+- Komponenten-Detailseite
+- Such-Interface
+- Admin-Dashboard
+- Formular-Komponenten
+
+---
+
+## [0.3.0] - 2025-12-27 - Phase 2: Component API
+
+### Hinzugefügt
+- **Zod-Schemas** (`@electrovault/schemas`)
+  - `common.ts` - LocalizedString, Pagination, Enums
+  - `category.ts` - Category-Schemas (Base, Tree, Path)
+  - `manufacturer.ts` - Manufacturer-Schemas (CRUD)
+  - `package.ts` - Package-Schemas (CRUD, Footprints)
+  - `component.ts` - CoreComponent-Schemas (CRUD, Relations)
+  - `part.ts` - ManufacturerPart-Schemas (CRUD)
+  - `audit.ts` - AuditLog-Schemas (Query, History)
+  - 42 Schema-Tests
+
+- **Services** (`apps/api/src/services/`)
+  - `category.service.ts` - Read-Only, Baum-Struktur, Pfad-Navigation
+  - `manufacturer.service.ts` - CRUD mit Schnellsuche
+  - `package.service.ts` - CRUD mit Footprint-Verwaltung
+  - `component.service.ts` - CRUD mit Konzept-Relations
+  - `part.service.ts` - CRUD mit Lagerbestand-Updates
+  - `audit.service.ts` - Logging, History, Statistiken
+
+- **Routes** (`apps/api/src/routes/`)
+  - `/api/v1/categories` - Kategorie-Endpoints (read-only)
+  - `/api/v1/manufacturers` - Hersteller-Endpoints (CRUD)
+  - `/api/v1/packages` - Package-Endpoints (CRUD)
+  - `/api/v1/components` - Component-Endpoints (CRUD)
+  - `/api/v1/parts` - Part-Endpoints (CRUD)
+  - `/api/v1/audit` - Audit-Log-Endpoints
+
+- **Utilities** (`apps/api/src/lib/`)
+  - `errors.ts` - ApiError, NotFoundError, ValidationError
+  - `pagination.ts` - Prisma Pagination-Helpers
+  - `slug.ts` - Slug-Generierung aus LocalizedString
+
+### Technische Details
+- **Tests:** 81 Tests (alle bestehen)
+- **Endpoints:** 35+ API-Endpoints
+- **Auth:** Role-based Access Control (VIEWER, CONTRIBUTOR, MODERATOR, ADMIN)
+- **Features:** Soft-Delete, Audit-Logging, Pagination, Autocomplete-Suche
+
+### Dokumentiert
+- `docs/phases/phase-2-component-api.md` - Vollständig aktualisiert
+- `docs/README.md` - Phase 2 Status auf 100%
+
 ---
 
 ## [0.2.0] - 2025-12-27 - Phase 1 Implementiert
@@ -41,7 +183,7 @@ Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokume
 - **Dependencies:** Fastify 4.x, jose 5.x, next-auth 4.x
 - **Auth-Flow:** Keycloak OAuth → JWT → User Sync → Session
 
-**Fehlende Komponente:** Initiale Prisma-Migration (erfordert lokales Setup, UNC-Pfad-Limitation)
+**Fehlende Komponente:** Initiale Prisma-Migration
 
 ---
 

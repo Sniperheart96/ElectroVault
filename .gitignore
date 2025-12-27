@@ -53,6 +53,7 @@ lerna-debug.log*
 # OS
 Thumbs.db
 Desktop.ini
+nul
 
 # Prisma
 *.db

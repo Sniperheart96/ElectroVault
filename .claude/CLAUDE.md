@@ -122,14 +122,25 @@ pnpm db:studio    # Prisma Studio öffnen
 pnpm db:reset     # Datenbank zurücksetzen (Vorsicht!)
 ```
 
-## Server-Umgebung
+## Ausführungsumgebung
+
+**Claude Code läuft direkt auf dem Windows Server (ITME-SERVER).**
 
 ```
+Arbeitsverzeichnis: C:\Users\Administrator.ITME-SERVER\Documents\Projekte\ElectroVault
 Server: Windows Server 2019 (ITME-SERVER)
-PostgreSQL: Port 5432 (ElectroVault_Dev)
-Keycloak: Port 8080 (Realm: electrovault)
-MinIO: Port 9000/9001 (Bucket: electrovault-files)
+
+Lokale Dienste (pgAdmin Server: "Development"):
+├── PostgreSQL 18: Port 5432 (Datenbank: electrovault_dev)
+├── Keycloak (Docker): Port 8080 (Realm: electrovault)
+└── MinIO (Docker): Port 9000/9001 (Bucket: electrovault-files)
 ```
+
+**Vorteile des direkten Server-Betriebs:**
+- Kein UNC-Pfad-Problem mehr - alle `pnpm`-Befehle funktionieren
+- Direkter Zugriff auf PostgreSQL (localhost:5432)
+- Direkter Zugriff auf Docker-Container
+- PowerShell-Befehle für Server-Administration möglich
 
 ## Wichtige Konventionen
 
@@ -234,6 +245,129 @@ Spezialisierte Agenten für verschiedene Aufgabenbereiche:
 | Component Data | `agents/component-data-agent.md` | Elektronik-Domain |
 | Frontend | `agents/frontend-agent.md` | Next.js, UI |
 | Testing | `agents/testing-agent.md` | Tests, CI/CD |
+
+---
+
+## Wichtige Hinweise für Claude Code
+
+### Direkter Server-Zugriff
+
+Da Claude Code direkt auf ITME-SERVER läuft:
+
+1. **Alle pnpm-Befehle funktionieren** - Kein UNC-Pfad-Workaround nötig
+2. **PowerShell verfügbar** - Für Server-Administration und Dienste-Management
+3. **Docker-Zugriff** - Container können direkt verwaltet werden
+4. **PostgreSQL lokal** - Verbindung über `localhost:5432`
+
+### Typische Arbeitsabläufe
+
+```bash
+# Dependencies installieren
+pnpm install
+
+# Tests ausführen
+pnpm test
+
+# Prisma Client generieren
+pnpm db:generate
+
+# Migrationen ausführen
+pnpm db:migrate
+
+# Entwicklungsserver starten
+pnpm dev
+```
+
+### Dev-Server starten - WICHTIG
+
+**Vor dem Starten eines Dev-Servers IMMER prüfen ob bereits einer läuft!**
+
+```powershell
+# Prüfen ob Port 3000 oder 3001 belegt ist
+netstat -ano | findstr ":3000 :3001"
+
+# Falls belegt: Prozess beenden (PID aus netstat nehmen)
+Stop-Process -Id <PID> -Force
+```
+
+**Regeln:**
+- Es darf nur EIN Frontend-Server laufen (Port 3000)
+- Es darf nur EIN API-Server laufen (Port 3001)
+- Vor `pnpm dev` immer alte Prozesse beenden
+- Bei Port-Konflikten: Nicht einfach anderen Port nehmen, sondern alten Prozess beenden
+
+### Server-Dienste prüfen
+
+```powershell
+# PostgreSQL Status
+Get-Service postgresql*
+
+# Docker Container Status
+docker ps
+
+# Port-Belegung prüfen
+netstat -ano | findstr ":5432 :8080 :9000"
+```
+
+---
+
+## Dokumentations-Richtlinien
+
+### Struktur
+
+```
+docs/
+├── README.md                      # Hauptübersicht mit Links
+├── CHANGELOG.md                   # Änderungshistorie
+├── architecture/                  # Architektur-Entscheidungen
+│   ├── tech-stack.md             # Technologie-Entscheidungen
+│   ├── i18n.md                   # Internationalisierung
+│   ├── database-schema.md        # Prisma-Schema Details
+│   └── development-environment.md # Server-Setup
+└── phases/                        # Implementierungs-Phasen
+    ├── phase-0-setup.md          # Projekt-Setup
+    ├── phase-1-database-auth.md  # Datenbank & Auth
+    ├── phase-2-component-api.md  # Component API
+    ├── phase-3-frontend.md       # Frontend
+    ├── phase-4-community.md      # Community-Features
+    └── phase-5-devices.md        # Geräte-Reparatur-DB
+```
+
+### Dateinamen-Konventionen
+
+- **Kleinschreibung** mit Bindestrichen: `phase-1-database-auth.md`
+- **Keine Unterstriche** oder CamelCase
+- **Sprechende Namen**: Inhalt beschreiben
+- **Einheitlich**: Alle Phasen-Dateien folgen dem Muster `phase-X-beschreibung.md`
+
+### Markdown-Regeln
+
+1. **Überschriften**: Maximal 3 Ebenen (`#`, `##`, `###`)
+2. **Code-Blöcke**: Immer mit Sprach-Tag (```typescript, ```bash, etc.)
+3. **Links**: Relative Pfade zu anderen Docs
+4. **Status-Icons**: ✅ Fertig, ⏳ In Arbeit, ❌ Blockiert
+5. **Keine Emojis** in Überschriften (außer Status-Icons)
+6. **Tabellen**: Für strukturierte Daten bevorzugen
+
+### Was gehört wohin?
+
+| Inhalt | Dokument |
+|--------|----------|
+| Technologie-Entscheidungen | `architecture/tech-stack.md` |
+| i18n-Details | `architecture/i18n.md` |
+| Datenbank-Schema | `architecture/database-schema.md` |
+| Server/Credentials | `architecture/development-environment.md` |
+| Phase-spezifische Aufgaben | `phases/phase-X-*.md` |
+| Änderungen | `CHANGELOG.md` |
+| Schnellübersicht | `docs/README.md` |
+
+### Neue Dokumentation erstellen
+
+1. Passenden Ordner wählen (`architecture/` oder `phases/`)
+2. Dateiname nach Konvention
+3. Einheitliche Struktur (Übersicht → Details → Nächste Schritte)
+4. Links zu verwandten Dokumenten am Ende
+5. In `docs/README.md` verlinken
 
 ---
 

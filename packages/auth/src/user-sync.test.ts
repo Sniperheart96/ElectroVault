@@ -1,6 +1,6 @@
 // Tests for User Sync Service
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@electrovault/database';
 import { syncUser, getOrCreateUser } from './user-sync';
 import type { UserInfo } from './keycloak';
 

@@ -1,7 +1,7 @@
 // User Sync Service
 // Synchronisiert Keycloak-Benutzer mit lokaler Datenbank
 
-import type { PrismaClient, UserRole } from '@prisma/client';
+import type { PrismaClient, UserRole } from '@electrovault/database';
 import type { UserInfo } from './keycloak';
 
 /**

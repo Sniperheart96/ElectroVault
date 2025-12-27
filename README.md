@@ -85,9 +85,9 @@ cp .env.example .env.local
 .\scripts\setup-database.ps1
 
 # Oder manuell mit psql
-# psql -h ITME-SERVER -U postgres -c "CREATE DATABASE ElectroVault_Dev;"
-# psql -h ITME-SERVER -U postgres -c "CREATE USER ElectroVault_dev_user WITH PASSWORD 'password';"
-# psql -h ITME-SERVER -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ElectroVault_Dev TO ElectroVault_dev_user;"
+# psql -h localhost -U postgres -c "CREATE DATABASE electrovault_dev;"
+# psql -h localhost -U postgres -c "CREATE USER electrovault_dev_user WITH PASSWORD 'password';"
+# psql -h localhost -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE electrovault_dev TO electrovault_dev_user;"
 ```
 
 5. **Datenbank-Migration**
@@ -137,9 +137,10 @@ Siehe [docker/README.md](docker/README.md) für Details.
 
 ## Dokumentation
 
-- [Implementierungsplan](docs/IMPLEMENTATION_PLAN.md) - Vollständiger technischer Plan
+- [Dokumentations-Übersicht](docs/README.md) - Alle Dokumente
+- [Architektur](docs/architecture/) - Tech-Stack, i18n, Schema
+- [Phasen-Status](docs/phases/) - Implementierungs-Fortschritt
 - [KI-Kontext](.claude/CLAUDE.md) - Kontext für KI-gestützte Entwicklung
-- [Agenten](.claude/agents/) - Spezialisierte Entwicklungs-Agenten
 
 ## Wichtige Konzepte
 
@@ -177,9 +178,9 @@ Fallback-Kette: Angefragte Sprache → Englisch → Erste verfügbare
 ElectroVault nutzt die **existierenden Services** auf dem ITME-SERVER:
 
 ```
-PostgreSQL Development Server: Port 5432
-  └─ Datenbank: ElectroVault_Dev
-  └─ User: ElectroVault_dev_user
+PostgreSQL 18 (pgAdmin Server: "Development"): Port 5432
+  └─ Datenbank: electrovault_dev
+  └─ User: electrovault_dev_user
 Keycloak: Port 8080
   └─ Realm: electrovault
 MinIO: Port 9000/9001
@@ -205,4 +206,4 @@ Contributions sind willkommen! Bitte lies die Contribution Guidelines bevor du e
 
 ---
 
-**Stand:** 2025-12-27 | **Version:** 0.1.0 (Phase 0)
+**Stand:** 2025-12-27 | **Version:** 0.2.0 (Phase 1 abgeschlossen)

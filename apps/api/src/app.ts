@@ -7,6 +7,17 @@ import authPlugin from '@electrovault/auth/fastify';
 import { createKeycloakClient } from '@electrovault/auth';
 import { prisma } from '@electrovault/database';
 
+// Route Modules
+import categoryRoutes from './routes/categories/index';
+import manufacturerRoutes from './routes/manufacturers/index';
+import packageRoutes from './routes/packages/index';
+import componentRoutes from './routes/components/index';
+import partRoutes from './routes/parts/index';
+import auditRoutes from './routes/audit/index';
+
+// Custom Error Types
+import { ApiError } from './lib/errors';
+
 export interface AppOptions {
   logger?: boolean;
   trustProxy?: boolean;
@@ -97,12 +108,12 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
 
   // Version prefix
   app.register(
-    async (app) => {
+    async (api) => {
       // Protected test route
-      app.get(
+      api.get(
         '/me',
         {
-          onRequest: app.requireAuth,
+          onRequest: api.requireAuth,
         },
         async (request) => {
           return {
@@ -111,9 +122,13 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         }
       );
 
-      // TODO: Register route modules here
-      // await app.register(componentsRoutes, { prefix: '/components' });
-      // await app.register(manufacturersRoutes, { prefix: '/manufacturers' });
+      // Register route modules
+      await api.register(categoryRoutes, { prefix: '/categories' });
+      await api.register(manufacturerRoutes, { prefix: '/manufacturers' });
+      await api.register(packageRoutes, { prefix: '/packages' });
+      await api.register(componentRoutes, { prefix: '/components' });
+      await api.register(partRoutes, { prefix: '/parts' });
+      await api.register(auditRoutes, { prefix: '/audit' });
     },
     { prefix: '/api/v1' }
   );
@@ -125,13 +140,35 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
   app.setErrorHandler((error, request, reply) => {
     request.log.error({ error, url: request.url }, 'Request error');
 
-    // Validation errors
+    // Zod Validation errors
+    if (error.name === 'ZodError') {
+      return reply.code(400).send({
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Invalid request data',
+          details: error,
+        },
+      });
+    }
+
+    // Fastify Validation errors
     if (error.validation) {
       return reply.code(400).send({
         error: {
           code: 'VALIDATION_ERROR',
           message: 'Invalid request data',
           details: error.validation,
+        },
+      });
+    }
+
+    // Custom API Errors
+    if (error instanceof ApiError) {
+      return reply.code(error.statusCode).send({
+        error: {
+          code: error.code,
+          message: error.message,
+          details: error.details,
         },
       });
     }

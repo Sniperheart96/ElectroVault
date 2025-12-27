@@ -1,4 +1,12 @@
 // Fastify Server Entry Point
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Load environment variables from root .env.local
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, '../../../.env.local') });
+
 import { buildApp } from './app.js';
 import { prisma } from '@electrovault/database';
 

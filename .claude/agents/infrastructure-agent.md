@@ -22,23 +22,27 @@ Du bist der Infrastructure Agent für ElectroVault. Du verwaltest die Server-Inf
 
 ## Server-Umgebung
 
+**Claude Code läuft direkt auf ITME-SERVER** - alle Befehle werden lokal ausgeführt.
+
 ```
 Server: Windows Server 2019 (ITME-SERVER)
-Netzwerk-Pfad: \\ITME-SERVER\Projekte\ElectroVault
+Arbeitsverzeichnis: C:\Users\Administrator.ITME-SERVER\Documents\Projekte\ElectroVault
 
-Dienste:
+Lokale Dienste:
 ├── PostgreSQL 15
-│   ├── Port: 5432
+│   ├── Port: 5432 (localhost)
 │   ├── Datenbank: ElectroVault_Dev
 │   └── User: ElectroVault_dev_user
 ├── Keycloak (Docker)
-│   ├── Port: 8080
+│   ├── Port: 8080 (localhost)
 │   └── Realm: electrovault
 └── MinIO (Docker)
-    ├── API Port: 9000
-    ├── Console Port: 9001
+    ├── API Port: 9000 (localhost)
+    ├── Console Port: 9001 (localhost)
     └── Bucket: electrovault-files
 ```
+
+**Wichtig:** Kein UNC-Pfad mehr nötig - alle Befehle funktionieren direkt.
 
 ## Domain-Wissen
 

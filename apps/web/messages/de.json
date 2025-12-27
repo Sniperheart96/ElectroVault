@@ -1,0 +1,300 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "search": "Suchen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "noResults": "Keine Ergebnisse gefunden",
+    "all": "Alle"
+  },
+  "nav": {
+    "home": "Startseite",
+    "components": "Bauteile",
+    "categories": "Kategorien",
+    "manufacturers": "Hersteller",
+    "search": "Suche",
+    "admin": "Admin",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Community-gepflegte Datenbank für elektrische Bauteile",
+    "searchPlaceholder": "Bauteil suchen...",
+    "featuredCategories": "Beliebte Kategorien",
+    "recentComponents": "Neueste Bauteile",
+    "stats": {
+      "components": "Bauteile",
+      "manufacturers": "Hersteller",
+      "categories": "Kategorien"
+    }
+  },
+  "components": {
+    "title": "Bauteile",
+    "description": "Durchsuchen Sie unsere umfangreiche Datenbank elektronischer Bauteile",
+    "filters": {
+      "category": "Kategorie",
+      "manufacturer": "Hersteller",
+      "status": "Status",
+      "mountingType": "Bauform"
+    },
+    "detail": {
+      "overview": "Übersicht",
+      "specifications": "Spezifikationen",
+      "datasheets": "Datenblätter",
+      "parts": "Herstellervarianten",
+      "history": "Versionshistorie"
+    },
+    "status": {
+      "ACTIVE": "Aktiv",
+      "NRND": "Nicht für Neuentwicklungen",
+      "EOL": "Auslaufend",
+      "OBSOLETE": "Obsolet"
+    }
+  },
+  "categories": {
+    "title": "Kategorien",
+    "browseAll": "Alle Kategorien durchsuchen",
+    "subcategories": "Unterkategorien",
+    "componentsInCategory": "Bauteile in dieser Kategorie"
+  },
+  "manufacturers": {
+    "title": "Hersteller",
+    "status": {
+      "ACTIVE": "Aktiv",
+      "ACQUIRED": "Übernommen",
+      "DEFUNCT": "Aufgelöst"
+    }
+  },
+  "auth": {
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "loginWith": "Anmelden mit {provider}",
+    "welcome": "Willkommen zurück",
+    "signInToContinue": "Melden Sie sich an, um fortzufahren",
+    "signIn": {
+      "title": "Anmelden",
+      "description": "Melden Sie sich mit Ihrem Konto an",
+      "button": "Mit Keycloak anmelden",
+      "loading": "Wird angemeldet...",
+      "hint": "Sie werden zu Keycloak weitergeleitet"
+    },
+    "signOut": {
+      "title": "Abmelden",
+      "description": "Möchten Sie sich wirklich abmelden?",
+      "button": "Abmelden",
+      "loading": "Wird abgemeldet...",
+      "cancel": "Abbrechen"
+    },
+    "error": {
+      "title": "Authentifizierungsfehler",
+      "description": "Bei der Anmeldung ist ein Fehler aufgetreten",
+      "tryAgain": "Erneut versuchen",
+      "backHome": "Zur Startseite"
+    },
+    "errors": {
+      "configuration": "Serverkonfigurationsfehler. Bitte kontaktieren Sie den Administrator.",
+      "accessDenied": "Zugriff verweigert. Sie haben keine Berechtigung.",
+      "verification": "Der Verifizierungslink ist abgelaufen oder wurde bereits verwendet.",
+      "oauthSignin": "Fehler beim Starten der OAuth-Anmeldung.",
+      "oauthCallback": "Fehler bei der OAuth-Rückrufverarbeitung.",
+      "oauthCreateAccount": "Fehler beim Erstellen des Benutzerkontos.",
+      "emailCreateAccount": "Fehler beim Erstellen des E-Mail-Kontos.",
+      "callback": "Fehler bei der Rückrufverarbeitung.",
+      "oauthAccountNotLinked": "Diese E-Mail ist bereits mit einem anderen Konto verknüpft.",
+      "sessionRequired": "Bitte melden Sie sich an, um auf diese Seite zuzugreifen.",
+      "default": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "components": {
+      "title": "Bauteile verwalten",
+      "new": "Neues Bauteil",
+      "edit": "Bauteil bearbeiten"
+    },
+    "moderation": {
+      "title": "Moderation",
+      "pendingReviews": "Ausstehende Prüfungen"
+    },
+    "users": {
+      "title": "Benutzer",
+      "manage": "Benutzer verwalten"
+    }
+  },
+  "errors": {
+    "notFound": "Seite nicht gefunden",
+    "unauthorized": "Nicht autorisiert",
+    "serverError": "Serverfehler"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "community": "Community",
+    "legal": "Rechtliches",
+    "about": "Über uns",
+    "help": "Hilfe",
+    "contact": "Kontakt",
+    "contribute": "Mitarbeiten",
+    "github": "GitHub",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "copyright": "Open Source unter MIT-Lizenz"
+  },
+  "about": {
+    "title": "Über ElectroVault",
+    "subtitle": "Community-gepflegte Datenbank für elektrische Bauteile",
+    "mission": {
+      "title": "Unsere Mission",
+      "description": "ElectroVault ist eine freie und offene Datenbank für elektrische Bauteile - von historischen Röhren bis zur modernen Nanotechnologie. Unser Ziel ist es, Wissen über elektronische Komponenten zu bewahren und für jeden zugänglich zu machen."
+    },
+    "features": {
+      "title": "Funktionen",
+      "comprehensive": {
+        "title": "Umfassende Datenbank",
+        "description": "Von Widerständen über Kondensatoren bis zu hochintegrierten Schaltkreisen - wir erfassen alle wichtigen Bauteile mit detaillierten Spezifikationen."
+      },
+      "historical": {
+        "title": "Historisches Archiv",
+        "description": "Dokumentation historischer Bauteile für Reparatur und Restauration alter Geräte."
+      },
+      "community": {
+        "title": "Community-getrieben",
+        "description": "Jeder kann beitragen und sein Wissen teilen. Gemeinsam bauen wir die umfangreichste Bauteil-Datenbank auf."
+      },
+      "open": {
+        "title": "Open Source",
+        "description": "Vollständig transparent und frei verfügbar unter MIT-Lizenz."
+      }
+    },
+    "contribute": {
+      "title": "Mitmachen",
+      "description": "ElectroVault lebt von der Community. Hier sind einige Möglichkeiten, wie Sie beitragen können:",
+      "dataEntry": "Bauteile hinzufügen oder bearbeiten",
+      "datasheets": "Datenblätter hochladen",
+      "code": "Code-Beiträge auf GitHub",
+      "feedback": "Feedback und Verbesserungsvorschläge"
+    }
+  },
+  "help": {
+    "title": "Hilfe & FAQ",
+    "subtitle": "Häufig gestellte Fragen",
+    "general": {
+      "title": "Allgemein",
+      "what": {
+        "question": "Was ist ElectroVault?",
+        "answer": "ElectroVault ist eine freie, community-gepflegte Datenbank für elektrische und elektronische Bauteile. Wir dokumentieren Komponenten von historischen Röhren bis zu modernen ICs mit umfassenden Metadaten, Datenblättern und Spezifikationen."
+      },
+      "free": {
+        "question": "Ist ElectroVault kostenlos?",
+        "answer": "Ja, ElectroVault ist vollständig kostenlos und Open Source. Sowohl die Nutzung als auch der Quellcode sind frei verfügbar."
+      }
+    },
+    "search": {
+      "title": "Suche",
+      "how": {
+        "question": "Wie finde ich ein bestimmtes Bauteil?",
+        "answer": "Nutzen Sie die Suchfunktion oben rechts oder navigieren Sie durch die Kategorien. Sie können nach Bauteilnummer, Hersteller oder Eigenschaften suchen."
+      },
+      "filters": {
+        "question": "Welche Filter stehen zur Verfügung?",
+        "answer": "Sie können nach Kategorie, Hersteller, Status (aktiv/obsolet), Bauform und vielen weiteren technischen Parametern filtern."
+      }
+    },
+    "contribute": {
+      "title": "Beitragen",
+      "account": {
+        "question": "Brauche ich einen Account zum Beitragen?",
+        "answer": "Ja, um Bauteile hinzuzufügen oder zu bearbeiten, benötigen Sie einen kostenlosen Account. Dies hilft uns, die Qualität der Daten sicherzustellen."
+      },
+      "how": {
+        "question": "Wie kann ich ein Bauteil hinzufügen?",
+        "answer": "Nach der Anmeldung können Sie über den Button 'Neues Bauteil' in der Bauteil-Übersicht neue Komponenten anlegen. Ein Moderator prüft Ihren Beitrag vor der Veröffentlichung."
+      },
+      "quality": {
+        "question": "Wie wird die Datenqualität sichergestellt?",
+        "answer": "Alle Beiträge werden von erfahrenen Moderatoren geprüft. Außerdem können angemeldete Nutzer Korrekturen vorschlagen."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Haben Sie Fragen oder Anregungen?",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht"
+    },
+    "alternatives": {
+      "title": "Weitere Kontaktmöglichkeiten",
+      "github": "Erstellen Sie ein Issue auf GitHub",
+      "email": "Senden Sie uns eine E-Mail"
+    }
+  },
+  "imprint": {
+    "title": "Impressum",
+    "responsible": "Verantwortlich für den Inhalt",
+    "contact": "Kontakt",
+    "disclaimer": {
+      "title": "Haftungsausschluss",
+      "content": "Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.",
+      "liability": "Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "ElectroVault ist ein Open-Source-Projekt unter der MIT-Lizenz. Der Quellcode ist auf GitHub verfügbar."
+    }
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "lastUpdated": "Stand",
+    "intro": "Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Diese Datenschutzerklärung klärt Sie über die Art, den Umfang und den Zweck der Verarbeitung von personenbezogenen Daten auf.",
+    "responsible": {
+      "title": "Verantwortlicher",
+      "description": "Verantwortlich für die Datenverarbeitung auf dieser Website ist:"
+    },
+    "collection": {
+      "title": "Erhebung und Speicherung personenbezogener Daten",
+      "description": "Beim Besuch unserer Website werden automatisch Informationen erfasst, die Ihr Browser übermittelt:",
+      "data": "IP-Adresse, Datum und Uhrzeit des Zugriffs, Browsertyp und -version, verwendetes Betriebssystem, Referrer URL"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Unsere Website verwendet Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden.",
+      "essential": "Technisch notwendige Cookies für Authentifizierung und Sitzungsverwaltung",
+      "functional": "Funktionale Cookies zur Verbesserung der Benutzerfreundlichkeit"
+    },
+    "auth": {
+      "title": "Authentifizierung",
+      "description": "Für die Registrierung und Anmeldung verwenden wir Keycloak. Dabei werden folgende Daten gespeichert:",
+      "data": "Benutzername, E-Mail-Adresse, Profilbild (optional), Rolle und Berechtigungen"
+    },
+    "rights": {
+      "title": "Ihre Rechte",
+      "description": "Sie haben folgende Rechte bezüglich Ihrer personenbezogenen Daten:",
+      "access": "Recht auf Auskunft",
+      "correction": "Recht auf Berichtigung",
+      "deletion": "Recht auf Löschung",
+      "restriction": "Recht auf Einschränkung der Verarbeitung",
+      "portability": "Recht auf Datenübertragbarkeit",
+      "objection": "Widerspruchsrecht"
+    },
+    "contact": {
+      "title": "Kontakt bei Datenschutzfragen",
+      "description": "Bei Fragen zum Datenschutz können Sie uns jederzeit kontaktieren."
+    }
+  }
+}
