@@ -181,6 +181,46 @@ function getLocalizedName(data: LocalizedString, locale: string): string {
 - Sichtbare Indikatoren im UI (z.B. `[FEHLER]`, `[MISSING]`) statt unsichtbarer Fake-Daten
 - Im Zweifel: Lieber einen Fehler werfen als stillschweigend falsche Daten liefern
 
+## GitHub Repository
+
+**Repository:** https://github.com/Sniperheart96/ElectroVault
+
+### Zugriff auf GitHub Actions (für Claude Code)
+
+Claude Code kann GitHub Actions-Status direkt über die GitHub API abrufen:
+
+```bash
+# Neueste Workflow-Runs abrufen
+curl https://api.github.com/repos/Sniperheart96/ElectroVault/actions/runs?per_page=3
+
+# Spezifischen Run abrufen (ersetze RUN_ID)
+curl https://api.github.com/repos/Sniperheart96/ElectroVault/actions/runs/RUN_ID
+
+# Job-Details abrufen
+curl https://api.github.com/repos/Sniperheart96/ElectroVault/actions/runs/RUN_ID/jobs
+```
+
+**Mit WebFetch-Tool:**
+```typescript
+WebFetch(
+  "https://api.github.com/repos/Sniperheart96/ElectroVault/actions/runs?per_page=1",
+  "Parse JSON und zeige status, conclusion, name"
+)
+```
+
+**Keine Authentifizierung nötig** für öffentliche Repository-Daten (Actions, Issues, PRs).
+
+### CI/CD Status
+
+- **Aktive Jobs:** Unit Tests, Integration Tests
+- **Deaktiviert (Phase 0):** E2E Tests, Lint & Type Check
+  - Werden in Phase 1 aktiviert, sobald Apps existieren
+
+### Branches
+
+- `main` - Production-ready Code
+- `develop` - Development Branch (TODO: erstellen)
+
 ## Verfügbare Agenten
 
 Spezialisierte Agenten für verschiedene Aufgabenbereiche:

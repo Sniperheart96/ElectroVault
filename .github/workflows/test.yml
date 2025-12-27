@@ -90,66 +90,68 @@ jobs:
           DATABASE_URL: postgresql://test:test@localhost:5432/electrovault_test
           TEST_DATABASE_URL: postgresql://test:test@localhost:5432/electrovault_test
 
-  e2e-tests:
-    name: E2E Tests
-    runs-on: ubuntu-latest
+  # Deaktiviert bis Web-App existiert (Phase 1+)
+  # e2e-tests:
+  #   name: E2E Tests
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
+  #     - name: Setup pnpm
+  #       uses: pnpm/action-setup@v2
+  #       with:
+  #         version: 9
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium firefox
+  #     - name: Install Playwright browsers
+  #       run: pnpm exec playwright install --with-deps chromium firefox
 
-      - name: Run E2E tests
-        run: pnpm test:e2e
+  #     - name: Run E2E tests
+  #       run: pnpm test:e2e
 
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
+  #     - name: Upload Playwright report
+  #       uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: playwright-report
+  #         path: playwright-report/
+  #         retention-days: 7
 
-  lint:
-    name: Lint & Type Check
-    runs-on: ubuntu-latest
+  # Deaktiviert bis Apps Lint-Scripts haben (Phase 1+)
+  # lint:
+  #   name: Lint & Type Check
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
+  #     - name: Setup pnpm
+  #       uses: pnpm/action-setup@v2
+  #       with:
+  #         version: 9
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: pnpm install --frozen-lockfile
 
-      - name: Run linter
-        run: pnpm lint
+  #     - name: Run linter
+  #       run: pnpm lint
 
-      - name: Check TypeScript types
-        run: pnpm --filter @electrovault/schemas type-check
+  #     - name: Check TypeScript types
+  #       run: pnpm --filter @electrovault/schemas type-check
