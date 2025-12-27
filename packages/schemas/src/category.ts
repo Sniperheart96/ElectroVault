@@ -112,3 +112,41 @@ export const CategoryPathSchema = z.array(
 );
 
 export type CategoryPath = z.infer<typeof CategoryPathSchema>;
+
+// ============================================
+// CATEGORY MUTATION SCHEMAS
+// ============================================
+
+/**
+ * Schema zum Erstellen einer Kategorie
+ */
+export const CreateCategorySchema = z.object({
+  name: LocalizedStringSchema,
+  parentId: UUIDSchema.optional().nullable(),
+  description: z.object({
+    de: z.string().optional(),
+    en: z.string().optional(),
+  }).optional(),
+  iconUrl: z.string().url().optional().nullable(),
+  sortOrder: z.number().int().min(0).default(0),
+  isActive: z.boolean().default(true),
+});
+
+export type CreateCategoryInput = z.infer<typeof CreateCategorySchema>;
+
+/**
+ * Schema zum Aktualisieren einer Kategorie
+ */
+export const UpdateCategorySchema = z.object({
+  name: LocalizedStringSchema.optional(),
+  parentId: UUIDSchema.optional().nullable(),
+  description: z.object({
+    de: z.string().optional(),
+    en: z.string().optional(),
+  }).optional(),
+  iconUrl: z.string().url().optional().nullable(),
+  sortOrder: z.number().int().min(0).optional(),
+  isActive: z.boolean().optional(),
+});
+
+export type UpdateCategoryInput = z.infer<typeof UpdateCategorySchema>;

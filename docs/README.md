@@ -24,6 +24,7 @@
 | [i18n.md](architecture/i18n.md) | Internationalisierung, LocalizedString |
 | [database-schema.md](architecture/database-schema.md) | Prisma-Schema, 2-Ebenen-Architektur |
 | [development-environment.md](architecture/development-environment.md) | Server-Setup, Credentials |
+| [auth-keycloak.md](architecture/auth-keycloak.md) | **JWT-Validierung, User-Sync, Fallstricke** |
 
 ### Weitere Dokumente
 
@@ -51,7 +52,8 @@ docs/
 │   ├── tech-stack.md
 │   ├── i18n.md
 │   ├── database-schema.md
-│   └── development-environment.md
+│   ├── development-environment.md
+│   └── auth-keycloak.md           # JWT, User-Sync, Fallstricke
 └── phases/                        # Implementierungs-Phasen
     ├── phase-0-setup.md
     ├── phase-1-database-auth.md

@@ -23,10 +23,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api, type Component, type CategoryTreeNode } from '@/lib/api';
+import { type Component, type CategoryTreeNode } from '@/lib/api';
 import { ComponentDialog } from '@/components/admin/component-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useApi } from '@/hooks/use-api';
 
 function flattenCategories(nodes: CategoryTreeNode[], prefix = ''): { id: string; name: string }[] {
   const result: { id: string; name: string }[] = [];
@@ -41,6 +42,7 @@ function flattenCategories(nodes: CategoryTreeNode[], prefix = ''): { id: string
 }
 
 export default function ComponentsPage() {
+  const api = useApi();
   const [components, setComponents] = useState<Component[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -172,24 +174,24 @@ export default function ComponentsPage() {
                 className="pl-8"
               />
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select value={statusFilter || 'all'} onValueChange={(v) => setStatusFilter(v === 'all' ? '' : v)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Alle Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Alle Status</SelectItem>
+                <SelectItem value="all">Alle Status</SelectItem>
                 <SelectItem value="ACTIVE">Aktiv</SelectItem>
                 <SelectItem value="NRND">NRND</SelectItem>
                 <SelectItem value="EOL">Auslaufend</SelectItem>
                 <SelectItem value="OBSOLETE">Obsolet</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <Select value={categoryFilter || 'all'} onValueChange={(v) => setCategoryFilter(v === 'all' ? '' : v)}>
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder="Alle Kategorien" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Alle Kategorien</SelectItem>
+                <SelectItem value="all">Alle Kategorien</SelectItem>
                 {categories.map((cat) => (
                   <SelectItem key={cat.id} value={cat.id}>
                     {cat.name}

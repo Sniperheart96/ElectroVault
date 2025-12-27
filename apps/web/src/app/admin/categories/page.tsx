@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api, type Category, type CategoryTreeNode } from '@/lib/api';
+import { type Category, type CategoryTreeNode } from '@/lib/api';
 import { CategoryDialog } from '@/components/admin/category-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useApi } from '@/hooks/use-api';
 import { cn } from '@/lib/utils';
 
 interface CategoryTreeItemProps {
@@ -124,6 +125,7 @@ function CategoryTreeItem({ node, onEdit, onDelete, onCreate }: CategoryTreeItem
 }
 
 export default function CategoriesPage() {
+  const api = useApi();
   const [categoryTree, setCategoryTree] = useState<CategoryTreeNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);

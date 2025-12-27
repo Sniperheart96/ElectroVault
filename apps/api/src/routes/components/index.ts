@@ -57,7 +57,7 @@ export default async function componentRoutes(
     },
     async (request, reply) => {
       const data = CreateComponentSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const component = await componentService.create(data, userId);
       return reply.code(201).send({ data: component });
@@ -76,7 +76,7 @@ export default async function componentRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = UpdateComponentSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const component = await componentService.update(id, data, userId);
       return reply.send({ data: component });
@@ -94,7 +94,7 @@ export default async function componentRoutes(
     },
     async (request, reply) => {
       const { id } = request.params;
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await componentService.delete(id, userId);
       return reply.code(204).send();
@@ -112,7 +112,7 @@ export default async function componentRoutes(
     },
     async (request, reply) => {
       const { id } = request.params;
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const component = await componentService.restore(id, userId);
       return reply.send({ data: component });
@@ -131,7 +131,7 @@ export default async function componentRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = CreateConceptRelationSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await componentService.addConceptRelation(id, data, userId);
       return reply.code(201).send({ success: true });

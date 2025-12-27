@@ -74,7 +74,8 @@ export default async function manufacturerRoutes(
     },
     async (request, reply) => {
       const data = CreateManufacturerSchema.parse(request.body);
-      const userId = request.user?.id;
+      // Use local database ID, not Keycloak ID
+      const userId = request.user?.dbId;
 
       const manufacturer = await manufacturerService.create(data, userId);
       return reply.code(201).send({ data: manufacturer });
@@ -93,7 +94,8 @@ export default async function manufacturerRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = UpdateManufacturerSchema.parse(request.body);
-      const userId = request.user?.id;
+      // Use local database ID, not Keycloak ID
+      const userId = request.user?.dbId;
 
       const manufacturer = await manufacturerService.update(id, data, userId);
       return reply.send({ data: manufacturer });

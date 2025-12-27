@@ -1,5 +1,5 @@
 /**
- * Category Service - Kategorie-Verwaltung (Read-Only)
+ * Category Service - Kategorie-Verwaltung mit CRUD
  */
 
 import { prisma, Prisma } from '@electrovault/database';
@@ -11,9 +11,12 @@ import type {
   CategoryTreeNode,
   CategoryWithAttributes,
   CategoryPath,
+  CreateCategoryInput,
+  UpdateCategoryInput,
 } from '@electrovault/schemas';
-import { NotFoundError } from '../lib/errors';
+import { NotFoundError, ConflictError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
+import { auditService } from './audit.service';
 
 // Type für Kategorie aus Prisma
 type PrismaCategory = Prisma.CategoryTaxonomyGetPayload<object>;
@@ -293,6 +296,186 @@ export class CategoryService {
 
     await collectDescendants(id);
     return descendants;
+  }
+
+  // ============================================
+  // CRUD OPERATIONS
+  // ============================================
+
+  /**
+   * Erstellt eine neue Kategorie
+   */
+  async create(data: CreateCategoryInput, userId?: string): Promise<CategoryBase> {
+    // Generiere Slug aus deutschem oder englischem Namen
+    const nameForSlug = data.name.de || data.name.en || 'kategorie';
+    const baseSlug = this.generateSlug(nameForSlug);
+
+    // Prüfe auf Slug-Konflikte
+    const existingSlug = await prisma.categoryTaxonomy.findUnique({
+      where: { slug: baseSlug },
+    });
+
+    const slug = existingSlug ? `${baseSlug}-${Date.now()}` : baseSlug;
+
+    // Bestimme Level basierend auf Parent
+    let level = 0;
+    if (data.parentId) {
+      const parent = await prisma.categoryTaxonomy.findUnique({
+        where: { id: data.parentId },
+        select: { level: true },
+      });
+      if (!parent) {
+        throw new NotFoundError('Parent Category', data.parentId);
+      }
+      level = parent.level + 1;
+      if (level > 4) {
+        throw new ConflictError('Maximum category depth (4 levels) exceeded');
+      }
+    }
+
+    const category = await prisma.categoryTaxonomy.create({
+      data: {
+        name: data.name,
+        slug,
+        level,
+        parentId: data.parentId || null,
+        description: data.description || null,
+        iconUrl: data.iconUrl || null,
+        sortOrder: data.sortOrder ?? 0,
+        isActive: data.isActive ?? true,
+      },
+    });
+
+    // Audit Log
+    if (userId) {
+      await auditService.log({
+        entityType: 'CATEGORY',
+        entityId: category.id,
+        action: 'CREATE',
+        newValue: category,
+        userId,
+      });
+    }
+
+    return category as CategoryBase;
+  }
+
+  /**
+   * Aktualisiert eine Kategorie
+   */
+  async update(id: string, data: UpdateCategoryInput, userId?: string): Promise<CategoryBase> {
+    const existing = await prisma.categoryTaxonomy.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundError('Category', id);
+    }
+
+    // Prüfe auf zirkuläre Referenzen wenn parentId geändert wird
+    if (data.parentId !== undefined && data.parentId !== existing.parentId) {
+      if (data.parentId) {
+        // Prüfe ob neue Parent eine Unterkategorie dieser Kategorie ist
+        const descendants = await this.getDescendantIds(id);
+        if (descendants.includes(data.parentId)) {
+          throw new ConflictError('Cannot set a descendant category as parent');
+        }
+
+        // Prüfe Level
+        const parent = await prisma.categoryTaxonomy.findUnique({
+          where: { id: data.parentId },
+          select: { level: true },
+        });
+        if (!parent) {
+          throw new NotFoundError('Parent Category', data.parentId);
+        }
+        // Level wird beim Update nicht automatisch angepasst - nur für neue Kategorien
+      }
+    }
+
+    const category = await prisma.categoryTaxonomy.update({
+      where: { id },
+      data: {
+        ...(data.name && { name: data.name }),
+        ...(data.parentId !== undefined && { parentId: data.parentId }),
+        ...(data.description !== undefined && { description: data.description }),
+        ...(data.iconUrl !== undefined && { iconUrl: data.iconUrl }),
+        ...(data.sortOrder !== undefined && { sortOrder: data.sortOrder }),
+        ...(data.isActive !== undefined && { isActive: data.isActive }),
+      },
+    });
+
+    // Audit Log
+    if (userId) {
+      await auditService.log({
+        entityType: 'CATEGORY',
+        entityId: category.id,
+        action: 'UPDATE',
+        previousValue: existing,
+        newValue: category,
+        userId,
+      });
+    }
+
+    return category as CategoryBase;
+  }
+
+  /**
+   * Löscht eine Kategorie (Soft-Delete)
+   */
+  async delete(id: string, userId?: string): Promise<void> {
+    const existing = await prisma.categoryTaxonomy.findUnique({
+      where: { id },
+      include: {
+        children: { select: { id: true } },
+        coreComponents: { select: { id: true }, take: 1 },
+      },
+    });
+
+    if (!existing) {
+      throw new NotFoundError('Category', id);
+    }
+
+    // Prüfe auf Unterkategorien
+    if (existing.children.length > 0) {
+      throw new ConflictError('Cannot delete category with child categories');
+    }
+
+    // Prüfe auf zugeordnete Komponenten
+    if (existing.coreComponents.length > 0) {
+      throw new ConflictError('Cannot delete category with assigned components');
+    }
+
+    // Kategorie löschen (hard delete, da keine Komponenten zugeordnet)
+    await prisma.categoryTaxonomy.delete({
+      where: { id },
+    });
+
+    // Audit Log
+    if (userId) {
+      await auditService.log({
+        entityType: 'CATEGORY',
+        entityId: id,
+        action: 'DELETE',
+        previousValue: existing,
+        userId,
+      });
+    }
+  }
+
+  /**
+   * Generiert einen URL-freundlichen Slug
+   */
+  private generateSlug(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/[äÄ]/g, 'ae')
+      .replace(/[öÖ]/g, 'oe')
+      .replace(/[üÜ]/g, 'ue')
+      .replace(/[ß]/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .substring(0, 100);
   }
 }
 

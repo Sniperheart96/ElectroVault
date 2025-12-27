@@ -125,7 +125,7 @@ export default async function packageRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = CreateFootprintSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const footprint = await packageService.addFootprint(id, data, userId);
       return reply.code(201).send({ data: footprint });

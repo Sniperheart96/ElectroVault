@@ -82,7 +82,7 @@ export default async function partRoutes(
     },
     async (request, reply) => {
       const data = CreatePartSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const part = await partService.create(data, userId);
       return reply.code(201).send({ data: part });
@@ -101,7 +101,7 @@ export default async function partRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = UpdatePartSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       const part = await partService.update(id, data, userId);
       return reply.send({ data: part });
@@ -119,7 +119,7 @@ export default async function partRoutes(
     },
     async (request, reply) => {
       const { id } = request.params;
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await partService.delete(id, userId);
       return reply.code(204).send();
@@ -138,7 +138,7 @@ export default async function partRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = CreatePartRelationshipSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await partService.addRelationship(id, data, userId);
       return reply.code(201).send({ success: true });
@@ -157,7 +157,7 @@ export default async function partRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = CreateDatasheetSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await partService.addDatasheet(id, data, userId);
       return reply.code(201).send({ success: true });
@@ -176,7 +176,7 @@ export default async function partRoutes(
     async (request, reply) => {
       const { id } = request.params;
       const data = CreatePartImageSchema.parse(request.body);
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
 
       await partService.addImage(id, data, userId);
       return reply.code(201).send({ success: true });

@@ -15,6 +15,8 @@ export interface TokenPayload {
   name?: string;
   given_name?: string;
   family_name?: string;
+  azp?: string; // Authorized Party (the client that requested the token)
+  aud?: string | string[]; // Audience
   realm_access?: {
     roles: string[];
   };
@@ -47,17 +49,31 @@ export class KeycloakClient {
 
   /**
    * Verify and decode a Keycloak JWT token
+   *
+   * Keycloak tokens have `aud: "account"` by default (for the account service).
+   * The actual client is in `azp` (Authorized Party).
+   * We verify the signature and issuer, then manually check azp.
    */
   async verifyToken(token: string): Promise<TokenPayload> {
     try {
       const JWKS = createRemoteJWKSet(new URL(this.jwksUrl));
 
+      // Verify signature and issuer only - we'll check azp manually
       const { payload } = await jwtVerify(token, JWKS, {
         issuer: this.issuer,
-        audience: this.config.clientId,
+        // Don't check audience - Keycloak uses azp for the requesting client
       });
 
-      return payload as unknown as TokenPayload;
+      const typedPayload = payload as unknown as TokenPayload;
+
+      // Verify the token was issued for our client (azp = authorized party)
+      if (typedPayload.azp && typedPayload.azp !== this.config.clientId) {
+        throw new Error(
+          `Token was issued for client "${typedPayload.azp}", expected "${this.config.clientId}"`
+        );
+      }
+
+      return typedPayload;
     } catch (error) {
       throw new Error(`Token verification failed: ${(error as Error).message}`);
     }
@@ -89,17 +105,49 @@ export class KeycloakClient {
   }
 
   /**
-   * Check if user has required role
+   * Check if user has required role (case-insensitive)
+   * Keycloak roles are lowercase, API expects uppercase
    */
   hasRole(userInfo: UserInfo, requiredRole: string): boolean {
-    return userInfo.roles.includes(requiredRole);
+    const normalizedRequired = requiredRole.toLowerCase();
+    return userInfo.roles.some((role) => role.toLowerCase() === normalizedRequired);
   }
 
   /**
-   * Check if user has any of the required roles
+   * Check if user has any of the required roles (case-insensitive)
+   * Also checks role hierarchy: admin > moderator > contributor > viewer
    */
   hasAnyRole(userInfo: UserInfo, requiredRoles: string[]): boolean {
-    return requiredRoles.some((role) => userInfo.roles.includes(role));
+    const normalizedUserRoles = userInfo.roles.map((r) => r.toLowerCase());
+
+    // Role hierarchy: higher roles include lower permissions
+    const roleHierarchy: Record<string, string[]> = {
+      admin: ['admin', 'moderator', 'contributor', 'viewer'],
+      moderator: ['moderator', 'contributor', 'viewer'],
+      contributor: ['contributor', 'viewer'],
+      viewer: ['viewer'],
+    };
+
+    // Check if user has admin - admins can do everything
+    if (normalizedUserRoles.includes('admin')) {
+      return true;
+    }
+
+    // Check each required role
+    return requiredRoles.some((required) => {
+      const normalizedRequired = required.toLowerCase();
+      // Direct match
+      if (normalizedUserRoles.includes(normalizedRequired)) {
+        return true;
+      }
+      // Hierarchy check: does user have a higher role?
+      for (const [userRole, includedRoles] of Object.entries(roleHierarchy)) {
+        if (normalizedUserRoles.includes(userRole) && includedRoles.includes(normalizedRequired)) {
+          return true;
+        }
+      }
+      return false;
+    });
   }
 
   /**

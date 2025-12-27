@@ -67,8 +67,8 @@ export default async function auditRoutes(
       const { limit } = request.query;
 
       // Nur eigene Aktivitäten oder Admin
-      const isOwnUser = request.user?.id === userId;
-      const isAdmin = request.user?.roles?.includes('admin');
+      const isOwnUser = request.user?.dbId === userId;
+      const isAdmin = request.user?.roles?.some((r) => r.toLowerCase() === 'admin');
 
       if (!isOwnUser && !isAdmin) {
         return reply.code(403).send({
@@ -94,7 +94,7 @@ export default async function auditRoutes(
       onRequest: app.requireAuth,
     },
     async (request, reply) => {
-      const userId = request.user?.id;
+      const userId = request.user?.dbId;
       const { limit } = request.query;
 
       if (!userId) {

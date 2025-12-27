@@ -32,8 +32,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { api, type Category, type CategoryTreeNode } from '@/lib/api';
+import { type Category, type CategoryTreeNode } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+import { useApi } from '@/hooks/use-api';
 
 // Local schema for category creation/editing
 const CreateCategorySchema = z.object({
@@ -76,6 +77,7 @@ export function CategoryDialog({
   category,
   onSaved,
 }: CategoryDialogProps) {
+  const api = useApi();
   const { toast } = useToast();
   const isEdit = !!category;
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);

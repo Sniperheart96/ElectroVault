@@ -31,8 +31,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { api, type Manufacturer } from '@/lib/api';
+import { type Manufacturer } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+import { useApi } from '@/hooks/use-api';
 
 interface ManufacturerDialogProps {
   open: boolean;
@@ -47,6 +48,7 @@ export function ManufacturerDialog({
   manufacturer,
   onSaved,
 }: ManufacturerDialogProps) {
+  const api = useApi();
   const { toast } = useToast();
   const isEdit = !!manufacturer;
 

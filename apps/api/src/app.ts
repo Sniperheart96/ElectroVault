@@ -50,9 +50,26 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
   // PLUGINS
   // ============================================
 
-  // CORS
+  // CORS - Allow multiple origins for development
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://192.168.178.80:3000',
+    process.env.CORS_ORIGIN,
+  ].filter(Boolean) as string[];
+
   await app.register(cors, {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: (origin, cb) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) {
+        cb(null, true);
+        return;
+      }
+      if (allowedOrigins.includes(origin)) {
+        cb(null, true);
+        return;
+      }
+      cb(new Error('Not allowed by CORS'), false);
+    },
     credentials: true,
   });
 
@@ -75,9 +92,9 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     cache: 10000,
   });
 
-  // Auth Plugin
+  // Auth Plugin with user sync
   const keycloak = createKeycloakClient();
-  await app.register(authPlugin, { keycloak });
+  await app.register(authPlugin, { keycloak, prisma });
 
   // ============================================
   // HEALTH CHECK

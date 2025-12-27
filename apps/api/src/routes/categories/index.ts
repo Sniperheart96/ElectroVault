@@ -1,5 +1,5 @@
 /**
- * Category Routes - Read-Only API für Kategorien
+ * Category Routes - CRUD API für Kategorien
  */
 
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
@@ -7,6 +7,8 @@ import { categoryService } from '../../services/category.service';
 import {
   CategoryListQuerySchema,
   CategoryTreeQuerySchema,
+  CreateCategorySchema,
+  UpdateCategorySchema,
 } from '@electrovault/schemas';
 
 /**
@@ -90,4 +92,63 @@ export default async function categoryRoutes(
     const descendantIds = await categoryService.getDescendantIds(id);
     return reply.send({ data: { categoryId: id, descendantIds } });
   });
+
+  // ============================================
+  // MUTATION ROUTES (Auth required)
+  // ============================================
+
+  /**
+   * POST /categories
+   * Neue Kategorie erstellen (Auth required)
+   */
+  app.post(
+    '/',
+    {
+      onRequest: app.requireRole('CONTRIBUTOR'),
+    },
+    async (request, reply) => {
+      const data = CreateCategorySchema.parse(request.body);
+      const userId = request.user?.dbId;
+
+      const category = await categoryService.create(data, userId);
+      return reply.code(201).send({ data: category });
+    }
+  );
+
+  /**
+   * PATCH /categories/:id
+   * Kategorie aktualisieren (Auth required)
+   */
+  app.patch<{ Params: { id: string } }>(
+    '/:id',
+    {
+      onRequest: app.requireRole('CONTRIBUTOR'),
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const data = UpdateCategorySchema.parse(request.body);
+      const userId = request.user?.dbId;
+
+      const category = await categoryService.update(id, data, userId);
+      return reply.send({ data: category });
+    }
+  );
+
+  /**
+   * DELETE /categories/:id
+   * Kategorie löschen (Admin required)
+   */
+  app.delete<{ Params: { id: string } }>(
+    '/:id',
+    {
+      onRequest: app.requireRole('ADMIN'),
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const userId = request.user?.dbId;
+
+      await categoryService.delete(id, userId);
+      return reply.code(204).send();
+    }
+  );
 }

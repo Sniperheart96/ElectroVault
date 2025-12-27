@@ -31,8 +31,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { api, type Component, type CategoryTreeNode } from '@/lib/api';
+import { type Component, type CategoryTreeNode } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
+import { useApi } from '@/hooks/use-api';
 
 interface ComponentDialogProps {
   open: boolean;
@@ -59,6 +60,7 @@ export function ComponentDialog({
   component,
   onSaved,
 }: ComponentDialogProps) {
+  const api = useApi();
   const { toast } = useToast();
   const isEdit = !!component;
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);

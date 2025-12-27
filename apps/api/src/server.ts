@@ -2,10 +2,21 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
-// Load environment variables from root .env.local
+// Load environment variables
+// Priority: local .env > root .env.local
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.resolve(__dirname, '../../../.env.local') });
+const localEnvPath = path.resolve(__dirname, '../.env');
+const rootEnvPath = path.resolve(__dirname, '../../../.env.local');
+
+if (fs.existsSync(localEnvPath)) {
+  dotenv.config({ path: localEnvPath });
+  console.log(`[env] Loading from ${localEnvPath}`);
+} else {
+  dotenv.config({ path: rootEnvPath });
+  console.log(`[env] Loading from ${rootEnvPath}`);
+}
 
 import { buildApp } from './app.js';
 import { prisma } from '@electrovault/database';

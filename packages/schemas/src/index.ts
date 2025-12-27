@@ -73,6 +73,11 @@ export {
   CategoryTreeQuerySchema,
   type CategoryListQuery,
   type CategoryTreeQuery,
+  // Input Schemas
+  CreateCategorySchema,
+  UpdateCategorySchema,
+  type CreateCategoryInput,
+  type UpdateCategoryInput,
 } from './category';
 
 // ============================================

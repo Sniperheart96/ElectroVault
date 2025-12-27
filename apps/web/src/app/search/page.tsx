@@ -364,14 +364,14 @@ function SearchContent() {
                     <div className="space-y-2">
                       <Label>Kategorie</Label>
                       <Select
-                        value={filters.categoryId}
-                        onValueChange={(value) => handleFilterChange('categoryId', value)}
+                        value={filters.categoryId || 'all'}
+                        onValueChange={(value) => handleFilterChange('categoryId', value === 'all' ? '' : value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Alle Kategorien" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Alle Kategorien</SelectItem>
+                          <SelectItem value="all">Alle Kategorien</SelectItem>
                           {categories.map((cat) => (
                             <SelectItem key={cat.id} value={cat.id}>
                               {cat.name}
@@ -387,14 +387,14 @@ function SearchContent() {
                     <div className="space-y-2">
                       <Label>Hersteller</Label>
                       <Select
-                        value={filters.manufacturerId}
-                        onValueChange={(value) => handleFilterChange('manufacturerId', value)}
+                        value={filters.manufacturerId || 'all'}
+                        onValueChange={(value) => handleFilterChange('manufacturerId', value === 'all' ? '' : value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Alle Hersteller" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Alle Hersteller</SelectItem>
+                          <SelectItem value="all">Alle Hersteller</SelectItem>
                           {manufacturerOptions.map((m) => (
                             <SelectItem key={m.id} value={m.id}>
                               {m.name}
@@ -409,14 +409,14 @@ function SearchContent() {
                   <div className="space-y-2">
                     <Label>Status</Label>
                     <Select
-                      value={filters.status}
-                      onValueChange={(value) => handleFilterChange('status', value)}
+                      value={filters.status || 'all'}
+                      onValueChange={(value) => handleFilterChange('status', value === 'all' ? '' : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Alle Status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Alle Status</SelectItem>
+                        <SelectItem value="all">Alle Status</SelectItem>
                         {filters.type === 'manufacturers' ? (
                           <>
                             <SelectItem value="ACTIVE">Aktiv</SelectItem>

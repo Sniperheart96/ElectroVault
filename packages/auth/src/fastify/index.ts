@@ -2,25 +2,55 @@
 import type { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin';
 import { KeycloakClient, UserInfo } from '../keycloak';
+import { syncUser } from '../user-sync';
+import type { PrismaClient, UserRole } from '@electrovault/database';
+
+export interface AuthenticatedUser extends UserInfo {
+  /** Local database user ID (UUID) */
+  dbId?: string;
+  /** Local database role */
+  dbRole?: UserRole;
+}
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user?: UserInfo;
+    user?: AuthenticatedUser;
   }
 }
 
 export interface AuthPluginOptions {
   keycloak: KeycloakClient;
+  prisma?: PrismaClient;
 }
 
 /**
  * Fastify Plugin für Keycloak-Auth
  */
 const authPlugin: FastifyPluginAsync<AuthPluginOptions> = async (fastify, options) => {
-  const { keycloak } = options;
+  const { keycloak, prisma } = options;
 
   // Decorator: user auf Request
   fastify.decorateRequest('user', null);
+
+  /**
+   * Sync user to local database and add dbId to user object
+   */
+  async function syncUserToDb(userInfo: UserInfo): Promise<AuthenticatedUser> {
+    const authenticatedUser: AuthenticatedUser = { ...userInfo };
+
+    if (prisma) {
+      try {
+        const dbUser = await syncUser(prisma, { userInfo });
+        authenticatedUser.dbId = dbUser.id;
+        authenticatedUser.dbRole = dbUser.role;
+      } catch (error) {
+        fastify.log.error({ error, userId: userInfo.id }, 'Failed to sync user to database');
+        // Continue without dbId - user can still authenticate but won't be tracked
+      }
+    }
+
+    return authenticatedUser;
+  }
 
   /**
    * Extract Bearer token from Authorization header
@@ -43,7 +73,8 @@ const authPlugin: FastifyPluginAsync<AuthPluginOptions> = async (fastify, option
     }
 
     try {
-      request.user = await keycloak.validateToken(token);
+      const userInfo = await keycloak.validateToken(token);
+      request.user = await syncUserToDb(userInfo);
     } catch (error) {
       // Ungültiger Token → ignorieren, kein User
       request.log.warn({ error }, 'Invalid token in optionalAuth');
@@ -65,7 +96,8 @@ const authPlugin: FastifyPluginAsync<AuthPluginOptions> = async (fastify, option
     }
 
     try {
-      request.user = await keycloak.validateToken(token);
+      const userInfo = await keycloak.validateToken(token);
+      request.user = await syncUserToDb(userInfo);
     } catch (error) {
       request.log.error({ error }, 'Token validation failed');
       return reply.code(401).send({

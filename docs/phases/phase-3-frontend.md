@@ -109,7 +109,8 @@ apps/web/
 │   │   └── providers/
 │   │       └── session-provider.tsx  # NextAuth Provider
 │   ├── hooks/
-│   │   └── use-toast.ts              # Toast-Hook
+│   │   ├── use-toast.ts              # Toast-Hook
+│   │   └── use-api.ts                # Auth API Hook für Client Components
 │   ├── lib/
 │   │   ├── api.ts                    # API-Client mit Auth-Support
 │   │   ├── auth.ts                   # NextAuth Konfiguration
@@ -322,6 +323,16 @@ const categories = await api.getCategories();
 import { getAuthenticatedApiClient } from '@/lib/api';
 const authApi = await getAuthenticatedApiClient();
 const result = await authApi.getComponents();
+
+// Authentifizierte Anfragen (Client Components)
+// Verwendet den useApi() Hook aus @/hooks/use-api
+import { useApi } from '@/hooks/use-api';
+
+function MyComponent() {
+  const api = useApi(); // Token wird automatisch aus Session gesetzt
+  // ...
+  await api.createManufacturer(data);
+}
 
 // Verfügbare Methoden
 // Categories
