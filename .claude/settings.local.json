@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(ping:*)",
+      "Bash(psql:*)",
+      "Bash(curl:*)",
+      "Bash(nc:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& ''//ITME-SERVER/Projekte/ElectroVault/scripts/remote-check.ps1''\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& ''//ITME-SERVER/Projekte/ElectroVault/scripts/setup-server.ps1''\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& ''//ITME-SERVER/Projekte/ElectroVault/scripts/install-docker.ps1''\")",
+      "Bash(powershell.exe:*)",
+      "Bash(dir /B /A-D)",
+      "Bash(dir:*)",
+      "Bash(pnpm install)",
+      "Bash(where:*)",
+      "Bash(node --version)",
+      "Bash(npm --version:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run db:generate:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

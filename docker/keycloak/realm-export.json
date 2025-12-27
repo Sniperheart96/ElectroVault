@@ -1,0 +1,105 @@
+{
+  "id": "electrovault",
+  "realm": "electrovault",
+  "displayName": "ElectroVault",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "waitIncrementSeconds": 60,
+  "quickLoginCheckMilliSeconds": 1000,
+  "maxDeltaTimeSeconds": 43200,
+  "failureFactor": 5,
+  "defaultRoles": [
+    "offline_access",
+    "uma_authorization",
+    "viewer"
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator - Volle Rechte",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "moderator",
+        "description": "Moderator - Kann Inhalte freigeben und bearbeiten",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "contributor",
+        "description": "Contributor - Kann Inhalte erstellen und eigene bearbeiten",
+        "composite": false,
+        "clientRole": false
+      },
+      {
+        "name": "viewer",
+        "description": "Viewer - Nur Lesezugriff",
+        "composite": false,
+        "clientRole": false
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "electrovault-web",
+      "name": "ElectroVault Web Application",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://ITME-SERVER:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://ITME-SERVER:3000"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ]
+    },
+    {
+      "clientId": "electrovault-api",
+      "name": "ElectroVault API",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "bearerOnly": true
+    }
+  ],
+  "attributes": {
+    "frontendUrl": "http://ITME-SERVER:8080",
+    "displayName": "ElectroVault"
+  },
+  "internationalizationEnabled": true,
+  "supportedLocales": [
+    "de",
+    "en"
+  ],
+  "defaultLocale": "de"
+}

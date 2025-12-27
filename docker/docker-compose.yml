@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Datenbank (läuft bereits nativ auf Server)
+  # Nur für lokale Entwicklung auf anderem Rechner
+  postgres:
+    image: postgres:16-alpine
+    container_name: electrovault-postgres
+    environment:
+      POSTGRES_DB: ElectroVault_Dev
+      POSTGRES_USER: ElectroVault_dev_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ElectroVault_dev_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - local-dev
+
+  # Keycloak (läuft bereits als Windows-Dienst auf Server)
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: electrovault-keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: ElectroVault_dev_user
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+    command: start-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    profiles:
+      - local-dev
+
+  # MinIO (läuft bereits als Windows-Dienst auf Server)
+  minio:
+    image: minio/minio:latest
+    container_name: electrovault-minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"  # API
+      - "9001:9001"  # Console
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    profiles:
+      - local-dev
+
+  # MinIO Client - Erstellt Bucket beim Start
+  minio-init:
+    image: minio/mc:latest
+    container_name: electrovault-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin};
+      mc mb myminio/electrovault-files --ignore-existing;
+      mc anonymous set download myminio/electrovault-files;
+      echo 'Bucket electrovault-files created successfully';
+      "
+    profiles:
+      - local-dev
+
+volumes:
+  postgres_data:
+  minio_data:

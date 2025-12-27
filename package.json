@@ -1,0 +1,46 @@
+{
+  "name": "electrovault",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Community-gepflegte Datenbank für elektrische Bauteile",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:migrate": "pnpm --filter @electrovault/database db:migrate",
+    "db:seed": "pnpm --filter @electrovault/database db:seed",
+    "db:studio": "pnpm --filter @electrovault/database db:studio",
+    "db:reset": "pnpm --filter @electrovault/database db:reset"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "@turbo/gen": "^2.3.3",
+    "@types/supertest": "^6.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "@vitest/ui": "^1.0.0",
+    "jsdom": "^23.0.0",
+    "prettier": "^3.4.2",
+    "supertest": "^6.3.0",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^1.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
