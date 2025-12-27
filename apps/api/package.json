@@ -1,0 +1,31 @@
+{
+  "name": "@electrovault/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@electrovault/auth": "workspace:*",
+    "@electrovault/database": "workspace:*",
+    "@electrovault/schemas": "workspace:*",
+    "@fastify/cors": "^9.0.0",
+    "@fastify/helmet": "^12.0.0",
+    "@fastify/rate-limit": "^10.0.0",
+    "fastify": "^4.28.0",
+    "fastify-plugin": "^5.0.0",
+    "pino": "^9.0.0",
+    "pino-pretty": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^1.0.0"
+  }
+}

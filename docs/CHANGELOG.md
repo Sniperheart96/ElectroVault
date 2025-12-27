@@ -4,6 +4,47 @@ Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokume
 
 ## [Unreleased]
 
+---
+
+## [0.2.0] - 2025-12-27 - Phase 1 Implementiert
+
+### Hinzugefügt
+- **Auth-Package** (`@electrovault/auth`)
+  - Keycloak JWT-Token-Validierung mit JWKS
+  - Fastify Auth-Plugin mit `requireAuth`, `requireRole`, `optionalAuth`
+  - NextAuth-Integration mit automatischem Token-Refresh
+  - User-Sync-Service für Keycloak → PostgreSQL
+  - 17 Tests (9 Unit, 8 Integration)
+
+- **Fastify-Server** (`@electrovault/api`)
+  - App-Builder mit CORS, Helmet, Rate-Limiting
+  - Auth-Plugin-Integration
+  - Health-Check-Endpoint (`/health`)
+  - Protected User-Info-Endpoint (`/api/v1/me`)
+  - Error-Handling & Not-Found-Handler
+  - Graceful Shutdown
+  - 6 Integration-Tests
+
+- **Seed-Daten** (`packages/database/prisma/seed.ts`)
+  - Kategorie-Hierarchie (Passive Components, Semiconductors, Vacuum Tubes)
+  - Attribut-Definitionen (Capacitance, Voltage Rating, ESR, Resistance, Tolerance)
+  - Package Masters (DIP-8, DIP-14, TO-220, SOIC-8, 0805, 1206, Radial)
+  - Hersteller (Texas Instruments, NXP, Signetics)
+
+### Dokumentiert
+- [`docs/database/PHASE-1-COMPLETE.md`](database/PHASE-1-COMPLETE.md) - Vollständiger Implementierungsbericht
+- [`docs/IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) - Phase 1 auf 95% aktualisiert
+
+### Technische Details
+- **Prisma-Schema:** 716 Zeilen (vollständig)
+- **Tests:** 23 Tests (Auth: 17, API: 6)
+- **Dependencies:** Fastify 4.x, jose 5.x, next-auth 4.x
+- **Auth-Flow:** Keycloak OAuth → JWT → User Sync → Session
+
+**Fehlende Komponente:** Initiale Prisma-Migration (erfordert lokales Setup, UNC-Pfad-Limitation)
+
+---
+
 ### 2025-12-27 - Korrektur: PostgreSQL Development Server
 
 #### Geändert

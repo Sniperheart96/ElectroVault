@@ -1,0 +1,37 @@
+// Fastify Server Entry Point
+import { buildApp } from './app.js';
+import { prisma } from '@electrovault/database';
+
+const PORT = parseInt(process.env.API_PORT || '3001', 10);
+const HOST = process.env.API_HOST || '0.0.0.0';
+
+async function start() {
+  const app = await buildApp();
+
+  try {
+    // Start server
+    await app.listen({ port: PORT, host: HOST });
+
+    app.log.info(`🚀 Server listening on http://${HOST}:${PORT}`);
+    app.log.info(`📊 Health check: http://${HOST}:${PORT}/health`);
+    app.log.info(`🔐 Auth endpoint: http://${HOST}:${PORT}/api/v1/me`);
+  } catch (error) {
+    app.log.error(error);
+    process.exit(1);
+  }
+}
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('\n👋 Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('\n👋 Shutting down gracefully...');
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+start();
