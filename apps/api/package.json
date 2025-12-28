@@ -16,14 +16,17 @@
     "@electrovault/schemas": "workspace:*",
     "@fastify/cors": "^8.0.0",
     "@fastify/helmet": "^11.0.0",
+    "@fastify/multipart": "^9.3.0",
     "@fastify/rate-limit": "^9.0.0",
     "dotenv": "^17.2.3",
     "fastify": "^4.28.0",
     "fastify-plugin": "^5.0.0",
+    "minio": "^8.0.6",
     "pino": "^9.0.0",
     "pino-pretty": "^11.0.0"
   },
   "devDependencies": {
+    "@types/minio": "^7.1.1",
     "@types/node": "^20.0.0",
     "@types/supertest": "^6.0.0",
     "supertest": "^6.3.0",

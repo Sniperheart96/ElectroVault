@@ -11,6 +11,7 @@ import {
   Users,
   LogOut,
   Box,
+  CheckCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -21,11 +22,27 @@ interface AdminSidebarProps {
   session: Session;
 }
 
-const navigation = [
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: typeof LayoutDashboard;
+  description?: string;
+  adminOnly?: boolean;
+  moderatorOnly?: boolean;
+}
+
+const navigation: NavigationItem[] = [
   {
     name: 'Dashboard',
     href: '/admin',
     icon: LayoutDashboard,
+  },
+  {
+    name: 'Moderation',
+    href: '/admin/moderation',
+    icon: CheckCircle,
+    description: 'Freigabe-Queue',
+    moderatorOnly: true,
   },
   {
     name: 'Kategorien',
@@ -60,8 +77,13 @@ const navigation = [
 export function AdminSidebar({ session }: AdminSidebarProps) {
   const pathname = usePathname();
   const isAdmin = hasRole(session, Roles.ADMIN);
+  const isModerator = hasRole(session, Roles.MODERATOR) || isAdmin;
 
-  const filteredNav = navigation.filter((item) => !item.adminOnly || isAdmin);
+  const filteredNav = navigation.filter((item) => {
+    if (item.adminOnly && !isAdmin) return false;
+    if (item.moderatorOnly && !isModerator) return false;
+    return true;
+  });
 
   return (
     <aside className="flex w-64 flex-col border-r bg-white dark:bg-gray-800">

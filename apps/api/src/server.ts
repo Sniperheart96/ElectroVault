@@ -20,6 +20,7 @@ if (fs.existsSync(localEnvPath)) {
 
 import { buildApp } from './app.js';
 import { prisma } from '@electrovault/database';
+import { ensureBucketExists } from './lib/minio.js';
 
 const PORT = parseInt(process.env.API_PORT || '3001', 10);
 const HOST = process.env.API_HOST || '0.0.0.0';
@@ -28,12 +29,16 @@ async function start() {
   const app = await buildApp();
 
   try {
+    // Initialize MinIO Bucket
+    await ensureBucketExists();
+
     // Start server
     await app.listen({ port: PORT, host: HOST });
 
     app.log.info(`🚀 Server listening on http://${HOST}:${PORT}`);
     app.log.info(`📊 Health check: http://${HOST}:${PORT}/health`);
     app.log.info(`🔐 Auth endpoint: http://${HOST}:${PORT}/api/v1/me`);
+    app.log.info(`📁 File upload: http://${HOST}:${PORT}/api/v1/files`);
   } catch (error) {
     app.log.error(error);
     process.exit(1);

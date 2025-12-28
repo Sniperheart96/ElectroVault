@@ -376,6 +376,190 @@ export class ApiClient {
       method: 'DELETE',
     });
   }
+
+  // ============================================
+  // Pin Mappings
+  // ============================================
+
+  async getPinsByPartId(partId: string): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins`);
+  }
+
+  async getPin(id: string): Promise<ApiResponse<Pin>> {
+    return this.request<ApiResponse<Pin>>(`/pins/${id}`);
+  }
+
+  async createPin(partId: string, data: unknown): Promise<ApiResponse<Pin>> {
+    return this.request<ApiResponse<Pin>>(`/parts/${partId}/pins`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async bulkCreatePins(partId: string, pins: unknown[]): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins/bulk`, {
+      method: 'POST',
+      body: JSON.stringify({ pins }),
+    });
+  }
+
+  async updatePin(id: string, data: unknown): Promise<ApiResponse<Pin>> {
+    return this.request<ApiResponse<Pin>>(`/pins/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deletePin(id: string): Promise<void> {
+    await this.request<void>(`/pins/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async reorderPins(partId: string, pins: { id: string; pinNumber: string }[]): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins/reorder`, {
+      method: 'POST',
+      body: JSON.stringify({ pins }),
+    });
+  }
+
+  async deleteAllPins(partId: string): Promise<void> {
+    await this.request<void>(`/parts/${partId}/pins`, {
+      method: 'DELETE',
+    });
+  }
+
+  // ============================================
+  // Moderation
+  // ============================================
+
+  async getModerationQueue(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<ModerationQueueItem[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<ModerationQueueItem[]>>(
+      `/moderation/queue${query ? `?${query}` : ''}`
+    );
+  }
+
+  async getPendingComponents(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<Component[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<Component[]>>(
+      `/moderation/queue/components${query ? `?${query}` : ''}`
+    );
+  }
+
+  async getPendingParts(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<Part[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<Part[]>>(
+      `/moderation/queue/parts${query ? `?${query}` : ''}`
+    );
+  }
+
+  async getModerationStats(): Promise<ApiResponse<ModerationStats>> {
+    return this.request<ApiResponse<ModerationStats>>('/moderation/stats');
+  }
+
+  async approveComponent(id: string): Promise<ApiResponse<Component>> {
+    return this.request<ApiResponse<Component>>(`/moderation/component/${id}/approve`, {
+      method: 'POST',
+    });
+  }
+
+  async rejectComponent(id: string, comment?: string): Promise<ApiResponse<Component>> {
+    return this.request<ApiResponse<Component>>(`/moderation/component/${id}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'REJECT', comment }),
+    });
+  }
+
+  async approvePart(id: string): Promise<ApiResponse<Part>> {
+    return this.request<ApiResponse<Part>>(`/moderation/part/${id}/approve`, {
+      method: 'POST',
+    });
+  }
+
+  async rejectPart(id: string, comment?: string): Promise<ApiResponse<Part>> {
+    return this.request<ApiResponse<Part>>(`/moderation/part/${id}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'REJECT', comment }),
+    });
+  }
+
+  async batchApprove(componentIds: string[]): Promise<ApiResponse<{ approved: number; total: number }>> {
+    return this.request<ApiResponse<{ approved: number; total: number }>>('/moderation/batch/approve', {
+      method: 'POST',
+      body: JSON.stringify({ componentIds }),
+    });
+  }
+
+  async batchReject(
+    componentIds: string[],
+    comment: string
+  ): Promise<ApiResponse<{ rejected: number; total: number }>> {
+    return this.request<ApiResponse<{ rejected: number; total: number }>>('/moderation/batch/reject', {
+      method: 'POST',
+      body: JSON.stringify({ componentIds, comment }),
+    });
+  }
+
+  // ============================================
+  // Component Relations
+  // ============================================
+
+  async getComponentRelations(componentId: string): Promise<ApiResponse<ComponentRelation[]>> {
+    return this.request<ApiResponse<ComponentRelation[]>>(`/components/${componentId}/relations`);
+  }
+
+  async getRelation(id: string): Promise<ApiResponse<ComponentRelation>> {
+    return this.request<ApiResponse<ComponentRelation>>(`/relations/${id}`);
+  }
+
+  async createRelation(data: unknown): Promise<ApiResponse<ComponentRelation>> {
+    return this.request<ApiResponse<ComponentRelation>>('/relations', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateRelation(id: string, data: unknown): Promise<ApiResponse<ComponentRelation>> {
+    return this.request<ApiResponse<ComponentRelation>>(`/relations/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteRelation(id: string): Promise<void> {
+    await this.request<void>(`/relations/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async createBulkRelations(data: unknown): Promise<ApiResponse<ComponentRelation[]>> {
+    return this.request<ApiResponse<ComponentRelation[]>>('/relations/bulk', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 // ============================================
@@ -504,6 +688,72 @@ export interface AttributeDefinition {
   siMultiplier: number | null;
   sortOrder: number;
   category?: Category;
+}
+
+export interface ModerationQueueItem {
+  id: string;
+  type: 'COMPONENT' | 'PART';
+  name: LocalizedString | string;
+  status: string;
+  createdAt: string;
+  createdBy: {
+    id: string;
+    username: string;
+    displayName: string | null;
+  } | null;
+  category?: {
+    id: string;
+    name: LocalizedString;
+    slug: string;
+  };
+  coreComponent?: {
+    id: string;
+    name: LocalizedString;
+    slug: string;
+  };
+  manufacturer?: {
+    id: string;
+    name: string;
+  };
+}
+
+export interface ModerationStats {
+  pending: number;
+  approvedToday: number;
+  rejectedToday: number;
+}
+
+export interface Pin {
+  id: string;
+  partId: string;
+  pinNumber: string;
+  pinName: string;
+  pinFunction: LocalizedString | null;
+  pinType: 'POWER' | 'GROUND' | 'INPUT' | 'OUTPUT' | 'BIDIRECTIONAL' | 'NC' | 'ANALOG' | 'DIGITAL' | 'CLOCK' | 'OTHER' | null;
+  maxVoltage: number | null;
+  maxCurrent: number | null;
+}
+
+export type RelationType =
+  | 'EQUIVALENT'
+  | 'SIMILAR'
+  | 'UPGRADE'
+  | 'DOWNGRADE'
+  | 'REPLACEMENT'
+  | 'COMPLEMENT'
+  | 'REQUIRES'
+  | 'CONFLICTS';
+
+export interface ComponentRelation {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  relationType: RelationType;
+  description: LocalizedString | null;
+  bidirectional: boolean;
+  createdAt: string;
+  source?: Component;
+  target?: Component;
 }
 
 // Export singleton instance

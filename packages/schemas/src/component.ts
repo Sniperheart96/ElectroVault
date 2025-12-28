@@ -98,6 +98,55 @@ export const CreateConceptRelationSchema = z.object({
 
 export type CreateConceptRelationInput = z.infer<typeof CreateConceptRelationSchema>;
 
+/**
+ * Input für Konzept-Beziehung Update
+ */
+export const UpdateConceptRelationSchema = z.object({
+  notes: LocalizedStringOptionalSchema,
+});
+
+export type UpdateConceptRelationInput = z.infer<typeof UpdateConceptRelationSchema>;
+
+/**
+ * Konzept-Beziehung mit Ziel-Component
+ */
+export const ConceptRelationWithTargetSchema = ConceptRelationSchema.extend({
+  target: z.object({
+    id: UUIDSchema,
+    name: LocalizedStringSchema,
+    slug: z.string(),
+    series: z.string().nullable(),
+    shortDescription: LocalizedStringSchema.nullable(),
+  }),
+});
+
+export type ConceptRelationWithTarget = z.infer<typeof ConceptRelationWithTargetSchema>;
+
+/**
+ * Konzept-Beziehung mit Quell-Component
+ */
+export const ConceptRelationWithSourceSchema = ConceptRelationSchema.extend({
+  source: z.object({
+    id: UUIDSchema,
+    name: LocalizedStringSchema,
+    slug: z.string(),
+    series: z.string().nullable(),
+    shortDescription: LocalizedStringSchema.nullable(),
+  }),
+});
+
+export type ConceptRelationWithSource = z.infer<typeof ConceptRelationWithSourceSchema>;
+
+/**
+ * Response für Component Relations
+ */
+export const ComponentRelationsResponseSchema = z.object({
+  outgoing: z.array(ConceptRelationWithTargetSchema),
+  incoming: z.array(ConceptRelationWithSourceSchema),
+});
+
+export type ComponentRelationsResponse = z.infer<typeof ComponentRelationsResponseSchema>;
+
 // ============================================
 // COMPONENT RESPONSE SCHEMAS
 // ============================================

@@ -455,6 +455,103 @@ export class ComponentService {
   }
 
   /**
+   * Gibt alle Konzept-Beziehungen eines Components zurück
+   */
+  async getConceptRelations(componentId: string) {
+    // Prüfen ob Component existiert
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
+    });
+
+    if (!component) {
+      throw new NotFoundError('Component', componentId);
+    }
+
+    // Beide Richtungen laden
+    const [outgoing, incoming] = await Promise.all([
+      prisma.componentConceptRelation.findMany({
+        where: { sourceId: componentId },
+        include: {
+          target: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              series: true,
+              shortDescription: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      prisma.componentConceptRelation.findMany({
+        where: { targetId: componentId },
+        include: {
+          source: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              series: true,
+              shortDescription: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+
+    return {
+      outgoing: outgoing.map((r) => ({
+        ...r,
+        target: {
+          ...r.target,
+          name: r.target.name as LocalizedString,
+          shortDescription: r.target.shortDescription as LocalizedString | null,
+        },
+        notes: r.notes as LocalizedString | null,
+      })),
+      incoming: incoming.map((r) => ({
+        ...r,
+        source: {
+          ...r.source,
+          name: r.source.name as LocalizedString,
+          shortDescription: r.source.shortDescription as LocalizedString | null,
+        },
+        notes: r.notes as LocalizedString | null,
+      })),
+    };
+  }
+
+  /**
+   * Aktualisiert eine Konzept-Beziehung
+   */
+  async updateConceptRelation(
+    componentId: string,
+    relationId: string,
+    data: { notes?: LocalizedString },
+    userId?: string
+  ): Promise<void> {
+    const relation = await prisma.componentConceptRelation.findFirst({
+      where: {
+        id: relationId,
+        sourceId: componentId,
+      },
+    });
+
+    if (!relation) {
+      throw new NotFoundError('ConceptRelation', relationId);
+    }
+
+    await prisma.componentConceptRelation.update({
+      where: { id: relationId },
+      data: {
+        notes: data.notes ? (data.notes as object) : undefined,
+      },
+    });
+  }
+
+  /**
    * Entfernt eine Konzept-Beziehung
    */
   async removeConceptRelation(componentId: string, relationId: string): Promise<void> {

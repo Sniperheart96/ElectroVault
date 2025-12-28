@@ -31,10 +31,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
+import { Badge } from '@/components/ui/badge';
 import { type Part, type Component, type Manufacturer, type Package } from '@/lib/api';
 import { AttributeFields } from '@/components/admin/attribute-fields';
+import { PinMappingEditor } from '@/components/admin/pin-mapping-editor';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface AttributeValue {
   definitionId: string;
@@ -77,6 +85,9 @@ export function PartDialog({
 
   // Track selected component's categoryId for attribute loading
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(presetCategoryId || null);
+
+  // Pin mapping state
+  const [pinMappingOpen, setPinMappingOpen] = useState(false);
 
   const form = useForm<CreatePartInput>({
     resolver: zodResolver(CreatePartSchema) as never,
@@ -601,6 +612,34 @@ export function PartDialog({
                 includeInherited={true}
               />
             </div>
+
+            {/* Pin-Mapping Section - nur wenn Part bereits gespeichert */}
+            {isEdit && part && (
+              <div className="border-t pt-4 mt-4">
+                <Collapsible open={pinMappingOpen} onOpenChange={setPinMappingOpen}>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-between"
+                      type="button"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">Pin-Mapping</span>
+                        <Badge variant="secondary">Belegung</Badge>
+                      </div>
+                      {pinMappingOpen ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-4">
+                    <PinMappingEditor partId={part.id} />
+                  </CollapsibleContent>
+                </Collapsible>
+              </div>
+            )}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

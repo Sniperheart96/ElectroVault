@@ -10,6 +10,7 @@ import {
   CreateComponentSchema,
   UpdateComponentSchema,
   CreateConceptRelationSchema,
+  UpdateConceptRelationSchema,
 } from '@electrovault/schemas';
 
 /**
@@ -121,6 +122,16 @@ export default async function componentRoutes(
   );
 
   /**
+   * GET /components/:id/relations
+   * Alle Konzept-Beziehungen eines Components
+   */
+  app.get<{ Params: { id: string } }>('/:id/relations', async (request, reply) => {
+    const { id } = request.params;
+    const relations = await componentService.getConceptRelations(id);
+    return reply.send({ data: relations });
+  });
+
+  /**
    * POST /components/:id/relations
    * Konzept-Beziehung hinzufügen (Auth required)
    */
@@ -136,6 +147,25 @@ export default async function componentRoutes(
 
       await componentService.addConceptRelation(id, data, userId);
       return reply.code(201).send({ success: true });
+    }
+  );
+
+  /**
+   * PATCH /components/:id/relations/:relationId
+   * Konzept-Beziehung aktualisieren (Auth required)
+   */
+  app.patch<{ Params: { id: string; relationId: string } }>(
+    '/:id/relations/:relationId',
+    {
+      onRequest: app.requireRole('CONTRIBUTOR'),
+    },
+    async (request, reply) => {
+      const { id, relationId } = request.params;
+      const data = UpdateConceptRelationSchema.parse(request.body);
+      const userId = request.user?.dbId;
+
+      await componentService.updateConceptRelation(id, relationId, data, userId);
+      return reply.send({ success: true });
     }
   );
 

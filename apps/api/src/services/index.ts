@@ -9,3 +9,4 @@ export { componentService, ComponentService } from './component.service';
 export { partService, PartService } from './part.service';
 export { attributeService, AttributeService } from './attribute.service';
 export { auditService, AuditService } from './audit.service';
+export { pinService, PinService } from './pin.service';

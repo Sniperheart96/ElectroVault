@@ -53,6 +53,7 @@ import { type Component, type CategoryTreeNode, type Part, type Manufacturer, ty
 import { PartDialog } from '@/components/admin/part-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { AttributeFields } from '@/components/admin/attribute-fields';
+import { RelationsEditor } from '@/components/admin/relations-editor';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
@@ -377,10 +378,13 @@ export function ComponentDialog({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="details">Stammdaten</TabsTrigger>
             <TabsTrigger value="parts" disabled={!isEdit}>
               Hersteller-Varianten {isEdit && `(${parts.length})`}
+            </TabsTrigger>
+            <TabsTrigger value="relations" disabled={!isEdit}>
+              Beziehungen
             </TabsTrigger>
           </TabsList>
 
@@ -675,6 +679,20 @@ export function ComponentDialog({
                 </DialogFooter>
               </div>
             )}
+          </TabsContent>
+
+          {/* Relations Tab */}
+          <TabsContent value="relations" className="mt-4">
+            {!isEdit ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Speichern Sie zuerst das Bauteil, um Beziehungen hinzuzufügen.</p>
+              </div>
+            ) : localComponent ? (
+              <RelationsEditor
+                componentId={localComponent.id}
+                componentName={localComponent.name}
+              />
+            ) : null}
           </TabsContent>
         </Tabs>
 

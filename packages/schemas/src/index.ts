@@ -34,6 +34,7 @@ export {
   RelationshipTypeSchema,
   ConceptRelationTypeSchema,
   HazardousMaterialTypeSchema,
+  PinTypeSchema,
   AuditActionSchema,
   type UserRole,
   type ComponentStatus,
@@ -46,6 +47,7 @@ export {
   type RelationshipType,
   type ConceptRelationType,
   type HazardousMaterialType,
+  type PinType,
   type AuditAction,
   // API Response Schemas
   ErrorResponseSchema,
@@ -140,8 +142,16 @@ export {
   // Concept Relation Schemas
   ConceptRelationSchema,
   CreateConceptRelationSchema,
+  UpdateConceptRelationSchema,
+  ConceptRelationWithTargetSchema,
+  ConceptRelationWithSourceSchema,
+  ComponentRelationsResponseSchema,
   type ConceptRelation,
   type CreateConceptRelationInput,
+  type UpdateConceptRelationInput,
+  type ConceptRelationWithTarget,
+  type ConceptRelationWithSource,
+  type ComponentRelationsResponse,
   // Response Schemas
   ComponentBaseSchema,
   ComponentWithCategorySchema,
@@ -254,3 +264,21 @@ export {
   type AuditLogQuery,
   type EntityHistoryQuery,
 } from './audit';
+
+// ============================================
+// PIN SCHEMAS
+// ============================================
+export {
+  // Response Schemas (PinMappingSchema already exported from part.ts)
+  // Input Schemas
+  CreatePinSchema,
+  UpdatePinSchema,
+  BulkCreatePinsSchema,
+  ReorderPinSchema,
+  BulkReorderPinsSchema,
+  type CreatePinInput,
+  type UpdatePinInput,
+  type BulkCreatePinsInput,
+  type ReorderPinInput,
+  type BulkReorderPinsInput,
+} from './pin';

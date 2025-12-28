@@ -4,6 +4,142 @@ Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokume
 
 ## [Unreleased]
 
+---
+
+## [0.7.0] - 2025-12-28 - Phase 4: Community-Features
+
+### Hinzugefügt
+
+#### File Upload System (MinIO)
+- **MinIO Client** (`apps/api/src/lib/minio.ts`)
+  - Singleton Client für MinIO S3-Speicher
+  - Automatische Bucket-Erstellung beim Start
+  - Presigned URLs für sichere Downloads (24h Gültigkeit)
+
+- **File Service** (`apps/api/src/services/file.service.ts`)
+  - Upload für Datasheets (PDF, max 50MB)
+  - Upload für Bilder (JPG/PNG/WebP, max 10MB)
+  - Upload für Pinout-Diagramme
+  - Soft-Delete mit Berechtigungsprüfung
+
+- **File Routes** (`apps/api/src/routes/files/index.ts`)
+  - POST `/files/datasheet`, `/files/image`, `/files/pinout`
+  - GET `/files/:id`, `/files/:id/download`
+  - GET `/files/component/:id`, `/files/part/:id`
+  - DELETE `/files/:id`
+  - GET `/files/stats` (Admin)
+
+- **FileAttachment Model** - Prisma Schema für Datei-Metadaten
+- **FileType Enum** - DATASHEET, IMAGE, PINOUT, OTHER
+- **FileUpload Component** (`apps/web/src/components/admin/file-upload.tsx`)
+  - Drag & Drop Upload
+  - Progress-Anzeige
+  - Typ-spezifische Validierung
+
+#### Pin-Mapping Editor
+- **Pin Service** (`apps/api/src/services/pin.service.ts`)
+  - CRUD für Pin-Definitionen
+  - Bulk-Create für viele Pins gleichzeitig
+  - Reorder-Funktion für Pin-Reihenfolge
+
+- **Pin Routes** (`apps/api/src/routes/pins/index.ts`)
+  - GET/POST `/parts/:partId/pins`
+  - POST `/parts/:partId/pins/bulk`, `/reorder`
+  - PATCH/DELETE `/pins/:id`
+
+- **PinMappingEditor Component** (`apps/web/src/components/admin/pin-mapping-editor.tsx`)
+  - Tabellenansicht mit Inline-Editing
+  - Farbige Pin-Typ-Badges (Power=rot, Ground=schwarz, etc.)
+  - Bulk-Import via CSV: `1,VCC,POWER;2,GND,GROUND`
+  - Pfeil-Buttons für Reorder
+  - AlertDialog für Löschen-Bestätigung
+
+- **Part-Dialog Integration** - Collapsible Pin-Mapping Sektion
+
+#### Beziehungs-Editor
+- **RelationsEditor Component** (`apps/web/src/components/admin/relations-editor.tsx`)
+  - 8 Beziehungstypen mit deutschen Labels und Icons
+  - Component-Suche mit Live-Filter
+  - Bidirectional-Toggle
+  - Beschreibung (de/en)
+  - Card-basierte Darstellung
+
+- **Component-Dialog Integration** - Neuer "Beziehungen" Tab
+
+#### Moderations-Queue
+- **ModerationLog Model** - Tracking aller Moderationsaktionen
+- **Moderation Service** (`apps/api/src/services/moderation.service.ts`)
+  - Combined Queue für Components + Parts
+  - Approve/Reject mit Transaktionen
+  - Batch-Operationen
+  - Tagesstatistiken
+
+- **Moderation Routes** (`apps/api/src/routes/moderation/index.ts`)
+  - GET `/moderation/queue`, `/stats`
+  - POST `/moderation/component/:id/approve`, `/reject`
+  - POST `/moderation/batch/approve`, `/reject`
+
+- **Moderation Page** (`apps/web/src/app/admin/moderation/page.tsx`)
+  - Stats-Karten (Pending, Approved Today, Rejected Today)
+  - Tab-Navigation (Alle/Components/Parts)
+  - Batch-Selection mit Checkboxen
+  - Approve/Reject Actions
+
+- **Admin-Sidebar** - Neuer "Moderation" Eintrag (MODERATOR+)
+
+#### Dynamische Attribute
+- **AttributeFields Component** (`apps/web/src/components/admin/attribute-fields.tsx`)
+  - Automatisch generierte Felder basierend auf Kategorie
+  - Unterstützt: BOOLEAN, INTEGER, DECIMAL, STRING, RANGE
+  - SI-Einheiten-Normalisierung
+  - Kategorie-Vererbung
+
+### API Client Erweiterungen
+- Pin-Methoden: `getPinsByPartId`, `createPin`, `bulkCreatePins`, `updatePin`, `deletePin`, `reorderPins`
+- Relation-Methoden: `getComponentRelations`, `createRelation`, `updateRelation`, `deleteRelation`
+- Moderation-Methoden: `getModerationQueue`, `approveComponent`, `rejectComponent`, `batchApprove`
+- Pin Interface, ComponentRelation Interface, RelationType Type
+
+### Dokumentation
+- `docs/phases/phase-4-community.md` - Vollständig aktualisiert (100%)
+- `docs/moderation-queue-implementation.md` - Detaillierte Implementierung
+- `docs/architecture/pin-mapping-ui.md` - Pin-Editor Dokumentation
+- `docs/examples/pin-mapping-usage.md` - Verwendungsbeispiele
+
+---
+
+## [0.6.1] - 2025-12-28 - Fixes und Component Relations
+
+### Hinzugefügt
+- **Component Relations API** (`apps/api/src/routes/components/index.ts`)
+  - GET `/components/:id/relations` - Alle Beziehungen eines Components abrufen
+  - POST `/components/:id/relations` - Neue Beziehung erstellen (Auth: CONTRIBUTOR)
+  - PATCH `/components/:id/relations/:relationId` - Beziehung aktualisieren (Auth: CONTRIBUTOR)
+  - DELETE `/components/:id/relations/:relationId` - Beziehung löschen (Auth: MODERATOR)
+  - Unterstützt Outgoing und Incoming Relations
+  - Relation Types: DUAL_VERSION, QUAD_VERSION, LOW_POWER_VERSION, HIGH_SPEED_VERSION, MILITARY_VERSION, AUTOMOTIVE_VERSION, FUNCTIONAL_EQUIV
+
+- **Component Service erweitert** (`apps/api/src/services/component.service.ts`)
+  - `getConceptRelations()` - Lädt alle Beziehungen mit Source/Target-Details
+  - `updateConceptRelation()` - Aktualisiert Relation Notes
+  - Bestehend: `addConceptRelation()`, `removeConceptRelation()`
+
+- **Neue Schemas** (`packages/schemas/src/component.ts`)
+  - `UpdateConceptRelationSchema` - Validierung für Relation-Updates
+  - `ConceptRelationWithTargetSchema` - Response-Schema mit Ziel-Component
+  - `ConceptRelationWithSourceSchema` - Response-Schema mit Quell-Component
+  - `ComponentRelationsResponseSchema` - Response-Schema für GET /relations
+
+- **Dokumentation**
+  - `docs/features/component-relations.md` - Vollständige Feature-Dokumentation
+  - `apps/api/src/routes/components/test-relations-manual.md` - Manual Test Guide
+  - `apps/api/src/routes/components/relations.test.ts` - Integration Tests (WIP)
+
+### Behoben
+- **Schema-Export-Duplikat** (`packages/schemas/src/index.ts`)
+  - `PinMappingSchema` wurde doppelt exportiert (part.ts und pin.ts)
+  - Jetzt nur noch einmal in part.ts exportiert
+
 ### Geändert
 - **Entwicklungsumgebung:** Claude Code läuft jetzt direkt auf ITME-SERVER
   - Alle UNC-Pfad-Referenzen entfernt

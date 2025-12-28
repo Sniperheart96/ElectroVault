@@ -145,6 +145,20 @@ export const HazardousMaterialTypeSchema = z.enum([
 ]);
 export type HazardousMaterialType = z.infer<typeof HazardousMaterialTypeSchema>;
 
+export const PinTypeSchema = z.enum([
+  'POWER',
+  'GROUND',
+  'INPUT',
+  'OUTPUT',
+  'BIDIRECTIONAL',
+  'NC',
+  'ANALOG',
+  'DIGITAL',
+  'CLOCK',
+  'OTHER',
+]);
+export type PinType = z.infer<typeof PinTypeSchema>;
+
 export const AuditActionSchema = z.enum([
   'CREATE',
   'UPDATE',

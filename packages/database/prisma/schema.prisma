@@ -138,6 +138,13 @@ enum EcadModelType {
   MODEL_3D
 }
 
+enum FileType {
+  DATASHEET
+  IMAGE
+  PINOUT
+  OTHER
+}
+
 enum AuditAction {
   CREATE
   UPDATE
@@ -196,9 +203,11 @@ model User {
   uploadedImages       PartImage[] @relation("ImageUploader")
   uploadedFootprints   EcadFootprint[] @relation("FootprintUploader")
   uploadedEcadModels   PartEcadModel[] @relation("EcadModelUploader")
+  uploadedFiles        FileAttachment[] @relation("FileUploader")
 
   // Audit-Log
   auditLogs            AuditLog[]
+  moderationLogs       ModerationLog[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -356,6 +365,7 @@ model CoreComponent {
   attributeValues   ComponentAttributeValue[]
   conceptRelations      ComponentConceptRelation[] @relation("SourceConcept")
   relatedFromConcepts   ComponentConceptRelation[] @relation("TargetConcept")
+  fileAttachments   FileAttachment[]
 
   // Audit
   createdAt       DateTime @default(now())
@@ -447,6 +457,7 @@ model ManufacturerPart {
   attributeValues PartAttributeValue[]
   relationships   PartRelationship[] @relation("SourcePart")
   relatedTo       PartRelationship[] @relation("TargetPart")
+  fileAttachments FileAttachment[]
 
   // Audit
   createdAt       DateTime @default(now())
@@ -610,6 +621,51 @@ model PinMapping {
 // DATEIEN
 // ============================================
 
+// Generisches File-Attachment System (neu)
+model FileAttachment {
+  id              String   @id @default(uuid()) @db.Uuid
+
+  // Metadaten
+  originalName    String   @db.VarChar(255)
+  sanitizedName   String   @db.VarChar(255)
+  mimeType        String   @db.VarChar(100)
+  size            Int      // Bytes
+  fileType        FileType
+
+  // MinIO Storage
+  bucketName      String   @db.VarChar(100)
+  bucketPath      String   @unique @db.VarChar(512)  // Voller Pfad im Bucket
+
+  // Optional: Zusätzliche Metadaten
+  description     String?  @db.Text
+  version         String?  @db.VarChar(50)
+  language        String?  @db.VarChar(10)
+
+  // Verknüpfungen (optional - ein Attachment kann zu Component oder Part gehören)
+  componentId     String?  @db.Uuid
+  component       CoreComponent? @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  partId          String?  @db.Uuid
+  part            ManufacturerPart? @relation(fields: [partId], references: [id], onDelete: Cascade)
+
+  // Audit
+  uploadedById    String   @db.Uuid
+  uploadedBy      User     @relation("FileUploader", fields: [uploadedById], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Soft-Delete
+  deletedAt       DateTime?
+
+  @@index([componentId])
+  @@index([partId])
+  @@index([fileType])
+  @@index([uploadedById])
+  @@index([deletedAt])
+  @@index([bucketPath])
+}
+
+// Bestehende Modelle (Legacy - können später migriert werden)
 model PartDatasheet {
   id           String   @id @default(uuid()) @db.Uuid
   partId       String   @db.Uuid
@@ -686,6 +742,27 @@ model PartEcadModel {
   createdBy    User?    @relation("EcadModelUploader", fields: [createdById], references: [id])
 
   @@index([partId])
+}
+
+// ============================================
+// MODERATION-LOG
+// ============================================
+
+model ModerationLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  entityType     String   @db.VarChar(50)   // COMPONENT, PART
+  entityId       String   @db.Uuid
+  action         String   @db.VarChar(50)   // APPROVED, REJECTED, SUBMITTED
+  previousStatus String?  @db.VarChar(50)
+  newStatus      String   @db.VarChar(50)
+  comment        String?  @db.Text
+  moderatorId    String   @db.Uuid
+  moderator      User     @relation(fields: [moderatorId], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([moderatorId])
+  @@index([createdAt])
 }
 
 // ============================================

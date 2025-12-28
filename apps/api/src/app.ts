@@ -3,6 +3,7 @@ import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
+import multipart from '@fastify/multipart';
 import authPlugin from '@electrovault/auth/fastify';
 import { createKeycloakClient } from '@electrovault/auth';
 import { prisma } from '@electrovault/database';
@@ -15,6 +16,9 @@ import componentRoutes from './routes/components/index';
 import partRoutes from './routes/parts/index';
 import attributeRoutes from './routes/attributes/index';
 import auditRoutes from './routes/audit/index';
+import moderationRoutes from './routes/moderation/index';
+import fileRoutes from './routes/files/index';
+import pinRoutes from './routes/pins/index';
 
 // Custom Error Types
 import { ApiError } from './lib/errors';
@@ -93,6 +97,18 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     cache: 10000,
   });
 
+  // Multipart Support (für File Uploads)
+  await app.register(multipart, {
+    limits: {
+      fieldNameSize: 100,      // Max field name size in bytes
+      fieldSize: 1000,         // Max field value size in bytes
+      fields: 10,              // Max number of non-file fields
+      fileSize: 50 * 1024 * 1024,  // Max file size (50MB - wird pro Route überschrieben)
+      files: 1,                // Max number of file fields
+      headerPairs: 2000,       // Max number of header key=>value pairs
+    },
+  });
+
   // Auth Plugin with user sync
   const keycloak = createKeycloakClient();
   await app.register(authPlugin, { keycloak, prisma });
@@ -148,6 +164,9 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       await api.register(partRoutes, { prefix: '/parts' });
       await api.register(attributeRoutes, { prefix: '/attributes' });
       await api.register(auditRoutes, { prefix: '/audit' });
+      await api.register(moderationRoutes, { prefix: '/moderation' });
+      await api.register(fileRoutes, { prefix: '/files' });
+      await api.register(pinRoutes);
     },
     { prefix: '/api/v1' }
   );

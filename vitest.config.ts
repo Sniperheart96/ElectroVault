@@ -9,6 +9,11 @@ dotenv.config({ path: resolve(process.cwd(), '.env.local') });
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
+  resolve: {
+    alias: {
+      '@prisma/client': resolve(process.cwd(), 'node_modules/@prisma/client'),
+    },
+  },
   test: {
     globals: true,
     environment: 'node',
