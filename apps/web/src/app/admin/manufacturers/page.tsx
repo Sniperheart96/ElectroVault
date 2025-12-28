@@ -1,128 +1,37 @@
-'use client';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { ManufacturersTable } from './manufacturers-table';
 
-import { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { type Manufacturer } from '@/lib/api';
-import { ManufacturerDialog } from '@/components/admin/manufacturer-dialog';
-import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
-import { TablePagination } from '@/components/ui/table-pagination';
-import { useToast } from '@/hooks/use-toast';
-import { useApi } from '@/hooks/use-api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
-export default function ManufacturersPage() {
-  const api = useApi();
-  const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedManufacturer, setSelectedManufacturer] = useState<Manufacturer | null>(null);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [manufacturerToDelete, setManufacturerToDelete] = useState<Manufacturer | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const { toast } = useToast();
+async function getManufacturers() {
+  const session = await getServerSession(authOptions);
+  if (!session?.accessToken) {
+    return { data: [], pagination: { total: 0, totalPages: 0, page: 1, limit: 50 } };
+  }
 
-  const ITEMS_PER_PAGE = 50;
+  try {
+    const res = await fetch(`${API_URL}/manufacturers?limit=50`, {
+      headers: {
+        'Authorization': `Bearer ${session.accessToken}`,
+      },
+      cache: 'no-store',
+    });
 
-  useEffect(() => {
-    loadManufacturers();
-  }, [currentPage]);
-
-  const loadManufacturers = async () => {
-    try {
-      setLoading(true);
-      const response = await api.getManufacturers({
-        page: currentPage,
-        limit: ITEMS_PER_PAGE,
-      });
-      setManufacturers(response.data);
-
-      if (response.pagination) {
-        setTotalPages(response.pagination.totalPages);
-        setTotalCount(response.pagination.total);
-      }
-    } catch (error) {
-      toast({
-        title: 'Fehler',
-        description: 'Hersteller konnten nicht geladen werden.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      console.error('Failed to fetch manufacturers:', res.status);
+      return { data: [], pagination: { total: 0, totalPages: 0, page: 1, limit: 50 } };
     }
-  };
 
-  const handleCreate = () => {
-    setIsCreateDialogOpen(true);
-  };
+    return res.json();
+  } catch (error) {
+    console.error('Error fetching manufacturers:', error);
+    return { data: [], pagination: { total: 0, totalPages: 0, page: 1, limit: 50 } };
+  }
+}
 
-  const handleEdit = (manufacturer: Manufacturer) => {
-    setSelectedManufacturer(manufacturer);
-    setIsEditDialogOpen(true);
-  };
-
-  const handleDelete = async (manufacturer: Manufacturer) => {
-    try {
-      await api.deleteManufacturer(manufacturer.id);
-      toast({
-        title: 'Erfolg',
-        description: 'Hersteller wurde gelöscht.',
-      });
-      loadManufacturers();
-      setManufacturerToDelete(null);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Hersteller konnte nicht gelöscht werden.';
-      toast({
-        title: 'Fehler',
-        description: message,
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleSaved = () => {
-    loadManufacturers();
-    setIsCreateDialogOpen(false);
-    setIsEditDialogOpen(false);
-    setSelectedManufacturer(null);
-  };
-
-  const filteredManufacturers = manufacturers.filter(
-    (m) =>
-      m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.cageCode?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const getStatusBadge = (status: Manufacturer['status']) => {
-    const variants = {
-      ACTIVE: 'default',
-      ACQUIRED: 'secondary',
-      DEFUNCT: 'destructive',
-    } as const;
-
-    const labels = {
-      ACTIVE: 'Aktiv',
-      ACQUIRED: 'Übernommen',
-      DEFUNCT: 'Inaktiv',
-    };
-
-    return <Badge variant={variants[status]}>{labels[status]}</Badge>;
-  };
+export default async function ManufacturersPage() {
+  const manufacturersResult = await getManufacturers();
 
   return (
     <div className="space-y-6">
@@ -130,132 +39,14 @@ export default function ManufacturersPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Hersteller</h1>
           <p className="text-muted-foreground">
-            Verwalten Sie alle Hersteller in der Datenbank ({totalCount} Hersteller)
+            Verwalten Sie alle Hersteller in der Datenbank ({manufacturersResult.pagination?.total || 0} Hersteller)
           </p>
         </div>
-        <Button onClick={handleCreate}>
-          <Plus className="mr-2 h-4 w-4" />
-          Neuer Hersteller
-        </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center space-x-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Suchen nach Name, Slug oder CAGE Code..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8"
-              />
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="space-y-2">
-              {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full" />
-              ))}
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>CAGE Code</TableHead>
-                  <TableHead>Land</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Website</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredManufacturers.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      Keine Hersteller gefunden
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredManufacturers.map((manufacturer) => (
-                    <TableRow key={manufacturer.id}>
-                      <TableCell className="font-medium">{manufacturer.name}</TableCell>
-                      <TableCell>{manufacturer.cageCode || '-'}</TableCell>
-                      <TableCell>{manufacturer.countryCode || '-'}</TableCell>
-                      <TableCell>{getStatusBadge(manufacturer.status)}</TableCell>
-                      <TableCell>
-                        {manufacturer.website ? (
-                          <a
-                            href={manufacturer.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:underline"
-                          >
-                            Link
-                          </a>
-                        ) : (
-                          '-'
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit(manufacturer)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setManufacturerToDelete(manufacturer)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          )}
-
-          {!loading && totalPages > 1 && (
-            <TablePagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              total={totalCount}
-              limit={ITEMS_PER_PAGE}
-              onPageChange={setCurrentPage}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      <ManufacturerDialog
-        open={isCreateDialogOpen}
-        onOpenChange={setIsCreateDialogOpen}
-        onSaved={handleSaved}
-      />
-
-      <ManufacturerDialog
-        open={isEditDialogOpen}
-        onOpenChange={setIsEditDialogOpen}
-        manufacturer={selectedManufacturer}
-        onSaved={handleSaved}
-      />
-
-      <DeleteConfirmDialog
-        open={!!manufacturerToDelete}
-        onOpenChange={(open) => !open && setManufacturerToDelete(null)}
-        title="Hersteller löschen?"
-        description={`Möchten Sie den Hersteller "${manufacturerToDelete?.name}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`}
-        onConfirm={() => manufacturerToDelete && handleDelete(manufacturerToDelete)}
+      <ManufacturersTable
+        initialData={manufacturersResult.data}
+        initialPagination={manufacturersResult.pagination}
       />
     </div>
   );
