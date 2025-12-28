@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import multipart from '@fastify/multipart';
+import compress from '@fastify/compress';
 import authPlugin from '@electrovault/auth/fastify';
 import { createKeycloakClient } from '@electrovault/auth';
 import { prisma } from '@electrovault/database';
@@ -76,6 +77,13 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       cb(new Error('Not allowed by CORS'), false);
     },
     credentials: true,
+  });
+
+  // Response Compression (gzip, deflate)
+  await app.register(compress, {
+    global: true,
+    encodings: ['gzip', 'deflate'],
+    threshold: 1024, // Only compress responses > 1KB
   });
 
   // Security Headers

@@ -20,6 +20,56 @@ import { CategoryBaseSchema } from './category';
 // ATTRIBUTE VALUE SCHEMAS
 // ============================================
 
+// ============================================
+// SI-PRÄFIX KONSTANTEN
+// ============================================
+
+/**
+ * SI-Präfix-Definitionen mit Multiplikator
+ * Note: µ is U+00B5 MICRO SIGN, using escape sequence for safety
+ */
+export const SI_PREFIXES = {
+  P: { name: 'Peta', factor: 1e15 },
+  T: { name: 'Tera', factor: 1e12 },
+  G: { name: 'Giga', factor: 1e9 },
+  M: { name: 'Mega', factor: 1e6 },
+  k: { name: 'Kilo', factor: 1e3 },
+  h: { name: 'Hekto', factor: 1e2 },
+  da: { name: 'Deka', factor: 1e1 },
+  '': { name: 'Basis', factor: 1 },
+  d: { name: 'Dezi', factor: 1e-1 },
+  c: { name: 'Zenti', factor: 1e-2 },
+  m: { name: 'Milli', factor: 1e-3 },
+  '\u00B5': { name: 'Mikro', factor: 1e-6 },
+  n: { name: 'Nano', factor: 1e-9 },
+  p: { name: 'Piko', factor: 1e-12 },
+  f: { name: 'Femto', factor: 1e-15 },
+} as const;
+
+export type SIPrefix = keyof typeof SI_PREFIXES;
+
+/**
+ * Typische Präfix-Sets für verschiedene Einheiten
+ */
+export const COMMON_PREFIX_SETS = {
+  capacitance: ['p', 'n', '\u00B5', 'm', ''] as SIPrefix[],           // Farad
+  resistance: ['m', '', 'k', 'M', 'G'] as SIPrefix[],            // Ohm
+  inductance: ['n', '\u00B5', 'm', ''] as SIPrefix[],                 // Henry
+  voltage: ['\u00B5', 'm', '', 'k'] as SIPrefix[],                    // Volt
+  current: ['n', '\u00B5', 'm', ''] as SIPrefix[],                    // Ampere
+  length: ['n', '\u00B5', 'm', 'c', '', 'k'] as SIPrefix[],           // Meter
+  frequency: ['', 'k', 'M', 'G'] as SIPrefix[],                  // Hertz
+  power: ['\u00B5', 'm', '', 'k', 'M'] as SIPrefix[],                 // Watt
+  data: ['', 'k', 'M', 'G', 'T'] as SIPrefix[],                  // Byte (beachte: oft Ki, Mi, Gi für binär)
+} as const;
+
+/**
+ * Schema für erlaubte SI-Präfixe
+ */
+export const SIPrefixSchema = z.enum([
+  'P', 'T', 'G', 'M', 'k', 'h', 'da', '', 'd', 'c', 'm', '\u00B5', 'n', 'p', 'f',
+]);
+
 /**
  * Attribut-Definition (für Response)
  */
@@ -27,11 +77,13 @@ export const AttributeDefinitionSchema = z.object({
   id: UUIDSchema,
   name: z.string(),
   displayName: LocalizedStringSchema,
-  unit: z.string().nullable(),
+  unit: z.string().nullable(),           // Basiseinheit (z.B. "F", "Ω", "m")
   dataType: AttributeDataTypeSchema,
   scope: AttributeScopeSchema,
   isFilterable: z.boolean(),
   isRequired: z.boolean(),
+  allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
+  // Legacy-Felder (werden durch allowedPrefixes ersetzt)
   siUnit: z.string().nullable(),
   siMultiplier: z.number().nullable(),
   sortOrder: z.number(),
@@ -40,31 +92,37 @@ export const AttributeDefinitionSchema = z.object({
 export type AttributeDefinition = z.infer<typeof AttributeDefinitionSchema>;
 
 /**
- * Component Attribute Value
+ * Component Attribute Value (Response)
  */
 export const ComponentAttributeValueSchema = z.object({
   id: UUIDSchema,
   definitionId: UUIDSchema,
   definition: AttributeDefinitionSchema.optional(),
-  displayValue: z.string(),
+  // Numerische Werte (immer in SI-Basiseinheit)
   normalizedValue: z.number().nullable(),
-  normalizedMin: z.number().nullable(),
-  normalizedMax: z.number().nullable(),
+  normalizedMin: z.number().nullable(),    // Für RANGE-Typ
+  normalizedMax: z.number().nullable(),    // Für RANGE-Typ
+  // SI-Präfix für Anzeige
+  prefix: SIPrefixSchema.nullable(),
+  // Für STRING-Typ
   stringValue: z.string().nullable(),
 });
 
 export type ComponentAttributeValue = z.infer<typeof ComponentAttributeValueSchema>;
 
 /**
- * Input für Attributwert
+ * Input für Attributwert (Create/Update)
  */
 export const CreateAttributeValueSchema = z.object({
   definitionId: UUIDSchema,
-  displayValue: z.string().min(1).max(255),
-  normalizedValue: z.number().optional(),
-  normalizedMin: z.number().optional(),
-  normalizedMax: z.number().optional(),
-  stringValue: z.string().max(255).optional(),
+  // Numerische Werte
+  normalizedValue: z.number().optional().nullable(),
+  normalizedMin: z.number().optional().nullable(),
+  normalizedMax: z.number().optional().nullable(),
+  // SI-Präfix für Anzeige (null wird zu '' transformiert)
+  prefix: SIPrefixSchema.optional().nullable().transform((val) => val ?? ''),
+  // Für STRING-Typ
+  stringValue: z.string().max(255).optional().nullable(),
 });
 
 export type CreateAttributeValueInput = z.infer<typeof CreateAttributeValueSchema>;

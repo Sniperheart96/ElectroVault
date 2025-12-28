@@ -29,8 +29,14 @@ async function start() {
   const app = await buildApp();
 
   try {
-    // Initialize MinIO Bucket
-    await ensureBucketExists();
+    // Initialize MinIO Bucket (non-blocking - file uploads will fail if MinIO is not available)
+    try {
+      await ensureBucketExists();
+      app.log.info('✅ MinIO bucket initialized');
+    } catch (minioError) {
+      app.log.warn('⚠️ MinIO not available - file uploads will be disabled');
+      app.log.warn(`   Error: ${(minioError as Error).message}`);
+    }
 
     // Start server
     await app.listen({ port: PORT, host: HOST });

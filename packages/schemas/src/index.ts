@@ -36,6 +36,9 @@ export {
   HazardousMaterialTypeSchema,
   PinTypeSchema,
   AuditActionSchema,
+  ImageTypeSchema,
+  EcadFormatSchema,
+  FileTypeSchema,
   type UserRole,
   type ComponentStatus,
   type PartStatus,
@@ -49,6 +52,9 @@ export {
   type HazardousMaterialType,
   type PinType,
   type AuditAction,
+  type ImageType,
+  type EcadFormat,
+  type FileType,
   // API Response Schemas
   ErrorResponseSchema,
   createSuccessResponseSchema,
@@ -132,6 +138,11 @@ export {
 // COMPONENT SCHEMAS
 // ============================================
 export {
+  // SI-Präfix System
+  SI_PREFIXES,
+  COMMON_PREFIX_SETS,
+  SIPrefixSchema,
+  type SIPrefix,
   // Attribute Schemas
   AttributeDefinitionSchema,
   ComponentAttributeValueSchema,

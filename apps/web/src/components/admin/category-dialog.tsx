@@ -170,7 +170,7 @@ export function CategoryDialog({
         // Alle Attribute für diese Kategorie laden
         const result = await api.getAttributeDefinitions({
           categoryId: category.id,
-          limit: 500,
+          limit: 100,
         });
 
         // Eigene Attribute = die direkt zu dieser Kategorie gehören
@@ -188,7 +188,7 @@ export function CategoryDialog({
           try {
             const parentAttrs = await api.getAttributeDefinitions({
               categoryId: currentParentId,
-              limit: 500,
+              limit: 100,
             });
 
             // Nur direkte Attribute dieser Parent-Kategorie
@@ -284,7 +284,7 @@ export function CategoryDialog({
       setLoadingAttributes(true);
       const result = await api.getAttributeDefinitions({
         categoryId: category.id,
-        limit: 500,
+        limit: 100,
       });
       const own = result.data.filter(attr => attr.categoryId === category.id);
       setOwnAttributes(own);
@@ -342,15 +342,14 @@ export function CategoryDialog({
   };
 
   const getDataTypeBadge = (dataType: AttributeDefinition['dataType']) => {
-    const labels = {
+    const labels: Record<string, string> = {
       DECIMAL: 'Dezimal',
       INTEGER: 'Ganzzahl',
       STRING: 'Text',
       BOOLEAN: 'Ja/Nein',
-      RANGE: 'Bereich',
     };
 
-    return <Badge variant="outline">{labels[dataType]}</Badge>;
+    return <Badge variant="outline">{labels[dataType] || dataType}</Badge>;
   };
 
   return (

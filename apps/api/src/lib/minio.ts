@@ -1,47 +1,100 @@
 /**
  * MinIO Client Setup - S3-kompatible Datei-Speicherung
+ *
+ * Lazy Initialization: Der Client wird erst beim ersten Aufruf initialisiert,
+ * nachdem dotenv die Umgebungsvariablen geladen hat.
  */
 
 import * as Minio from 'minio';
-import { ApiError } from './errors';
+import { ApiError } from './errors.js';
 
-// Umgebungsvariablen mit Fallbacks
-const MINIO_ENDPOINT = process.env.MINIO_ENDPOINT || 'localhost';
-const MINIO_PORT = parseInt(process.env.MINIO_PORT || '9000', 10);
-const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY || 'minioadmin';
-const MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY || 'minioadmin';
-const MINIO_USE_SSL = process.env.MINIO_USE_SSL === 'true';
-const MINIO_BUCKET = process.env.MINIO_BUCKET || 'electrovault-files';
+// Lazy-initialized client
+let _minioClient: Minio.Client | null = null;
+let _bucketName: string | null = null;
 
 /**
- * MinIO Client Instance (Singleton)
+ * Holt oder initialisiert den MinIO Client (Singleton)
+ * Wirft einen Fehler wenn die Credentials nicht gesetzt sind.
  */
-export const minioClient = new Minio.Client({
-  endPoint: MINIO_ENDPOINT,
-  port: MINIO_PORT,
-  useSSL: MINIO_USE_SSL,
-  accessKey: MINIO_ACCESS_KEY,
-  secretKey: MINIO_SECRET_KEY,
+function getMinioClient(): Minio.Client {
+  if (_minioClient) {
+    return _minioClient;
+  }
+
+  // Credentials MÜSSEN als Umgebungsvariablen gesetzt sein
+  if (!process.env.MINIO_ACCESS_KEY) {
+    throw new Error('MINIO_ACCESS_KEY environment variable is required');
+  }
+  if (!process.env.MINIO_SECRET_KEY) {
+    throw new Error('MINIO_SECRET_KEY environment variable is required');
+  }
+
+  const endpoint = process.env.MINIO_ENDPOINT || 'localhost';
+  const port = parseInt(process.env.MINIO_PORT || '9000', 10);
+  const useSSL = process.env.MINIO_USE_SSL === 'true';
+
+  _minioClient = new Minio.Client({
+    endPoint: endpoint,
+    port: port,
+    useSSL: useSSL,
+    accessKey: process.env.MINIO_ACCESS_KEY,
+    secretKey: process.env.MINIO_SECRET_KEY,
+  });
+
+  _bucketName = process.env.MINIO_BUCKET || 'electrovault-files';
+
+  console.log(`[MinIO] Client initialized: ${endpoint}:${port} (SSL: ${useSSL})`);
+
+  return _minioClient;
+}
+
+/**
+ * Holt den Bucket-Namen
+ */
+function getBucketName(): string {
+  if (!_bucketName) {
+    // Initialisiere Client um Bucket-Namen zu setzen
+    getMinioClient();
+  }
+  return _bucketName!;
+}
+
+/**
+ * Für Abwärtskompatibilität: Exportiert den Client (lazy)
+ */
+export const minioClient = new Proxy({} as Minio.Client, {
+  get(_target, prop) {
+    return (getMinioClient() as unknown as Record<string | symbol, unknown>)[prop];
+  },
 });
 
 /**
  * Bucket-Name für ElectroVault
  */
-export const BUCKET_NAME = MINIO_BUCKET;
+export const BUCKET_NAME = new Proxy({ value: '' }, {
+  get(_target, prop) {
+    if (prop === 'toString' || prop === Symbol.toPrimitive) {
+      return () => getBucketName();
+    }
+    return getBucketName();
+  },
+}) as unknown as string;
 
 /**
  * Prüft ob der Bucket existiert, erstellt ihn falls nicht
  */
 export async function ensureBucketExists(): Promise<void> {
   try {
-    const exists = await minioClient.bucketExists(BUCKET_NAME);
+    const client = getMinioClient();
+    const bucket = getBucketName();
+    const exists = await client.bucketExists(bucket);
 
     if (!exists) {
-      console.log(`[MinIO] Creating bucket: ${BUCKET_NAME}`);
-      await minioClient.makeBucket(BUCKET_NAME, 'eu-west-1');
-      console.log(`[MinIO] Bucket created successfully: ${BUCKET_NAME}`);
+      console.log(`[MinIO] Creating bucket: ${bucket}`);
+      await client.makeBucket(bucket, 'eu-west-1');
+      console.log(`[MinIO] Bucket created successfully: ${bucket}`);
     } else {
-      console.log(`[MinIO] Bucket already exists: ${BUCKET_NAME}`);
+      console.log(`[MinIO] Bucket already exists: ${bucket}`);
     }
   } catch (error) {
     console.error(`[MinIO] Failed to ensure bucket exists:`, error);
@@ -64,8 +117,8 @@ export async function getPresignedUrl(
   expirySeconds: number = 24 * 60 * 60
 ): Promise<string> {
   try {
-    return await minioClient.presignedGetObject(
-      BUCKET_NAME,
+    return await getMinioClient().presignedGetObject(
+      getBucketName(),
       bucketPath,
       expirySeconds
     );
@@ -92,8 +145,8 @@ export async function uploadFile(
   metadata?: Minio.ItemBucketMetadata
 ): Promise<void> {
   try {
-    await minioClient.putObject(
-      BUCKET_NAME,
+    await getMinioClient().putObject(
+      getBucketName(),
       bucketPath,
       buffer,
       buffer.length,
@@ -116,7 +169,7 @@ export async function uploadFile(
  */
 export async function deleteFile(bucketPath: string): Promise<void> {
   try {
-    await minioClient.removeObject(BUCKET_NAME, bucketPath);
+    await getMinioClient().removeObject(getBucketName(), bucketPath);
   } catch (error) {
     console.error(`[MinIO] Failed to delete file:`, error);
     throw new ApiError(
@@ -129,15 +182,27 @@ export async function deleteFile(bucketPath: string): Promise<void> {
 }
 
 /**
+ * Type Guard für MinIO Errors
+ */
+function isMinioError(error: unknown): error is { code: string } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    typeof (error as { code: unknown }).code === 'string'
+  );
+}
+
+/**
  * Prüft ob eine Datei existiert
  * @param bucketPath - Pfad im Bucket
  */
 export async function fileExists(bucketPath: string): Promise<boolean> {
   try {
-    await minioClient.statObject(BUCKET_NAME, bucketPath);
+    await getMinioClient().statObject(getBucketName(), bucketPath);
     return true;
-  } catch (error: any) {
-    if (error.code === 'NotFound') {
+  } catch (error: unknown) {
+    if (isMinioError(error) && error.code === 'NotFound') {
       return false;
     }
     throw error;
@@ -152,7 +217,7 @@ export async function getFileMetadata(
   bucketPath: string
 ): Promise<Minio.BucketItemStat> {
   try {
-    return await minioClient.statObject(BUCKET_NAME, bucketPath);
+    return await getMinioClient().statObject(getBucketName(), bucketPath);
   } catch (error) {
     console.error(`[MinIO] Failed to get file metadata:`, error);
     throw new ApiError(

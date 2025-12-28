@@ -94,8 +94,19 @@ export class PartService {
     // Transform zu PartListItem
     const items: PartListItem[] = parts.map((p) => ({
       id: p.id,
+      coreComponentId: p.coreComponentId,
+      manufacturerId: p.manufacturerId,
       mpn: p.mpn,
       orderingCode: p.orderingCode,
+      packageId: p.packageId,
+      weightGrams: p.weightGrams,
+      dateCodeFormat: p.dateCodeFormat,
+      introductionYear: p.introductionYear,
+      discontinuedYear: p.discontinuedYear,
+      rohsCompliant: p.rohsCompliant,
+      reachCompliant: p.reachCompliant,
+      nsn: p.nsn,
+      milSpec: p.milSpec,
       status: p.status,
       lifecycleStatus: p.lifecycleStatus,
       manufacturer: p.manufacturer,
@@ -320,10 +331,10 @@ export class PartService {
             data: {
               partId: newPart.id,
               definitionId: value.definitionId,
-              displayValue: value.displayValue,
               normalizedValue: value.normalizedValue,
               normalizedMin: value.normalizedMin,
               normalizedMax: value.normalizedMax,
+              prefix: value.prefix,
               stringValue: value.stringValue,
             },
           });
@@ -507,27 +518,30 @@ export class PartService {
       throw new NotFoundError('Part', partId);
     }
 
-    // Wenn neues Datasheet primär ist, andere auf nicht-primär setzen
-    if (data.isPrimary) {
-      await prisma.partDatasheet.updateMany({
-        where: { partId },
-        data: { isPrimary: false },
-      });
-    }
+    // Race Condition Fix: Transaktion für atomares isPrimary Update
+    await prisma.$transaction(async (tx) => {
+      // Wenn neues Datasheet primär ist, andere auf nicht-primär setzen
+      if (data.isPrimary) {
+        await tx.partDatasheet.updateMany({
+          where: { partId, isPrimary: true },
+          data: { isPrimary: false },
+        });
+      }
 
-    await prisma.partDatasheet.create({
-      data: {
-        partId,
-        url: data.url,
-        fileName: data.fileName,
-        fileSize: data.fileSize,
-        mimeType: data.mimeType,
-        version: data.version,
-        language: data.language,
-        publishDate: data.publishDate,
-        isPrimary: data.isPrimary,
-        createdById: userId,
-      },
+      await tx.partDatasheet.create({
+        data: {
+          partId,
+          url: data.url,
+          fileName: data.fileName,
+          fileSize: data.fileSize,
+          mimeType: data.mimeType,
+          version: data.version,
+          language: data.language,
+          publishDate: data.publishDate,
+          isPrimary: data.isPrimary,
+          createdById: userId,
+        },
+      });
     });
   }
 
@@ -547,25 +561,28 @@ export class PartService {
       throw new NotFoundError('Part', partId);
     }
 
-    // Wenn neues Bild primär ist, andere auf nicht-primär setzen
-    if (data.isPrimary) {
-      await prisma.partImage.updateMany({
-        where: { partId },
-        data: { isPrimary: false },
-      });
-    }
+    // Race Condition Fix: Transaktion für atomares isPrimary Update
+    await prisma.$transaction(async (tx) => {
+      // Wenn neues Bild primär ist, andere auf nicht-primär setzen
+      if (data.isPrimary) {
+        await tx.partImage.updateMany({
+          where: { partId, isPrimary: true },
+          data: { isPrimary: false },
+        });
+      }
 
-    await prisma.partImage.create({
-      data: {
-        partId,
-        url: data.url,
-        thumbnailUrl: data.thumbnailUrl,
-        altText: data.altText,
-        imageType: data.imageType,
-        sortOrder: data.sortOrder,
-        isPrimary: data.isPrimary,
-        createdById: userId,
-      },
+      await tx.partImage.create({
+        data: {
+          partId,
+          url: data.url,
+          thumbnailUrl: data.thumbnailUrl,
+          altText: data.altText,
+          imageType: data.imageType,
+          sortOrder: data.sortOrder,
+          isPrimary: data.isPrimary,
+          createdById: userId,
+        },
+      });
     });
   }
 
@@ -625,8 +642,19 @@ export class PartService {
 
     return parts.map((p) => ({
       id: p.id,
+      coreComponentId: p.coreComponentId,
+      manufacturerId: p.manufacturerId,
       mpn: p.mpn,
       orderingCode: p.orderingCode,
+      packageId: p.packageId,
+      weightGrams: p.weightGrams,
+      dateCodeFormat: p.dateCodeFormat,
+      introductionYear: p.introductionYear,
+      discontinuedYear: p.discontinuedYear,
+      rohsCompliant: p.rohsCompliant,
+      reachCompliant: p.reachCompliant,
+      nsn: p.nsn,
+      milSpec: p.milSpec,
       status: p.status,
       lifecycleStatus: p.lifecycleStatus,
       manufacturer: p.manufacturer,
@@ -693,10 +721,10 @@ export class PartService {
           data: {
             partId,
             definitionId: value.definitionId,
-            displayValue: value.displayValue,
             normalizedValue: value.normalizedValue,
             normalizedMin: value.normalizedMin,
             normalizedMax: value.normalizedMax,
+            prefix: value.prefix,
             stringValue: value.stringValue,
             isDeviation: false,
           },

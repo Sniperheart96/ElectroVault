@@ -138,25 +138,25 @@ model FileAttachment {
 - `apps/web/src/components/admin/relations-editor.tsx` - Relations Editor Component
 - `apps/web/src/components/admin/component-dialog.tsx` - Integration (Tab)
 
-#### Beziehungstypen
+#### Beziehungstypen (ConceptRelationType)
+
+Beziehungen auf Konzept-Ebene zwischen CoreComponents (Hardware-Varianten):
 
 | Typ | Deutsch | Beschreibung |
 |-----|---------|--------------|
-| EQUIVALENT | Gleichwertig | Funktional gleichwertig und austauschbar |
-| SIMILAR | Ähnlich | Ähnliche Funktion, nicht identisch |
-| UPGRADE | Upgrade | Verbesserte/neuere Version |
-| DOWNGRADE | Downgrade | Ältere/einfachere Version |
-| REPLACEMENT | Ersatz | Offizieller Ersatz vom Hersteller |
-| COMPLEMENT | Ergänzung | Ergänzendes Bauteil (z.B. Treiber) |
-| REQUIRES | Benötigt | Benötigt dieses Bauteil für Betrieb |
-| CONFLICTS | Inkompatibel | Nicht kompatibel |
+| DUAL_VERSION | Dual-Version | z.B. 556 ist Dual-555 |
+| QUAD_VERSION | Quad-Version | z.B. LM324 ist Quad-LM358 |
+| LOW_POWER_VERSION | Low-Power | Stromsparende Version (CMOS statt Bipolar) |
+| HIGH_SPEED_VERSION | High-Speed | Schnellere Version mit höherer Bandbreite |
+| MILITARY_VERSION | Militär-Version | Militärische Spezifikation (MIL-SPEC) |
+| AUTOMOTIVE_VERSION | Automotive | AEC-Q100/101 qualifiziert |
+| FUNCTIONAL_EQUIV | Funktions-Äquivalent | Gleiche Funktion, andere Implementierung |
 
 #### UI Features
 
 - Liste aller Beziehungen als Cards mit Icons und Badges
 - Component-Suche mit Live-Filter
-- Bidirectional-Toggle für Beziehungen in beide Richtungen
-- Optionales Beschreibungsfeld (LocalizedString: de/en)
+- Notizen-Feld (LocalizedString: de/en)
 - Dialog für Create/Edit mit Typ-Dropdown
 - Delete-Bestätigung
 

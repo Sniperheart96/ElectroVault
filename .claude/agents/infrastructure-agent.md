@@ -214,4 +214,18 @@ docs/IMPLEMENTATION_PLAN.md         # Server-Setup Details
 
 ---
 
+## Meldepflicht an Documentation Agent
+
+**Nach Abschluss jeder Implementierung MUSS eine Meldung an den Documentation Agent erfolgen!**
+
+Siehe [CLAUDE.md](../CLAUDE.md#agenten-workflow-dokumentations-meldepflicht) für das Meldungs-Template.
+
+Zu melden sind insbesondere:
+- Docker-Container-Änderungen
+- Server-Konfigurationen
+- Neue Environment-Variablen
+- Backup- und Deployment-Prozesse
+
+---
+
 *Aktiviere diesen Agenten für Server-Setup, Docker-Probleme, Backups und Monitoring-Aufgaben.*

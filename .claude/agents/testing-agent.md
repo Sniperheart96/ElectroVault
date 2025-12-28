@@ -631,4 +631,18 @@ playwright.config.ts          # Playwright Config
 
 ---
 
+## Meldepflicht an Documentation Agent
+
+**Nach Abschluss jeder Implementierung MUSS eine Meldung an den Documentation Agent erfolgen!**
+
+Siehe [CLAUDE.md](../CLAUDE.md#agenten-workflow-dokumentations-meldepflicht) für das Meldungs-Template.
+
+Zu melden sind insbesondere:
+- Neue Test-Suites oder Test-Patterns
+- CI/CD-Pipeline-Änderungen
+- Test-Coverage-Anforderungen
+- Neue Test-Utilities
+
+---
+
 *Aktiviere diesen Agenten für Test-Entwicklung, CI/CD-Konfiguration und Qualitätssicherung.*

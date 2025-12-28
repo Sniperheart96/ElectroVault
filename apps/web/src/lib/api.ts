@@ -55,8 +55,18 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error: ApiError = await response.json();
-      throw new Error(error.error.message || 'API request failed');
+      const errorText = await response.text();
+      try {
+        const error: ApiError = JSON.parse(errorText);
+        throw new Error(error.error.message || 'API request failed');
+      } catch {
+        throw new Error(`API request failed: ${response.status} ${errorText}`);
+      }
+    }
+
+    // Handle 204 No Content (DELETE responses)
+    if (response.status === 204) {
+      return undefined as T;
     }
 
     return response.json();
@@ -240,6 +250,10 @@ export class ApiClient {
 
   async getComponentBySlug(slug: string): Promise<ApiResponse<Component>> {
     return this.request<ApiResponse<Component>>(`/components/${slug}`);
+  }
+
+  async getComponentById(id: string): Promise<ApiResponse<Component>> {
+    return this.request<ApiResponse<Component>>(`/components/${id}`);
   }
 
   async createComponent(data: unknown): Promise<ApiResponse<Component>> {
@@ -523,41 +537,43 @@ export class ApiClient {
   }
 
   // ============================================
-  // Component Relations
+  // Component Relations (ComponentConceptRelation)
   // ============================================
 
   async getComponentRelations(componentId: string): Promise<ApiResponse<ComponentRelation[]>> {
     return this.request<ApiResponse<ComponentRelation[]>>(`/components/${componentId}/relations`);
   }
 
-  async getRelation(id: string): Promise<ApiResponse<ComponentRelation>> {
-    return this.request<ApiResponse<ComponentRelation>>(`/relations/${id}`);
-  }
-
-  async createRelation(data: unknown): Promise<ApiResponse<ComponentRelation>> {
-    return this.request<ApiResponse<ComponentRelation>>('/relations', {
+  async createRelation(data: {
+    sourceId: string;
+    targetId: string;
+    relationType: string;
+    notes?: LocalizedString;
+  }): Promise<ApiResponse<{ success: boolean }>> {
+    return this.request<ApiResponse<{ success: boolean }>>(`/components/${data.sourceId}/relations`, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        targetId: data.targetId,
+        relationType: data.relationType,
+        notes: data.notes,
+      }),
     });
   }
 
-  async updateRelation(id: string, data: unknown): Promise<ApiResponse<ComponentRelation>> {
-    return this.request<ApiResponse<ComponentRelation>>(`/relations/${id}`, {
+  async updateRelation(
+    componentId: string,
+    relationId: string,
+    data: { notes?: LocalizedString }
+  ): Promise<ApiResponse<{ success: boolean }>> {
+    return this.request<ApiResponse<{ success: boolean }>>(`/components/${componentId}/relations/${relationId}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
     });
   }
 
-  async deleteRelation(id: string): Promise<void> {
-    await this.request<void>(`/relations/${id}`, {
+  async deleteRelation(componentId: string, relationId: string): Promise<void> {
+    await this.request<void>(`/components/${componentId}/relations/${relationId}`, {
       method: 'DELETE',
-    });
-  }
-
-  async createBulkRelations(data: unknown): Promise<ApiResponse<ComponentRelation[]>> {
-    return this.request<ApiResponse<ComponentRelation[]>>('/relations/bulk', {
-      method: 'POST',
-      body: JSON.stringify(data),
     });
   }
 }
@@ -634,19 +650,57 @@ export interface Package {
   updatedAt: string;
 }
 
+// SI-Präfix-Typ (µ = U+00B5 MICRO SIGN)
+export type SIPrefix = 'P' | 'T' | 'G' | 'M' | 'k' | 'h' | 'da' | '' | 'd' | 'c' | 'm' | '\u00B5' | 'n' | 'p' | 'f';
+
+// SI-Präfix-Faktoren für Berechnungen
+export const SI_PREFIX_FACTORS: Record<SIPrefix, number> = {
+  P: 1e15,
+  T: 1e12,
+  G: 1e9,
+  M: 1e6,
+  k: 1e3,
+  h: 1e2,
+  da: 1e1,
+  '': 1,
+  d: 1e-1,
+  c: 1e-2,
+  m: 1e-3,
+  '\u00B5': 1e-6,  // µ (Micro)
+  n: 1e-9,
+  p: 1e-12,
+  f: 1e-15,
+};
+
+export interface ComponentAttributeValue {
+  id: string;
+  definitionId: string;
+  // Numerische Werte (immer in SI-Basiseinheit)
+  normalizedValue: number | null;
+  normalizedMin: number | null;
+  normalizedMax: number | null;
+  // SI-Präfix für Anzeige
+  prefix: SIPrefix | null;
+  // Für STRING-Typ
+  stringValue: string | null;
+  definition?: AttributeDefinition;
+}
+
 export interface Component {
   id: string;
   name: LocalizedString;
   slug: string;
+  series: string | null;
   categoryId: string;
   shortDescription: LocalizedString | null;
-  description: LocalizedString | null;
+  fullDescription: LocalizedString | null;
   status: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
   commonAttributes: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
   category?: Category;
+  attributeValues?: ComponentAttributeValue[];
 }
 
 export interface Part {
@@ -679,11 +733,13 @@ export interface AttributeDefinition {
   categoryId: string;
   name: string;
   displayName: LocalizedString;
-  unit: string | null;
-  dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN' | 'RANGE';
+  unit: string | null;                    // Basiseinheit (z.B. "F", "Ω", "m")
+  dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN';
   scope: 'COMPONENT' | 'PART' | 'BOTH';
   isFilterable: boolean;
   isRequired: boolean;
+  allowedPrefixes: SIPrefix[];            // Erlaubte SI-Präfixe
+  // Legacy-Felder
   siUnit: string | null;
   siMultiplier: number | null;
   sortOrder: number;
@@ -734,23 +790,25 @@ export interface Pin {
   maxCurrent: number | null;
 }
 
-export type RelationType =
-  | 'EQUIVALENT'
-  | 'SIMILAR'
-  | 'UPGRADE'
-  | 'DOWNGRADE'
-  | 'REPLACEMENT'
-  | 'COMPLEMENT'
-  | 'REQUIRES'
-  | 'CONFLICTS';
+// ConceptRelationType - Beziehungen auf Konzept-Ebene (CoreComponent)
+export type ConceptRelationType =
+  | 'DUAL_VERSION'
+  | 'QUAD_VERSION'
+  | 'LOW_POWER_VERSION'
+  | 'HIGH_SPEED_VERSION'
+  | 'MILITARY_VERSION'
+  | 'AUTOMOTIVE_VERSION'
+  | 'FUNCTIONAL_EQUIV';
+
+// Alias für Kompatibilität (Frontend verwendet generische Namen)
+export type RelationType = ConceptRelationType;
 
 export interface ComponentRelation {
   id: string;
   sourceId: string;
   targetId: string;
-  relationType: RelationType;
-  description: LocalizedString | null;
-  bidirectional: boolean;
+  relationType: ConceptRelationType;
+  notes: LocalizedString | null;
   createdAt: string;
   source?: Component;
   target?: Component;

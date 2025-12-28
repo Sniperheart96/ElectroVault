@@ -2,7 +2,7 @@
  * Component Service - CoreComponent-Verwaltung (CRUD)
  */
 
-import { prisma } from '@electrovault/database';
+import { prisma, Prisma } from '@electrovault/database';
 import type {
   ComponentListQuery,
   CreateComponentInput,
@@ -238,45 +238,45 @@ export class ComponentService {
       slug = generateUniqueSlug(baseSlug, existingSlugs);
     }
 
-    // Prüfen ob Slug bereits existiert
-    const existing = await prisma.coreComponent.findUnique({
-      where: { slug },
-    });
-
-    if (existing) {
-      throw new ConflictError(`Component with slug '${slug}' already exists`);
-    }
-
     // Transaktion für Component + AttributeValues
-    const component = await prisma.$transaction(async (tx) => {
-      // Component erstellen
-      const newComponent = await tx.coreComponent.create({
-        data: {
-          name: data.name as object,
-          slug,
-          series: data.series,
-          categoryId: data.categoryId,
-          shortDescription: (data.shortDescription as object) || undefined,
-          fullDescription: (data.fullDescription as object) || undefined,
-          commonAttributes: (data.commonAttributes as object) ?? {},
-          status: data.status,
-          createdById: userId,
-          lastEditedById: userId,
-        },
-        include: {
-          category: true,
-        },
+    // Race Condition Fix: Prisma P2002 Error fangen statt Check-Then-Act
+    try {
+      const component = await prisma.$transaction(async (tx) => {
+        // Component erstellen
+        const newComponent = await tx.coreComponent.create({
+          data: {
+            name: data.name as object,
+            slug,
+            series: data.series,
+            categoryId: data.categoryId,
+            shortDescription: (data.shortDescription as object) || undefined,
+            fullDescription: (data.fullDescription as object) || undefined,
+            commonAttributes: (data.commonAttributes as object) ?? {},
+            status: data.status,
+            createdById: userId,
+            lastEditedById: userId,
+          },
+          include: {
+            category: true,
+          },
+        });
+
+        // Attributwerte erstellen falls angegeben
+        if (data.attributeValues && data.attributeValues.length > 0) {
+          await this.createAttributeValues(tx, newComponent.id, data.attributeValues);
+        }
+
+        return newComponent;
       });
 
-      // Attributwerte erstellen falls angegeben
-      if (data.attributeValues && data.attributeValues.length > 0) {
-        await this.createAttributeValues(tx, newComponent.id, data.attributeValues);
+      return component as unknown as ComponentWithCategory;
+    } catch (error) {
+      // Race Condition: Unique Constraint Violation für Slug
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictError(`Component with slug '${slug}' already exists`);
       }
-
-      return newComponent;
-    });
-
-    return component as unknown as ComponentWithCategory;
+      throw error;
+    }
   }
 
   /**
@@ -346,34 +346,41 @@ export class ComponentService {
 
   /**
    * Löscht ein Component (Soft-Delete)
+   * Löscht auch alle zugehörigen ManufacturerParts (kaskadierend)
    */
   async delete(id: string, userId?: string): Promise<void> {
     const component = await prisma.coreComponent.findUnique({
       where: { id, deletedAt: null },
-      include: {
-        _count: {
-          select: { manufacturerParts: { where: { deletedAt: null } } },
-        },
-      },
     });
 
     if (!component) {
       throw new NotFoundError('Component', id);
     }
 
-    // Warnung wenn Parts vorhanden
-    if (component._count.manufacturerParts > 0) {
-      throw new ConflictError(
-        `Component has ${component._count.manufacturerParts} active manufacturer parts. Delete or archive them first.`
-      );
-    }
+    const now = new Date();
 
-    await prisma.coreComponent.update({
-      where: { id },
-      data: {
-        deletedAt: new Date(),
-        deletedById: userId,
-      },
+    // Transaktion: Component und alle zugehörigen Parts soft-deleten
+    await prisma.$transaction(async (tx) => {
+      // Alle zugehörigen ManufacturerParts soft-deleten
+      await tx.manufacturerPart.updateMany({
+        where: {
+          coreComponentId: id,
+          deletedAt: null,
+        },
+        data: {
+          deletedAt: now,
+          deletedById: userId,
+        },
+      });
+
+      // Component soft-deleten
+      await tx.coreComponent.update({
+        where: { id },
+        data: {
+          deletedAt: now,
+          deletedById: userId,
+        },
+      });
     });
   }
 
@@ -599,10 +606,10 @@ export class ComponentService {
         data: {
           componentId,
           definitionId: value.definitionId,
-          displayValue: value.displayValue,
           normalizedValue: value.normalizedValue,
           normalizedMin: value.normalizedMin,
           normalizedMax: value.normalizedMax,
+          prefix: value.prefix,
           stringValue: value.stringValue,
         },
       });

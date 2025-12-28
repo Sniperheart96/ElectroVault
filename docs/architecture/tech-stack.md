@@ -18,14 +18,17 @@
 
 ## Entwicklungs-Beschleuniger
 
-| Aufgabe | Bibliothek | Erspart |
-|---------|------------|---------|
-| **Einheiten-Parsing** | `mathjs` | Eigene SI-Multiplikatoren & Regex für "100µF" → 0.0001F |
-| **Schema-Validierung** | `Zod` + `fastify-type-provider-zod` | Doppelte Interface-Definitionen |
-| **Formulare** | `react-hook-form` + `@hookform/resolvers/zod` | Manuelle Form-States & Validierung |
-| **Audit/Soft-Delete** | Prisma Client Extensions | Boilerplate für jede Entität |
-| **UI-Komponenten** | `shadcn/ui` | Eigene Design-System-Entwicklung |
-| **Tabellen/Listen** | `@tanstack/react-table` + shadcn | Pagination, Sorting, Filtering |
+| Aufgabe | Bibliothek | Status |
+|---------|------------|--------|
+| **Schema-Validierung** | `Zod` + Fastify | ✅ Implementiert |
+| **Formulare** | `react-hook-form` + `@hookform/resolvers/zod` | ✅ Implementiert |
+| **UI-Komponenten** | `shadcn/ui` | ✅ Implementiert (20+ Komponenten) |
+| **Audit-Logging** | Manuell in Services | ✅ Implementiert (nicht als Extension) |
+| **Soft-Delete** | Manuell in Services | ✅ Implementiert (nicht als Extension) |
+| **Einheiten-Parsing** | `mathjs` | ❌ Noch nicht implementiert |
+| **Tabellen/Listen** | `@tanstack/react-table` | ❌ Noch nicht implementiert |
+
+> **Hinweis:** Prisma Client Extensions für Soft-Delete und Audit-Logging wurden zugunsten manueller Service-Implementierungen verworfen, da dies mehr Kontrolle und Flexibilität bietet.
 
 ---
 
@@ -43,7 +46,9 @@ Refine wurde gestrichen weil:
 
 ## Code-Beispiele
 
-### Einheiten mit mathjs
+### Einheiten mit mathjs (Geplant)
+
+> **Status:** Noch nicht implementiert. Das folgende Beispiel zeigt die geplante Funktionalität.
 
 ```typescript
 import { unit, Unit } from 'mathjs';
@@ -62,19 +67,9 @@ await prisma.attributeValue.create({
     normalizedValue: normalizedValue, // 0.0001 für Filter-Queries
   }
 });
-
-// Filter-Query: "Kondensatoren zwischen 10µF und 100µF"
-const minF = unit("10 uF").toNumber('F');  // 0.00001
-const maxF = unit("100 uF").toNumber('F'); // 0.0001
-
-await prisma.attributeValue.findMany({
-  where: {
-    normalizedValue: { gte: minF, lte: maxF }
-  }
-});
 ```
 
-### Zod + Fastify
+### Zod + Fastify (Implementiert)
 
 ```typescript
 import { z } from 'zod';
@@ -119,17 +114,19 @@ electrovault/
 ├── .github/workflows/         # CI/CD
 ├── apps/
 │   ├── web/                   # Next.js Frontend + Admin
+│   │   └── src/components/ui/ # shadcn/ui Komponenten (nicht in packages/ui)
 │   └── api/                   # Fastify Backend
 ├── packages/
 │   ├── auth/                  # Wiederverwendbares Auth-Package
 │   ├── database/              # Prisma Schema & Client
 │   ├── schemas/               # Zod-Schemas (shared)
-│   ├── ui/                    # Shared UI Components (shadcn/ui)
 │   └── shared/                # Types, Constants, Utils
 ├── docker/
 │   └── docker-compose.yml     # Dev-Stack
 └── docs/                      # Dokumentation
 ```
+
+> **Hinweis:** Die shadcn/ui Komponenten befinden sich direkt in `apps/web/src/components/ui/` statt in einem separaten `packages/ui/` Package. Dies ist pragmatisch, da nur eine Frontend-App existiert.
 
 ### Package-Details
 
@@ -138,10 +135,16 @@ electrovault/
 ```
 packages/schemas/
 ├── src/
-│   ├── component.schema.ts    # ComponentCreateSchema, ComponentUpdateSchema
-│   ├── manufacturer.schema.ts
-│   ├── device.schema.ts
-│   ├── user.schema.ts
+│   ├── attribute.ts           # AttributeDefinition Schemas
+│   ├── audit.ts               # AuditLog Schemas
+│   ├── category.ts            # Category Schemas
+│   ├── common.ts              # Shared Types (LocalizedString, PaginationParams)
+│   ├── component.ts           # CoreComponent Schemas
+│   ├── manufacturer.ts        # Manufacturer Schemas
+│   ├── package.ts             # Package Schemas
+│   ├── part.ts                # ManufacturerPart Schemas
+│   ├── pin.ts                 # PinMapping Schemas
+│   ├── schemas.test.ts        # Tests
 │   └── index.ts               # Re-exports
 └── package.json
 ```
@@ -156,46 +159,35 @@ packages/schemas/
 ```
 packages/shared/
 ├── src/
-│   ├── units/
-│   │   ├── parser.ts          # mathjs-basiertes Einheiten-Parsing
-│   │   ├── normalize.ts       # "100µF" → { display: "100µF", normalized: 0.0001 }
-│   │   └── categories.ts      # Welche Einheiten pro Kategorie erlaubt
-│   ├── constants/
-│   │   └── enums.ts           # UserRole, ComponentStatus, etc.
+│   ├── i18n/
+│   │   ├── types.ts           # LocalizedString Type
+│   │   ├── localized-string.ts # Hilfsfunktionen
+│   │   └── index.ts           # Re-exports
+│   ├── utils/
+│   │   ├── localization.ts    # getLocalizedValue Helper
+│   │   └── localization.test.ts
 │   └── index.ts
 └── package.json
 ```
+
+> **Geplant aber noch nicht implementiert:**
+> - `units/` - mathjs-basiertes Einheiten-Parsing
+> - `constants/` - Enums (derzeit in Prisma Schema definiert)
 
 #### packages/database/
 
 ```
 packages/database/
 ├── prisma/
-│   ├── schema.prisma
+│   ├── schema.prisma          # Datenbank-Schema
+│   ├── migrations/            # Prisma Migrationen
 │   └── seed.ts                # Seed-Daten (Kategorien, Packages)
 ├── src/
-│   ├── client.ts              # Prisma Client mit Extensions
-│   ├── extensions/
-│   │   ├── soft-delete.ts     # Automatisches Soft-Delete
-│   │   └── audit-log.ts       # Automatisches Audit-Logging
-│   └── index.ts
+│   └── index.ts               # Prisma Client Export
 └── package.json
 ```
 
-```typescript
-// packages/database/src/client.ts
-import { PrismaClient } from '@prisma/client';
-import { softDeleteExtension } from './extensions/soft-delete';
-import { auditLogExtension } from './extensions/audit-log';
-
-export const prisma = new PrismaClient()
-  .$extends(softDeleteExtension)
-  .$extends(auditLogExtension);
-
-// Jetzt funktioniert Soft-Delete automatisch:
-await prisma.component.delete({ where: { id } }); // Setzt nur deletedAt!
-await prisma.component.findMany();                 // Filtert gelöschte automatisch aus
-```
+> **Hinweis:** Prisma Client Extensions für Soft-Delete und Audit-Logging wurden zugunsten manueller Service-Implementierungen verworfen (siehe Tabelle oben). Soft-Delete und Audit-Logging werden direkt in den API-Services implementiert.
 
 ---
 

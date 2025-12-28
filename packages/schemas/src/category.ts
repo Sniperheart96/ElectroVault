@@ -57,7 +57,7 @@ export const CategoryWithAttributesSchema = CategoryBaseSchema.extend({
       name: z.string(),
       displayName: LocalizedStringSchema,
       unit: z.string().nullable(),
-      dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN', 'RANGE']),
+      dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN']),
       scope: z.enum(['COMPONENT', 'PART', 'BOTH']),
       isFilterable: z.boolean(),
       isRequired: z.boolean(),

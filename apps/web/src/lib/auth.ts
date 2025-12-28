@@ -9,7 +9,6 @@ import KeycloakProvider from 'next-auth/providers/keycloak';
 declare module 'next-auth' {
   interface Session {
     accessToken?: string;
-    refreshToken?: string;
     error?: string;
     user: {
       id: string;
@@ -155,7 +154,6 @@ export const authOptions: NextAuthOptions = {
       return {
         ...session,
         accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
         error: token.error,
         user: {
           ...session.user,
@@ -174,7 +172,8 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: 'jwt',
-    maxAge: 24 * 60 * 60, // 24 hours
+    // Production: 7 Tage für erhöhte Sicherheit, Development: 30 Tage für Komfort
+    maxAge: process.env.NODE_ENV === 'production' ? 7 * 24 * 60 * 60 : 30 * 24 * 60 * 60,
   },
 
   events: {
@@ -203,7 +202,8 @@ export const authOptions: NextAuthOptions = {
 
   debug: process.env.NODE_ENV === 'development',
 
-  // Cookie configuration for development with IP access
+  // Cookie configuration
+  // secure: true in production (HTTPS only), false in development (HTTP allowed for local testing)
   cookies: {
     sessionToken: {
       name: `next-auth.session-token`,
@@ -211,7 +211,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false, // Development: HTTP allowed
+        secure: process.env.NODE_ENV === 'production',
       },
     },
     callbackUrl: {
@@ -220,7 +220,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
       },
     },
     csrfToken: {
@@ -229,7 +229,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
       },
     },
     pkceCodeVerifier: {
@@ -238,7 +238,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 15, // 15 minutes
       },
     },
@@ -248,7 +248,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 15, // 15 minutes
       },
     },
@@ -258,7 +258,7 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
       },
     },
   },

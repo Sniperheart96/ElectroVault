@@ -232,12 +232,76 @@ WebFetch(
 - `main` - Production-ready Code
 - `develop` - Development Branch (TODO: erstellen)
 
+---
+
+## KRITISCH: Agenten-Nutzung ist PFLICHT
+
+### Regel 1: Immer den passenden Agenten verwenden
+
+**Bei JEDER Aufgabe MUSS geprüft werden, ob ein passender Agent existiert.**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AGENTEN-ENTSCHEIDUNG                     │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Aufgabe analysieren                                      │
+│ 2. Passenden Agenten aus Liste unten suchen                 │
+│ 3. Agent gefunden? → Agent aktivieren und nutzen            │
+│ 4. Kein Agent passt? → User fragen (siehe Regel 2)          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Warum?**
+- Agenten haben spezialisiertes Domain-Wissen
+- Konsistente Arbeitsweise über alle Aufgaben
+- Dokumentations-Meldepflicht wird eingehalten
+- Best Practices werden automatisch angewendet
+
+### Regel 2: Fehlende Agenten vorschlagen
+
+**Wenn KEIN passender Agent existiert, MUSS der User gefragt werden:**
+
+```markdown
+## Neuen Agenten vorschlagen
+
+Ich habe keinen passenden Agenten für diese Aufgabe gefunden.
+
+**Aufgabenbereich:** [Beschreibung der Aufgabe]
+
+**Vorschlag für neuen Agenten:**
+
+| Eigenschaft | Wert |
+|-------------|------|
+| Name | [agent-name] |
+| Beschreibung | [Kurzbeschreibung] |
+| Fokus | [Hauptverantwortlichkeiten] |
+| Datei | `agents/[agent-name]-agent.md` |
+
+**Soll ich diesen Agenten erstellen?**
+```
+
+### Regel 3: Agent-Zuordnung nach Aufgabentyp
+
+| Aufgabentyp | Agent |
+|-------------|-------|
+| Prisma Schema, Migrationen, Queries | **Database** |
+| API-Endpoints, Services, Validierung | **API** |
+| React, Next.js, UI-Komponenten | **Frontend** |
+| Keycloak, Login, Rollen, Sessions | **Auth** |
+| Docker, Server, Backups, DevOps | **Infrastructure** |
+| Vitest, Playwright, CI/CD | **Testing** |
+| Kategorien, Attribute, Elektronik-Domain | **Component Data** |
+| Phasen-Doku, Features, Glossar | **Documentation** |
+
+---
+
 ## Verfügbare Agenten
 
 Spezialisierte Agenten für verschiedene Aufgabenbereiche:
 
 | Agent | Datei | Fokus |
 |-------|-------|-------|
+| **Documentation** | `agents/documentation-agent.md` | **Zentrale Dokumentation** |
 | Infrastructure | `agents/infrastructure-agent.md` | Server, Docker, Backups |
 | Database | `agents/database-agent.md` | Prisma, Migrationen |
 | Auth | `agents/auth-agent.md` | Keycloak, Rollen |
@@ -245,6 +309,66 @@ Spezialisierte Agenten für verschiedene Aufgabenbereiche:
 | Component Data | `agents/component-data-agent.md` | Elektronik-Domain |
 | Frontend | `agents/frontend-agent.md` | Next.js, UI |
 | Testing | `agents/testing-agent.md` | Tests, CI/CD |
+
+---
+
+## Agenten-Workflow: Dokumentations-Meldepflicht
+
+**KRITISCH:** Nach jeder abgeschlossenen Arbeit MUSS der Documentation Agent informiert werden!
+
+### Ablauf
+
+```
+1. Agent erledigt Aufgabe (z.B. API Agent implementiert neuen Endpoint)
+2. Agent meldet an Documentation Agent:
+   - Was wurde implementiert?
+   - Welche Schnittstellen (APIs, Enums, Types)?
+   - Welche Namenskonventionen?
+   - Welche Phase betrifft es?
+3. Documentation Agent aktualisiert:
+   - Phasen-Dokument (Status)
+   - Feature-Dokumentation
+   - Schnittstellen-Glossar
+   - CHANGELOG
+```
+
+### Meldungs-Template
+
+```markdown
+## Meldung an Documentation Agent
+
+**Agent:** [api|database|frontend|auth|infrastructure|testing|component-data]
+**Phase:** [0-5]
+**Typ:** [Feature|Bugfix|Refactoring|Schema-Änderung|Security-Fix]
+
+### Zusammenfassung
+[1-2 Sätze was gemacht wurde]
+
+### Implementierte Features
+- Feature 1: [Beschreibung]
+
+### Neue/Geänderte Schnittstellen
+| Name | Typ | Beschreibung |
+|------|-----|--------------|
+| POST /api/v1/example | API | Beispiel |
+| ExampleEnum | Enum | WERT_1, WERT_2 |
+
+### Namenskonventionen verwendet
+| Begriff | Deutsch | Englisch | Kontext |
+|---------|---------|----------|---------|
+| Example | Beispiel | Example | Kontext |
+
+### Betroffene Dateien
+- path/to/file.ts (neu/geändert)
+```
+
+### Warum ist das wichtig?
+
+1. **Konsistente Dokumentation** - Alles wird an der richtigen Stelle dokumentiert
+2. **Namenskonventionen** - Einheitliche Begriffe über alle Agenten
+3. **Schnittstellen-Übersicht** - Zentrale Referenz für APIs, Enums, Types
+4. **Phasen-Tracking** - Status der Implementierung immer aktuell
+5. **CHANGELOG** - Automatische Änderungshistorie
 
 ---
 
@@ -371,4 +495,4 @@ docs/
 
 ---
 
-*Letzte Aktualisierung: 2025-12-27*
+*Letzte Aktualisierung: 2025-12-28 (Agenten-Pflicht hinzugefügt)*

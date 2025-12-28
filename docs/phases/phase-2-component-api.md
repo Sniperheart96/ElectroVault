@@ -197,7 +197,7 @@ Konsistentes Response-Format:
 ```typescript
 {
   data: [...],
-  meta: {
+  pagination: {
     total: 100,
     page: 1,
     limit: 20,
@@ -212,6 +212,100 @@ Konsistentes Response-Format:
 
 - 42 Zod-Schema-Tests (packages/schemas)
 - 81 Tests gesamt (alle bestehen)
+
+---
+
+## SI-Präfix-System für Einheiten
+
+### Konzept
+
+Attribute mit physikalischen Einheiten (Kapazität, Widerstand, Länge, Datengröße) unterstützen SI-Präfixe für benutzerfreundliche Eingabe und Anzeige.
+
+### Funktionsweise
+
+1. **Attribut-Definition:** Legt fest, welche Präfixe erlaubt sind
+   ```
+   Attribut: Kapazität
+   Einheit: F (Farad)
+   Erlaubte Präfixe: p, n, µ, m, (leer), k
+   ```
+
+2. **Werteingabe:** Benutzer gibt Zahl + Präfix ein
+   ```
+   Eingabe: 10 mit Präfix µ
+   → Anzeige: 10 µF
+   ```
+
+3. **Speicherung:** Normalisierter Wert + verwendeter Präfix
+   ```
+   normalizedValue: 0.00001  (10 × 10⁻⁶)
+   prefix: "µ"
+   ```
+
+4. **Laden:** System rechnet zurück
+   ```
+   Geladen: 0.00001 F, prefix: µ
+   → Anzeige: 10 µF
+   ```
+
+### Standard SI-Präfixe
+
+| Symbol | Name | Faktor | Exponent |
+|--------|------|--------|----------|
+| P | Peta | 10¹⁵ | 15 |
+| T | Tera | 10¹² | 12 |
+| G | Giga | 10⁹ | 9 |
+| M | Mega | 10⁶ | 6 |
+| k | Kilo | 10³ | 3 |
+| h | Hekto | 10² | 2 |
+| da | Deka | 10¹ | 1 |
+| (leer) | - | 10⁰ | 0 |
+| d | Dezi | 10⁻¹ | -1 |
+| c | Zenti | 10⁻² | -2 |
+| m | Milli | 10⁻³ | -3 |
+| µ | Mikro | 10⁻⁶ | -6 |
+| n | Nano | 10⁻⁹ | -9 |
+| p | Piko | 10⁻¹² | -12 |
+| f | Femto | 10⁻¹⁵ | -15 |
+
+### Typische Präfix-Sets pro Einheit
+
+| Einheit | Typische Präfixe | Beispiel |
+|---------|------------------|----------|
+| F (Farad) | p, n, µ, m | 100 pF, 10 µF |
+| Ω (Ohm) | m, (leer), k, M | 4.7 kΩ, 1 MΩ |
+| H (Henry) | n, µ, m | 100 µH |
+| V (Volt) | m, (leer), k | 3.3 V, 5 mV |
+| A (Ampere) | µ, m, (leer) | 20 mA |
+| m (Meter) | n, µ, m, c, (leer), k | 2.54 cm |
+| Hz (Hertz) | (leer), k, M, G | 16 MHz |
+| B (Byte) | (leer), K, M, G, T | 512 MB |
+| W (Watt) | µ, m, (leer), k | 0.25 W |
+
+### Datenbank-Schema
+
+```prisma
+model AttributeDefinition {
+  // ... bestehende Felder ...
+
+  // SI-Präfix Unterstützung
+  allowedPrefixes   String[]  @default([])  // z.B. ["p", "n", "µ", "m", "", "k"]
+}
+
+model ComponentAttributeValue {
+  // ... bestehende Felder ...
+
+  // Gewählter Präfix (statt displayValue)
+  prefix            String?   @db.VarChar(5)  // z.B. "µ", "k", "M"
+}
+```
+
+### Vorteile
+
+1. **Konsistente Suche:** Filter arbeiten immer auf normalisierten SI-Werten
+2. **Benutzerfreundlich:** Eingabe in gewohnten Einheiten (µF statt 0.000001 F)
+3. **Flexibel:** Jedes Attribut definiert eigene erlaubte Präfixe
+4. **Erweiterbar:** Neue Einheiten können eigene Präfix-Sets haben
 
 ---
 

@@ -200,9 +200,10 @@ export default function CategoriesPage() {
       loadCategories();
       setCategoryToDelete(null);
     } catch (error) {
+      const message = error instanceof Error ? error.message : 'Kategorie konnte nicht gelöscht werden.';
       toast({
         title: 'Fehler',
-        description: 'Kategorie konnte nicht gelöscht werden. Möglicherweise enthält sie noch Unterkategorien oder Bauteile.',
+        description: message,
         variant: 'destructive',
       });
     }

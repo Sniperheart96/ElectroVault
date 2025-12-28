@@ -18,6 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { type Manufacturer } from '@/lib/api';
 import { ManufacturerDialog } from '@/components/admin/manufacturer-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
+import { TablePagination } from '@/components/ui/table-pagination';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
@@ -30,17 +31,30 @@ export default function ManufacturersPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [manufacturerToDelete, setManufacturerToDelete] = useState<Manufacturer | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const { toast } = useToast();
+
+  const ITEMS_PER_PAGE = 50;
 
   useEffect(() => {
     loadManufacturers();
-  }, []);
+  }, [currentPage]);
 
   const loadManufacturers = async () => {
     try {
       setLoading(true);
-      const response = await api.getManufacturers({ limit: 100 });
+      const response = await api.getManufacturers({
+        page: currentPage,
+        limit: ITEMS_PER_PAGE,
+      });
       setManufacturers(response.data);
+
+      if (response.pagination) {
+        setTotalPages(response.pagination.totalPages);
+        setTotalCount(response.pagination.total);
+      }
     } catch (error) {
       toast({
         title: 'Fehler',
@@ -71,9 +85,10 @@ export default function ManufacturersPage() {
       loadManufacturers();
       setManufacturerToDelete(null);
     } catch (error) {
+      const message = error instanceof Error ? error.message : 'Hersteller konnte nicht gelöscht werden.';
       toast({
         title: 'Fehler',
-        description: 'Hersteller konnte nicht gelöscht werden.',
+        description: message,
         variant: 'destructive',
       });
     }
@@ -114,7 +129,9 @@ export default function ManufacturersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Hersteller</h1>
-          <p className="text-muted-foreground">Verwalten Sie alle Hersteller in der Datenbank</p>
+          <p className="text-muted-foreground">
+            Verwalten Sie alle Hersteller in der Datenbank ({totalCount} Hersteller)
+          </p>
         </div>
         <Button onClick={handleCreate}>
           <Plus className="mr-2 h-4 w-4" />
@@ -206,6 +223,16 @@ export default function ManufacturersPage() {
                 )}
               </TableBody>
             </Table>
+          )}
+
+          {!loading && totalPages > 1 && (
+            <TablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              total={totalCount}
+              limit={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
           )}
         </CardContent>
       </Card>

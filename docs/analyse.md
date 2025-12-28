@@ -1,462 +1,474 @@
-# Dokumentation vs. Code - Analyse
+# ElectroVault - Umfassende Code-Analyse
 
 **Erstellt:** 2025-12-28
-**Zweck:** Vergleich der Dokumentation mit dem tatsächlich implementierten Code
+**Aktualisiert:** 2025-12-28 (Vollständige Agentenanalyse)
+**Zweck:** Umfassende Codebase-Analyse mit spezialisierten Agenten
 
 ---
 
-## Zusammenfassung
+## Executive Summary
 
-Diese Analyse vergleicht die Projektdokumentation in `docs/` mit dem implementierten Code. Die meisten Implementierungen entsprechen der Dokumentation, jedoch wurden einige Abweichungen, Erweiterungen und potenzielle Inkonsistenzen identifiziert.
+Diese Analyse wurde von 5 spezialisierten Agenten durchgeführt:
+- **Frontend Agent**: React/Next.js Code-Qualität
+- **API/Backend Agent**: Fastify Services, Sicherheit
+- **Database Agent**: Prisma Schema, Migrationen, Performance
+- **Auth Agent**: Keycloak Integration, Session-Management
+- **Schema Agent**: Zod-Validierung, Type-Safety
 
----
+### Gesamtbewertung
 
-## 1. Prisma-Schema Abweichungen
-
-### 1.1 ComponentStatus vs. Dokumentation
-
-**Dokumentation (database-schema.md):**
-```prisma
-enum ComponentStatus {
-  DRAFT           // Entwurf
-  PENDING_REVIEW  // Wartet auf Freigabe
-  ACTIVE          // Aktiv/Freigegeben
-  ARCHIVED        // Archiviert
-  REJECTED        // Abgelehnt
-}
-```
-
-**Tatsächlicher Code (schema.prisma):**
-```prisma
-enum ComponentStatus {
-  DRAFT       // In Bearbeitung
-  PENDING     // Wartet auf Freigabe
-  PUBLISHED   // Veröffentlicht
-  ARCHIVED    // Archiviert
-}
-```
-
-**Abweichung:**
-- `PENDING_REVIEW` → `PENDING` (kürzerer Name)
-- `ACTIVE` → `PUBLISHED` (semantisch anders)
-- `REJECTED` fehlt im Code
-
-**Bewertung:** Die Code-Version ist besser, da:
-- `PENDING` ist prägnanter
-- `PUBLISHED` drückt den Status klarer aus als `ACTIVE`
-- `REJECTED` Einträge werden stattdessen als `ARCHIVED` mit einem ModerationLog-Eintrag geführt (bessere Nachvollziehbarkeit)
-
-**Empfehlung:** Dokumentation anpassen.
+| Bereich | Bewertung | Status |
+|---------|-----------|--------|
+| Frontend | 7.5/10 | Solide Basis mit Optimierungspotenzial |
+| API/Backend | 7/10 | Gute Architektur, kritische Race Conditions |
+| Datenbank | 7/10 | Schema nicht production-ready (Migrationen fehlen) |
+| Auth | 6/10 | Kritische Sicherheitslücken vor Production beheben |
+| Schemas | 8/10 | Gut strukturiert, einige Duplikate |
 
 ---
 
-### 1.2 ConceptRelationType Abweichung
+## Teil 1: Status der bisherigen Korrekturen
 
-**Dokumentation (component-relations.md):**
-```prisma
-enum ConceptRelationType {
-  DUAL_VERSION
-  QUAD_VERSION
-  LOW_POWER_VERSION
-  HIGH_SPEED_VERSION
-  MILITARY_VERSION
-  AUTOMOTIVE_VERSION
-  FUNCTIONAL_EQUIV
-}
+### Bereits behobene Probleme (aus vorheriger Analyse)
+
+| Punkt | Problem | Status |
+|-------|---------|--------|
+| 1.1 | ComponentStatus Enum | ✅ Korrigiert in database-schema.md |
+| 1.2 | ConceptRelationType im Frontend | ✅ relations-editor.tsx komplett überarbeitet |
+| 2.1 | Nicht-existente API-Endpoints | ✅ api.ts korrigiert |
+| 2.2 | Pagination meta→pagination | ✅ phase-2-component-api.md korrigiert |
+| 3.x | Fehlende Features dokumentiert | ✅ tech-stack.md aktualisiert |
+| 4.x | Package-Struktur | ✅ tech-stack.md aktualisiert |
+| 5.x | UI-Komponenten Zählung | ✅ Dokumentation angepasst |
+
+---
+
+## Teil 2: Kritische Blocker (Sofort beheben)
+
+### 2.1 Datenbank - Schema nicht deploybar
+
+| # | Problem | Datei | Severity |
+|---|---------|-------|----------|
+| 1 | **FileAttachment Migration fehlt** | schema.prisma | 🔴 KRITISCH |
+| 2 | **displayValue → prefix Migration fehlt** | schema.prisma | 🔴 KRITISCH |
+| 3 | **FileType Enum zu limitiert** | schema.prisma | 🔴 KRITISCH |
+| 4 | **Fehlende Composite Indizes** | schema.prisma | 🔴 KRITISCH |
+
+**Details:**
+- `FileAttachment` Modell existiert im Schema, aber keine Migration
+- `displayValue` wurde durch `prefix` ersetzt, aber keine Migration
+- `FileType` fehlt: ECAD_MODEL, SCHEMATIC, APPLICATION_NOTE, MANUAL
+- Queries ohne passende Indizes führen zu Full-Table-Scans
+
+**Empfohlene Migration:**
+```sql
+-- 1. FileType Enum erweitern
+ALTER TYPE "FileType" ADD VALUE 'ECAD_MODEL';
+ALTER TYPE "FileType" ADD VALUE 'SCHEMATIC';
+ALTER TYPE "FileType" ADD VALUE 'APPLICATION_NOTE';
+ALTER TYPE "FileType" ADD VALUE 'MANUAL';
+
+-- 2. Composite Indizes
+CREATE INDEX "CoreComponent_active_category_status_idx"
+  ON "CoreComponent"("categoryId", "status")
+  WHERE "deletedAt" IS NULL;
 ```
 
-**Frontend Relations-Editor verwendet andere Typen:**
+### 2.2 Auth - Sicherheitslücken
+
+| # | Problem | Datei | Zeile | Severity |
+|---|---------|-------|-------|----------|
+| 1 | **Schwacher NEXTAUTH_SECRET** | .env.local | 6 | 🔴 KRITISCH |
+| 2 | **Fehlendes KEYCLOAK_CLIENT_SECRET** | .env.local | 12 | 🔴 KRITISCH |
+| 3 | **Cookie `secure: false`** | auth.ts | 214 | 🔴 KRITISCH |
+| 4 | **Refresh-Token an Client** | auth.ts | 158 | 🔴 KRITISCH |
+
+**Sofortige Maßnahmen:**
+```bash
+# 1. Neuen Secret generieren
+openssl rand -base64 32
+
+# 2. Keycloak Client auf "confidential" setzen
+# 3. secure: true für Production Cookies
+# 4. refreshToken aus Session-Callback entfernen
+```
+
+### 2.3 API - Race Conditions
+
+| # | Problem | Datei | Zeile |
+|---|---------|-------|-------|
+| 1 | Race Condition bei Slug-Generierung | component.service.ts | 241-248 |
+| 2 | Race Condition bei isPrimary Flag | part.service.ts | 522-527, 562-567 |
+
+**Lösung:** Prisma Unique Constraint + Transaction Locking
+
+---
+
+## Teil 3: Frontend-Analyse
+
+**Dateien analysiert:** 77 | **Imports:** 472 | **Kritische Issues:** 3
+
+### 3.1 Kritische Probleme
+
+| # | Problem | Datei | Zeile |
+|---|---------|-------|-------|
+| 1 | `as any` Type-Casting | relations-editor.tsx | 156 |
+| 2 | Memory Leak in useApi | use-api.ts | 18-30 |
+| 3 | Race Conditions ohne AbortController | admin/components/page.tsx | 62-80 |
+
+**relations-editor.tsx:156** - Type-Safety verletzt:
 ```typescript
-type RelationType =
-  | 'EQUIVALENT'
-  | 'SIMILAR'
-  | 'UPGRADE'
-  | 'DOWNGRADE'
-  | 'REPLACEMENT'
-  | 'COMPLEMENT'
-  | 'REQUIRES'
-  | 'CONFLICTS';
+// ❌ Aktuell
+resolver: zodResolver(CreateRelationSchema) as any,
+
+// ✅ Besser: Korrekten Typ verwenden
+resolver: zodResolver(CreateRelationSchema),
 ```
 
-**Abweichung:**
-Der Frontend-Code (`relations-editor.tsx`) definiert völlig andere Beziehungstypen als das Prisma-Schema und die Dokumentation.
-
-**Bewertung:**
-- Das Prisma-Schema hat `ConceptRelationType` mit technischen Varianten (DUAL_VERSION, etc.)
-- Die Frontend-Komponente nutzt eigene generische Typen (EQUIVALENT, SIMILAR, etc.)
-- Die API-Endpoints für `/relations` (in `api.ts`) erwarten diese generischen Typen
-- ABER: Es gibt keinen Backend-Service der diese generischen Typen verarbeitet!
-
-**Kritisch:** Die Route `/relations` wird im API-Client referenziert, existiert aber nicht als eigenständige Route! Die Component-Relations nutzen die `/components/:id/relations` Endpoints.
-
-**Empfehlung:**
-1. Die generischen Typen (EQUIVALENT, SIMILAR, etc.) sind intuitiver für Endnutzer
-2. Das `ConceptRelationType` im Schema beschreibt technische Hardware-Varianten
-3. Dies könnten zwei separate Konzepte sein, die aber nicht klar getrennt dokumentiert sind
-4. Die API-Client-Methoden `createRelation()`, `updateRelation()`, `deleteRelation()` und `getRelation()` rufen nicht-existente Endpoints auf!
-
----
-
-### 1.3 PartRelationship vs. ComponentConceptRelation
-
-**Im Schema existieren zwei Beziehungsmodelle:**
-
-1. `ComponentConceptRelation` - Beziehungen zwischen CoreComponents (im Code)
-2. `PartRelationship` - Beziehungen zwischen ManufacturerParts (im Schema)
-
-**Dokumentation erwähnt:**
-- Phase 4: "Beziehungen verwalten (Alternativen, Nachfolger)"
-- component-relations.md beschreibt nur ComponentConceptRelation
-
-**Bewertung:**
-- PartRelationship (zwischen konkreten Herstellerteilen) ist nicht im Frontend implementiert
-- ComponentConceptRelation (zwischen logischen Bauteilen) ist implementiert
-- Die Dokumentation vermischt diese Konzepte teilweise
-
-**Empfehlung:** Klare Unterscheidung in der Dokumentation:
-- **ComponentConceptRelation**: "NE555 hat eine CMOS-Version ICM7555"
-- **PartRelationship**: "TI NE555P kann durch ST NE555N ersetzt werden"
-
----
-
-## 2. API-Endpunkte Diskrepanzen
-
-### 2.1 Nicht-existente Endpoints im API-Client
-
-**Der API-Client (api.ts) definiert:**
+**use-api.ts** - Token wird nicht bei Unmount zurückgesetzt:
 ```typescript
-getRelation(id: string)        // GET /relations/:id
-createRelation(data)           // POST /relations
-updateRelation(id, data)       // PATCH /relations/:id
-deleteRelation(id)             // DELETE /relations/:id
-createBulkRelations(data)      // POST /relations/bulk
-```
+// ❌ Aktuell: Token bei jedem Render gesetzt
+if (session?.accessToken) {
+  api.setToken(session.accessToken);
+}
 
-**Diese Endpoints existieren NICHT im Backend!**
-
-Die tatsächlichen Endpoints für Component-Relations sind:
-- `GET /api/v1/components/:id/relations`
-- `POST /api/v1/components/:id/relations`
-- `PATCH /api/v1/components/:id/relations/:relationId`
-- `DELETE /api/v1/components/:id/relations/:relationId`
-
-**Bewertung:** Der API-Client hat veraltete/nie implementierte Methoden.
-
-**Empfehlung:** Entfernen oder korrekt implementieren der nicht-funktionierenden API-Client-Methoden.
-
----
-
-### 2.2 Pagination Response-Format
-
-**Dokumentation (phase-2-component-api.md):**
-```json
-{
-  "data": [...],
-  "meta": {
-    "total": 100,
-    "page": 1,
-    "limit": 20,
-    "totalPages": 5
+// ✅ Besser: useEffect mit Cleanup
+useEffect(() => {
+  if (session?.accessToken) {
+    api.setToken(session.accessToken);
   }
+  return () => api.setToken(null);
+}, [session?.accessToken]);
+```
+
+### 3.2 Hohe Priorität
+
+| # | Problem | Datei |
+|---|---------|-------|
+| 1 | Fehlende Debouncing für Search | admin/components/page.tsx:176 |
+| 2 | Code-Duplikation (flattenCategories) | 2 Dateien |
+| 3 | Fehlende Memoization für große Listen | component-dialog.tsx:666-730 |
+| 4 | Inkonsistente Loading States | Mehrere Admin-Pages |
+
+### 3.3 Fehlende Features
+
+- **TanStack Query** für Caching (aktuell: Direct API calls)
+- **Virtualisierung** für große Listen (react-window/react-virtual)
+- **Lazy Loading** für Dialog-Tabs
+- **URLSearchParams** für Admin-Filter (Deep-Links)
+
+---
+
+## Teil 4: Backend-Analyse
+
+**Kritische Bugs:** 4 | **Wichtige Issues:** 4 | **Code-Qualität:** 11
+
+### 4.1 Kritische Bugs
+
+| # | Bug | Datei | Auswirkung |
+|---|-----|-------|------------|
+| 1 | Race Condition Slug | component.service.ts | Duplikate möglich |
+| 2 | Race Condition isPrimary | part.service.ts | Mehrere Primary möglich |
+| 3 | Unsichere MinIO Defaults | minio.ts:11-12 | Credentials im Code |
+| 4 | N+1 Query Category Tree | category.service.ts:191-199 | Performance-Killer |
+
+**MinIO - Unsichere Defaults:**
+```typescript
+// ❌ Aktuell
+const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY || 'minioadmin';
+
+// ✅ Besser: Fehler bei fehlenden ENV-Variablen
+const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY;
+if (!MINIO_ACCESS_KEY) {
+  throw new Error('MINIO_ACCESS_KEY environment variable is required');
 }
 ```
 
-**Tatsächlicher Code (api.ts Interface):**
+### 4.2 Wichtige Issues
+
+| # | Problem | Dateien |
+|---|---------|---------|
+| 1 | Fehlende Audit-Logs | component.service.ts, manufacturer.service.ts |
+| 2 | Type Casting ohne Validierung | Mehrere Services (`as unknown as`) |
+| 3 | Information Disclosure bei 500 | app.ts:214-221 |
+| 4 | Batch-Operations N+1 | moderation.service.ts:387-405 |
+
+### 4.3 Security Warnings
+
+| # | Problem | Datei | Fix |
+|---|---------|-------|-----|
+| 1 | Globales Rate-Limit zu hoch | app.ts:94-98 | Route-spezifisch machen |
+| 2 | Stack Traces in Production | app.ts:214-221 | Generische Messages |
+| 3 | Detaillierte Validation Errors | app.ts:182-190 | Nur relevante Felder |
+| 4 | CORS erlaubt Requests ohne Origin | app.ts:66-70 | Dokumentieren |
+
+---
+
+## Teil 5: Datenbank-Analyse
+
+**Schema:** 807 Zeilen | **Migrationen:** 2 | **Status:** Nicht production-ready
+
+### 5.1 Schema-Qualität
+
+| Kategorie | Bewertung |
+|-----------|-----------|
+| Schema-Qualität | 7/10 |
+| Performance-Optimierung | 5/10 |
+| Datenintegrität | 8/10 |
+| Normalisierung | 9/10 |
+
+### 5.2 Fehlende Migrationen
+
+1. **FileAttachment** - Tabelle fehlt komplett
+2. **displayValue → prefix** - Spaltenumbenennung fehlt
+3. **allowedPrefixes** - Neue Spalte fehlt
+
+### 5.3 Performance-Probleme
+
+| Problem | Auswirkung | Lösung |
+|---------|------------|--------|
+| Keine Composite Indizes | Full-Table-Scans | Composite Index hinzufügen |
+| Keine Volltextsuche (tsvector) | Langsame JSON-Searches | PostgreSQL tsvector |
+| Nur einfache deletedAt-Indizes | Große Index-Größe | Partial Index |
+| N+1 bei Category Tree | Exponentielles Query-Wachstum | CTE-basierte Lösung |
+
+### 5.4 Fehlende Constraints
+
+```sql
+-- Business-Logik Constraints
+ALTER TABLE "ManufacturerMaster"
+  ADD CONSTRAINT "valid_years"
+  CHECK ("defunctYear" IS NULL OR "defunctYear" >= "foundedYear");
+
+ALTER TABLE "PackageMaster"
+  ADD CONSTRAINT "valid_pin_range"
+  CHECK ("pinCountMax" IS NULL OR "pinCountMax" >= "pinCountMin");
+```
+
+---
+
+## Teil 6: Auth-Analyse
+
+**Status:** 4 kritische Sicherheitslücken | Nicht production-ready
+
+### 6.1 Risikobewertung
+
+| Kategorie | Schweregrad | Status |
+|-----------|-------------|--------|
+| Token-Sicherheit | 🔴 KRITISCH | Fehlende Secrets |
+| Session-Management | 🟡 MITTEL | 30 Tage zu lang |
+| CSRF-Schutz | 🟢 GUT | Implementiert |
+| Rollen-System | 🟡 MITTEL | Inkonsistenzen |
+| API-Authentifizierung | 🟢 GUT | JWKS korrekt |
+| Cookie-Konfiguration | 🔴 KRITISCH | secure: false |
+
+### 6.2 Gut implementiert
+
+- **PKCE & State-Parameter** für OAuth-Flow
+- **JWKS-basierte JWT-Validierung** (keine Secrets im Backend)
+- **Rollen-Hierarchie** korrekt definiert
+- **User-Sync** zwischen Keycloak und PostgreSQL
+- **httpOnly Cookies** gegen XSS
+- **Rate-Limiting** implementiert
+
+### 6.3 Production-Checkliste
+
+- [ ] NEXTAUTH_SECRET mit mindestens 32 Zeichen
+- [ ] KEYCLOAK_CLIENT_SECRET gesetzt
+- [ ] `secure: true` für alle Cookies
+- [ ] Refresh-Token nicht an Client senden
+- [ ] Session maxAge auf 7 Tage reduzieren
+- [ ] HTTPS erzwingen
+
+---
+
+## Teil 7: Schema-Analyse (Zod)
+
+**Module:** 10 | **Kritische Issues:** 6
+
+### 7.1 Fehlende Schemas
+
+| Schema | Verwendung |
+|--------|------------|
+| User/Profile | Frontend User-Management |
+| Moderation | API Moderation-Queue |
+| File Upload | API File-Service |
+| Search/Autocomplete | Schnellsuche |
+
+### 7.2 Kritische Type-Safety Probleme
+
+| # | Problem | Datei |
+|---|---------|-------|
+| 1 | `AttributeDataType` fehlt `RANGE` | common.ts:108 |
+| 2 | `AttributeDefinitionSchema` doppelt | component.ts, attribute.ts |
+| 3 | `PinMappingSchema` doppelt | part.ts, pin.ts |
+| 4 | `ImageType` nicht exportiert | common.ts |
+| 5 | `EcadFormat` nicht exportiert | common.ts |
+
+**AttributeDataType Fix:**
 ```typescript
-interface ApiResponse<T> {
-  data: T;
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
+// ❌ Aktuell
+export const AttributeDataTypeSchema = z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN']);
+
+// ✅ Korrigiert
+export const AttributeDataTypeSchema = z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN', 'RANGE']);
 ```
 
-**Abweichung:** `meta` → `pagination`
+### 7.3 Empfehlungen
 
-**Bewertung:** Kleine Inkonsistenz, Code-Version ist akzeptabel.
-
-**Empfehlung:** Dokumentation anpassen auf `pagination`.
-
----
-
-## 3. Fehlende Implementierungen
-
-### 3.1 Laut Dokumentation geplant, aber nicht implementiert
-
-| Feature | Dokumentation | Status |
-|---------|---------------|--------|
-| OpenAPI/Swagger | phase-2 "optional" | Nicht implementiert |
-| PostgreSQL Volltextsuche | phase-2 "optional" | Nicht implementiert |
-| mathjs Einheiten-Parsing | tech-stack.md | Nicht implementiert |
-| Prisma Client Extensions (Soft-Delete, Audit) | tech-stack.md | Manuell implementiert statt Extension |
-| packages/ui (shadcn shared) | tech-stack.md | Nicht vorhanden, UI-Komponenten in apps/web |
-
-### 3.2 mathjs Integration fehlt
-
-**Dokumentation (tech-stack.md):**
-```typescript
-import { unit } from 'mathjs';
-const parsed = unit("100 uF");
-const normalizedValue = parsed.toNumber('F'); // 0.0001
-```
-
-**Realität:** mathjs ist nicht installiert, keine SI-Einheiten-Normalisierung implementiert.
-
-**Bewertung:** Signifikante Feature-Lücke für eine Bauteil-Datenbank.
-
-**Empfehlung:**
-- mathjs hinzufügen für Einheiten-Parsing
-- Oder: Alternative wie `convert-units` oder eigene Implementierung
+1. **Doppelte Definitionen entfernen** - Nur eine Quelle der Wahrheit
+2. **Enums in common.ts zentralisieren** - ImageType, EcadFormat
+3. **Refinements hinzufügen** - Cross-Field-Validierung (z.B. Min <= Max)
+4. **Error-Messages ergänzen** - Bessere UX bei Validierungsfehlern
 
 ---
 
-### 3.3 Prisma Extensions
+## Teil 8: Priorisierte Handlungsempfehlungen
 
-**Dokumentation (tech-stack.md):**
-```typescript
-export const prisma = new PrismaClient()
-  .$extends(softDeleteExtension)
-  .$extends(auditLogExtension);
-```
+### P0 - Kritisch (Vor Production-Deploy)
 
-**Realität (packages/database/src/index.ts):**
-- Keine Extensions implementiert
-- Soft-Delete wird manuell in Services gehandhabt
-- Audit-Logging wird manuell in Services aufgerufen
+| # | Aufgabe | Bereich | Aufwand |
+|---|---------|---------|---------|
+| 1 | FileAttachment Migration erstellen | DB | 2h |
+| 2 | displayValue → prefix Migration | DB | 1h |
+| 3 | NEXTAUTH_SECRET generieren | Auth | 5min |
+| 4 | KEYCLOAK_CLIENT_SECRET setzen | Auth | 15min |
+| 5 | Cookie `secure: true` für Production | Auth | 30min |
+| 6 | Refresh-Token aus Session entfernen | Auth | 10min |
+| 7 | Race Conditions mit Transactions fixen | API | 2h |
+| 8 | MinIO unsichere Defaults entfernen | API | 15min |
 
-**Bewertung:** Beide Ansätze funktionieren, Extensions wären DRY-er.
+### P1 - Hoch (Nächster Sprint)
 
-**Empfehlung:** Aktuelle manuelle Implementierung beibehalten, aber Dokumentation aktualisieren.
+| # | Aufgabe | Bereich | Aufwand |
+|---|---------|---------|---------|
+| 1 | `as any` in relations-editor.tsx fixen | Frontend | 30min |
+| 2 | Memory Leak in useApi beheben | Frontend | 1h |
+| 3 | Composite Indizes hinzufügen | DB | 1h |
+| 4 | N+1 Query bei Category Tree fixen | API | 4h |
+| 5 | Fehlende Audit-Logs hinzufügen | API | 2h |
+| 6 | AttributeDataType `RANGE` hinzufügen | Schema | 15min |
+| 7 | Doppelte Schema-Definitionen entfernen | Schema | 1h |
 
----
+### P2 - Mittel (Backlog)
 
-## 4. Package-Struktur Abweichungen
+| # | Aufgabe | Bereich |
+|---|---------|---------|
+| 1 | Debouncing für Search-Inputs | Frontend |
+| 2 | TanStack Query Migration | Frontend |
+| 3 | tsvector für Volltextsuche | DB |
+| 4 | Route-spezifisches Rate-Limiting | API |
+| 5 | User/Moderation/File Schemas | Schema |
+| 6 | CHECK Constraints für Business-Logik | DB |
 
-### 4.1 packages/ui existiert nicht
+### P3 - Niedrig (Optional)
 
-**Dokumentation:**
-```
-packages/
-├── ui/                    # Shared UI Components (shadcn/ui)
-```
-
-**Realität:**
-- Kein `packages/ui` Ordner
-- shadcn/ui Komponenten direkt in `apps/web/src/components/ui/`
-
-**Bewertung:** Pragmatische Entscheidung, da nur eine Frontend-App existiert.
-
-**Empfehlung:** Dokumentation anpassen oder package erstellen wenn zweite App kommt.
-
----
-
-### 4.2 packages/shared/src/units fehlt
-
-**Dokumentation (tech-stack.md):**
-```
-packages/shared/
-├── src/
-│   ├── units/
-│   │   ├── parser.ts
-│   │   ├── normalize.ts
-│   │   └── categories.ts
-```
-
-**Realität:**
-- Nur `packages/shared/src/i18n/` existiert
-- Kein `units/` Ordner
-
-**Bewertung:** Feature nicht implementiert.
+| # | Aufgabe | Bereich |
+|---|---------|---------|
+| 1 | Virtualisierung für große Listen | Frontend |
+| 2 | Legacy-Felder entfernen (siUnit, siMultiplier) | DB |
+| 3 | `.brand()` für UUIDs/Slugs | Schema |
+| 4 | Prisma Extensions (Soft-Delete, Audit) | DB |
 
 ---
 
-## 5. UI/Frontend Abweichungen
+## Teil 9: Erstellte Dokumentation
 
-### 5.1 Anzahl UI-Komponenten
+Durch diese Analyse wurden folgende neue Dokumentationen erstellt:
 
-**Dokumentation (phase-3-frontend.md):** "16 Stück" bzw. "19 Stück"
-
-**Tatsächlich in apps/web/src/components/ui/:**
-- button.tsx
-- input.tsx
-- card.tsx
-- badge.tsx
-- breadcrumb.tsx
-- dialog.tsx
-- table.tsx
-- toast.tsx, toaster.tsx
-- label.tsx
-- select.tsx
-- textarea.tsx
-- skeleton.tsx
-- form.tsx
-- alert-dialog.tsx
-- avatar.tsx
-- checkbox.tsx
-- collapsible.tsx
-- alert.tsx
-- tabs.tsx
-- progress.tsx
-
-**Gezählt: 20 Komponenten** (mehr als dokumentiert)
-
-**Empfehlung:** Dokumentation aktualisieren.
+| Datei | Inhalt |
+|-------|--------|
+| [docs/database-analysis.md](database-analysis.md) | Detaillierte DB-Schema-Analyse mit Migrations-Plan |
+| [docs/security/auth-security-analysis.md](security/auth-security-analysis.md) | Vollständige Auth-Sicherheitsanalyse |
 
 ---
 
-### 5.2 Fehlende Detailseiten
+## Teil 10: Positiv - Was gut umgesetzt wurde
 
-**Dokumentation (phase-3-frontend.md):**
-```
-/components/:slug - Komponenten-Detail mit Parts
-```
+### Architektur
+- **2-Ebenen-Bauteil-Architektur** (CoreComponent → ManufacturerPart) - Exakt wie dokumentiert
+- **Klare Service/Route-Trennung** im Backend
+- **Monorepo mit shared Packages** - Gute Code-Wiederverwendung
+- **Zod-First Ansatz** - Schema einmal definieren, überall nutzen
 
-**Realität:**
-- Route existiert: `apps/web/src/app/components/[slug]/page.tsx`
-- Aber: Detailseiten zeigen grundlegende Infos, keine vollständigen Part-Listen
+### Code-Qualität
+- **TypeScript Strict Mode** - Kaum `any` Types
+- **Soft-Delete** - Konsistent implementiert
+- **LocalizedString** - Funktioniert wie beschrieben
+- **Kategorie-Hierarchie** - 4 Ebenen korrekt implementiert
 
-**Bewertung:** Basis implementiert, Details könnten erweitert werden.
+### Features
+- **Audit-Logging** - Vorhanden und funktional
+- **Moderation-Queue** - Vollständig implementiert
+- **Pin-Mapping** - Komplett mit UI
+- **Admin-UI** - Alle dokumentierten Features vorhanden
 
----
-
-## 6. Auth-System
-
-### 6.1 Rollen Case-Sensitivity
-
-**Dokumentation (auth-keycloak.md):**
-> Keycloak-Rollen sind lowercase (`admin`), Code erwartet oft uppercase (`ADMIN`).
-
-**Code (routes/components/index.ts):**
-```typescript
-app.requireRole('CONTRIBUTOR')  // Uppercase
-```
-
-**Bewertung:** Das Auth-Plugin scheint case-insensitive zu funktionieren (laut auth-keycloak.md), was gut ist.
-
-**Potentielles Problem:** Wenn jemand den Code liest, könnte er annehmen dass Keycloak auch ADMIN (uppercase) erwartet.
+### Security
+- **PKCE für OAuth** - Best Practice
+- **JWKS Token-Validierung** - Keine Secrets im Backend
+- **httpOnly Cookies** - XSS-Schutz
+- **Rate-Limiting** - Implementiert
+- **CSRF-Schutz** - Durch next-auth
 
 ---
 
-## 7. i18n-System
+## Durchgeführte Änderungen (2025-12-28)
 
-### 7.1 next-intl vs. Dokumentation
+### Analyse-Dateien erstellt
 
-**Dokumentation:** next-intl konfiguriert mit messages/de.json und messages/en.json
+| Datei | Erstellt von |
+|-------|--------------|
+| `docs/database-analysis.md` | Database Agent |
+| `docs/security/auth-security-analysis.md` | Auth Agent |
+| `docs/analyse.md` (diese Datei) | Konsolidiert |
 
-**Realität:**
-- `apps/web/messages/de.json` existiert
-- `apps/web/messages/en.json` existiert
-- `apps/web/src/i18n/request.ts` existiert
+### Bisherige Code-Änderungen (aus vorheriger Session)
 
-**Bewertung:** Korrekt implementiert.
-
----
-
-### 7.2 API-Response Lokalisierung
-
-**Dokumentation (i18n.md):**
-```json
-{
-  "name": "Kondensator",
-  "name_locales": ["de", "en"],
-  "name_all": { "de": "Kondensator", "en": "Capacitor" }
-}
-```
-
-**Realität:** API gibt LocalizedString direkt zurück, keine Aufspaltung in `name_locales` oder `name_all`.
-
-```json
-{
-  "name": { "de": "Kondensator", "en": "Capacitor" }
-}
-```
-
-**Bewertung:** Die Realität ist einfacher und praktikabler. Die Dokumentation beschreibt ein aufwändigeres System das nicht implementiert wurde.
-
-**Empfehlung:** Dokumentation anpassen.
+| Datei | Änderung |
+|-------|----------|
+| `apps/web/src/lib/api.ts` | Relation API-Methoden korrigiert |
+| `apps/web/src/components/admin/relations-editor.tsx` | Überarbeitet für ConceptRelationType |
+| `docs/architecture/database-schema.md` | ComponentStatus korrigiert |
+| `docs/architecture/tech-stack.md` | Package-Strukturen aktualisiert |
+| `docs/phases/phase-2-component-api.md` | Pagination Format korrigiert |
+| `docs/phases/phase-4-community.md` | ConceptRelationType Tabelle hinzugefügt |
 
 ---
 
-## 8. Beziehungstypen-Chaos
+## Anhang: Statistiken
 
-### Zusammenfassung der Beziehungstypen im Projekt
+### Frontend
+- **Dateien:** 77
+- **Kritische Probleme:** 3
+- **Warnings:** 14
+- **Code-Duplikationen:** 3
+- **ESLint-Disables:** 3
 
-| Ort | Typen | Verwendung |
-|-----|-------|------------|
-| Prisma `ConceptRelationType` | DUAL_VERSION, QUAD_VERSION, LOW_POWER_VERSION, HIGH_SPEED_VERSION, MILITARY_VERSION, AUTOMOTIVE_VERSION, FUNCTIONAL_EQUIV | Hardware-Varianten |
-| Prisma `RelationshipType` | SUCCESSOR, PREDECESSOR, ALTERNATIVE, FUNCTIONAL_EQUIV, VARIANT, SECOND_SOURCE, COUNTERFEIT_RISK | Part-Beziehungen (nicht im UI) |
-| Frontend `RelationType` | EQUIVALENT, SIMILAR, UPGRADE, DOWNGRADE, REPLACEMENT, COMPLEMENT, REQUIRES, CONFLICTS | Relations-Editor |
-| Dokumentation component-relations.md | ConceptRelationType | ✓ |
-| Dokumentation phase-4.md | "Beziehungen: EQUIVALENT, SIMILAR, UPGRADE..." | Frontend-Typen |
+### Backend
+- **Kritische Bugs:** 4
+- **Wichtige Issues:** 4
+- **Code-Qualität Issues:** 11
+- **Security Warnings:** 7
+- **Performance Issues:** 3
 
-**Problem:** Drei verschiedene Beziehungstyp-Sets, die nicht zusammenpassen.
+### Datenbank
+- **Schema-Zeilen:** 807
+- **Migrationen:** 2
+- **Fehlende Migrationen:** 2 (kritisch)
+- **Fehlende Indizes:** 4 (kritisch)
 
-**Empfehlung:**
-1. Entscheiden welche Typen benötigt werden
-2. Schema, Code und Dokumentation synchronisieren
-3. Eventuell: ConceptRelationType um generische Typen erweitern ODER
-4. PartRelationship nutzen und ComponentConceptRelation für technische Varianten belassen
+### Auth
+- **Kritische Lücken:** 4
+- **Mittlere Issues:** 5
+- **Gut implementiert:** 6 Features
 
----
-
-## 9. File-Upload-System
-
-### 9.1 Doppeltes Dateisystem
-
-**Im Schema:**
-1. `FileAttachment` - Neues generisches System
-2. `PartDatasheet`, `PartImage`, `EcadFootprint`, `PartEcadModel` - Legacy-Modelle
-
-**Dokumentation (phase-4-community.md):** Nur FileAttachment erwähnt.
-
-**Realität:** Beide Systeme existieren parallel im Schema.
-
-**Kommentar im Schema:**
-```prisma
-// Bestehende Modelle (Legacy - können später migriert werden)
-model PartDatasheet { ... }
-```
-
-**Bewertung:** Technische Schulden, aber bewusst dokumentiert.
+### Schemas
+- **Module:** 10
+- **Fehlende Schemas:** 4
+- **Doppelte Definitionen:** 2
+- **Enum-Inkonsistenzen:** 1
 
 ---
 
-## 10. Positiv: Was gut umgesetzt wurde
-
-1. **2-Ebenen-Architektur** (CoreComponent → ManufacturerPart): Exakt wie dokumentiert
-2. **Soft-Delete**: Konsistent implementiert
-3. **LocalizedString**: Funktioniert wie beschrieben
-4. **Kategorie-Hierarchie**: 4 Ebenen korrekt implementiert
-5. **Audit-Logging**: Vorhanden und funktional
-6. **Moderation-Queue**: Vollständig implementiert
-7. **Pin-Mapping**: Komplett mit UI
-8. **Admin-UI**: Alle dokumentierten Features vorhanden
-
----
-
-## 11. Handlungsempfehlungen
-
-### Hohe Priorität
-
-1. **API-Client bereinigen**: Nicht-existente Endpoints entfernen
-2. **Beziehungstypen klären**: Ein einheitliches Set definieren
-3. **Dokumentation synchronisieren**: ComponentStatus, Pagination-Format
-
-### Mittlere Priorität
-
-4. **packages/ui erwägen**: Wenn zweite App geplant
-5. **mathjs evaluieren**: SI-Einheiten-Parsing hinzufügen?
-6. **Legacy-Datemodelle**: Migration oder Entfernung planen
-
-### Niedrige Priorität
-
-7. **Prisma Extensions**: Nice-to-have für DRY-Code
-8. **OpenAPI**: Hilfreich für externe Entwickler
-9. **UI-Komponenten-Zählung**: Nur Dokumentations-Update
-
----
-
-*Ende der Analyse*
+*Analyse abgeschlossen: 2025-12-28*
+*Nächste empfohlene Aktion: P0-Aufgaben vor Production-Deploy beheben*

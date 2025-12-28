@@ -11,6 +11,7 @@ import {
   PaginationSchema,
   SortSchema,
 } from './common';
+import { SIPrefixSchema } from './component';
 
 // ============================================
 // RESPONSE SCHEMAS
@@ -24,11 +25,13 @@ export const AttributeDefinitionSchema = z.object({
   categoryId: UUIDSchema,
   name: z.string().min(1).max(100),
   displayName: LocalizedStringSchema,
-  unit: z.string().max(50).nullable(),
+  unit: z.string().max(50).nullable(),           // Basiseinheit (z.B. "F", "Ω", "m")
   dataType: AttributeDataTypeSchema,
   scope: AttributeScopeSchema,
   isFilterable: z.boolean(),
   isRequired: z.boolean(),
+  allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
+  // Legacy-Felder
   siUnit: z.string().max(20).nullable(),
   siMultiplier: z.number().nullable(),
   sortOrder: z.number().int(),
@@ -67,11 +70,13 @@ export const CreateAttributeDefinitionSchema = z.object({
     .max(100, 'Name too long')
     .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, 'Name must be alphanumeric with underscores'),
   displayName: LocalizedStringSchema,
-  unit: z.string().max(50).optional(),
+  unit: z.string().max(50).optional(),           // Basiseinheit (z.B. "F", "Ω", "m")
   dataType: AttributeDataTypeSchema,
   scope: AttributeScopeSchema.default('PART'),
   isFilterable: z.boolean().default(true),
   isRequired: z.boolean().default(false),
+  allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
+  // Legacy-Felder (optional)
   siUnit: z.string().max(20).optional(),
   siMultiplier: z.number().positive().optional(),
   sortOrder: z.number().int().default(0),
@@ -88,6 +93,8 @@ export const UpdateAttributeDefinitionSchema = z.object({
   scope: AttributeScopeSchema.optional(),
   isFilterable: z.boolean().optional(),
   isRequired: z.boolean().optional(),
+  allowedPrefixes: z.array(SIPrefixSchema).optional(),  // Erlaubte SI-Präfixe
+  // Legacy-Felder
   siUnit: z.string().max(20).nullable().optional(),
   siMultiplier: z.number().positive().nullable().optional(),
   sortOrder: z.number().int().optional(),

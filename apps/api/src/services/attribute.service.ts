@@ -120,10 +120,13 @@ export class AttributeService {
     const categoryIds = await this.collectCategoryHierarchy(categoryId, query.includeInherited);
 
     // Hole Attribute aller relevanten Kategorien
+    // Wenn ein spezifischer Scope angefragt wird, auch BOTH einschließen
     const attributes = await prisma.attributeDefinition.findMany({
       where: {
         categoryId: { in: categoryIds },
-        ...(query.scope && { scope: query.scope }),
+        ...(query.scope && {
+          scope: { in: [query.scope, 'BOTH' as const] },
+        }),
       },
       orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
     });
@@ -185,48 +188,46 @@ export class AttributeService {
       throw new NotFoundError('Category', data.categoryId);
     }
 
-    // Prüfe auf Duplikate (name + categoryId)
-    const existing = await prisma.attributeDefinition.findFirst({
-      where: {
-        categoryId: data.categoryId,
-        name: data.name,
-      },
-    });
+    // Race Condition Fix: Prisma P2002 Error fangen statt Check-Then-Act
+    try {
+      // Erstelle Attribut
+      const attribute = await prisma.attributeDefinition.create({
+        data: {
+          categoryId: data.categoryId,
+          name: data.name,
+          displayName: data.displayName,
+          unit: data.unit || null,
+          dataType: data.dataType,
+          scope: data.scope ?? 'PART',
+          isFilterable: data.isFilterable ?? true,
+          isRequired: data.isRequired ?? false,
+          allowedPrefixes: data.allowedPrefixes ?? [],
+          siUnit: data.siUnit || null,
+          siMultiplier: data.siMultiplier || null,
+          sortOrder: data.sortOrder ?? 0,
+        },
+      });
 
-    if (existing) {
-      throw new ConflictError(
-        `Attribute with name '${data.name}' already exists in this category`
-      );
+      // Audit Log
+      if (userId) {
+        await auditService.logCreate(
+          'ATTRIBUTE_DEFINITION',
+          attribute.id,
+          attribute as unknown as Record<string, unknown>,
+          userId
+        );
+      }
+
+      return attribute as AttributeDefinition;
+    } catch (error) {
+      // Race Condition: Unique Constraint Violation für name + categoryId
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictError(
+          `Attribute with name '${data.name}' already exists in this category`
+        );
+      }
+      throw error;
     }
-
-    // Erstelle Attribut
-    const attribute = await prisma.attributeDefinition.create({
-      data: {
-        categoryId: data.categoryId,
-        name: data.name,
-        displayName: data.displayName,
-        unit: data.unit || null,
-        dataType: data.dataType,
-        scope: data.scope ?? 'PART',
-        isFilterable: data.isFilterable ?? true,
-        isRequired: data.isRequired ?? false,
-        siUnit: data.siUnit || null,
-        siMultiplier: data.siMultiplier || null,
-        sortOrder: data.sortOrder ?? 0,
-      },
-    });
-
-    // Audit Log
-    if (userId) {
-      await auditService.logCreate(
-        'ATTRIBUTE_DEFINITION',
-        attribute.id,
-        attribute as unknown as Record<string, unknown>,
-        userId
-      );
-    }
-
-    return attribute as AttributeDefinition;
   }
 
   /**
@@ -254,6 +255,7 @@ export class AttributeService {
         ...(data.scope && { scope: data.scope }),
         ...(data.isFilterable !== undefined && { isFilterable: data.isFilterable }),
         ...(data.isRequired !== undefined && { isRequired: data.isRequired }),
+        ...(data.allowedPrefixes !== undefined && { allowedPrefixes: data.allowedPrefixes }),
         ...(data.siUnit !== undefined && { siUnit: data.siUnit }),
         ...(data.siMultiplier !== undefined && { siMultiplier: data.siMultiplier }),
         ...(data.sortOrder !== undefined && { sortOrder: data.sortOrder }),

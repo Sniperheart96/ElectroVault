@@ -2,7 +2,7 @@
  * Manufacturer Service - Hersteller-Verwaltung (CRUD)
  */
 
-import { prisma } from '@electrovault/database';
+import { prisma, Prisma } from '@electrovault/database';
 import type {
   ManufacturerListQuery,
   CreateManufacturerInput,
@@ -129,56 +129,52 @@ export class ManufacturerService {
       slug = generateUniqueSlug(baseSlug, existingSlugs);
     }
 
-    // Prüfen ob Slug bereits existiert
-    const existing = await prisma.manufacturerMaster.findUnique({
-      where: { slug },
-    });
-
-    if (existing) {
-      throw new ConflictError(`Manufacturer with slug '${slug}' already exists`);
-    }
-
-    // CAGE-Code-Validierung falls angegeben
-    if (data.cageCode) {
-      const existingCage = await prisma.manufacturerMaster.findFirst({
-        where: { cageCode: data.cageCode },
+    // Race Condition Fix: Prisma P2002 Error fangen statt Check-Then-Act
+    try {
+      const manufacturer = await prisma.manufacturerMaster.create({
+        data: {
+          name: data.name,
+          slug,
+          cageCode: data.cageCode,
+          countryCode: data.countryCode,
+          website: data.website,
+          logoUrl: data.logoUrl,
+          status: data.status,
+          foundedYear: data.foundedYear,
+          defunctYear: data.defunctYear,
+          description: data.description,
+          createdById: userId,
+          aliases: data.aliases
+            ? {
+                create: data.aliases.map((alias) => ({
+                  aliasName: alias.aliasName,
+                  aliasType: alias.aliasType,
+                })),
+              }
+            : undefined,
+        },
+        include: {
+          aliases: true,
+        },
       });
 
-      if (existingCage) {
-        throw new ConflictError(
-          `CAGE code '${data.cageCode}' is already assigned to another manufacturer`
-        );
+      return manufacturer as ManufacturerWithAliases;
+    } catch (error) {
+      // Race Condition: Unique Constraint Violation
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        // Prisma meta.target enthält das betroffene Feld
+        const field = (error.meta as { target?: string[] })?.target?.[0];
+        if (field === 'slug') {
+          throw new ConflictError(`Manufacturer with slug '${slug}' already exists`);
+        } else if (field === 'cageCode') {
+          throw new ConflictError(
+            `CAGE code '${data.cageCode}' is already assigned to another manufacturer`
+          );
+        }
+        throw new ConflictError('Duplicate entry detected');
       }
+      throw error;
     }
-
-    const manufacturer = await prisma.manufacturerMaster.create({
-      data: {
-        name: data.name,
-        slug,
-        cageCode: data.cageCode,
-        countryCode: data.countryCode,
-        website: data.website,
-        logoUrl: data.logoUrl,
-        status: data.status,
-        foundedYear: data.foundedYear,
-        defunctYear: data.defunctYear,
-        description: data.description,
-        createdById: userId,
-        aliases: data.aliases
-          ? {
-              create: data.aliases.map((alias) => ({
-                aliasName: alias.aliasName,
-                aliasType: alias.aliasType,
-              })),
-            }
-          : undefined,
-      },
-      include: {
-        aliases: true,
-      },
-    });
-
-    return manufacturer as ManufacturerWithAliases;
   }
 
   /**

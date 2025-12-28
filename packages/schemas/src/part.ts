@@ -15,7 +15,7 @@ import {
 } from './common';
 import { ManufacturerBaseSchema } from './manufacturer';
 import { PackageBaseSchema } from './package';
-import { ComponentBaseSchema, CreateAttributeValueSchema } from './component';
+import { ComponentBaseSchema, CreateAttributeValueSchema, SIPrefixSchema } from './component';
 
 // ============================================
 // PART SUB-SCHEMAS
@@ -53,10 +53,13 @@ export type PinMapping = z.infer<typeof PinMappingSchema>;
 export const PartAttributeValueSchema = z.object({
   id: UUIDSchema,
   definitionId: UUIDSchema,
-  displayValue: z.string(),
+  // Numerische Werte (immer in SI-Basiseinheit)
   normalizedValue: z.number().nullable(),
   normalizedMin: z.number().nullable(),
   normalizedMax: z.number().nullable(),
+  // SI-Präfix für Anzeige
+  prefix: SIPrefixSchema.nullable(),
+  // Für STRING-Typ
   stringValue: z.string().nullable(),
   isDeviation: z.boolean(),
 });
@@ -183,8 +186,19 @@ export type PartFull = z.infer<typeof PartFullSchema>;
  */
 export const PartListItemSchema = z.object({
   id: UUIDSchema,
+  coreComponentId: UUIDSchema,              // Direct ID for easy access
+  manufacturerId: UUIDSchema,               // Direct ID for easy access
   mpn: z.string(),
   orderingCode: z.string().nullable(),
+  packageId: UUIDSchema.nullable(),         // Direct ID for easy access
+  weightGrams: z.number().nullable(),
+  dateCodeFormat: z.string().nullable(),
+  introductionYear: z.number().int().nullable(),
+  discontinuedYear: z.number().int().nullable(),
+  rohsCompliant: z.boolean().nullable(),
+  reachCompliant: z.boolean().nullable(),
+  nsn: z.string().nullable(),
+  milSpec: z.string().nullable(),
   status: PartStatusSchema,
   lifecycleStatus: LifecycleStatusSchema,
   manufacturer: z.object({

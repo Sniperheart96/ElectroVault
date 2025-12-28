@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { LocalizedStringSchema } from '@electrovault/schemas';
+import { LocalizedStringSchema, SIPrefixSchema } from '@electrovault/schemas';
 import {
   Dialog,
   DialogContent,
@@ -32,11 +32,32 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { type AttributeDefinition } from '@/lib/api';
+import { type AttributeDefinition, type SIPrefix } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 import { useCategoriesFlat } from '@/hooks/use-categories-flat';
+import { X } from 'lucide-react';
+
+// Alle verfügbaren SI-Präfixe mit Anzeigenamen
+const ALL_SI_PREFIXES: { value: SIPrefix; label: string; name: string }[] = [
+  { value: 'P', label: 'P', name: 'Peta (10¹⁵)' },
+  { value: 'T', label: 'T', name: 'Tera (10¹²)' },
+  { value: 'G', label: 'G', name: 'Giga (10⁹)' },
+  { value: 'M', label: 'M', name: 'Mega (10⁶)' },
+  { value: 'k', label: 'k', name: 'Kilo (10³)' },
+  { value: 'h', label: 'h', name: 'Hekto (10²)' },
+  { value: 'da', label: 'da', name: 'Deka (10¹)' },
+  { value: '', label: '-', name: 'Basis (10⁰)' },
+  { value: 'd', label: 'd', name: 'Dezi (10⁻¹)' },
+  { value: 'c', label: 'c', name: 'Zenti (10⁻²)' },
+  { value: 'm', label: 'm', name: 'Milli (10⁻³)' },
+  { value: '\u00B5', label: 'µ', name: 'Mikro (10⁻⁶)' },
+  { value: 'n', label: 'n', name: 'Nano (10⁻⁹)' },
+  { value: 'p', label: 'p', name: 'Piko (10⁻¹²)' },
+  { value: 'f', label: 'f', name: 'Femto (10⁻¹⁵)' },
+];
 
 // Schema für Attribut-Definition
 const CreateAttributeSchema = z.object({
@@ -44,11 +65,12 @@ const CreateAttributeSchema = z.object({
   name: z.string().min(1).max(100),
   displayName: LocalizedStringSchema,
   unit: z.string().max(50).optional().nullable(),
-  dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN', 'RANGE']),
+  dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN']),
   scope: z.enum(['COMPONENT', 'PART', 'BOTH']),
   isFilterable: z.boolean().default(true),
   isRequired: z.boolean().default(false),
   sortOrder: z.number().int().min(0).default(0),
+  allowedPrefixes: z.array(SIPrefixSchema).default([]),
   enumValues: z.string().optional(), // Kommaseparierte Liste für ENUM (später)
 });
 
@@ -86,9 +108,14 @@ export function AttributeDialog({
       isFilterable: true,
       isRequired: false,
       sortOrder: 0,
+      allowedPrefixes: [],
       enumValues: '',
     },
   });
+
+  // Watch dataType to show/hide prefix selection
+  const dataType = form.watch('dataType');
+  const showPrefixes = dataType === 'DECIMAL' || dataType === 'INTEGER';
 
   useEffect(() => {
     if (attribute) {
@@ -97,11 +124,12 @@ export function AttributeDialog({
         name: attribute.name,
         displayName: attribute.displayName || { de: '', en: '' },
         unit: attribute.unit,
-        dataType: attribute.dataType,
+        dataType: (attribute.dataType as string) === 'RANGE' ? 'DECIMAL' : attribute.dataType,
         scope: attribute.scope,
         isFilterable: attribute.isFilterable,
         isRequired: attribute.isRequired,
         sortOrder: attribute.sortOrder,
+        allowedPrefixes: attribute.allowedPrefixes || [],
         enumValues: '',
       });
     } else {
@@ -115,6 +143,7 @@ export function AttributeDialog({
         isFilterable: true,
         isRequired: false,
         sortOrder: 0,
+        allowedPrefixes: [],
         enumValues: '',
       });
     }
@@ -123,7 +152,14 @@ export function AttributeDialog({
   const onSubmit = async (data: CreateAttributeInput) => {
     try {
       // Remove enumValues from payload (not yet supported in backend)
-      const { enumValues, ...payload } = data;
+      // Clear allowedPrefixes if not a numeric type
+      const { enumValues, ...rest } = data;
+      const payload = {
+        ...rest,
+        allowedPrefixes: (data.dataType === 'DECIMAL' || data.dataType === 'INTEGER')
+          ? data.allowedPrefixes
+          : [],
+      };
 
       if (isEdit) {
         await api.updateAttributeDefinition(attribute.id, payload);
@@ -146,6 +182,22 @@ export function AttributeDialog({
         variant: 'destructive',
       });
     }
+  };
+
+  // Helper to toggle prefix in array
+  const togglePrefix = (prefix: SIPrefix) => {
+    const current = form.getValues('allowedPrefixes') || [];
+    if (current.includes(prefix)) {
+      form.setValue('allowedPrefixes', current.filter((p) => p !== prefix));
+    } else {
+      form.setValue('allowedPrefixes', [...current, prefix]);
+    }
+  };
+
+  // Helper to get prefix label
+  const getPrefixLabel = (prefix: SIPrefix) => {
+    const found = ALL_SI_PREFIXES.find((p) => p.value === prefix);
+    return found?.label || prefix || '-';
   };
 
   return (
@@ -301,7 +353,6 @@ export function AttributeDialog({
                         <SelectItem value="INTEGER">Ganzzahl</SelectItem>
                         <SelectItem value="STRING">Text</SelectItem>
                         <SelectItem value="BOOLEAN">Ja/Nein</SelectItem>
-                        <SelectItem value="RANGE">Bereich (Min-Max)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -335,6 +386,65 @@ export function AttributeDialog({
                 )}
               />
             </div>
+
+            {/* SI-Präfix-Auswahl - nur für numerische Typen */}
+            {showPrefixes && (
+              <FormField
+                control={form.control}
+                name="allowedPrefixes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Erlaubte SI-Präfixe</FormLabel>
+                    <FormDescription>
+                      Wählen Sie die Präfixe aus, die bei der Eingabe verwendet werden können.
+                      Ohne Auswahl wird kein Präfix-Dropdown angezeigt.
+                    </FormDescription>
+
+                    {/* Ausgewählte Präfixe als Badges */}
+                    {field.value && field.value.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {field.value.map((prefix) => (
+                          <Badge
+                            key={prefix || 'base'}
+                            variant="secondary"
+                            className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                            onClick={() => togglePrefix(prefix)}
+                          >
+                            {getPrefixLabel(prefix)}
+                            <X className="ml-1 h-3 w-3" />
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Präfix-Grid zur Auswahl */}
+                    <div className="grid grid-cols-5 gap-1 p-2 border rounded-md bg-muted/30">
+                      {ALL_SI_PREFIXES.map((prefix) => {
+                        const isSelected = field.value?.includes(prefix.value);
+                        return (
+                          <button
+                            key={prefix.value || 'base'}
+                            type="button"
+                            className={`
+                              p-2 text-sm rounded border transition-colors
+                              ${isSelected
+                                ? 'bg-primary text-primary-foreground border-primary'
+                                : 'bg-background hover:bg-accent border-input'
+                              }
+                            `}
+                            onClick={() => togglePrefix(prefix.value)}
+                            title={prefix.name}
+                          >
+                            {prefix.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <div className="flex gap-6">
               <FormField

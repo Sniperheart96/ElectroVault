@@ -253,8 +253,8 @@ describe('CreateComponentSchema', () => {
       attributeValues: [
         {
           definitionId: '550e8400-e29b-41d4-a716-446655440001',
-          displayValue: '100µF',
           normalizedValue: 0.0001,
+          prefix: 'µ',
         },
       ],
     };
@@ -290,19 +290,28 @@ describe('CreateAttributeValueSchema', () => {
   it('should validate with all fields', () => {
     const input = {
       definitionId: '550e8400-e29b-41d4-a716-446655440000',
-      displayValue: '100µF ±20%',
       normalizedValue: 0.0001,
       normalizedMin: 0.00008,
       normalizedMax: 0.00012,
+      prefix: 'µ',
     };
     const result = CreateAttributeValueSchema.safeParse(input);
     expect(result.success).toBe(true);
   });
 
-  it('should validate minimal input', () => {
+  it('should validate minimal input with just normalizedValue', () => {
     const result = CreateAttributeValueSchema.safeParse({
       definitionId: '550e8400-e29b-41d4-a716-446655440000',
-      displayValue: '10k',
+      normalizedValue: 10000,
+      prefix: 'k',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('should validate string value', () => {
+    const result = CreateAttributeValueSchema.safeParse({
+      definitionId: '550e8400-e29b-41d4-a716-446655440000',
+      stringValue: 'NPN',
     });
     expect(result.success).toBe(true);
   });

@@ -170,6 +170,24 @@ export const AuditActionSchema = z.enum([
 ]);
 export type AuditAction = z.infer<typeof AuditActionSchema>;
 
+export const ImageTypeSchema = z.enum(['PHOTO', 'DIAGRAM', 'PINOUT', 'APPLICATION', 'OTHER']);
+export type ImageType = z.infer<typeof ImageTypeSchema>;
+
+export const EcadFormatSchema = z.enum(['KICAD', 'EAGLE', 'ALTIUM', 'ORCAD', 'STEP', 'OTHER']);
+export type EcadFormat = z.infer<typeof EcadFormatSchema>;
+
+export const FileTypeSchema = z.enum([
+  'DATASHEET',
+  'IMAGE',
+  'PINOUT',
+  'ECAD_MODEL',
+  'SCHEMATIC',
+  'APPLICATION_NOTE',
+  'MANUAL',
+  'OTHER',
+]);
+export type FileType = z.infer<typeof FileTypeSchema>;
+
 // ============================================
 // API RESPONSE SCHEMAS
 // ============================================

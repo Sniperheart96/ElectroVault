@@ -346,4 +346,18 @@ packages/schemas/src/component.ts     # Zod-Schemas
 
 ---
 
+## Meldepflicht an Documentation Agent
+
+**Nach Abschluss jeder Implementierung MUSS eine Meldung an den Documentation Agent erfolgen!**
+
+Siehe [CLAUDE.md](../CLAUDE.md#agenten-workflow-dokumentations-meldepflicht) für das Meldungs-Template.
+
+Zu melden sind insbesondere:
+- Neue Kategorien oder Kategorie-Hierarchien
+- Neue Attribut-Definitionen
+- Einheiten und Umrechnungen
+- Domain-spezifische Begriffe (deutsch/englisch)
+
+---
+
 *Aktiviere diesen Agenten für Bauteil-Datenmodellierung, Kategorien und Elektronik-Domain-Fragen.*

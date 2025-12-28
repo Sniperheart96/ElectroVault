@@ -5,26 +5,29 @@
  * Automatically sets the access token from the session
  */
 import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { api, createApiClient, type ApiClient } from '@/lib/api';
 
 /**
  * Returns the global API client with the access token automatically set
  * from the current session. Updates token when session changes.
- *
- * IMPORTANT: Token is set synchronously during render to ensure it's
- * available immediately when the component makes API calls.
  */
 export function useApi(): ApiClient {
   const { data: session } = useSession();
 
-  // Set token synchronously during render (before any API calls)
-  // This is safe because setToken only updates an internal variable
-  if (session?.accessToken) {
-    api.setToken(session.accessToken);
-  } else {
-    api.setToken(null);
-  }
+  // Set and cleanup token with useEffect to prevent memory leaks
+  useEffect(() => {
+    if (session?.accessToken) {
+      api.setToken(session.accessToken);
+    } else {
+      api.setToken(null);
+    }
+
+    // Cleanup: Remove token when component unmounts
+    return () => {
+      api.setToken(null);
+    };
+  }, [session?.accessToken]);
 
   return api;
 }

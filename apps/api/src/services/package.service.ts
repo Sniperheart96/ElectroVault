@@ -2,7 +2,7 @@
  * Package Service - Bauformen/Gehäuse-Verwaltung (CRUD)
  */
 
-import { prisma } from '@electrovault/database';
+import { prisma, Prisma } from '@electrovault/database';
 import type {
   PackageListQuery,
   CreatePackageInput,
@@ -115,35 +115,35 @@ export class PackageService {
       slug = generateUniqueSlug(baseSlug, existingSlugs);
     }
 
-    // Prüfen ob Slug bereits existiert
-    const existing = await prisma.packageMaster.findUnique({
-      where: { slug },
-    });
+    // Race Condition Fix: Prisma P2002 Error fangen statt Check-Then-Act
+    try {
+      const pkg = await prisma.packageMaster.create({
+        data: {
+          name: data.name,
+          slug,
+          lengthMm: data.lengthMm,
+          widthMm: data.widthMm,
+          heightMm: data.heightMm,
+          pitchMm: data.pitchMm,
+          mountingType: data.mountingType,
+          pinCount: data.pinCount,
+          pinCountMin: data.pinCountMin,
+          pinCountMax: data.pinCountMax,
+          jedecStandard: data.jedecStandard,
+          eiaStandard: data.eiaStandard,
+          drawingUrl: data.drawingUrl,
+          description: data.description,
+        },
+      });
 
-    if (existing) {
-      throw new ConflictError(`Package with slug '${slug}' already exists`);
+      return pkg as PackageBase;
+    } catch (error) {
+      // Race Condition: Unique Constraint Violation für Slug
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictError(`Package with slug '${slug}' already exists`);
+      }
+      throw error;
     }
-
-    const pkg = await prisma.packageMaster.create({
-      data: {
-        name: data.name,
-        slug,
-        lengthMm: data.lengthMm,
-        widthMm: data.widthMm,
-        heightMm: data.heightMm,
-        pitchMm: data.pitchMm,
-        mountingType: data.mountingType,
-        pinCount: data.pinCount,
-        pinCountMin: data.pinCountMin,
-        pinCountMax: data.pinCountMax,
-        jedecStandard: data.jedecStandard,
-        eiaStandard: data.eiaStandard,
-        drawingUrl: data.drawingUrl,
-        description: data.description,
-      },
-    });
-
-    return pkg as PackageBase;
   }
 
   /**

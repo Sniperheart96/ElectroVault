@@ -49,6 +49,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LocalizedInput } from '@/components/forms/localized-input';
+import { CategoryCascadeSelect } from '@/components/forms/category-cascade-select';
 import { type Component, type CategoryTreeNode, type Part, type Manufacturer, type Package } from '@/lib/api';
 import { PartDialog } from '@/components/admin/part-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
@@ -57,12 +58,14 @@ import { RelationsEditor } from '@/components/admin/relations-editor';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
+import { type SIPrefix } from '@/lib/api';
+
 interface AttributeValue {
   definitionId: string;
-  displayValue: string;
   normalizedValue?: number | null;
   normalizedMin?: number | null;
   normalizedMax?: number | null;
+  prefix?: SIPrefix | null;
   stringValue?: string | null;
 }
 
@@ -75,18 +78,6 @@ interface ComponentDialogProps {
   onDataChanged?: () => void;
 }
 
-function flattenCategories(nodes: CategoryTreeNode[], prefix = ''): { id: string; name: string }[] {
-  const result: { id: string; name: string }[] = [];
-  for (const node of nodes) {
-    const name = prefix + (node.name.de || node.name.en || 'Unbekannt');
-    result.push({ id: node.id, name });
-    if (node.children && node.children.length > 0) {
-      result.push(...flattenCategories(node.children, name + ' → '));
-    }
-  }
-  return result;
-}
-
 export function ComponentDialog({
   open,
   onOpenChange,
@@ -96,11 +87,12 @@ export function ComponentDialog({
 }: ComponentDialogProps) {
   const api = useApi();
   const { toast } = useToast();
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categoryTree, setCategoryTree] = useState<CategoryTreeNode[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingComponent, setLoadingComponent] = useState(false);
 
   // Local component state - allows switching to edit mode after creation
-  const [localComponent, setLocalComponent] = useState<Component | null>(component || null);
+  const [localComponent, setLocalComponent] = useState<Component | null>(null);
   const isEdit = !!localComponent;
   const [activeTab, setActiveTab] = useState('details');
 
@@ -129,19 +121,33 @@ export function ComponentDialog({
     },
   });
 
-  // Sync localComponent with prop
+  // Load full component data when editing (list items don't have all fields)
   useEffect(() => {
-    setLocalComponent(component || null);
-    if (!component) {
-      setActiveTab('details');
-    }
-  }, [component]);
+    const loadFullComponent = async () => {
+      if (component && open) {
+        setLoadingComponent(true);
+        try {
+          const result = await api.getComponentById(component.id);
+          setLocalComponent(result.data);
+        } catch (error) {
+          console.error('Failed to load component details:', error);
+          // Fallback to the partial data from list
+          setLocalComponent(component as Component);
+        } finally {
+          setLoadingComponent(false);
+        }
+      } else if (!open) {
+        // Only reset when closing
+        setLocalComponent(null);
+        setActiveTab('details');
+      }
+    };
+    loadFullComponent();
+  }, [component, open]);
 
-  // Reset on close
+  // Reset parts on close
   useEffect(() => {
     if (!open) {
-      setLocalComponent(null);
-      setActiveTab('details');
       setParts([]);
     }
   }, [open]);
@@ -152,7 +158,7 @@ export function ComponentDialog({
       try {
         setLoadingCategories(true);
         const result = await api.getCategoryTree();
-        setCategories(flattenCategories(result.data));
+        setCategoryTree(result.data);
       } catch (error) {
         console.error('Failed to load categories:', error);
         toast({
@@ -180,9 +186,9 @@ export function ComponentDialog({
       try {
         setLoadingParts(true);
         const [partsResult, manufacturersResult, packagesResult] = await Promise.all([
-          api.getParts({ componentId: localComponent.id, limit: 500 }),
-          api.getManufacturers({ limit: 500 }),
-          api.getPackages({ limit: 500 }),
+          api.getParts({ componentId: localComponent.id, limit: 100 }),
+          api.getManufacturers({ limit: 100 }),
+          api.getPackages({ limit: 100 }),
         ]);
         setParts(partsResult.data);
         setManufacturers(manufacturersResult.data);
@@ -199,16 +205,44 @@ export function ComponentDialog({
     }
   }, [open, localComponent, isEdit]);
 
+  // Reset form when localComponent changes - must wait for categories to be loaded
   useEffect(() => {
+    // Don't reset until categories are loaded (for Select to work properly)
+    if (loadingCategories) {
+      return;
+    }
+
     if (localComponent) {
       form.reset({
         name: localComponent.name || { de: '', en: '' },
         categoryId: localComponent.categoryId,
         status: localComponent.status,
         shortDescription: localComponent.shortDescription || { de: '', en: '' },
-        fullDescription: localComponent.description || { de: '', en: '' },
-        series: '',
+        fullDescription: localComponent.fullDescription || { de: '', en: '' },
+        series: localComponent.series || '',
       });
+
+      // Initialize componentAttributes from existing attribute values
+      // Sicherstellen dass alle numerischen Werte auch wirklich Zahlen sind
+      if (localComponent.attributeValues && localComponent.attributeValues.length > 0) {
+        const loadedAttributes: AttributeValue[] = localComponent.attributeValues.map((av) => ({
+          definitionId: av.definitionId,
+          normalizedValue: av.normalizedValue !== null && av.normalizedValue !== undefined
+            ? Number(av.normalizedValue)
+            : null,
+          normalizedMin: av.normalizedMin !== null && av.normalizedMin !== undefined
+            ? Number(av.normalizedMin)
+            : null,
+          normalizedMax: av.normalizedMax !== null && av.normalizedMax !== undefined
+            ? Number(av.normalizedMax)
+            : null,
+          prefix: av.prefix,
+          stringValue: av.stringValue,
+        }));
+        setComponentAttributes(loadedAttributes);
+      } else {
+        setComponentAttributes([]);
+      }
     } else {
       form.reset({
         name: { de: '', en: '' },
@@ -218,13 +252,23 @@ export function ComponentDialog({
         fullDescription: { de: '', en: '' },
         series: '',
       });
+      setComponentAttributes([]);
     }
-  }, [localComponent, form]);
+  }, [localComponent, form, loadingCategories, categoryTree.length]);
 
   const onSubmit = async (data: CreateComponentInput) => {
+    // Add attribute values to the data
+    const dataWithAttributes = {
+      ...data,
+      attributeValues: componentAttributes.length > 0 ? componentAttributes : undefined,
+    };
+
     try {
       if (isEdit && localComponent) {
-        await api.updateComponent(localComponent.id, data);
+        // Remove categoryId from update payload (not allowed in UpdateComponentSchema)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { categoryId, ...updateData } = dataWithAttributes;
+        await api.updateComponent(localComponent.id, updateData);
         toast({
           title: 'Erfolg',
           description: 'Bauteil wurde aktualisiert.',
@@ -232,7 +276,7 @@ export function ComponentDialog({
         onSaved();
       } else {
         // Create new component and switch to edit mode
-        const result = await api.createComponent(data);
+        const result = await api.createComponent(dataWithAttributes);
         const newComponent = result.data;
 
         toast({
@@ -247,8 +291,8 @@ export function ComponentDialog({
         // Load manufacturers and packages for parts tab
         try {
           const [manufacturersResult, packagesResult] = await Promise.all([
-            api.getManufacturers({ limit: 500 }),
-            api.getPackages({ limit: 500 }),
+            api.getManufacturers({ limit: 100 }),
+            api.getPackages({ limit: 100 }),
           ]);
           setManufacturers(manufacturersResult.data);
           setPackages(packagesResult.data);
@@ -275,7 +319,7 @@ export function ComponentDialog({
     if (!localComponent) return;
     try {
       setLoadingParts(true);
-      const result = await api.getParts({ componentId: localComponent.id, limit: 500 });
+      const result = await api.getParts({ componentId: localComponent.id, limit: 100 });
       setParts(result.data);
     } catch (error) {
       console.error('Failed to reload parts:', error);
@@ -377,11 +421,20 @@ export function ComponentDialog({
           </DialogDescription>
         </DialogHeader>
 
+        {loadingComponent ? (
+          <div className="space-y-4 py-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+        ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="details">Stammdaten</TabsTrigger>
+            <TabsTrigger value="attributes">Attribute</TabsTrigger>
             <TabsTrigger value="parts" disabled={!isEdit}>
-              Hersteller-Varianten {isEdit && `(${parts.length})`}
+              Varianten {isEdit && `(${parts.length})`}
             </TabsTrigger>
             <TabsTrigger value="relations" disabled={!isEdit}>
               Beziehungen
@@ -416,23 +469,15 @@ export function ComponentDialog({
                 <FormField
                   control={form.control}
                   name="categoryId"
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
-                      <FormLabel>Kategorie *</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={loadingCategories ? 'Lädt...' : 'Kategorie auswählen'} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>
-                              {cat.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <CategoryCascadeSelect
+                        categoryTree={categoryTree}
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        loading={loadingCategories}
+                        error={fieldState.error?.message}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
@@ -444,7 +489,11 @@ export function ComponentDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue="DRAFT"
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
@@ -523,18 +572,6 @@ export function ComponentDialog({
                   )}
                 />
 
-                {/* Dynamische Attributfelder basierend auf Kategorie */}
-                <div className="border-t pt-4 mt-4">
-                  <AttributeFields
-                    categoryId={form.watch('categoryId') || null}
-                    scope="COMPONENT"
-                    values={componentAttributes}
-                    onChange={setComponentAttributes}
-                    sectionLabel="Bauteil-Attribute"
-                    includeInherited={true}
-                  />
-                </div>
-
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={handleClose}>
                     Abbrechen
@@ -549,6 +586,46 @@ export function ComponentDialog({
                 </DialogFooter>
               </form>
             </Form>
+          </TabsContent>
+
+          {/* Attributes Tab */}
+          <TabsContent value="attributes" className="mt-4">
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Technische Attribute basierend auf der ausgewählten Kategorie.
+                {!form.watch('categoryId') && (
+                  <span className="text-warning ml-1">
+                    Bitte wählen Sie zuerst eine Kategorie im Tab &quot;Stammdaten&quot;.
+                  </span>
+                )}
+              </p>
+
+              <AttributeFields
+                categoryId={form.watch('categoryId') || null}
+                scope="COMPONENT"
+                values={componentAttributes}
+                onChange={setComponentAttributes}
+                sectionLabel="Bauteil-Attribute"
+                includeInherited={true}
+              />
+
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={handleClose}>
+                  Abbrechen
+                </Button>
+                <Button
+                  type="button"
+                  onClick={form.handleSubmit(onSubmit)}
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting
+                    ? 'Speichern...'
+                    : isEdit
+                      ? 'Aktualisieren'
+                      : 'Speichern & Varianten hinzufügen'}
+                </Button>
+              </DialogFooter>
+            </div>
           </TabsContent>
 
           {/* Parts Tab */}
@@ -695,6 +772,7 @@ export function ComponentDialog({
             ) : null}
           </TabsContent>
         </Tabs>
+        )}
 
         {/* Part Dialogs */}
         {localComponent && (

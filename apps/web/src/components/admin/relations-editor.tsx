@@ -8,15 +8,12 @@ import {
   Plus,
   Pencil,
   Trash2,
-  ArrowRight,
-  ArrowLeftRight,
   ShieldCheck,
   ShieldAlert,
   TrendingUp,
   TrendingDown,
   RefreshCw,
   Link2,
-  Ban,
   Puzzle,
 } from 'lucide-react';
 import {
@@ -47,14 +44,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LocalizedInput } from '@/components/forms/localized-input';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import {
   type ComponentRelation,
-  type RelationType,
+  type ConceptRelationType,
   type Component,
   type LocalizedString,
 } from '@/lib/api';
@@ -66,31 +62,31 @@ interface RelationsEditorProps {
   componentName: LocalizedString;
 }
 
+// Backend ConceptRelationType Schema
 const CreateRelationSchema = z.object({
   targetId: z.string().min(1, 'Bitte wählen Sie ein Ziel-Bauteil'),
   relationType: z.enum([
-    'EQUIVALENT',
-    'SIMILAR',
-    'UPGRADE',
-    'DOWNGRADE',
-    'REPLACEMENT',
-    'COMPLEMENT',
-    'REQUIRES',
-    'CONFLICTS',
+    'DUAL_VERSION',
+    'QUAD_VERSION',
+    'LOW_POWER_VERSION',
+    'HIGH_SPEED_VERSION',
+    'MILITARY_VERSION',
+    'AUTOMOTIVE_VERSION',
+    'FUNCTIONAL_EQUIV',
   ]),
-  description: z
+  notes: z
     .object({
       de: z.string().optional(),
       en: z.string().optional(),
     })
     .optional(),
-  bidirectional: z.boolean(),
 });
 
 type CreateRelationInput = z.infer<typeof CreateRelationSchema>;
 
+// Konfiguration für ConceptRelationType (Hardware-Varianten)
 const RELATION_TYPE_CONFIG: Record<
-  RelationType,
+  ConceptRelationType,
   {
     label: string;
     icon: React.ReactNode;
@@ -98,53 +94,47 @@ const RELATION_TYPE_CONFIG: Record<
     description: string;
   }
 > = {
-  EQUIVALENT: {
-    label: 'Gleichwertig',
-    icon: <ShieldCheck className="h-4 w-4" />,
-    variant: 'success',
-    description: 'Funktional gleichwertig und direkt austauschbar',
-  },
-  SIMILAR: {
-    label: 'Ähnlich',
+  DUAL_VERSION: {
+    label: 'Dual-Version',
     icon: <Link2 className="h-4 w-4" />,
-    variant: 'secondary',
-    description: 'Ähnliche Funktion, aber nicht völlig identisch',
-  },
-  UPGRADE: {
-    label: 'Upgrade',
-    icon: <TrendingUp className="h-4 w-4" />,
     variant: 'default',
-    description: 'Verbesserte oder neuere Version',
+    description: 'Dual-Version (z.B. 556 ist Dual-555)',
   },
-  DOWNGRADE: {
-    label: 'Downgrade',
-    icon: <TrendingDown className="h-4 w-4" />,
-    variant: 'secondary',
-    description: 'Ältere oder einfachere Version',
-  },
-  REPLACEMENT: {
-    label: 'Ersatz',
-    icon: <RefreshCw className="h-4 w-4" />,
-    variant: 'default',
-    description: 'Offizieller Ersatz vom Hersteller',
-  },
-  COMPLEMENT: {
-    label: 'Ergänzung',
+  QUAD_VERSION: {
+    label: 'Quad-Version',
     icon: <Puzzle className="h-4 w-4" />,
-    variant: 'secondary',
-    description: 'Ergänzendes Bauteil (z.B. Treiber)',
+    variant: 'default',
+    description: 'Quad-Version (z.B. LM324 ist Quad-LM358)',
   },
-  REQUIRES: {
-    label: 'Benötigt',
-    icon: <ArrowRight className="h-4 w-4" />,
+  LOW_POWER_VERSION: {
+    label: 'Low-Power',
+    icon: <TrendingDown className="h-4 w-4" />,
+    variant: 'success',
+    description: 'Stromsparende Version (z.B. CMOS statt Bipolar)',
+  },
+  HIGH_SPEED_VERSION: {
+    label: 'High-Speed',
+    icon: <TrendingUp className="h-4 w-4" />,
     variant: 'warning',
-    description: 'Benötigt dieses Bauteil für den Betrieb',
+    description: 'Schnellere Version mit höherer Bandbreite',
   },
-  CONFLICTS: {
-    label: 'Inkompatibel',
-    icon: <Ban className="h-4 w-4" />,
+  MILITARY_VERSION: {
+    label: 'Militär-Version',
+    icon: <ShieldCheck className="h-4 w-4" />,
     variant: 'destructive',
-    description: 'Nicht kompatibel oder inkompatibel',
+    description: 'Militärische Spezifikation (MIL-SPEC)',
+  },
+  AUTOMOTIVE_VERSION: {
+    label: 'Automotive',
+    icon: <ShieldAlert className="h-4 w-4" />,
+    variant: 'secondary',
+    description: 'Automotive-qualifiziert (AEC-Q100/101)',
+  },
+  FUNCTIONAL_EQUIV: {
+    label: 'Funktions-Äquivalent',
+    icon: <RefreshCw className="h-4 w-4" />,
+    variant: 'success',
+    description: 'Funktional gleichwertig, andere Implementierung',
   },
 };
 
@@ -163,12 +153,11 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
   const [isSearching, setIsSearching] = useState(false);
 
   const form = useForm<CreateRelationInput>({
-    resolver: zodResolver(CreateRelationSchema) as any,
+    resolver: zodResolver(CreateRelationSchema),
     defaultValues: {
       targetId: '',
-      relationType: 'EQUIVALENT',
-      description: { de: '', en: '' },
-      bidirectional: false,
+      relationType: 'FUNCTIONAL_EQUIV',
+      notes: { de: '', en: '' },
     },
   });
 
@@ -176,7 +165,11 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
     try {
       setLoading(true);
       const result = await api.getComponentRelations(componentId);
-      setRelations(result.data);
+      // Die API gibt { outgoing: [], incoming: [] } zurück
+      // Wir kombinieren beide Arrays zu einem flachen Array
+      const data = result.data as unknown as { outgoing: ComponentRelation[]; incoming: ComponentRelation[] };
+      const allRelations = [...(data.outgoing || []), ...(data.incoming || [])];
+      setRelations(allRelations);
     } catch (error) {
       console.error('Failed to load relations:', error);
       toast({
@@ -218,22 +211,23 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
 
   const onSubmit = async (data: CreateRelationInput) => {
     try {
-      const payload = {
-        sourceId: componentId,
-        targetId: data.targetId,
-        relationType: data.relationType,
-        description: data.description,
-        bidirectional: data.bidirectional,
-      };
-
       if (editingRelation) {
-        await api.updateRelation(editingRelation.id, payload);
+        // Update nur Notes möglich (relationType ist unveränderlich)
+        await api.updateRelation(componentId, editingRelation.id, {
+          notes: data.notes,
+        });
         toast({
           title: 'Erfolg',
           description: 'Beziehung wurde aktualisiert.',
         });
       } else {
-        await api.createRelation(payload);
+        // Neue Beziehung erstellen
+        await api.createRelation({
+          sourceId: componentId,
+          targetId: data.targetId,
+          relationType: data.relationType,
+          notes: data.notes,
+        });
         toast({
           title: 'Erfolg',
           description: 'Beziehung wurde erstellt.',
@@ -260,15 +254,14 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
     form.reset({
       targetId: relation.targetId,
       relationType: relation.relationType,
-      description: relation.description || { de: '', en: '' },
-      bidirectional: relation.bidirectional,
+      notes: relation.notes || { de: '', en: '' },
     });
     setIsCreateDialogOpen(true);
   };
 
   const handleDelete = async (relation: ComponentRelation) => {
     try {
-      await api.deleteRelation(relation.id);
+      await api.deleteRelation(componentId, relation.id);
       toast({
         title: 'Erfolg',
         description: 'Beziehung wurde gelöscht.',
@@ -288,9 +281,8 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
     setEditingRelation(null);
     form.reset({
       targetId: '',
-      relationType: 'EQUIVALENT',
-      description: { de: '', en: '' },
-      bidirectional: false,
+      relationType: 'FUNCTIONAL_EQUIV',
+      notes: { de: '', en: '' },
     });
     setSearchQuery('');
     setSearchResults([]);
@@ -360,12 +352,6 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
                         <span className="mr-1">{config.icon}</span>
                         {config.label}
                       </Badge>
-                      {relation.bidirectional && (
-                        <Badge variant="outline">
-                          <ArrowLeftRight className="h-3 w-3 mr-1" />
-                          Bidirektional
-                        </Badge>
-                      )}
                     </div>
                     <div className="flex gap-1">
                       <Button
@@ -393,9 +379,9 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
                       </span>
                       <span>{targetName}</span>
                     </div>
-                    {relation.description && (relation.description.de || relation.description.en) && (
+                    {relation.notes && (relation.notes.de || relation.notes.en) && (
                       <p className="text-sm text-muted-foreground">
-                        {relation.description.de || relation.description.en}
+                        {relation.notes.de || relation.notes.en}
                       </p>
                     )}
                   </div>
@@ -478,7 +464,7 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {(Object.keys(RELATION_TYPE_CONFIG) as RelationType[]).map((type) => {
+                        {(Object.keys(RELATION_TYPE_CONFIG) as ConceptRelationType[]).map((type) => {
                           const config = RELATION_TYPE_CONFIG[type];
                           return (
                             <SelectItem key={type} value={type}>
@@ -501,36 +487,15 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
 
               <FormField
                 control={form.control}
-                name="bidirectional"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Bidirektional</FormLabel>
-                      <FormDescription>
-                        Die Beziehung gilt in beide Richtungen
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
+                name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Beschreibung (optional)</FormLabel>
+                    <FormLabel>Notizen (optional)</FormLabel>
                     <FormControl>
                       <LocalizedInput
                         value={field.value || { de: '', en: '' }}
                         onChange={field.onChange}
-                        placeholder="Zusätzliche Hinweise"
+                        placeholder="Zusätzliche Hinweise zur Beziehung"
                       />
                     </FormControl>
                     <FormMessage />

@@ -496,7 +496,7 @@ model AttributeDefinition {
 
   name            String   @db.VarChar(100)
   displayName     Json     // LocalizedString
-  unit            String?  @db.VarChar(50)
+  unit            String?  @db.VarChar(50)   // Basiseinheit z.B. "F", "Ω", "m"
   dataType        AttributeDataType
 
   scope           AttributeScope @default(PART)
@@ -504,6 +504,10 @@ model AttributeDefinition {
   isFilterable    Boolean  @default(true)
   isRequired      Boolean  @default(false)
 
+  // SI-Präfix-System (ersetzt siMultiplier)
+  allowedPrefixes String[] @default([])      // z.B. ["p", "n", "µ", "m", "", "k", "M"]
+
+  // Legacy - wird durch allowedPrefixes ersetzt
   siUnit          String?  @db.VarChar(20)
   siMultiplier    Decimal? @db.Decimal(20, 10)
 
@@ -526,10 +530,15 @@ model ComponentAttributeValue {
   definitionId    String   @db.Uuid
   definition      AttributeDefinition @relation(fields: [definitionId], references: [id])
 
-  displayValue    String   @db.VarChar(255)
+  // Numerischer Wert (immer in SI-Basiseinheit normalisiert)
   normalizedValue Decimal? @db.Decimal(30, 15)
-  normalizedMin   Decimal? @db.Decimal(30, 15)
-  normalizedMax   Decimal? @db.Decimal(30, 15)
+  normalizedMin   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+  normalizedMax   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+
+  // SI-Präfix der Anzeige (z.B. "µ", "k", "M")
+  prefix          String?  @db.VarChar(5)
+
+  // Für STRING-Typ oder komplexe Werte
   stringValue     String?  @db.VarChar(255)
 
   @@unique([componentId, definitionId])
@@ -547,12 +556,18 @@ model PartAttributeValue {
   definitionId    String   @db.Uuid
   definition      AttributeDefinition @relation(fields: [definitionId], references: [id])
 
-  displayValue    String   @db.VarChar(255)
+  // Numerischer Wert (immer in SI-Basiseinheit normalisiert)
   normalizedValue Decimal? @db.Decimal(30, 15)
-  normalizedMin   Decimal? @db.Decimal(30, 15)
-  normalizedMax   Decimal? @db.Decimal(30, 15)
+  normalizedMin   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+  normalizedMax   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+
+  // SI-Präfix der Anzeige (z.B. "µ", "k", "M")
+  prefix          String?  @db.VarChar(5)
+
+  // Für STRING-Typ oder komplexe Werte
   stringValue     String?  @db.VarChar(255)
 
+  // Markiert wenn Part-Wert von Component-Wert abweicht
   isDeviation     Boolean  @default(false)
 
   @@unique([partId, definitionId])

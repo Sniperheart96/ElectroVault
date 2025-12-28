@@ -125,15 +125,13 @@ enum ManufacturerStatus {
   ACTIVE      // Aktiv produzierend
   ACQUIRED    // Übernommen
   DEFUNCT     // Nicht mehr existent
-  UNKNOWN
 }
 
 enum ComponentStatus {
-  DRAFT           // Entwurf
-  PENDING_REVIEW  // Wartet auf Freigabe
-  ACTIVE          // Aktiv/Freigegeben
-  ARCHIVED        // Archiviert
-  REJECTED        // Abgelehnt
+  DRAFT       // In Bearbeitung
+  PENDING     // Wartet auf Freigabe
+  PUBLISHED   // Veröffentlicht
+  ARCHIVED    // Archiviert (inkl. abgelehnte Einträge)
 }
 
 enum LifecycleStatus {
@@ -141,7 +139,6 @@ enum LifecycleStatus {
   NRND            // Not Recommended for New Designs
   EOL             // End of Life angekündigt
   OBSOLETE        // Nicht mehr erhältlich
-  UNKNOWN
 }
 
 enum AttributeScope {

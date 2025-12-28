@@ -55,6 +55,12 @@
       "history": "Versionshistorie"
     },
     "status": {
+      "DRAFT": "Entwurf",
+      "PENDING": "Ausstehend",
+      "PUBLISHED": "Veröffentlicht",
+      "ARCHIVED": "Archiviert"
+    },
+    "lifecycle": {
       "ACTIVE": "Aktiv",
       "NRND": "Nicht für Neuentwicklungen",
       "EOL": "Auslaufend",

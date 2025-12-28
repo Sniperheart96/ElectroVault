@@ -165,9 +165,9 @@ export default async function ComponentDetailPage({ params }: PageProps) {
             </p>
           )}
 
-          {component.description && (
+          {component.fullDescription && (
             <p className="text-muted-foreground">
-              {component.description.de || component.description.en}
+              {component.fullDescription.de || component.fullDescription.en}
             </p>
           )}
         </div>

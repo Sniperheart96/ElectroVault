@@ -310,13 +310,6 @@ export class CategoryService {
     const nameForSlug = data.name.de || data.name.en || 'kategorie';
     const baseSlug = this.generateSlug(nameForSlug);
 
-    // Prüfe auf Slug-Konflikte
-    const existingSlug = await prisma.categoryTaxonomy.findUnique({
-      where: { slug: baseSlug },
-    });
-
-    const slug = existingSlug ? `${baseSlug}-${Date.now()}` : baseSlug;
-
     // Bestimme Level basierend auf Parent
     let level = 0;
     if (data.parentId) {
@@ -333,30 +326,53 @@ export class CategoryService {
       }
     }
 
-    const category = await prisma.categoryTaxonomy.create({
-      data: {
-        name: data.name,
-        slug,
-        level,
-        parentId: data.parentId || null,
-        description: data.description || undefined,
-        iconUrl: data.iconUrl || null,
-        sortOrder: data.sortOrder ?? 0,
-        isActive: data.isActive ?? true,
-      },
-    });
+    // Race Condition Fix: Prisma P2002 Error fangen, bei Konflikt mit Timestamp retry
+    let slug = baseSlug;
+    let retryCount = 0;
+    const maxRetries = 3;
 
-    // Audit Log
-    if (userId) {
-      await auditService.logCreate(
-        'CATEGORY',
-        category.id,
-        category as unknown as Record<string, unknown>,
-        userId
-      );
+    while (retryCount < maxRetries) {
+      try {
+        const category = await prisma.categoryTaxonomy.create({
+          data: {
+            name: data.name,
+            slug,
+            level,
+            parentId: data.parentId || null,
+            description: data.description || undefined,
+            iconUrl: data.iconUrl || null,
+            sortOrder: data.sortOrder ?? 0,
+            isActive: data.isActive ?? true,
+          },
+        });
+
+        // Audit Log
+        if (userId) {
+          await auditService.logCreate(
+            'CATEGORY',
+            category.id,
+            category as unknown as Record<string, unknown>,
+            userId
+          );
+        }
+
+        return category as CategoryBase;
+      } catch (error) {
+        // Race Condition: Unique Constraint Violation für Slug
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+          retryCount++;
+          if (retryCount >= maxRetries) {
+            throw new ConflictError(`Category with slug '${baseSlug}' already exists`);
+          }
+          // Retry mit Timestamp
+          slug = `${baseSlug}-${Date.now()}`;
+        } else {
+          throw error;
+        }
+      }
     }
 
-    return category as CategoryBase;
+    throw new ConflictError(`Failed to create category after ${maxRetries} attempts`);
   }
 
   /**

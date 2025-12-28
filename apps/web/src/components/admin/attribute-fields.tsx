@@ -6,15 +6,145 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
-import { type AttributeDefinition } from '@/lib/api';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { type AttributeDefinition, type SIPrefix, SI_PREFIX_FACTORS } from '@/lib/api';
+
+// Konstante für Basis-Präfix (leerer String) - Radix UI erlaubt keine leeren Strings als value
+const BASE_PREFIX_VALUE = '__BASE__';
 import { useApi } from '@/hooks/use-api';
+
+// ============================================
+// NUMERIC INPUT COMPONENT
+// ============================================
+
+interface NumericInputProps {
+  id: string;
+  value: number | null | undefined;
+  prefix: SIPrefix | null | undefined;
+  onChange: (displayValue: string, prefix: SIPrefix | null) => void;
+  onPrefixChange?: (newPrefix: SIPrefix) => void;
+  dataType: 'INTEGER' | 'DECIMAL';
+  allowedPrefixes?: SIPrefix[];
+  unit?: string | null;
+  className?: string;
+}
+
+/**
+ * Numerisches Eingabefeld mit Komma/Punkt-Unterstützung
+ * Verwendet lokalen State für die Eingabe, normalisiert bei Blur
+ */
+function NumericInput({
+  id,
+  value,
+  prefix,
+  onChange,
+  dataType,
+  allowedPrefixes,
+  unit,
+  className,
+}: NumericInputProps) {
+  // Lokaler State für die Texteingabe
+  const [localValue, setLocalValue] = useState<string>('');
+  const [isFocused, setIsFocused] = useState(false);
+
+  // Synchronisiere lokalen State mit externem Wert (wenn nicht fokussiert)
+  useEffect(() => {
+    if (!isFocused) {
+      setLocalValue(getDisplayValue(value, prefix));
+    }
+  }, [value, prefix, isFocused]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    // Erlaube nur gültige Zeichen (Zahlen, Punkt, Komma, Minus)
+    if (dataType === 'INTEGER') {
+      if (!/^-?\d*$/.test(inputValue)) return;
+    } else {
+      if (!/^-?\d*[.,]?\d*$/.test(inputValue)) return;
+    }
+    setLocalValue(inputValue);
+    // Sofort den normalisierten Wert aktualisieren
+    onChange(inputValue, (prefix || '') as SIPrefix);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    // Bei Blur: Formatiere den Wert sauber
+    const normalized = getNormalizedValue(localValue, prefix);
+    if (normalized !== null) {
+      setLocalValue(getDisplayValue(normalized, prefix));
+    }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const hasAllowedPrefixes = allowedPrefixes && allowedPrefixes.length > 0;
+  const currentPrefix = prefix === '' || prefix === null || prefix === undefined
+    ? BASE_PREFIX_VALUE
+    : prefix;
+
+  return (
+    <div className="flex items-center gap-2">
+      <Input
+        id={id}
+        type="text"
+        inputMode={dataType === 'INTEGER' ? 'numeric' : 'decimal'}
+        placeholder={`z.B. ${dataType === 'INTEGER' ? '100' : '10,5'}`}
+        className={hasAllowedPrefixes ? 'flex-1' : className || 'w-full'}
+        value={localValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+      />
+      {hasAllowedPrefixes && (
+        <>
+          <Select
+            value={currentPrefix}
+            onValueChange={(newPrefix) => {
+              const actualPrefix = newPrefix === BASE_PREFIX_VALUE ? '' : newPrefix;
+              // Beim Präfix-Wechsel: Anzeigewert beibehalten, aber neu normalisieren
+              onChange(localValue, actualPrefix as SIPrefix);
+            }}
+          >
+            <SelectTrigger className="w-20">
+              <SelectValue placeholder="-" />
+            </SelectTrigger>
+            <SelectContent>
+              {allowedPrefixes.map((p) => (
+                <SelectItem key={p || 'base'} value={p === '' ? BASE_PREFIX_VALUE : p}>
+                  {p || '-'}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <span className="text-sm text-muted-foreground whitespace-nowrap">
+            {unit}
+          </span>
+        </>
+      )}
+      {!hasAllowedPrefixes && unit && (
+        <span className="text-sm text-muted-foreground whitespace-nowrap">
+          {unit}
+        </span>
+      )}
+    </div>
+  );
+}
 
 interface AttributeValue {
   definitionId: string;
-  displayValue: string;
   normalizedValue?: number | null;
   normalizedMin?: number | null;
   normalizedMax?: number | null;
+  prefix?: SIPrefix | null;
   stringValue?: string | null;
 }
 
@@ -31,6 +161,44 @@ interface AttributeFieldsProps {
   sectionLabel?: string;
   /** Ob auch vererbte Attribute geladen werden sollen */
   includeInherited?: boolean;
+}
+
+/**
+ * Rundet auf eine sinnvolle Anzahl signifikanter Stellen
+ * um Floating-Point-Fehler zu vermeiden (z.B. 21.999999999 -> 22)
+ */
+function roundToSignificantDigits(value: number, digits: number = 12): number {
+  if (value === 0) return 0;
+  const magnitude = Math.floor(Math.log10(Math.abs(value)));
+  const scale = Math.pow(10, digits - magnitude - 1);
+  return Math.round(value * scale) / scale;
+}
+
+/**
+ * Berechnet den Anzeigewert aus normalizedValue und Präfix
+ * Rundet das Ergebnis um Floating-Point-Fehler zu vermeiden
+ */
+function getDisplayValue(normalizedValue: number | null | undefined, prefix: SIPrefix | null | undefined): string {
+  if (normalizedValue === null || normalizedValue === undefined) return '';
+  const factor = SI_PREFIX_FACTORS[prefix || ''] || 1;
+  const displayValue = normalizedValue / factor;
+  // Runden um Floating-Point-Fehler zu vermeiden (z.B. 21.999999999 -> 22)
+  const rounded = roundToSignificantDigits(displayValue);
+  return rounded.toString();
+}
+
+/**
+ * Berechnet den normalisierten Wert aus Anzeigewert und Präfix
+ * Akzeptiert sowohl Punkt als auch Komma als Dezimaltrenner
+ */
+function getNormalizedValue(displayValue: string, prefix: SIPrefix | null | undefined): number | null {
+  if (displayValue === '') return null;
+  // Komma zu Punkt konvertieren für deutsche Eingaben
+  const normalizedInput = displayValue.replace(',', '.');
+  const num = parseFloat(normalizedInput);
+  if (isNaN(num)) return null;
+  const factor = SI_PREFIX_FACTORS[prefix || ''] || 1;
+  return num * factor;
 }
 
 /**
@@ -87,13 +255,26 @@ export function AttributeFields({
     return values.find((v) => v.definitionId === definitionId);
   };
 
-  // Hilfsfunktion zum Aktualisieren eines Wertes
-  const updateValue = (definitionId: string, displayValue: string, normalizedValue?: number | null) => {
+  // Hilfsfunktion zum Aktualisieren eines numerischen Wertes
+  const updateNumericValue = (
+    definitionId: string,
+    displayValue: string,
+    prefix: SIPrefix | null
+  ) => {
+    const normalizedValue = getNormalizedValue(displayValue, prefix);
     const existing = values.find((v) => v.definitionId === definitionId);
+
+    if (displayValue === '' && !prefix) {
+      // Entfernen wenn leer
+      onChange(values.filter((v) => v.definitionId !== definitionId));
+      return;
+    }
+
+    // Sicherstellen dass normalizedValue eine Zahl ist (nicht String)
     const newValue: AttributeValue = {
       definitionId,
-      displayValue,
-      normalizedValue: normalizedValue ?? null,
+      normalizedValue: normalizedValue !== null ? Number(normalizedValue) : null,
+      prefix: prefix || null,
     };
 
     if (existing) {
@@ -103,9 +284,72 @@ export function AttributeFields({
     }
   };
 
-  // Hilfsfunktion zum Entfernen eines leeren Wertes
-  const removeValue = (definitionId: string) => {
-    onChange(values.filter((v) => v.definitionId !== definitionId));
+  // Hilfsfunktion zum Aktualisieren eines String-Wertes
+  const updateStringValue = (definitionId: string, stringValue: string) => {
+    if (stringValue === '') {
+      onChange(values.filter((v) => v.definitionId !== definitionId));
+      return;
+    }
+
+    const existing = values.find((v) => v.definitionId === definitionId);
+    const newValue: AttributeValue = { definitionId, stringValue };
+
+    if (existing) {
+      onChange(values.map((v) => (v.definitionId === definitionId ? newValue : v)));
+    } else {
+      onChange([...values, newValue]);
+    }
+  };
+
+  // Hilfsfunktion zum Aktualisieren eines Boolean-Wertes
+  const updateBooleanValue = (definitionId: string, checked: boolean | 'indeterminate') => {
+    if (checked === 'indeterminate') {
+      onChange(values.filter((v) => v.definitionId !== definitionId));
+      return;
+    }
+
+    const existing = values.find((v) => v.definitionId === definitionId);
+    const newValue: AttributeValue = {
+      definitionId,
+      normalizedValue: checked ? 1 : 0,
+    };
+
+    if (existing) {
+      onChange(values.map((v) => (v.definitionId === definitionId ? newValue : v)));
+    } else {
+      onChange([...values, newValue]);
+    }
+  };
+
+  // Hilfsfunktion zum Aktualisieren eines Range-Wertes
+  const updateRangeValue = (
+    definitionId: string,
+    min: number | null,
+    max: number | null,
+    prefix: SIPrefix | null
+  ) => {
+    if (min === null && max === null) {
+      onChange(values.filter((v) => v.definitionId !== definitionId));
+      return;
+    }
+
+    const factor = SI_PREFIX_FACTORS[prefix || ''] || 1;
+    const normalizedMin = min !== null ? min * factor : null;
+    const normalizedMax = max !== null ? max * factor : null;
+
+    const existing = values.find((v) => v.definitionId === definitionId);
+    const newValue: AttributeValue = {
+      definitionId,
+      normalizedMin,
+      normalizedMax,
+      prefix: prefix || null,
+    };
+
+    if (existing) {
+      onChange(values.map((v) => (v.definitionId === definitionId ? newValue : v)));
+    } else {
+      onChange([...values, newValue]);
+    }
   };
 
   if (!categoryId) {
@@ -149,12 +393,13 @@ export function AttributeFields({
         {attributes.map((attr) => {
           const currentValue = getValue(attr.id);
           const displayName = attr.displayName.de || attr.displayName.en || attr.name;
+          const hasAllowedPrefixes = attr.allowedPrefixes && attr.allowedPrefixes.length > 0;
 
           return (
             <div key={attr.id} className="space-y-1.5">
               <Label htmlFor={`attr-${attr.id}`} className="flex items-center gap-2">
                 {displayName}
-                {attr.unit && (
+                {attr.unit && !hasAllowedPrefixes && (
                   <span className="text-xs text-muted-foreground">({attr.unit})</span>
                 )}
                 {attr.isRequired && (
@@ -167,14 +412,8 @@ export function AttributeFields({
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id={`attr-${attr.id}`}
-                    checked={currentValue?.displayValue === 'true'}
-                    onCheckedChange={(checked) => {
-                      if (checked === 'indeterminate') {
-                        removeValue(attr.id);
-                      } else {
-                        updateValue(attr.id, checked ? 'true' : 'false');
-                      }
-                    }}
+                    checked={currentValue?.normalizedValue === 1}
+                    onCheckedChange={(checked) => updateBooleanValue(attr.id, checked)}
                   />
                   <label
                     htmlFor={`attr-${attr.id}`}
@@ -185,45 +424,18 @@ export function AttributeFields({
                 </div>
               )}
 
-              {/* INTEGER */}
-              {attr.dataType === 'INTEGER' && (
-                <Input
+              {/* INTEGER / DECIMAL mit SI-Präfix-Unterstützung */}
+              {(attr.dataType === 'INTEGER' || attr.dataType === 'DECIMAL') && (
+                <NumericInput
                   id={`attr-${attr.id}`}
-                  type="number"
-                  step="1"
-                  placeholder={`z.B. 100${attr.unit ? ` ${attr.unit}` : ''}`}
-                  value={currentValue?.displayValue || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '') {
-                      removeValue(attr.id);
-                    } else {
-                      const num = parseInt(val);
-                      const normalized = attr.siMultiplier ? num * attr.siMultiplier : num;
-                      updateValue(attr.id, val, normalized);
-                    }
+                  value={currentValue?.normalizedValue}
+                  prefix={currentValue?.prefix}
+                  onChange={(displayValue, prefix) => {
+                    updateNumericValue(attr.id, displayValue, prefix);
                   }}
-                />
-              )}
-
-              {/* DECIMAL */}
-              {attr.dataType === 'DECIMAL' && (
-                <Input
-                  id={`attr-${attr.id}`}
-                  type="number"
-                  step="any"
-                  placeholder={`z.B. 10.5${attr.unit ? ` ${attr.unit}` : ''}`}
-                  value={currentValue?.displayValue || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '') {
-                      removeValue(attr.id);
-                    } else {
-                      const num = parseFloat(val);
-                      const normalized = attr.siMultiplier ? num * attr.siMultiplier : num;
-                      updateValue(attr.id, val, normalized);
-                    }
-                  }}
+                  dataType={attr.dataType}
+                  allowedPrefixes={attr.allowedPrefixes}
+                  unit={attr.unit}
                 />
               )}
 
@@ -233,80 +445,11 @@ export function AttributeFields({
                   id={`attr-${attr.id}`}
                   type="text"
                   placeholder={`${displayName} eingeben`}
-                  value={currentValue?.displayValue || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === '') {
-                      removeValue(attr.id);
-                    } else {
-                      updateValue(attr.id, val);
-                    }
-                  }}
+                  value={currentValue?.stringValue || ''}
+                  onChange={(e) => updateStringValue(attr.id, e.target.value)}
                 />
               )}
 
-              {/* RANGE (Min-Max) */}
-              {attr.dataType === 'RANGE' && (
-                <div className="flex items-center gap-2">
-                  <Input
-                    id={`attr-${attr.id}-min`}
-                    type="number"
-                    step="any"
-                    placeholder="Min"
-                    className="flex-1"
-                    value={currentValue?.normalizedMin?.toString() || ''}
-                    onChange={(e) => {
-                      const min = e.target.value ? parseFloat(e.target.value) : null;
-                      const max = currentValue?.normalizedMax ?? null;
-                      const display = min !== null && max !== null ? `${min} - ${max}` : min?.toString() || max?.toString() || '';
-                      onChange(values.map((v) =>
-                        v.definitionId === attr.id
-                          ? { ...v, displayValue: display, normalizedMin: min, normalizedMax: max }
-                          : v
-                      ).filter((v) => v.displayValue !== ''));
-                      if (display === '' && !values.find((v) => v.definitionId === attr.id)) return;
-                      if (display === '') {
-                        removeValue(attr.id);
-                      } else if (!values.find((v) => v.definitionId === attr.id)) {
-                        onChange([...values, { definitionId: attr.id, displayValue: display, normalizedMin: min, normalizedMax: max }]);
-                      }
-                    }}
-                  />
-                  <span className="text-muted-foreground">-</span>
-                  <Input
-                    id={`attr-${attr.id}-max`}
-                    type="number"
-                    step="any"
-                    placeholder="Max"
-                    className="flex-1"
-                    value={currentValue?.normalizedMax?.toString() || ''}
-                    onChange={(e) => {
-                      const max = e.target.value ? parseFloat(e.target.value) : null;
-                      const min = currentValue?.normalizedMin ?? null;
-                      const display = min !== null && max !== null ? `${min} - ${max}` : min?.toString() || max?.toString() || '';
-                      if (display === '') {
-                        removeValue(attr.id);
-                      } else {
-                        const existing = values.find((v) => v.definitionId === attr.id);
-                        if (existing) {
-                          onChange(values.map((v) =>
-                            v.definitionId === attr.id
-                              ? { ...v, displayValue: display, normalizedMin: min, normalizedMax: max }
-                              : v
-                          ));
-                        } else {
-                          onChange([...values, { definitionId: attr.id, displayValue: display, normalizedMin: min, normalizedMax: max }]);
-                        }
-                      }
-                    }}
-                  />
-                  {attr.unit && (
-                    <span className="text-sm text-muted-foreground whitespace-nowrap">
-                      {attr.unit}
-                    </span>
-                  )}
-                </div>
-              )}
             </div>
           );
         })}
