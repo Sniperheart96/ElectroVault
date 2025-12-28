@@ -13,6 +13,7 @@ import manufacturerRoutes from './routes/manufacturers/index';
 import packageRoutes from './routes/packages/index';
 import componentRoutes from './routes/components/index';
 import partRoutes from './routes/parts/index';
+import attributeRoutes from './routes/attributes/index';
 import auditRoutes from './routes/audit/index';
 
 // Custom Error Types
@@ -145,6 +146,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       await api.register(packageRoutes, { prefix: '/packages' });
       await api.register(componentRoutes, { prefix: '/components' });
       await api.register(partRoutes, { prefix: '/parts' });
+      await api.register(attributeRoutes, { prefix: '/attributes' });
       await api.register(auditRoutes, { prefix: '/audit' });
     },
     { prefix: '/api/v1' }

@@ -161,18 +161,23 @@ export default async function ManufacturerDetailPage({ params }: PageProps) {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-semibold">{part.mpn}</h3>
-                            <Badge variant={getPartStatusBadgeVariant(part.status)}>
-                              {tComponents(`status.${part.status}`)}
+                            <Badge variant={getPartStatusBadgeVariant(part.lifecycleStatus)}>
+                              {tComponents(`status.${part.lifecycleStatus}`)}
                             </Badge>
                           </div>
-                          {part.description && (
+                          {part.orderingCode && (
                             <p className="text-sm text-muted-foreground">
-                              {part.description.de || part.description.en}
+                              Bestellnummer: {part.orderingCode}
                             </p>
                           )}
-                          {part.component && (
+                          {part.coreComponent && (
                             <p className="text-sm text-muted-foreground mt-1">
-                              Komponente: {part.component.name.de || part.component.name.en}
+                              Komponente: {part.coreComponent.name.de || part.coreComponent.name.en}
+                            </p>
+                          )}
+                          {part.package && (
+                            <p className="text-sm text-muted-foreground">
+                              Bauform: {part.package.name}
                             </p>
                           )}
                         </div>

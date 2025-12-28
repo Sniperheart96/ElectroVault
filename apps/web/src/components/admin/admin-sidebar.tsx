@@ -9,8 +9,8 @@ import {
   Factory,
   FolderTree,
   Users,
-  Settings,
   LogOut,
+  Box,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -28,9 +28,16 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
-    name: 'Komponenten',
+    name: 'Kategorien',
+    href: '/admin/categories',
+    icon: FolderTree,
+    description: 'Kategorien & Attribute',
+  },
+  {
+    name: 'Bauteile',
     href: '/admin/components',
     icon: Package,
+    description: 'Bauteile & Varianten',
   },
   {
     name: 'Hersteller',
@@ -38,9 +45,9 @@ const navigation = [
     icon: Factory,
   },
   {
-    name: 'Kategorien',
-    href: '/admin/categories',
-    icon: FolderTree,
+    name: 'Bauformen',
+    href: '/admin/packages',
+    icon: Box,
   },
   {
     name: 'Benutzer',

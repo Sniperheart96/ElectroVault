@@ -63,7 +63,7 @@ export default function ComponentsPage() {
     try {
       setLoading(true);
       const [componentsResult, categoriesResult] = await Promise.all([
-        api.getComponents({ limit: 100 }),
+        api.getComponents({ limit: 500 }),
         api.getCategoryTree(),
       ]);
       setComponents(componentsResult.data);
@@ -128,17 +128,17 @@ export default function ComponentsPage() {
 
   const getStatusBadge = (status: Component['status']) => {
     const variants = {
-      ACTIVE: 'default',
-      NRND: 'secondary',
-      EOL: 'warning',
-      OBSOLETE: 'destructive',
+      DRAFT: 'secondary',
+      PENDING: 'warning',
+      PUBLISHED: 'default',
+      ARCHIVED: 'destructive',
     } as const;
 
     const labels = {
-      ACTIVE: 'Aktiv',
-      NRND: 'NRND',
-      EOL: 'Auslaufend',
-      OBSOLETE: 'Obsolet',
+      DRAFT: 'Entwurf',
+      PENDING: 'Ausstehend',
+      PUBLISHED: 'Veröffentlicht',
+      ARCHIVED: 'Archiviert',
     };
 
     return <Badge variant={variants[status] || 'secondary'}>{labels[status] || status}</Badge>;
@@ -154,7 +154,9 @@ export default function ComponentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Bauteile</h1>
-          <p className="text-muted-foreground">Verwalten Sie alle Bauteile in der Datenbank</p>
+          <p className="text-muted-foreground">
+            Verwalten Sie alle Bauteile in der Datenbank ({components.length} Bauteile)
+          </p>
         </div>
         <Button onClick={handleCreate}>
           <Plus className="mr-2 h-4 w-4" />
@@ -164,7 +166,8 @@ export default function ComponentsPage() {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-col md:flex-row gap-4">
+          <CardTitle>Bauteile</CardTitle>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -175,19 +178,19 @@ export default function ComponentsPage() {
               />
             </div>
             <Select value={statusFilter || 'all'} onValueChange={(v) => setStatusFilter(v === 'all' ? '' : v)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Alle Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Alle Status</SelectItem>
-                <SelectItem value="ACTIVE">Aktiv</SelectItem>
-                <SelectItem value="NRND">NRND</SelectItem>
-                <SelectItem value="EOL">Auslaufend</SelectItem>
-                <SelectItem value="OBSOLETE">Obsolet</SelectItem>
+                <SelectItem value="DRAFT">Entwurf</SelectItem>
+                <SelectItem value="PENDING">Ausstehend</SelectItem>
+                <SelectItem value="PUBLISHED">Veröffentlicht</SelectItem>
+                <SelectItem value="ARCHIVED">Archiviert</SelectItem>
               </SelectContent>
             </Select>
             <Select value={categoryFilter || 'all'} onValueChange={(v) => setCategoryFilter(v === 'all' ? '' : v)}>
-              <SelectTrigger className="w-[250px]">
+              <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="Alle Kategorien" />
               </SelectTrigger>
               <SelectContent>
@@ -209,73 +212,71 @@ export default function ComponentsPage() {
               ))}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Kategorie</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Aktualisiert</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredComponents.length === 0 ? (
+            <div className="max-h-[600px] overflow-y-auto">
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
-                      Keine Bauteile gefunden
-                    </TableCell>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Kategorie</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Aktionen</TableHead>
                   </TableRow>
-                ) : (
-                  filteredComponents.map((component) => (
-                    <TableRow key={component.id}>
-                      <TableCell>
-                        <div>
-                          <span className="font-medium">
-                            {component.name.de || component.name.en}
-                          </span>
-                          {component.shortDescription && (
-                            <p className="text-sm text-muted-foreground truncate max-w-xs">
-                              {component.shortDescription.de || component.shortDescription.en}
-                            </p>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="max-w-[200px] truncate">
-                        {getCategoryName(component.categoryId)}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(component.status)}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {new Date(component.updatedAt).toLocaleDateString('de-DE')}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="sm" asChild>
-                            <Link href={`/components/${component.slug}`} target="_blank">
-                              <ExternalLink className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit(component)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setComponentToDelete(component)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
+                </TableHeader>
+                <TableBody>
+                  {filteredComponents.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground">
+                        Keine Bauteile gefunden
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                  ) : (
+                    filteredComponents.map((component) => (
+                      <TableRow key={component.id}>
+                        <TableCell>
+                          <div>
+                            <span className="font-medium">
+                              {component.name.de || component.name.en}
+                            </span>
+                            {component.shortDescription && (
+                              <p className="text-sm text-muted-foreground truncate max-w-xs">
+                                {component.shortDescription.de || component.shortDescription.en}
+                              </p>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <span className="text-sm">{getCategoryName(component.categoryId)}</span>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(component.status)}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-1">
+                            <Button variant="ghost" size="sm" asChild>
+                              <Link href={`/components/${component.slug}`} target="_blank">
+                                <ExternalLink className="h-4 w-4" />
+                              </Link>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEdit(component)}
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setComponentToDelete(component)}
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>
@@ -284,6 +285,7 @@ export default function ComponentsPage() {
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}
         onSaved={handleSaved}
+        onDataChanged={loadData}
       />
 
       <ComponentDialog
@@ -291,6 +293,7 @@ export default function ComponentsPage() {
         onOpenChange={setIsEditDialogOpen}
         component={selectedComponent}
         onSaved={handleSaved}
+        onDataChanged={loadData}
       />
 
       <DeleteConfirmDialog

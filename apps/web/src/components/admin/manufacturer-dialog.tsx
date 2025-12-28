@@ -53,7 +53,7 @@ export function ManufacturerDialog({
   const isEdit = !!manufacturer;
 
   const form = useForm<CreateManufacturerInput>({
-    resolver: zodResolver(CreateManufacturerSchema),
+    resolver: zodResolver(CreateManufacturerSchema) as never,
     defaultValues: {
       name: '',
       status: 'ACTIVE',

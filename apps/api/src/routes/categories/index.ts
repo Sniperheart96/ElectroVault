@@ -4,11 +4,13 @@
 
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { categoryService } from '../../services/category.service';
+import { attributeService } from '../../services/attribute.service';
 import {
   CategoryListQuerySchema,
   CategoryTreeQuerySchema,
   CreateCategorySchema,
   UpdateCategorySchema,
+  CategoryAttributesQuerySchema,
 } from '@electrovault/schemas';
 
 /**
@@ -58,17 +60,25 @@ export default async function categoryRoutes(
 
   /**
    * GET /categories/:id/attributes
-   * Attribut-Definitionen einer Kategorie
+   * Attribut-Definitionen einer Kategorie (inkl. vererbter)
    */
   app.get<{ Params: { id: string } }>('/:id/attributes', async (request, reply) => {
     const { id } = request.params;
-    const category = await categoryService.getWithAttributes(id);
+    const query = CategoryAttributesQuerySchema.parse(request.query);
+
+    // Hole Kategorie-Info
+    const category = await categoryService.getById(id);
+
+    // Hole Attribute (inkl. vererbter wenn gewünscht)
+    const attributes = await attributeService.getByCategory(id, query);
 
     return reply.send({
       data: {
         categoryId: category.id,
         categoryName: category.name,
-        attributes: category.attributeDefinitions,
+        categoryLevel: category.level,
+        attributes,
+        includeInherited: query.includeInherited,
       },
     });
   });

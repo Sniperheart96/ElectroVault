@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LocalizedStringSchema } from '@electrovault/schemas';
+import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, ArrowDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -29,10 +30,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { type Category, type CategoryTreeNode } from '@/lib/api';
+import { type Category, type CategoryTreeNode, type AttributeDefinition } from '@/lib/api';
+import { AttributeDialog } from '@/components/admin/attribute-dialog';
+import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
@@ -56,6 +80,12 @@ interface CategoryDialogProps {
   onOpenChange: (open: boolean) => void;
   category?: Category | null;
   onSaved: () => void;
+  allCategories?: Category[];
+}
+
+interface AttributeWithInheritance extends AttributeDefinition {
+  inheritedFrom?: Category;
+  isInherited: boolean;
 }
 
 function flattenCategories(nodes: CategoryTreeNode[], prefix = '', excludeId?: string): { id: string; name: string }[] {
@@ -76,6 +106,7 @@ export function CategoryDialog({
   onOpenChange,
   category,
   onSaved,
+  allCategories = [],
 }: CategoryDialogProps) {
   const api = useApi();
   const { toast } = useToast();
@@ -83,8 +114,18 @@ export function CategoryDialog({
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
+  // Attributes state
+  const [ownAttributes, setOwnAttributes] = useState<AttributeDefinition[]>([]);
+  const [inheritedAttributes, setInheritedAttributes] = useState<AttributeWithInheritance[]>([]);
+  const [loadingAttributes, setLoadingAttributes] = useState(false);
+  const [isInheritedOpen, setIsInheritedOpen] = useState(false);
+  const [selectedAttribute, setSelectedAttribute] = useState<AttributeDefinition | null>(null);
+  const [isAttrCreateDialogOpen, setIsAttrCreateDialogOpen] = useState(false);
+  const [isAttrEditDialogOpen, setIsAttrEditDialogOpen] = useState(false);
+  const [attributeToDelete, setAttributeToDelete] = useState<AttributeDefinition | null>(null);
+
   const form = useForm<CreateCategoryInput>({
-    resolver: zodResolver(CreateCategorySchema),
+    resolver: zodResolver(CreateCategorySchema) as never,
     defaultValues: {
       name: { de: '', en: '' },
       parentId: null,
@@ -113,6 +154,74 @@ export function CategoryDialog({
       loadCategories();
     }
   }, [open, category?.id]);
+
+  // Load attributes when editing
+  useEffect(() => {
+    const loadAttributes = async () => {
+      if (!category) {
+        setOwnAttributes([]);
+        setInheritedAttributes([]);
+        return;
+      }
+
+      try {
+        setLoadingAttributes(true);
+
+        // Alle Attribute für diese Kategorie laden
+        const result = await api.getAttributeDefinitions({
+          categoryId: category.id,
+          limit: 500,
+        });
+
+        // Eigene Attribute = die direkt zu dieser Kategorie gehören
+        const own = result.data.filter(attr => attr.categoryId === category.id);
+        setOwnAttributes(own);
+
+        // Vererbte Attribute von Parent-Kategorien sammeln
+        const inherited: AttributeWithInheritance[] = [];
+        let currentParentId = category.parentId;
+
+        while (currentParentId) {
+          const parentCategory = allCategories.find(c => c.id === currentParentId);
+          if (!parentCategory) break;
+
+          try {
+            const parentAttrs = await api.getAttributeDefinitions({
+              categoryId: currentParentId,
+              limit: 500,
+            });
+
+            // Nur direkte Attribute dieser Parent-Kategorie
+            const directParentAttrs = parentAttrs.data.filter(
+              attr => attr.categoryId === currentParentId
+            );
+
+            for (const attr of directParentAttrs) {
+              inherited.push({
+                ...attr,
+                inheritedFrom: parentCategory,
+                isInherited: true,
+              });
+            }
+          } catch (e) {
+            console.error(`Failed to load attributes for parent ${currentParentId}`, e);
+          }
+
+          currentParentId = parentCategory.parentId;
+        }
+
+        setInheritedAttributes(inherited);
+      } catch (error) {
+        console.error('Failed to load attributes:', error);
+      } finally {
+        setLoadingAttributes(false);
+      }
+    };
+
+    if (open && isEdit) {
+      loadAttributes();
+    }
+  }, [open, category, isEdit, allCategories]);
 
   useEffect(() => {
     if (category) {
@@ -168,169 +277,424 @@ export function CategoryDialog({
     }
   };
 
+  // Attribute management functions
+  const reloadAttributes = async () => {
+    if (!category) return;
+    try {
+      setLoadingAttributes(true);
+      const result = await api.getAttributeDefinitions({
+        categoryId: category.id,
+        limit: 500,
+      });
+      const own = result.data.filter(attr => attr.categoryId === category.id);
+      setOwnAttributes(own);
+    } catch (error) {
+      console.error('Failed to reload attributes:', error);
+    } finally {
+      setLoadingAttributes(false);
+    }
+  };
+
+  const handleAttrEdit = (attribute: AttributeDefinition) => {
+    setSelectedAttribute(attribute);
+    setIsAttrEditDialogOpen(true);
+  };
+
+  const handleAttrDelete = async (attribute: AttributeDefinition) => {
+    try {
+      await api.deleteAttributeDefinition(attribute.id);
+      toast({
+        title: 'Erfolg',
+        description: 'Attribut-Definition wurde gelöscht.',
+      });
+      reloadAttributes();
+      setAttributeToDelete(null);
+    } catch (error) {
+      toast({
+        title: 'Fehler',
+        description: 'Attribut-Definition konnte nicht gelöscht werden.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleAttrSaved = () => {
+    reloadAttributes();
+    setIsAttrCreateDialogOpen(false);
+    setIsAttrEditDialogOpen(false);
+    setSelectedAttribute(null);
+  };
+
+  const getScopeBadge = (scope: AttributeDefinition['scope']) => {
+    const variants = {
+      COMPONENT: 'default',
+      PART: 'secondary',
+      BOTH: 'outline',
+    } as const;
+
+    const labels = {
+      COMPONENT: 'Component',
+      PART: 'Part',
+      BOTH: 'Beide',
+    };
+
+    return <Badge variant={variants[scope]}>{labels[scope]}</Badge>;
+  };
+
+  const getDataTypeBadge = (dataType: AttributeDefinition['dataType']) => {
+    const labels = {
+      DECIMAL: 'Dezimal',
+      INTEGER: 'Ganzzahl',
+      STRING: 'Text',
+      BOOLEAN: 'Ja/Nein',
+      RANGE: 'Bereich',
+    };
+
+    return <Badge variant="outline">{labels[dataType]}</Badge>;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{isEdit ? 'Kategorie bearbeiten' : 'Neue Kategorie'}</DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Kategorie-Informationen ändern' : 'Neue Kategorie erstellen'}
+            {isEdit ? 'Kategorie-Informationen und Attribute verwalten' : 'Neue Kategorie erstellen'}
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name *</FormLabel>
-                  <FormControl>
-                    <LocalizedInput
-                      value={field.value || { de: '', en: '' }}
-                      onChange={field.onChange}
-                      placeholder="Kategoriename"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <Tabs defaultValue="details" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="details">Stammdaten</TabsTrigger>
+            <TabsTrigger value="attributes" disabled={!isEdit}>
+              Attribute {isEdit && `(${ownAttributes.length + inheritedAttributes.length})`}
+            </TabsTrigger>
+          </TabsList>
 
-            <FormField
-              control={form.control}
-              name="parentId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Übergeordnete Kategorie</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(value === '_none_' ? null : value)}
-                    value={field.value || '_none_'}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={loadingCategories ? 'Lädt...' : 'Keine (Root-Kategorie)'} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="_none_">Keine (Root-Kategorie)</SelectItem>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat.id} value={cat.id}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    Leer lassen für eine Hauptkategorie (Level 0)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Beschreibung</FormLabel>
-                  <FormControl>
-                    <LocalizedInput
-                      value={field.value || { de: '', en: '' }}
-                      onChange={field.onChange}
-                      multiline
-                      placeholder="Beschreibung der Kategorie"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="sortOrder"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sortierreihenfolge</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        {...field}
-                        value={field.value || 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Niedrigere Werte = weiter oben
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isActive"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(value === 'true')}
-                      value={field.value ? 'true' : 'false'}
-                    >
+          {/* Details Tab */}
+          <TabsContent value="details" className="mt-4">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name *</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
+                        <LocalizedInput
+                          value={field.value || { de: '', en: '' }}
+                          onChange={field.onChange}
+                          placeholder="Kategoriename"
+                        />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="true">Aktiv</SelectItem>
-                        <SelectItem value="false">Inaktiv</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="iconUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Icon-URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="https://example.com/icon.svg"
-                      {...field}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    URL zu einem Icon-Bild (optional)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
+                <FormField
+                  control={form.control}
+                  name="parentId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Übergeordnete Kategorie</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(value === '_none_' ? null : value)}
+                        value={field.value || '_none_'}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={loadingCategories ? 'Lädt...' : 'Keine (Root-Kategorie)'} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="_none_">Keine (Root-Kategorie)</SelectItem>
+                          {categories.map((cat) => (
+                            <SelectItem key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Leer lassen für eine Hauptkategorie (Level 0)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Beschreibung</FormLabel>
+                      <FormControl>
+                        <LocalizedInput
+                          value={field.value || { de: '', en: '' }}
+                          onChange={field.onChange}
+                          multiline
+                          placeholder="Beschreibung der Kategorie"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="sortOrder"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Sortierreihenfolge</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={0}
+                            {...field}
+                            value={field.value || 0}
+                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Niedrigere Werte = weiter oben
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="isActive"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select
+                          onValueChange={(value) => field.onChange(value === 'true')}
+                          value={field.value ? 'true' : 'false'}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="true">Aktiv</SelectItem>
+                            <SelectItem value="false">Inaktiv</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="iconUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Icon-URL</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://example.com/icon.svg"
+                          {...field}
+                          value={field.value || ''}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        URL zu einem Icon-Bild (optional)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                    Abbrechen
+                  </Button>
+                  <Button type="submit" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </TabsContent>
+
+          {/* Attributes Tab */}
+          <TabsContent value="attributes" className="mt-4">
+            {!isEdit ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Speichern Sie zuerst die Kategorie, um Attribute hinzuzufügen.</p>
+              </div>
+            ) : loadingAttributes ? (
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-24 w-full" />
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    Attribute dieser Kategorie (werden an Unterkategorien vererbt)
+                  </p>
+                  <Button size="sm" onClick={() => setIsAttrCreateDialogOpen(true)}>
+                    <Plus className="mr-1 h-3 w-3" />
+                    Neues Attribut
+                  </Button>
+                </div>
+
+                {/* Eigene Attribute */}
+                <div>
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">
+                    Eigene Attribute ({ownAttributes.length})
+                  </h4>
+                  {ownAttributes.length === 0 ? (
+                    <p className="text-sm text-muted-foreground italic">
+                      Keine eigenen Attribute definiert.
+                    </p>
+                  ) : (
+                    <div className="max-h-[200px] overflow-y-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Anzeigename</TableHead>
+                            <TableHead>Typ</TableHead>
+                            <TableHead>Scope</TableHead>
+                            <TableHead>Einheit</TableHead>
+                            <TableHead className="text-right">Aktionen</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {ownAttributes.map((attr) => (
+                            <TableRow key={attr.id}>
+                              <TableCell className="font-mono text-sm">{attr.name}</TableCell>
+                              <TableCell>{attr.displayName.de || attr.displayName.en}</TableCell>
+                              <TableCell>{getDataTypeBadge(attr.dataType)}</TableCell>
+                              <TableCell>{getScopeBadge(attr.scope)}</TableCell>
+                              <TableCell>{attr.unit || '-'}</TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex justify-end gap-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleAttrEdit(attr)}
+                                  >
+                                    <Pencil className="h-3 w-3" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setAttributeToDelete(attr)}
+                                  >
+                                    <Trash2 className="h-3 w-3 text-destructive" />
+                                  </Button>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+                </div>
+
+                {/* Vererbte Attribute */}
+                {inheritedAttributes.length > 0 && (
+                  <Collapsible open={isInheritedOpen} onOpenChange={setIsInheritedOpen}>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" className="w-full justify-between">
+                        <span className="flex items-center gap-2">
+                          <ArrowDown className="h-4 w-4" />
+                          Vererbte Attribute ({inheritedAttributes.length})
+                        </span>
+                        {isInheritedOpen ? (
+                          <ChevronUp className="h-4 w-4" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <div className="max-h-[200px] overflow-y-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Name</TableHead>
+                              <TableHead>Anzeigename</TableHead>
+                              <TableHead>Typ</TableHead>
+                              <TableHead>Scope</TableHead>
+                              <TableHead>Von Kategorie</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {inheritedAttributes.map((attr) => (
+                              <TableRow key={attr.id} className="opacity-70">
+                                <TableCell className="font-mono text-sm">{attr.name}</TableCell>
+                                <TableCell>{attr.displayName.de || attr.displayName.en}</TableCell>
+                                <TableCell>{getDataTypeBadge(attr.dataType)}</TableCell>
+                                <TableCell>{getScopeBadge(attr.scope)}</TableCell>
+                                <TableCell>
+                                  <Badge variant="outline">
+                                    {attr.inheritedFrom?.name.de || attr.inheritedFrom?.name.en}
+                                  </Badge>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2 italic">
+                        Vererbte Attribute können nur in ihrer Ursprungs-Kategorie bearbeitet werden.
+                      </p>
+                    </CollapsibleContent>
+                  </Collapsible>
+                )}
+
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => onOpenChange(false)}>
+                    Schließen
+                  </Button>
+                </DialogFooter>
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+
+        {/* Attribute Dialogs */}
+        {category && (
+          <>
+            <AttributeDialog
+              open={isAttrCreateDialogOpen}
+              onOpenChange={setIsAttrCreateDialogOpen}
+              onSaved={handleAttrSaved}
+              presetCategoryId={category.id}
             />
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Abbrechen
-              </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+            <AttributeDialog
+              open={isAttrEditDialogOpen}
+              onOpenChange={setIsAttrEditDialogOpen}
+              attribute={selectedAttribute}
+              onSaved={handleAttrSaved}
+            />
+
+            <DeleteConfirmDialog
+              open={!!attributeToDelete}
+              onOpenChange={(open) => !open && setAttributeToDelete(null)}
+              title="Attribut-Definition löschen?"
+              description={`Möchten Sie die Attribut-Definition "${attributeToDelete?.name}" wirklich löschen?`}
+              onConfirm={() => attributeToDelete && handleAttrDelete(attributeToDelete)}
+            />
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

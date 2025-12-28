@@ -4,6 +4,7 @@
 
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { componentService } from '../../services/component.service';
+import { partService } from '../../services/part.service';
 import {
   ComponentListQuerySchema,
   CreateComponentSchema,
@@ -153,4 +154,14 @@ export default async function componentRoutes(
       return reply.code(204).send();
     }
   );
+
+  /**
+   * GET /components/:id/parts
+   * Alle ManufacturerParts eines Components
+   */
+  app.get<{ Params: { id: string } }>('/:id/parts', async (request, reply) => {
+    const { id } = request.params;
+    const parts = await partService.getByComponentId(id);
+    return reply.send({ data: parts });
+  });
 }

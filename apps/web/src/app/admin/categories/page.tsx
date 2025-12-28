@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Plus, Pencil, Trash2, ChevronRight, ChevronDown, FolderTree } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,7 +20,12 @@ interface CategoryTreeItemProps {
   onCreate: (parentId: string) => void;
 }
 
-function CategoryTreeItem({ node, onEdit, onDelete, onCreate }: CategoryTreeItemProps) {
+function CategoryTreeItem({
+  node,
+  onEdit,
+  onDelete,
+  onCreate,
+}: CategoryTreeItemProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const hasChildren = node.children && node.children.length > 0;
 
@@ -155,6 +160,21 @@ export default function CategoriesPage() {
     }
   };
 
+  // Flatten category tree for CategoryDialog (for inheritance)
+  const flatCategories = useMemo(() => {
+    const flatten = (nodes: CategoryTreeNode[]): Category[] => {
+      const result: Category[] = [];
+      for (const node of nodes) {
+        result.push(node);
+        if (node.children?.length) {
+          result.push(...flatten(node.children));
+        }
+      }
+      return result;
+    };
+    return flatten(categoryTree);
+  }, [categoryTree]);
+
   const handleCreateRoot = () => {
     setParentIdForCreate(null);
     setIsCreateDialogOpen(true);
@@ -266,6 +286,7 @@ export default function CategoriesPage() {
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}
         onSaved={handleSaved}
+        allCategories={flatCategories}
       />
 
       <CategoryDialog
@@ -273,6 +294,7 @@ export default function CategoriesPage() {
         onOpenChange={setIsEditDialogOpen}
         category={selectedCategory}
         onSaved={handleSaved}
+        allCategories={flatCategories}
       />
 
       <DeleteConfirmDialog

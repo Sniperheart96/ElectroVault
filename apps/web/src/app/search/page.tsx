@@ -200,8 +200,8 @@ function SearchContent() {
             filtered = filtered.filter(
               (p) =>
                 p.mpn.toLowerCase().includes(q) ||
-                p.description?.de?.toLowerCase().includes(q) ||
-                p.description?.en?.toLowerCase().includes(q)
+                p.orderingCode?.toLowerCase().includes(q) ||
+                p.manufacturer?.name.toLowerCase().includes(q)
             );
           }
           setParts(filtered);
@@ -512,8 +512,8 @@ function SearchContent() {
                             <div className="flex items-center gap-2 mb-1">
                               <Factory className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                               <h3 className="font-semibold">{part.mpn}</h3>
-                              <Badge variant={getStatusBadgeVariant(part.status)}>
-                                {getStatusLabel(part.status, 'parts')}
+                              <Badge variant={getStatusBadgeVariant(part.lifecycleStatus)}>
+                                {getStatusLabel(part.lifecycleStatus, 'parts')}
                               </Badge>
                             </div>
                             {part.manufacturer && (
@@ -521,9 +521,14 @@ function SearchContent() {
                                 Hersteller: {part.manufacturer.name}
                               </p>
                             )}
-                            {part.description && (
-                              <p className="text-sm text-muted-foreground line-clamp-2">
-                                {part.description.de || part.description.en}
+                            {part.orderingCode && (
+                              <p className="text-sm text-muted-foreground">
+                                Bestellnummer: {part.orderingCode}
+                              </p>
+                            )}
+                            {part.package && (
+                              <p className="text-sm text-muted-foreground">
+                                Bauform: {part.package.name}
                               </p>
                             )}
                           </div>

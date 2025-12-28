@@ -10,6 +10,7 @@ import type {
   CreatePartRelationshipInput,
   CreateDatasheetInput,
   CreatePartImageInput,
+  CreateAttributeValueInput,
   PartBase,
   PartWithRelations,
   PartFull,
@@ -584,7 +585,149 @@ export class PartService {
       orderBy: { mpn: 'asc' },
     });
 
-    return parts as PartBase[];
+    return parts as unknown as PartBase[];
+  }
+
+  /**
+   * Gibt alle Parts eines Components zurück
+   */
+  async getByComponentId(componentId: string): Promise<PartListItem[]> {
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
+    });
+
+    if (!component) {
+      throw new NotFoundError('Component', componentId);
+    }
+
+    const parts = await prisma.manufacturerPart.findMany({
+      where: {
+        coreComponentId: componentId,
+        deletedAt: null,
+      },
+      include: {
+        manufacturer: {
+          select: { id: true, name: true, slug: true },
+        },
+        coreComponent: {
+          select: { id: true, name: true, slug: true },
+        },
+        package: {
+          select: { id: true, name: true, slug: true },
+        },
+        images: {
+          where: { isPrimary: true },
+          take: 1,
+        },
+      },
+      orderBy: [{ manufacturer: { name: 'asc' } }, { mpn: 'asc' }],
+    });
+
+    return parts.map((p) => ({
+      id: p.id,
+      mpn: p.mpn,
+      orderingCode: p.orderingCode,
+      status: p.status,
+      lifecycleStatus: p.lifecycleStatus,
+      manufacturer: p.manufacturer,
+      coreComponent: {
+        id: p.coreComponent.id,
+        name: p.coreComponent.name as LocalizedString,
+        slug: p.coreComponent.slug,
+      },
+      package: p.package,
+      primaryImage: p.images[0] || null,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+    }));
+  }
+
+  /**
+   * Setzt/aktualisiert Attributwerte eines Parts
+   */
+  async setAttributeValues(
+    partId: string,
+    values: CreateAttributeValueInput[],
+    userId?: string
+  ): Promise<void> {
+    const part = await prisma.manufacturerPart.findUnique({
+      where: { id: partId, deletedAt: null },
+      include: { coreComponent: { include: { category: true } } },
+    });
+
+    if (!part) {
+      throw new NotFoundError('Part', partId);
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // Alte Attributwerte löschen
+      await tx.partAttributeValue.deleteMany({
+        where: { partId },
+      });
+
+      // Neue Attributwerte erstellen
+      for (const value of values) {
+        // Prüfen ob Definition existiert und Scope passt
+        const definition = await tx.attributeDefinition.findUnique({
+          where: { id: value.definitionId },
+        });
+
+        if (!definition) {
+          throw new BadRequestError(`Attribute definition '${value.definitionId}' not found`);
+        }
+
+        if (definition.scope === 'COMPONENT') {
+          throw new BadRequestError(
+            `Attribute '${definition.name}' is COMPONENT-scoped and cannot be assigned to a part`
+          );
+        }
+
+        // Prüfen ob Definition zur Kategorie des Components passt
+        if (definition.categoryId !== part.coreComponent.categoryId) {
+          throw new BadRequestError(
+            `Attribute '${definition.name}' is not applicable to category '${part.coreComponent.category.name}'`
+          );
+        }
+
+        await tx.partAttributeValue.create({
+          data: {
+            partId,
+            definitionId: value.definitionId,
+            displayValue: value.displayValue,
+            normalizedValue: value.normalizedValue,
+            normalizedMin: value.normalizedMin,
+            normalizedMax: value.normalizedMax,
+            stringValue: value.stringValue,
+            isDeviation: false,
+          },
+        });
+      }
+    });
+  }
+
+  /**
+   * Gibt alle Attributwerte eines Parts zurück
+   */
+  async getAttributeValues(partId: string) {
+    const part = await prisma.manufacturerPart.findUnique({
+      where: { id: partId, deletedAt: null },
+    });
+
+    if (!part) {
+      throw new NotFoundError('Part', partId);
+    }
+
+    const values = await prisma.partAttributeValue.findMany({
+      where: { partId },
+      include: {
+        definition: true,
+      },
+      orderBy: {
+        definition: { sortOrder: 'asc' },
+      },
+    });
+
+    return values;
   }
 }
 

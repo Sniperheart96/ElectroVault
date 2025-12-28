@@ -34,6 +34,9 @@ Phase 3 implementiert das Next.js Frontend mit Admin-UI und Benutzeroberfläche.
 - [x] Admin: Kategorien-Verwaltung (CRUD, Baum)
 - [x] Admin: Hersteller-Verwaltung (CRUD)
 - [x] Admin: Benutzer-Übersicht
+- [x] Admin: Attribut-Definitionen (integriert in CategoryDialog mit Tab-Navigation)
+- [x] Admin: Package/Bauformen Verwaltung (CRUD)
+- [x] Admin: ManufacturerPart/Hersteller-Varianten (integriert in ComponentDialog mit Tab-Navigation)
 
 ---
 
@@ -67,6 +70,7 @@ apps/web/
 │   │   │   ├── components/page.tsx   # Komponenten-Verwaltung
 │   │   │   ├── categories/page.tsx   # Kategorien-Verwaltung
 │   │   │   ├── manufacturers/page.tsx # Hersteller-Verwaltung
+│   │   │   ├── packages/page.tsx     # Package/Bauformen
 │   │   │   └── users/page.tsx        # Benutzer-Übersicht
 │   │   ├── about/page.tsx            # Über uns
 │   │   ├── contact/page.tsx          # Kontakt
@@ -100,9 +104,12 @@ apps/web/
 │   │   │   └── breadcrumb.tsx
 │   │   ├── admin/
 │   │   │   ├── admin-sidebar.tsx     # Admin-Navigation
-│   │   │   ├── component-dialog.tsx  # Component CRUD Dialog
-│   │   │   ├── category-dialog.tsx   # Category CRUD Dialog
+│   │   │   ├── component-dialog.tsx  # Component CRUD Dialog (mit Hersteller-Varianten Tab)
+│   │   │   ├── category-dialog.tsx   # Category CRUD Dialog (mit Attribute Tab)
 │   │   │   ├── manufacturer-dialog.tsx # Manufacturer CRUD Dialog
+│   │   │   ├── attribute-dialog.tsx  # Attribut-Definition Dialog (eingebettet in CategoryDialog)
+│   │   │   ├── package-dialog.tsx    # Package CRUD Dialog
+│   │   │   ├── part-dialog.tsx       # ManufacturerPart Dialog (eingebettet in ComponentDialog)
 │   │   │   └── delete-confirm-dialog.tsx
 │   │   ├── forms/
 │   │   │   └── localized-input.tsx   # DE/EN Input-Komponente
@@ -110,7 +117,8 @@ apps/web/
 │   │       └── session-provider.tsx  # NextAuth Provider
 │   ├── hooks/
 │   │   ├── use-toast.ts              # Toast-Hook
-│   │   └── use-api.ts                # Auth API Hook für Client Components
+│   │   ├── use-api.ts                # Auth API Hook für Client Components
+│   │   └── use-categories-flat.ts    # Kategorie-Helfer (NEU)
 │   ├── lib/
 │   │   ├── api.ts                    # API-Client mit Auth-Support
 │   │   ├── auth.ts                   # NextAuth Konfiguration
@@ -196,7 +204,12 @@ Das Suchinterface (`/search`) bietet:
 ### Komponenten-Verwaltung
 
 - Tabelle mit Suche und Filtern
-- CRUD-Dialog mit LocalizedInput
+- CRUD-Dialog mit LocalizedInput und **Tab-Navigation**:
+  - **Tab "Stammdaten":** Name, Kategorie, Status, Beschreibung
+  - **Tab "Hersteller-Varianten":** (nur beim Bearbeiten)
+    - Liste aller ManufacturerParts für dieses Bauteil
+    - CRUD für Hersteller-Varianten direkt im Dialog
+    - Warnung wenn keine Variante vorhanden (mind. 1 erforderlich)
 - Kategorie-Auswahl (Baum)
 - Status-Verwaltung
 - Link zur öffentlichen Detailseite
@@ -204,10 +217,22 @@ Das Suchinterface (`/search`) bietet:
 ### Kategorien-Verwaltung
 
 - Interaktiver Baum-Editor
-- Drag & Drop-fähige Hierarchie
-- CRUD für Kategorien
+- CRUD-Dialog mit LocalizedInput und **Tab-Navigation**:
+  - **Tab "Stammdaten":** Name, Parent, Beschreibung, Sortierung
+  - **Tab "Attribute":** (nur beim Bearbeiten)
+    - Eigene Attribute dieser Kategorie
+    - Vererbte Attribute von Parent-Kategorien (Collapsible)
+    - CRUD für Attribute direkt im Dialog
 - Parent-Auswahl mit Zirkelvermeidung
 - Sortierreihenfolge
+
+### Package/Bauformen Verwaltung
+
+- Tabelle mit Suche
+- CRUD-Dialog
+- Mounting-Types: THT, SMD, Radial, Axial, Chassis, Other
+- Dimensionen (L/W/H), Pitch, Pin-Count
+- JEDEC/EIA Standards
 
 ### Hersteller-Verwaltung
 
@@ -287,7 +312,7 @@ t('components')
 
 ---
 
-## UI-Komponenten (16 Stück)
+## UI-Komponenten (19 Stück)
 
 | Komponente | Datei | Beschreibung |
 |------------|-------|--------------|
@@ -307,6 +332,9 @@ t('components')
 | Skeleton | `ui/skeleton.tsx` | Lade-Platzhalter |
 | Form | `ui/form.tsx` | react-hook-form Integration |
 | Avatar | `ui/avatar.tsx` | Benutzer-Avatare |
+| Tabs | `ui/tabs.tsx` | Tab-Navigation (für Dialoge) |
+| Collapsible | `ui/collapsible.tsx` | Einklappbare Bereiche |
+| Alert | `ui/alert.tsx` | Warnhinweise |
 
 ---
 

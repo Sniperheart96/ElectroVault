@@ -17,6 +17,144 @@ Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokume
 
 ---
 
+## [0.6.0] - 2025-12-28 - UI-Restrukturierung: Integrierte Dialoge
+
+### Geändert
+
+#### Dialoge erweitert mit Tab-Navigation
+- **ComponentDialog** (`apps/web/src/components/admin/component-dialog.tsx`)
+  - Neu: Tab-Navigation mit "Stammdaten" und "Hersteller-Varianten"
+  - Hersteller-Varianten werden jetzt direkt im Dialog verwaltet (nicht mehr separate Seite)
+  - Tab "Hersteller-Varianten" nur beim Bearbeiten aktiv
+  - Warnung wenn keine Varianten vorhanden (mind. 1 erforderlich)
+  - CRUD für Parts direkt im Dialog integriert
+
+- **CategoryDialog** (`apps/web/src/components/admin/category-dialog.tsx`)
+  - Neu: Tab-Navigation mit "Stammdaten" und "Attribute"
+  - Attribute werden jetzt direkt im Dialog verwaltet (nicht mehr separate Seite)
+  - Tab "Attribute" nur beim Bearbeiten aktiv
+  - Zeigt eigene Attribute und vererbte Attribute (von Parent-Kategorien)
+  - Vererbte Attribute in Collapsible-Bereich mit Quell-Kategorie
+  - CRUD für Attribute direkt im Dialog integriert
+
+#### Admin-Seiten vereinfacht
+- **Categories-Seite** (`apps/web/src/app/admin/categories/page.tsx`)
+  - Zurück auf 1-Spalten-Layout (nur Kategorie-Baum)
+  - Kein separates Attribut-Panel mehr nötig
+
+- **Components-Seite** (`apps/web/src/app/admin/components/page.tsx`)
+  - Zurück auf 1-Spalten-Layout (nur Bauteil-Tabelle)
+  - Kein separates Parts-Panel mehr nötig
+
+### Entfernt
+- `apps/web/src/app/admin/attributes/` - Separate Attribut-Seite (in CategoryDialog integriert)
+- `apps/web/src/app/admin/parts/` - Separate Parts-Seite (in ComponentDialog integriert)
+- `apps/web/src/components/admin/category-attributes-panel.tsx` - Nicht mehr benötigt
+- `apps/web/src/components/admin/component-parts-panel.tsx` - Nicht mehr benötigt
+- Admin-Sidebar-Einträge für "Attribute" und "Hersteller-Varianten"
+
+### Hinzugefügt
+- **Tabs UI-Komponente** (`apps/web/src/components/ui/tabs.tsx`)
+  - Radix UI Tabs-Wrapper für shadcn/ui Styling
+  - Package: `@radix-ui/react-tabs`
+
+### Workflow-Änderungen
+**Vorher:**
+- Separate Seiten für Attribute und Hersteller-Varianten
+- Nutzer musste zwischen Seiten wechseln
+
+**Nachher:**
+- Alles in einem Dialog
+- Bauteil bearbeiten → Tab "Hersteller-Varianten" → Varianten verwalten
+- Kategorie bearbeiten → Tab "Attribute" → Attribute verwalten (mit Vererbungsanzeige)
+
+---
+
+## [0.5.0] - 2025-12-28 - Admin-Panel & 2-Ebenen-Architektur UI
+
+### Hinzugefügt
+
+#### Attribut-Definition Verwaltung
+- **API & Service** (`apps/api/src/services/attribute.service.ts`)
+  - CRUD für Attribut-Definitionen pro Kategorie
+  - Kategorie-Vererbung (Attribute von Parent-Kategorien)
+  - Audit-Logging für alle Änderungen
+- **Routes** (`apps/api/src/routes/attributes/index.ts`)
+  - `GET /api/v1/attributes` - Liste mit Filterung
+  - `POST /api/v1/attributes` - Neue Definition erstellen
+  - `GET /api/v1/attributes/:id` - Details abrufen
+  - `PATCH /api/v1/attributes/:id` - Aktualisieren
+  - `DELETE /api/v1/attributes/:id` - Löschen
+- **Admin-UI** (`apps/web/src/app/admin/attributes/page.tsx`)
+  - Tabelle mit Filterung nach Kategorie
+  - Dialog für Erstellen/Bearbeiten
+  - Datentyp-Auswahl (Decimal, Integer, String, Boolean, Range)
+  - Scope-Auswahl (Component, Part, Both)
+
+#### ManufacturerPart (Hersteller-Varianten) Verwaltung
+- **Erweiterte API** (`apps/api/src/routes/parts/index.ts`)
+  - `GET /api/v1/parts/:id/attributes` - Attributwerte abrufen
+  - `PUT /api/v1/parts/:id/attributes` - Attributwerte setzen
+- **Erweiterte Routes** (`apps/api/src/routes/components/index.ts`)
+  - `GET /api/v1/components/:id/parts` - Parts eines Components
+- **Admin-UI** (`apps/web/src/app/admin/parts/page.tsx`)
+  - Vollständige CRUD-Oberfläche
+  - Auswahl von Component, Hersteller, Package
+  - Lifecycle-Status (ACTIVE, NRND, EOL, OBSOLETE)
+  - Compliance-Felder (RoHS, REACH)
+
+#### Package/Bauformen Verwaltung
+- **Admin-UI** (`apps/web/src/app/admin/packages/page.tsx`)
+  - Tabelle mit Suche
+  - Dialog für Erstellen/Bearbeiten
+  - Mounting-Types: THT, SMD, Radial, Axial, Chassis, Other
+  - Dimensionen (L/W/H), Pitch, Pin-Count
+  - JEDEC/EIA Standards
+
+### Korrigiert
+
+#### TypeScript-Fehler & Schema-Konsistenz
+- **Component Status** korrigiert: `DRAFT | PENDING | PUBLISHED | ARCHIVED`
+  - Vorher fälschlicherweise `ACTIVE | NRND | EOL | OBSOLETE` verwendet
+  - Betrifft: `component-dialog.tsx`, `admin/components/page.tsx`, `api.ts`
+- **Part Interface** erweitert um:
+  - `coreComponentId` (statt `componentId`)
+  - `lifecycleStatus` (ACTIVE/NRND/EOL/OBSOLETE)
+  - `orderingCode`, `package`, `weightGrams`, `dateCodeFormat`
+  - `rohsCompliant`, `reachCompliant`, `nsn`, `milSpec`
+- **Package MountingType** korrigiert: `THT | SMD | RADIAL | AXIAL | CHASSIS | OTHER`
+  - Vorher fälschlicherweise `HYBRID` verwendet
+- **AuditService-Aufrufe** in `category.service.ts`:
+  - `auditService.log()` → `auditService.logCreate/logUpdate/logDelete()`
+- **zodResolver Type-Casting** für react-hook-form Kompatibilität
+
+### Neue Dateien
+```
+apps/api/src/
+├── services/attribute.service.ts      # Attribut-Definition Service
+├── routes/attributes/index.ts         # Attribut-Endpoints
+packages/schemas/src/
+├── attribute.ts                       # Attribut-Definition Schemas
+apps/web/src/
+├── app/admin/
+│   ├── attributes/page.tsx           # Attribut-Verwaltung
+│   ├── packages/page.tsx             # Package-Verwaltung
+│   └── parts/page.tsx                # Parts-Verwaltung
+├── components/admin/
+│   ├── attribute-dialog.tsx          # Attribut-Formular
+│   ├── package-dialog.tsx            # Package-Formular
+│   └── part-dialog.tsx               # Part-Formular
+├── hooks/
+│   └── use-categories-flat.ts        # Kategorie-Helfer Hook
+```
+
+### Technische Details
+- **TypeScript:** Alle Fehler in Web und API behoben
+- **Schemas:** Attribut-Schemas hinzugefügt zu `@electrovault/schemas`
+- **Admin-Sidebar:** Neue Links für Attribute, Bauformen, Hersteller-Varianten
+
+---
+
 ## [0.4.0] - 2025-12-27 - Phase 3: Frontend Basis (In Arbeit)
 
 ### Hinzugefügt

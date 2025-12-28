@@ -93,7 +93,7 @@ export default async function ComponentDetailPage({ params }: PageProps) {
   // Fetch manufacturer parts for this component
   try {
     const partsResult = await api.getParts({
-      componentId: component.id,
+      componentId: component.id, // API uses componentId which maps to coreComponentId
       limit: 50,
     });
     parts = partsResult.data || [];
@@ -199,8 +199,8 @@ export default async function ComponentDetailPage({ params }: PageProps) {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-semibold">{part.mpn}</h3>
-                            <Badge variant={getStatusBadgeVariant(part.status)}>
-                              {t(`status.${part.status}`)}
+                            <Badge variant={getStatusBadgeVariant(part.lifecycleStatus)}>
+                              {t(`status.${part.lifecycleStatus}`)}
                             </Badge>
                           </div>
                           {part.manufacturer && (
@@ -214,14 +214,14 @@ export default async function ComponentDetailPage({ params }: PageProps) {
                               </Link>
                             </p>
                           )}
-                          {part.description && (
+                          {part.orderingCode && (
                             <p className="text-sm text-muted-foreground">
-                              {part.description.de || part.description.en}
+                              Bestellnummer: {part.orderingCode}
                             </p>
                           )}
-                          {part.stockQuantity !== undefined && part.stockQuantity > 0 && (
-                            <p className="text-sm text-green-600 mt-1">
-                              Lagerbestand: {part.stockQuantity}
+                          {part.package && (
+                            <p className="text-sm text-muted-foreground">
+                              Bauform: {part.package.name}
                             </p>
                           )}
                         </div>
@@ -313,11 +313,11 @@ export default async function ComponentDetailPage({ params }: PageProps) {
                     {t(`status.${component.status}`)}
                   </Badge>
                 </div>
-                {parts.reduce((sum, part) => sum + (part.stockQuantity || 0), 0) > 0 && (
+                {parts.filter(p => p.lifecycleStatus === 'ACTIVE').length > 0 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Gesamt-Lagerbestand</span>
+                    <span className="text-sm text-muted-foreground">Aktive Varianten</span>
                     <span className="font-semibold text-green-600">
-                      {parts.reduce((sum, part) => sum + (part.stockQuantity || 0), 0)}
+                      {parts.filter(p => p.lifecycleStatus === 'ACTIVE').length}
                     </span>
                   </div>
                 )}

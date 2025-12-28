@@ -201,6 +201,7 @@ export {
   CreatePartRelationshipSchema,
   CreatePartSchema,
   UpdatePartSchema,
+  SetPartAttributeValuesSchema,
   type CreateHazardousMaterialInput,
   type CreatePinMappingInput,
   type CreateDatasheetInput,
@@ -208,10 +209,30 @@ export {
   type CreatePartRelationshipInput,
   type CreatePartInput,
   type UpdatePartInput,
+  type SetPartAttributeValuesInput,
   // Query Schemas
   PartListQuerySchema,
   type PartListQuery,
 } from './part';
+
+// ============================================
+// ATTRIBUTE SCHEMAS
+// ============================================
+export {
+  // Response Schemas (AttributeDefinitionSchema bereits aus component.ts exportiert)
+  AttributeWithCategorySchema,
+  type AttributeWithCategory,
+  // Input Schemas
+  CreateAttributeDefinitionSchema,
+  UpdateAttributeDefinitionSchema,
+  type CreateAttributeDefinitionInput,
+  type UpdateAttributeDefinitionInput,
+  // Query Schemas
+  AttributeListQuerySchema,
+  CategoryAttributesQuerySchema,
+  type AttributeListQuery,
+  type CategoryAttributesQuery,
+} from './attribute';
 
 // ============================================
 // AUDIT SCHEMAS

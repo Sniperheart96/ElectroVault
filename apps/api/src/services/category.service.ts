@@ -339,7 +339,7 @@ export class CategoryService {
         slug,
         level,
         parentId: data.parentId || null,
-        description: data.description || null,
+        description: data.description || undefined,
         iconUrl: data.iconUrl || null,
         sortOrder: data.sortOrder ?? 0,
         isActive: data.isActive ?? true,
@@ -348,13 +348,12 @@ export class CategoryService {
 
     // Audit Log
     if (userId) {
-      await auditService.log({
-        entityType: 'CATEGORY',
-        entityId: category.id,
-        action: 'CREATE',
-        newValue: category,
-        userId,
-      });
+      await auditService.logCreate(
+        'CATEGORY',
+        category.id,
+        category as unknown as Record<string, unknown>,
+        userId
+      );
     }
 
     return category as CategoryBase;
@@ -407,14 +406,13 @@ export class CategoryService {
 
     // Audit Log
     if (userId) {
-      await auditService.log({
-        entityType: 'CATEGORY',
-        entityId: category.id,
-        action: 'UPDATE',
-        previousValue: existing,
-        newValue: category,
-        userId,
-      });
+      await auditService.logUpdate(
+        'CATEGORY',
+        category.id,
+        existing as unknown as Record<string, unknown>,
+        category as unknown as Record<string, unknown>,
+        userId
+      );
     }
 
     return category as CategoryBase;
@@ -453,13 +451,11 @@ export class CategoryService {
 
     // Audit Log
     if (userId) {
-      await auditService.log({
-        entityType: 'CATEGORY',
-        entityId: id,
-        action: 'DELETE',
-        previousValue: existing,
-        userId,
-      });
+      await auditService.logDelete(
+        'CATEGORY',
+        id,
+        userId
+      );
     }
   }
 

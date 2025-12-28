@@ -337,3 +337,10 @@ export const PartListQuerySchema = PaginationSchema.merge(SortSchema).extend({
 });
 
 export type PartListQuery = z.infer<typeof PartListQuerySchema>;
+
+/**
+ * Input für Attributwerte-Update (Array von Attributwerten)
+ */
+export const SetPartAttributeValuesSchema = z.array(CreateAttributeValueSchema);
+
+export type SetPartAttributeValuesInput = z.infer<typeof SetPartAttributeValuesSchema>;

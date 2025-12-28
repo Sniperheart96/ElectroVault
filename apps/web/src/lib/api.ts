@@ -22,7 +22,7 @@ export interface ApiError {
   };
 }
 
-class ApiClient {
+export class ApiClient {
   private baseUrl: string;
   private token: string | null = null;
 
@@ -194,6 +194,26 @@ class ApiClient {
     );
   }
 
+  async createPackage(data: unknown): Promise<ApiResponse<Package>> {
+    return this.request<ApiResponse<Package>>('/packages', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updatePackage(id: string, data: unknown): Promise<ApiResponse<Package>> {
+    return this.request<ApiResponse<Package>>(`/packages/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deletePackage(id: string): Promise<void> {
+    await this.request<void>(`/packages/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // ============================================
   // Components
   // ============================================
@@ -252,13 +272,16 @@ class ApiClient {
     componentId?: string;
     manufacturerId?: string;
     status?: string;
+    lifecycleStatus?: string;
   }): Promise<ApiResponse<Part[]>> {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set('page', params.page.toString());
     if (params?.limit) searchParams.set('limit', params.limit.toString());
-    if (params?.componentId) searchParams.set('componentId', params.componentId);
+    // API expects coreComponentId, but we use componentId for convenience
+    if (params?.componentId) searchParams.set('coreComponentId', params.componentId);
     if (params?.manufacturerId) searchParams.set('manufacturerId', params.manufacturerId);
     if (params?.status) searchParams.set('status', params.status);
+    if (params?.lifecycleStatus) searchParams.set('lifecycleStatus', params.lifecycleStatus);
 
     const query = searchParams.toString();
     return this.request<ApiResponse<Part[]>>(`/parts${query ? `?${query}` : ''}`);
@@ -272,6 +295,86 @@ class ApiClient {
 
   async getPartByMpn(mpn: string): Promise<ApiResponse<Part>> {
     return this.request<ApiResponse<Part>>(`/parts/${encodeURIComponent(mpn)}`);
+  }
+
+  async createPart(data: unknown): Promise<ApiResponse<Part>> {
+    return this.request<ApiResponse<Part>>('/parts', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updatePart(id: string, data: unknown): Promise<ApiResponse<Part>> {
+    return this.request<ApiResponse<Part>>(`/parts/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deletePart(id: string): Promise<void> {
+    await this.request<void>(`/parts/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // ============================================
+  // Attribute Definitions
+  // ============================================
+
+  async getAttributeDefinitions(params?: {
+    page?: number;
+    limit?: number;
+    categoryId?: string;
+    scope?: 'COMPONENT' | 'PART' | 'BOTH';
+  }): Promise<ApiResponse<AttributeDefinition[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+    if (params?.categoryId) searchParams.set('categoryId', params.categoryId);
+    if (params?.scope) searchParams.set('scope', params.scope);
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<AttributeDefinition[]>>(`/attributes${query ? `?${query}` : ''}`);
+  }
+
+  async getAttributeDefinition(id: string): Promise<ApiResponse<AttributeDefinition>> {
+    return this.request<ApiResponse<AttributeDefinition>>(`/attributes/${id}`);
+  }
+
+  async getAttributesByCategory(categoryId: string, params?: {
+    scope?: 'COMPONENT' | 'PART' | 'BOTH';
+    includeInherited?: boolean;
+  }): Promise<ApiResponse<AttributeDefinition[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.scope) searchParams.set('scope', params.scope);
+    if (params?.includeInherited !== undefined) {
+      searchParams.set('includeInherited', params.includeInherited.toString());
+    }
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<AttributeDefinition[]>>(
+      `/attributes/by-category/${categoryId}${query ? `?${query}` : ''}`
+    );
+  }
+
+  async createAttributeDefinition(data: unknown): Promise<ApiResponse<AttributeDefinition>> {
+    return this.request<ApiResponse<AttributeDefinition>>('/attributes', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateAttributeDefinition(id: string, data: unknown): Promise<ApiResponse<AttributeDefinition>> {
+    return this.request<ApiResponse<AttributeDefinition>>(`/attributes/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAttributeDefinition(id: string): Promise<void> {
+    await this.request<void>(`/attributes/${id}`, {
+      method: 'DELETE',
+    });
   }
 }
 
@@ -333,7 +436,7 @@ export interface Package {
   id: string;
   name: string;
   slug: string;
-  mountingType: 'THT' | 'SMD' | 'HYBRID' | 'OTHER';
+  mountingType: 'THT' | 'SMD' | 'RADIAL' | 'AXIAL' | 'CHASSIS' | 'OTHER';
   pinCount: number | null;
   lengthMm: string | null;
   widthMm: string | null;
@@ -354,7 +457,7 @@ export interface Component {
   categoryId: string;
   shortDescription: LocalizedString | null;
   description: LocalizedString | null;
-  status: 'ACTIVE' | 'NRND' | 'EOL' | 'OBSOLETE';
+  status: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
   commonAttributes: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
@@ -364,18 +467,43 @@ export interface Component {
 
 export interface Part {
   id: string;
-  componentId: string;
+  coreComponentId: string;
   manufacturerId: string;
   mpn: string;
-  description: LocalizedString | null;
-  status: 'ACTIVE' | 'NRND' | 'EOL' | 'OBSOLETE';
-  specificAttributes: Record<string, unknown>;
-  stockQuantity: number;
+  orderingCode: string | null;
+  packageId: string | null;
+  weightGrams: number | null;
+  dateCodeFormat: string | null;
+  introductionYear: number | null;
+  discontinuedYear: number | null;
+  rohsCompliant: boolean | null;
+  reachCompliant: boolean | null;
+  nsn: string | null;
+  milSpec: string | null;
+  status: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
+  lifecycleStatus: 'ACTIVE' | 'NRND' | 'EOL' | 'OBSOLETE';
   createdAt: string;
   updatedAt: string;
-  deletedAt: string | null;
+  deletedAt?: string | null;
+  coreComponent?: Component;
   manufacturer?: Manufacturer;
-  component?: Component;
+  package?: Package;
+}
+
+export interface AttributeDefinition {
+  id: string;
+  categoryId: string;
+  name: string;
+  displayName: LocalizedString;
+  unit: string | null;
+  dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN' | 'RANGE';
+  scope: 'COMPONENT' | 'PART' | 'BOTH';
+  isFilterable: boolean;
+  isRequired: boolean;
+  siUnit: string | null;
+  siMultiplier: number | null;
+  sortOrder: number;
+  category?: Category;
 }
 
 // Export singleton instance

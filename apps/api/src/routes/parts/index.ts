@@ -11,6 +11,7 @@ import {
   CreatePartRelationshipSchema,
   CreateDatasheetSchema,
   CreatePartImageSchema,
+  SetPartAttributeValuesSchema,
 } from '@electrovault/schemas';
 
 /**
@@ -180,6 +181,40 @@ export default async function partRoutes(
 
       await partService.addImage(id, data, userId);
       return reply.code(201).send({ success: true });
+    }
+  );
+
+  /**
+   * GET /parts/:id/attributes
+   * Alle Attributwerte eines Parts abrufen
+   */
+  app.get<{ Params: { id: string } }>(
+    '/:id/attributes',
+    async (request, reply) => {
+      const { id } = request.params;
+      const values = await partService.getAttributeValues(id);
+      return reply.send({ data: values });
+    }
+  );
+
+  /**
+   * PUT /parts/:id/attributes
+   * Attributwerte eines Parts setzen/aktualisieren (Auth required)
+   */
+  app.put<{ Params: { id: string } }>(
+    '/:id/attributes',
+    {
+      onRequest: app.requireRole('CONTRIBUTOR'),
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const userId = request.user?.dbId;
+
+      // Validiere Array von Attributwerten
+      const values = SetPartAttributeValuesSchema.parse(request.body);
+
+      await partService.setAttributeValues(id, values, userId);
+      return reply.send({ success: true });
     }
   );
 }

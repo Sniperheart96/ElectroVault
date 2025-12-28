@@ -22,6 +22,10 @@ import {
   // Part
   CreatePartSchema,
   CreatePinMappingSchema,
+  // Attribute
+  CreateAttributeDefinitionSchema,
+  UpdateAttributeDefinitionSchema,
+  AttributeListQuerySchema,
   // Audit
   AuditLogQuerySchema,
 } from './index';
@@ -390,6 +394,133 @@ describe('CreatePinMappingSchema', () => {
       pinName: 'IO0',
     });
     expect(result.success).toBe(true);
+  });
+});
+
+// ============================================
+// ATTRIBUTE SCHEMAS TESTS
+// ============================================
+
+describe('CreateAttributeDefinitionSchema', () => {
+  it('should validate complete input', () => {
+    const input = {
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'capacitance',
+      displayName: { de: 'Kapazität', en: 'Capacitance' },
+      unit: 'F',
+      dataType: 'DECIMAL',
+      scope: 'BOTH',
+      isFilterable: true,
+      isRequired: true,
+      siUnit: 'F',
+      siMultiplier: 1,
+      sortOrder: 10,
+    };
+    const result = CreateAttributeDefinitionSchema.safeParse(input);
+    expect(result.success).toBe(true);
+  });
+
+  it('should validate minimal input', () => {
+    const result = CreateAttributeDefinitionSchema.safeParse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'voltage',
+      displayName: { en: 'Voltage' },
+      dataType: 'DECIMAL',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('should use default values', () => {
+    const result = CreateAttributeDefinitionSchema.parse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'test_attr',
+      displayName: { en: 'Test' },
+      dataType: 'STRING',
+    });
+    expect(result.scope).toBe('PART');
+    expect(result.isFilterable).toBe(true);
+    expect(result.isRequired).toBe(false);
+    expect(result.sortOrder).toBe(0);
+  });
+
+  it('should reject invalid name', () => {
+    const result = CreateAttributeDefinitionSchema.safeParse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: '123invalid', // Must start with letter
+      displayName: { en: 'Test' },
+      dataType: 'STRING',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('should reject name with spaces', () => {
+    const result = CreateAttributeDefinitionSchema.safeParse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'invalid name',
+      displayName: { en: 'Test' },
+      dataType: 'STRING',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('should reject missing displayName', () => {
+    const result = CreateAttributeDefinitionSchema.safeParse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      name: 'test',
+      dataType: 'STRING',
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('UpdateAttributeDefinitionSchema', () => {
+  it('should validate partial update', () => {
+    const result = UpdateAttributeDefinitionSchema.safeParse({
+      displayName: { de: 'Neue Bezeichnung' },
+      isFilterable: false,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('should validate with null values', () => {
+    const result = UpdateAttributeDefinitionSchema.safeParse({
+      unit: null,
+      siUnit: null,
+      siMultiplier: null,
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('should validate empty object', () => {
+    const result = UpdateAttributeDefinitionSchema.safeParse({});
+    expect(result.success).toBe(true);
+  });
+});
+
+describe('AttributeListQuerySchema', () => {
+  it('should parse with filters', () => {
+    const result = AttributeListQuerySchema.parse({
+      categoryId: '550e8400-e29b-41d4-a716-446655440000',
+      scope: 'COMPONENT',
+      dataType: 'DECIMAL',
+      isFilterable: 'true',
+      search: 'voltage',
+    });
+    expect(result.categoryId).toBe('550e8400-e29b-41d4-a716-446655440000');
+    expect(result.scope).toBe('COMPONENT');
+    expect(result.dataType).toBe('DECIMAL');
+    expect(result.isFilterable).toBe(true);
+  });
+
+  it('should coerce boolean from string', () => {
+    const result = AttributeListQuerySchema.parse({ isFilterable: false });
+    expect(result.isFilterable).toBe(false);
+  });
+
+  it('should use pagination defaults', () => {
+    const result = AttributeListQuerySchema.parse({});
+    expect(result.page).toBe(1);
+    expect(result.limit).toBe(20);
   });
 });
 
