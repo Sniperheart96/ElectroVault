@@ -6,12 +6,10 @@ import { Session } from 'next-auth';
 import {
   LayoutDashboard,
   Package,
-  Factory,
-  FolderTree,
   Users,
   LogOut,
-  Box,
   CheckCircle,
+  Home,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -45,28 +43,6 @@ const navigation: NavigationItem[] = [
     moderatorOnly: true,
   },
   {
-    name: 'Kategorien',
-    href: '/admin/categories',
-    icon: FolderTree,
-    description: 'Kategorien & Attribute',
-  },
-  {
-    name: 'Bauteile',
-    href: '/admin/components',
-    icon: Package,
-    description: 'Bauteile & Varianten',
-  },
-  {
-    name: 'Hersteller',
-    href: '/admin/manufacturers',
-    icon: Factory,
-  },
-  {
-    name: 'Bauformen',
-    href: '/admin/packages',
-    icon: Box,
-  },
-  {
     name: 'Benutzer',
     href: '/admin/users',
     icon: Users,
@@ -88,10 +64,17 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
   return (
     <aside className="flex w-64 flex-col border-r bg-white dark:bg-gray-800">
       {/* Header */}
-      <div className="flex h-16 items-center border-b px-6">
+      <div className="flex h-16 items-center justify-between border-b px-6">
         <Link href="/admin" className="flex items-center space-x-2">
           <Package className="h-6 w-6 text-primary" />
           <span className="text-lg font-bold">ElectroVault</span>
+        </Link>
+        <Link
+          href="/"
+          className="flex items-center justify-center rounded-md p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+          title="Zur Hauptseite"
+        >
+          <Home className="h-5 w-5" />
         </Link>
       </div>
 

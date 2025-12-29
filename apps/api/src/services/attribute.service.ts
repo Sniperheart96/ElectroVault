@@ -201,6 +201,7 @@ export class AttributeService {
           scope: data.scope ?? 'PART',
           isFilterable: data.isFilterable ?? true,
           isRequired: data.isRequired ?? false,
+          isLabel: data.isLabel ?? false,
           allowedPrefixes: data.allowedPrefixes ?? [],
           siUnit: data.siUnit || null,
           siMultiplier: data.siMultiplier || null,
@@ -246,6 +247,13 @@ export class AttributeService {
       throw new NotFoundError('AttributeDefinition', id);
     }
 
+    // Validierung: isLabel nur wenn isRequired
+    const newIsRequired = data.isRequired ?? existing.isRequired;
+    const newIsLabel = data.isLabel ?? existing.isLabel;
+    if (newIsLabel && !newIsRequired) {
+      throw new ConflictError('Label erfordert Pflichtfeld (isRequired)');
+    }
+
     // Aktualisiere Attribut
     const attribute = await prisma.attributeDefinition.update({
       where: { id },
@@ -255,6 +263,7 @@ export class AttributeService {
         ...(data.scope && { scope: data.scope }),
         ...(data.isFilterable !== undefined && { isFilterable: data.isFilterable }),
         ...(data.isRequired !== undefined && { isRequired: data.isRequired }),
+        ...(data.isLabel !== undefined && { isLabel: data.isLabel }),
         ...(data.allowedPrefixes !== undefined && { allowedPrefixes: data.allowedPrefixes }),
         ...(data.siUnit !== undefined && { siUnit: data.siUnit }),
         ...(data.siMultiplier !== undefined && { siMultiplier: data.siMultiplier }),

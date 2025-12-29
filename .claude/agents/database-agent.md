@@ -1164,6 +1164,61 @@ docs/architecture/database-schema.md      # Schema-Dokumentation
 7. **UUID als Primary Key** - Immer `@db.Uuid` für id-Felder
 8. **Normalized Values** - Attribute immer in SI-Basiseinheit speichern (normalizedValue)
 
+---
+
+## KRITISCH: Migrations-Pflicht
+
+**Schema-Änderungen MÜSSEN immer über Prisma-Migrations erfolgen!**
+
+### Regel
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MIGRATIONS-WORKFLOW                       │
+├─────────────────────────────────────────────────────────────┤
+│ 1. schema.prisma ändern                                     │
+│ 2. pnpm db:migrate --name <beschreibung>                    │
+│ 3. Migration-SQL reviewen                                   │
+│ 4. pnpm db:generate (Client regenerieren)                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Direkte DB-Änderungen (Ausnahme!)
+
+Direkte Datenbank-Änderungen (`prisma db execute`, SQL-Befehle) sind **NUR erlaubt** wenn ALLE Bedingungen erfüllt sind:
+
+1. **Ein Schema-Drift existiert** - Migration und DB-Schema stimmen nicht überein
+2. **User will DB NICHT zurücksetzen** - Explizite Ablehnung von `prisma migrate reset`
+3. **Änderung wird nachgetragen** - Die Init-Migration MUSS anschließend aktualisiert werden
+
+### Warum ist das wichtig?
+
+| Methode | Reproduzierbar | Git-History | Rollback | Datenverlust |
+|---------|----------------|-------------|----------|--------------|
+| Migration | ✅ Ja | ✅ Ja | ✅ Möglich | ❌ Nein |
+| Direkte DB | ❌ Nein | ❌ Nein | ❌ Nein | ✅ Möglich |
+
+### Bei Drift-Situation
+
+```bash
+# 1. Prüfen welche Änderungen ausstehen
+pnpm prisma migrate diff --from-migrations ./prisma/migrations --to-schema-datamodel ./prisma/schema.prisma
+
+# 2. Wenn User DB-Reset ablehnt:
+#    a) Direkte Änderung durchführen
+#    b) Init-Migration (20251227163745_init/migration.sql) aktualisieren
+#    c) prisma migrate resolve --applied "20251227163745_init"
+
+# 3. Prisma Client neu generieren
+pnpm db:generate
+```
+
+### Niemals erlaubt
+
+- ❌ Direkte DB-Änderungen ohne Dokumentation
+- ❌ Schema-Änderungen ohne Migration bei sauberer DB
+- ❌ Migrations-Dateien löschen (außer bei explizitem Reset)
+
 ## TODOs
 
 - [ ] **Volltextsuche:** `searchVector` (tsvector) Migration erstellen

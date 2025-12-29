@@ -12,7 +12,12 @@ export {
   // Localized String
   LocalizedStringSchema,
   LocalizedStringOptionalSchema,
+  LocalizedStringLooseSchema,
+  LocalizedStringLooseOptionalSchema,
+  LocalizedStringNullableSchema,
+  LocalizedStringNullableOptionalSchema,
   type LocalizedString,
+  type LocalizedStringLoose,
   // Common Validators
   UUIDSchema,
   SlugSchema,

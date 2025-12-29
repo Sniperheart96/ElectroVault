@@ -576,6 +576,14 @@ export class ApiClient {
       method: 'DELETE',
     });
   }
+
+  // ============================================
+  // Stats
+  // ============================================
+
+  async getStats(): Promise<ApiResponse<Stats>> {
+    return this.request<ApiResponse<Stats>>('/stats');
+  }
 }
 
 // ============================================
@@ -683,7 +691,15 @@ export interface ComponentAttributeValue {
   prefix: SIPrefix | null;
   // Für STRING-Typ
   stringValue: string | null;
-  definition?: AttributeDefinition;
+  definition?: {
+    id: string;
+    name: string;
+    displayName: LocalizedString;
+    unit: string | null;
+    dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN';
+    scope: 'COMPONENT' | 'PART' | 'BOTH';
+    isLabel?: boolean;
+  };
 }
 
 export interface Component {
@@ -701,6 +717,26 @@ export interface Component {
   deletedAt: string | null;
   category?: Category;
   attributeValues?: ComponentAttributeValue[];
+  manufacturerPartsCount?: number;
+}
+
+export interface PartAttributeValue {
+  id: string;
+  definitionId: string;
+  normalizedValue: number | null;
+  normalizedMin: number | null;
+  normalizedMax: number | null;
+  prefix: SIPrefix | null;
+  stringValue: string | null;
+  isDeviation?: boolean;
+  definition?: {
+    id: string;
+    name: string;
+    displayName: LocalizedString;
+    unit: string | null;
+    dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN';
+    scope: 'COMPONENT' | 'PART' | 'BOTH';
+  };
 }
 
 export interface Part {
@@ -726,6 +762,7 @@ export interface Part {
   coreComponent?: Component;
   manufacturer?: Manufacturer;
   package?: Package;
+  attributeValues?: PartAttributeValue[];
 }
 
 export interface AttributeDefinition {
@@ -738,6 +775,7 @@ export interface AttributeDefinition {
   scope: 'COMPONENT' | 'PART' | 'BOTH';
   isFilterable: boolean;
   isRequired: boolean;
+  isLabel: boolean;                       // Für dynamische Bauteilbezeichnung
   allowedPrefixes: SIPrefix[];            // Erlaubte SI-Präfixe
   // Legacy-Felder
   siUnit: string | null;
@@ -777,6 +815,12 @@ export interface ModerationStats {
   pending: number;
   approvedToday: number;
   rejectedToday: number;
+}
+
+export interface Stats {
+  components: number;
+  manufacturers: number;
+  users: number;
 }
 
 export interface Pin {

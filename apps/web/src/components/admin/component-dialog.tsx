@@ -450,7 +450,7 @@ export function ComponentDialog({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name *</FormLabel>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
@@ -459,7 +459,7 @@ export function ComponentDialog({
                         />
                       </FormControl>
                       <FormDescription>
-                        Der Name in Deutsch und/oder Englisch
+                        Der Name in Deutsch und/oder Englisch. Pflichtfeld wenn die Kategorie keine Label-Attribute hat.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

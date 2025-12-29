@@ -69,10 +69,14 @@ const CreateAttributeSchema = z.object({
   scope: z.enum(['COMPONENT', 'PART', 'BOTH']),
   isFilterable: z.boolean().default(true),
   isRequired: z.boolean().default(false),
+  isLabel: z.boolean().default(false),
   sortOrder: z.number().int().min(0).default(0),
   allowedPrefixes: z.array(SIPrefixSchema).default([]),
   enumValues: z.string().optional(), // Kommaseparierte Liste für ENUM (später)
-});
+}).refine(
+  (data) => !data.isLabel || data.isRequired,
+  { message: 'Label erfordert Pflichtfeld', path: ['isLabel'] }
+);
 
 type CreateAttributeInput = z.infer<typeof CreateAttributeSchema>;
 
@@ -107,6 +111,7 @@ export function AttributeDialog({
       scope: 'PART',
       isFilterable: true,
       isRequired: false,
+      isLabel: false,
       sortOrder: 0,
       allowedPrefixes: [],
       enumValues: '',
@@ -116,6 +121,16 @@ export function AttributeDialog({
   // Watch dataType to show/hide prefix selection
   const dataType = form.watch('dataType');
   const showPrefixes = dataType === 'DECIMAL' || dataType === 'INTEGER';
+
+  // Watch isRequired for isLabel checkbox
+  const isRequired = form.watch('isRequired');
+
+  // Wenn isRequired deaktiviert wird, auch isLabel deaktivieren
+  useEffect(() => {
+    if (!isRequired) {
+      form.setValue('isLabel', false);
+    }
+  }, [isRequired, form]);
 
   useEffect(() => {
     if (attribute) {
@@ -128,6 +143,7 @@ export function AttributeDialog({
         scope: attribute.scope,
         isFilterable: attribute.isFilterable,
         isRequired: attribute.isRequired,
+        isLabel: attribute.isLabel || false,
         sortOrder: attribute.sortOrder,
         allowedPrefixes: attribute.allowedPrefixes || [],
         enumValues: '',
@@ -142,6 +158,7 @@ export function AttributeDialog({
         scope: 'PART',
         isFilterable: true,
         isRequired: false,
+        isLabel: false,
         sortOrder: 0,
         allowedPrefixes: [],
         enumValues: '',
@@ -446,7 +463,7 @@ export function AttributeDialog({
               />
             )}
 
-            <div className="flex gap-6">
+            <div className="flex gap-6 flex-wrap">
               <FormField
                 control={form.control}
                 name="isRequired"
@@ -480,7 +497,34 @@ export function AttributeDialog({
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="isLabel"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={!isRequired}
+                      />
+                    </FormControl>
+                    <FormLabel className={`!mt-0 ${!isRequired ? 'text-muted-foreground' : ''}`}>
+                      Label
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
+
+            {isRequired && (
+              <p className="text-xs text-muted-foreground">
+                Label-Attribute werden zur dynamischen Bauteilbezeichnung zusammengesetzt.
+                Sortierreihenfolge bestimmt die Reihenfolge im Namen.
+              </p>
+            )}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

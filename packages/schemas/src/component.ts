@@ -5,6 +5,10 @@ import { z } from 'zod';
 import {
   LocalizedStringSchema,
   LocalizedStringOptionalSchema,
+  LocalizedStringLooseSchema,
+  LocalizedStringLooseOptionalSchema,
+  LocalizedStringNullableSchema,
+  LocalizedStringNullableOptionalSchema,
   UUIDSchema,
   SlugSchema,
   PaginationSchema,
@@ -139,7 +143,7 @@ export const ConceptRelationSchema = z.object({
   sourceId: UUIDSchema,
   targetId: UUIDSchema,
   relationType: ConceptRelationTypeSchema,
-  notes: LocalizedStringSchema.nullable(),
+  notes: LocalizedStringNullableSchema,
   createdAt: z.coerce.date(),
 });
 
@@ -151,7 +155,7 @@ export type ConceptRelation = z.infer<typeof ConceptRelationSchema>;
 export const CreateConceptRelationSchema = z.object({
   targetId: UUIDSchema,
   relationType: ConceptRelationTypeSchema,
-  notes: LocalizedStringOptionalSchema,
+  notes: LocalizedStringLooseOptionalSchema,
 });
 
 export type CreateConceptRelationInput = z.infer<typeof CreateConceptRelationSchema>;
@@ -160,7 +164,7 @@ export type CreateConceptRelationInput = z.infer<typeof CreateConceptRelationSch
  * Input für Konzept-Beziehung Update
  */
 export const UpdateConceptRelationSchema = z.object({
-  notes: LocalizedStringOptionalSchema,
+  notes: LocalizedStringLooseOptionalSchema,
 });
 
 export type UpdateConceptRelationInput = z.infer<typeof UpdateConceptRelationSchema>;
@@ -174,7 +178,7 @@ export const ConceptRelationWithTargetSchema = ConceptRelationSchema.extend({
     name: LocalizedStringSchema,
     slug: z.string(),
     series: z.string().nullable(),
-    shortDescription: LocalizedStringSchema.nullable(),
+    shortDescription: LocalizedStringNullableSchema,
   }),
 });
 
@@ -189,7 +193,7 @@ export const ConceptRelationWithSourceSchema = ConceptRelationSchema.extend({
     name: LocalizedStringSchema,
     slug: z.string(),
     series: z.string().nullable(),
-    shortDescription: LocalizedStringSchema.nullable(),
+    shortDescription: LocalizedStringNullableSchema,
   }),
 });
 
@@ -218,8 +222,8 @@ export const ComponentBaseSchema = z.object({
   slug: z.string(),
   series: z.string().nullable(),
   categoryId: UUIDSchema,
-  shortDescription: LocalizedStringSchema.nullable(),
-  fullDescription: LocalizedStringSchema.nullable(),
+  shortDescription: LocalizedStringNullableSchema,
+  fullDescription: LocalizedStringNullableSchema,
   commonAttributes: z.record(z.unknown()),
   status: ComponentStatusSchema,
   createdAt: z.coerce.date(),
@@ -267,7 +271,7 @@ export const ComponentListItemSchema = z.object({
   name: LocalizedStringSchema,
   slug: z.string(),
   series: z.string().nullable(),
-  shortDescription: LocalizedStringSchema.nullable(),
+  shortDescription: LocalizedStringNullableSchema,
   status: ComponentStatusSchema,
   category: z.object({
     id: UUIDSchema,
@@ -287,14 +291,19 @@ export type ComponentListItem = z.infer<typeof ComponentListItemSchema>;
 
 /**
  * Input für neues Component
+ * Hinweis:
+ * - name: Optional wenn die Kategorie Label-Attribute hat (wird dann aus Attributen generiert)
+ *         Pflichtfeld (mindestens eine Sprache) wenn keine Label-Attribute vorhanden
+ *         -> Validierung erfolgt im Service basierend auf Kategorie-Attributen
+ * - shortDescription/fullDescription: Komplett optional (keine Sprache erforderlich)
  */
 export const CreateComponentSchema = z.object({
-  name: LocalizedStringSchema,
+  name: LocalizedStringLooseOptionalSchema, // Validierung im Service basierend auf Label-Attributen
   slug: SlugSchema.optional(), // Auto-generiert wenn nicht angegeben
   series: z.string().max(255).optional(),
   categoryId: UUIDSchema,
-  shortDescription: LocalizedStringOptionalSchema,
-  fullDescription: LocalizedStringOptionalSchema,
+  shortDescription: LocalizedStringLooseOptionalSchema,
+  fullDescription: LocalizedStringLooseOptionalSchema,
   commonAttributes: z.record(z.unknown()).optional(),
   status: ComponentStatusSchema.default('DRAFT'),
   attributeValues: z.array(CreateAttributeValueSchema).optional(),

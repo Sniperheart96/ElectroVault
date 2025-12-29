@@ -41,6 +41,19 @@ Realm: electrovault
 Admin-Console: http://ITME-SERVER:8080/admin
 ```
 
+**Admin-Zugang (Keycloak-Console):**
+```
+User: admin
+Passwort: admin123
+```
+
+**Testbenutzer (ElectroVault-Anwendung):**
+
+| Benutzer | Passwort | Rolle |
+|----------|----------|-------|
+| evadmin | admin123 | admin |
+| testuser | test123 | contributor |
+
 **Rollen:**
 - admin
 - moderator

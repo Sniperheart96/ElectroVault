@@ -30,6 +30,7 @@ export const AttributeDefinitionSchema = z.object({
   scope: AttributeScopeSchema,
   isFilterable: z.boolean(),
   isRequired: z.boolean(),
+  isLabel: z.boolean(),                          // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
   // Legacy-Felder
   siUnit: z.string().max(20).nullable(),
@@ -75,12 +76,16 @@ export const CreateAttributeDefinitionSchema = z.object({
   scope: AttributeScopeSchema.default('PART'),
   isFilterable: z.boolean().default(true),
   isRequired: z.boolean().default(false),
+  isLabel: z.boolean().default(false),           // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
   // Legacy-Felder (optional)
   siUnit: z.string().max(20).optional(),
   siMultiplier: z.number().positive().optional(),
   sortOrder: z.number().int().default(0),
-});
+}).refine(
+  (data) => !data.isLabel || data.isRequired,
+  { message: 'Label erfordert Pflichtfeld', path: ['isLabel'] }
+);
 
 export type CreateAttributeDefinitionInput = z.infer<typeof CreateAttributeDefinitionSchema>;
 
@@ -93,6 +98,7 @@ export const UpdateAttributeDefinitionSchema = z.object({
   scope: AttributeScopeSchema.optional(),
   isFilterable: z.boolean().optional(),
   isRequired: z.boolean().optional(),
+  isLabel: z.boolean().optional(),               // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).optional(),  // Erlaubte SI-Präfixe
   // Legacy-Felder
   siUnit: z.string().max(20).nullable().optional(),

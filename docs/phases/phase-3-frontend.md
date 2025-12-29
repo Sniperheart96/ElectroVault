@@ -1,13 +1,29 @@
 # Phase 3: Frontend Basis
 
-**Status:** ✅ Abgeschlossen
+**Status:** ✅ Abgeschlossen (mit Refactoring)
 **Fortschritt:** 100%
+**Letztes Update:** 2025-12-28 (Admin/Public Vereinigung)
 
 ---
 
 ## Übersicht
 
-Phase 3 implementiert das Next.js Frontend mit Admin-UI und Benutzeroberfläche.
+Phase 3 implementiert das Next.js Frontend. Das Admin-Panel wurde auf Moderation und Benutzerverwaltung reduziert. CRUD-Funktionen sind jetzt in die öffentlichen Ansichten integriert (Inline-Bearbeitung für eingeloggte Benutzer).
+
+---
+
+## Architektur-Entscheidung: Admin/Public Vereinigung
+
+**Konzept:** Statt separater Admin-Seiten werden Bearbeitungsfunktionen direkt in den öffentlichen Ansichten angezeigt, basierend auf der Benutzerrolle.
+
+**Vorteile:**
+- Weniger Code-Duplikation
+- Bessere UX (kein Kontextwechsel)
+- Konsistentere Datendarstellung
+
+**Berechtigungen:**
+- **Lesen:** Alle (auch ohne Login)
+- **Bearbeiten:** CONTRIBUTOR, MODERATOR, ADMIN
 
 ---
 
@@ -18,29 +34,24 @@ Phase 3 implementiert das Next.js Frontend mit Admin-UI und Benutzeroberfläche.
 - [x] Auth-Flow mit NextAuth + Keycloak
 - [x] Layout (Header, Footer)
 - [x] Homepage mit Suchfeld und Statistiken
-- [x] Komponenten-Liste mit Pagination
-- [x] Kategorie-Browser (Baum)
-- [x] Hersteller-Liste mit Pagination
+- [x] Komponenten-Liste mit Pagination und Inline-CRUD
+- [x] Kategorie-Sidebar mit CRUD (in /components integriert)
+- [x] Hersteller-Liste mit Pagination und Inline-CRUD
+- [x] Bauformen-Liste mit Pagination und Inline-CRUD
 - [x] i18n-Setup (next-intl) mit DE/EN
 - [x] API-Client für Backend-Kommunikation
 - [x] Auth-Middleware für geschützte Routen
 - [x] Komponenten-Detailseite
-- [x] Kategorie-Detailseite
 - [x] Hersteller-Detailseite
 - [x] Suchinterface mit Filtern
-- [x] Admin-Dashboard
-- [x] Admin-Sidebar mit Rollenprüfung
-- [x] Admin: Komponenten-Verwaltung (CRUD)
-- [x] Admin: Kategorien-Verwaltung (CRUD, Baum)
-- [x] Admin: Hersteller-Verwaltung (CRUD)
+- [x] Admin-Dashboard (nur Moderation + Benutzer)
+- [x] Admin: Moderations-Queue
 - [x] Admin: Benutzer-Übersicht
-- [x] Admin: Attribut-Definitionen (integriert in CategoryDialog mit Tab-Navigation)
-- [x] Admin: Package/Bauformen Verwaltung (CRUD)
-- [x] Admin: ManufacturerPart/Hersteller-Varianten (integriert in ComponentDialog mit Tab-Navigation)
+- [x] Permissions-System (`canEdit`, `canAccessAdmin`)
 
 ---
 
-## Implementierte Struktur
+## Aktuelle Struktur (nach Refactoring)
 
 ```
 apps/web/
@@ -50,27 +61,23 @@ apps/web/
 │   │   ├── layout.tsx                # Root-Layout mit Provider
 │   │   ├── globals.css               # Tailwind + shadcn Styles
 │   │   ├── components/
-│   │   │   ├── page.tsx              # Komponenten-Liste
+│   │   │   ├── page.tsx              # Bauteile + Kategorie-Sidebar (mit CRUD)
 │   │   │   └── [slug]/page.tsx       # Komponenten-Detail
-│   │   ├── categories/
-│   │   │   ├── page.tsx              # Kategorie-Browser (Baum)
-│   │   │   └── [slug]/page.tsx       # Kategorie-Detail
 │   │   ├── manufacturers/
-│   │   │   ├── page.tsx              # Hersteller-Liste
+│   │   │   ├── page.tsx              # Hersteller-Liste (mit CRUD)
 │   │   │   └── [slug]/page.tsx       # Hersteller-Detail
+│   │   ├── packages/
+│   │   │   └── page.tsx              # Bauformen-Liste (mit CRUD)
 │   │   ├── search/
 │   │   │   └── page.tsx              # Erweiterte Suche
 │   │   ├── auth/
 │   │   │   ├── signin/page.tsx       # Login-Seite
 │   │   │   ├── signout/page.tsx      # Logout-Seite
 │   │   │   └── error/page.tsx        # Auth-Fehlerseite
-│   │   ├── admin/
-│   │   │   ├── layout.tsx            # Admin-Layout mit Sidebar
+│   │   ├── admin/                    # NUR Moderation + Benutzer
+│   │   │   ├── layout.tsx            # Admin-Layout
 │   │   │   ├── page.tsx              # Dashboard
-│   │   │   ├── components/page.tsx   # Komponenten-Verwaltung
-│   │   │   ├── categories/page.tsx   # Kategorien-Verwaltung
-│   │   │   ├── manufacturers/page.tsx # Hersteller-Verwaltung
-│   │   │   ├── packages/page.tsx     # Package/Bauformen
+│   │   │   ├── moderation/page.tsx   # Freigabe-Queue
 │   │   │   └── users/page.tsx        # Benutzer-Übersicht
 │   │   ├── about/page.tsx            # Über uns
 │   │   ├── contact/page.tsx          # Kontakt
@@ -81,7 +88,7 @@ apps/web/
 │   │       └── auth/[...nextauth]/
 │   │           └── route.ts          # NextAuth API Route
 │   ├── components/
-│   │   ├── ui/                       # shadcn/ui Komponenten (16 Stück)
+│   │   ├── ui/                       # shadcn/ui Komponenten (19 Stück)
 │   │   │   ├── button.tsx
 │   │   │   ├── input.tsx
 │   │   │   ├── card.tsx
@@ -97,7 +104,10 @@ apps/web/
 │   │   │   ├── textarea.tsx
 │   │   │   ├── skeleton.tsx
 │   │   │   ├── form.tsx
-│   │   │   └── avatar.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   └── table-pagination.tsx
 │   │   ├── layout/
 │   │   │   ├── header.tsx            # Navigationsleiste mit Auth
 │   │   │   ├── footer.tsx

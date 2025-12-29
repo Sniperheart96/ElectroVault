@@ -20,8 +20,10 @@
     "components": "Components",
     "categories": "Categories",
     "manufacturers": "Manufacturers",
+    "packages": "Packages",
     "search": "Search",
     "admin": "Admin",
+    "moderation": "Moderation",
     "login": "Login",
     "logout": "Logout",
     "profile": "Profile"
@@ -35,7 +37,8 @@
     "stats": {
       "components": "Components",
       "manufacturers": "Manufacturers",
-      "categories": "Categories"
+      "categories": "Categories",
+      "users": "Users"
     }
   },
   "components": {

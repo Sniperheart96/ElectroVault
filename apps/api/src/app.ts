@@ -20,6 +20,7 @@ import auditRoutes from './routes/audit/index';
 import moderationRoutes from './routes/moderation/index';
 import fileRoutes from './routes/files/index';
 import pinRoutes from './routes/pins/index';
+import statsRoutes from './routes/stats/index';
 
 // Custom Error Types
 import { ApiError } from './lib/errors';
@@ -175,6 +176,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       await api.register(moderationRoutes, { prefix: '/moderation' });
       await api.register(fileRoutes, { prefix: '/files' });
       await api.register(pinRoutes);
+      await api.register(statsRoutes, { prefix: '/stats' });
     },
     { prefix: '/api/v1' }
   );

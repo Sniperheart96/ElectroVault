@@ -1,24 +1,27 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { Cpu, FolderTree, Package, Factory, FileText } from 'lucide-react';
+import { Cpu, FolderTree, Factory, FileText, ArrowLeft, Settings2 } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { api, type Component, type CategoryPathItem, type Part } from '@/lib/api';
+  api,
+  type Component,
+  type CategoryPathItem,
+  type Part,
+  type ComponentAttributeValue,
+  type PartAttributeValue,
+  type LocalizedString,
+  SI_PREFIX_FACTORS,
+  type SIPrefix,
+} from '@/lib/api';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ from?: string }>;
 }
 
 function getStatusBadgeVariant(status: string) {
@@ -35,15 +38,123 @@ function getStatusBadgeVariant(status: string) {
   }
 }
 
-function AttributeTable({ attributes }: { attributes: Record<string, unknown> }) {
+/**
+ * Formatiert einen Attributwert mit SI-Präfix und Einheit
+ */
+function formatAttributeValue(
+  value: number | null,
+  min: number | null,
+  max: number | null,
+  prefix: SIPrefix | string | null,
+  stringValue: string | null,
+  unit: string | null,
+  dataType: string
+): string {
+  // String-Typ
+  if (dataType === 'STRING' && stringValue) {
+    return stringValue;
+  }
+
+  // Boolean-Typ
+  if (dataType === 'BOOLEAN') {
+    if (stringValue === 'true' || value === 1) return 'Ja';
+    if (stringValue === 'false' || value === 0) return 'Nein';
+    return '-';
+  }
+
+  // Numerische Typen
+  if (value === null && min === null && max === null) {
+    return stringValue || '-';
+  }
+
+  // Prefix normalisieren (leere Strings und null behandeln)
+  const validPrefix = prefix && prefix in SI_PREFIX_FACTORS ? (prefix as SIPrefix) : null;
+  const multiplier = validPrefix ? SI_PREFIX_FACTORS[validPrefix] : 1;
+  const unitStr = unit || '';
+  const prefixStr = validPrefix || '';
+
+  // Range-Wert
+  if (min !== null && max !== null) {
+    const displayMin = (min / multiplier).toFixed(dataType === 'INTEGER' ? 0 : 2);
+    const displayMax = (max / multiplier).toFixed(dataType === 'INTEGER' ? 0 : 2);
+    return `${displayMin} - ${displayMax} ${prefixStr}${unitStr}`.trim();
+  }
+
+  // Einzelwert
+  if (value !== null) {
+    const displayValue = (value / multiplier).toFixed(dataType === 'INTEGER' ? 0 : 2);
+    return `${displayValue} ${prefixStr}${unitStr}`.trim();
+  }
+
+  return stringValue || '-';
+}
+
+/**
+ * Holt den lokalisierten Namen einer Attributdefinition
+ */
+function getLocalizedName(displayName: LocalizedString | undefined, fallback: string): string {
+  if (!displayName) return fallback;
+  return displayName.de || displayName.en || fallback;
+}
+
+/**
+ * Zeigt strukturierte Attributwerte aus ComponentAttributeValue[] an
+ */
+function StructuredAttributeTable({
+  attributeValues,
+  emptyMessage = 'Keine Attribute verfügbar.'
+}: {
+  attributeValues: ComponentAttributeValue[] | PartAttributeValue[];
+  emptyMessage?: string;
+}) {
+  if (!attributeValues || attributeValues.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground py-4">
+        {emptyMessage}
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {attributeValues.map((attr) => {
+        const def = attr.definition;
+        if (!def) return null;
+
+        const displayName = getLocalizedName(def.displayName, def.name);
+        const formattedValue = formatAttributeValue(
+          attr.normalizedValue,
+          attr.normalizedMin,
+          attr.normalizedMax,
+          attr.prefix,
+          attr.stringValue,
+          def.unit,
+          def.dataType
+        );
+
+        return (
+          <div key={attr.id} className="flex items-start justify-between py-2 border-b last:border-0">
+            <span className="font-medium text-sm">
+              {displayName}
+            </span>
+            <span className="text-sm text-muted-foreground text-right ml-4">
+              {formattedValue}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Zeigt commonAttributes (JSON) als einfache Tabelle an
+ */
+function LegacyAttributeTable({ attributes }: { attributes: Record<string, unknown> }) {
   const entries = Object.entries(attributes);
 
   if (entries.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground py-4">
-        Keine Attribute verfügbar.
-      </p>
-    );
+    return null;
   }
 
   return (
@@ -62,11 +173,53 @@ function AttributeTable({ attributes }: { attributes: Record<string, unknown> })
   );
 }
 
-export default async function ComponentDetailPage({ params }: PageProps) {
+/**
+ * Kompakte Attributliste für Part-Karten
+ */
+function PartAttributesList({ attributeValues }: { attributeValues: PartAttributeValue[] }) {
+  if (!attributeValues || attributeValues.length === 0) {
+    return null;
+  }
+
+  // Zeige max. 4 Attribute in der Kompaktansicht
+  const displayAttrs = attributeValues.slice(0, 4);
+
+  return (
+    <div className="mt-2 flex flex-wrap gap-2">
+      {displayAttrs.map((attr) => {
+        const def = attr.definition;
+        if (!def) return null;
+
+        const displayName = getLocalizedName(def.displayName, def.name);
+        const formattedValue = formatAttributeValue(
+          attr.normalizedValue,
+          attr.normalizedMin,
+          attr.normalizedMax,
+          attr.prefix,
+          attr.stringValue,
+          def.unit,
+          def.dataType
+        );
+
+        return (
+          <Badge key={attr.id} variant="secondary" className="text-xs font-normal">
+            {displayName}: {formattedValue}
+          </Badge>
+        );
+      })}
+      {attributeValues.length > 4 && (
+        <Badge variant="outline" className="text-xs font-normal">
+          +{attributeValues.length - 4} weitere
+        </Badge>
+      )}
+    </div>
+  );
+}
+
+export default async function ComponentDetailPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const { from: fromCategory } = await searchParams;
   const t = await getTranslations('components');
-  const tCommon = await getTranslations('common');
-  const tCategories = await getTranslations('categories');
 
   let component: Component | null = null;
   let categoryPath: CategoryPathItem[] = [];
@@ -80,7 +233,7 @@ export default async function ComponentDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  // Fetch category path for breadcrumb
+  // Fetch category path for sidebar and badges
   if (component.categoryId) {
     try {
       const pathResult = await api.getCategoryPath(component.categoryId);
@@ -106,34 +259,15 @@ export default async function ComponentDetailPage({ params }: PageProps) {
       <Header />
 
       <main className="flex-1 container py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb className="mb-6">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">{tCommon('back')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/components">{t('title')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            {categoryPath.length > 0 && (
-              <>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href={`/categories/${categoryPath[categoryPath.length - 1]?.slug}`}>
-                    {categoryPath[categoryPath.length - 1]?.name.de || categoryPath[categoryPath.length - 1]?.name.en}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </>
-            )}
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {component.name.de || component.name.en}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={fromCategory ? `/components?category=${fromCategory}` : '/components'}>
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Zurück zur Übersicht
+            </Link>
+          </Button>
+        </div>
 
         {/* Component Header */}
         <div className="mb-8">
@@ -194,42 +328,48 @@ export default async function ComponentDetailPage({ params }: PageProps) {
                     {parts.map((part) => (
                       <div
                         key={part.id}
-                        className="flex items-start justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                        className="p-4 border rounded-lg hover:bg-muted/50 transition-colors"
                       >
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold">{part.mpn}</h3>
-                            <Badge variant={getStatusBadgeVariant(part.lifecycleStatus)}>
-                              {t(`status.${part.lifecycleStatus}`)}
-                            </Badge>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-semibold">{part.mpn}</h3>
+                              <Badge variant={getStatusBadgeVariant(part.lifecycleStatus)}>
+                                {t(`lifecycle.${part.lifecycleStatus}`)}
+                              </Badge>
+                            </div>
+                            {part.manufacturer && (
+                              <p className="text-sm text-muted-foreground mb-1">
+                                Hersteller:{' '}
+                                <Link
+                                  href={`/manufacturers/${part.manufacturer.slug}`}
+                                  className="hover:underline text-primary"
+                                >
+                                  {part.manufacturer.name}
+                                </Link>
+                              </p>
+                            )}
+                            {part.orderingCode && (
+                              <p className="text-sm text-muted-foreground">
+                                Bestellnummer: {part.orderingCode}
+                              </p>
+                            )}
+                            {part.package && (
+                              <p className="text-sm text-muted-foreground">
+                                Bauform: {part.package.name}
+                              </p>
+                            )}
                           </div>
-                          {part.manufacturer && (
-                            <p className="text-sm text-muted-foreground mb-1">
-                              Hersteller:{' '}
-                              <Link
-                                href={`/manufacturers/${part.manufacturer.slug}`}
-                                className="hover:underline text-primary"
-                              >
-                                {part.manufacturer.name}
-                              </Link>
-                            </p>
-                          )}
-                          {part.orderingCode && (
-                            <p className="text-sm text-muted-foreground">
-                              Bestellnummer: {part.orderingCode}
-                            </p>
-                          )}
-                          {part.package && (
-                            <p className="text-sm text-muted-foreground">
-                              Bauform: {part.package.name}
-                            </p>
-                          )}
+                          <Button variant="outline" size="sm" asChild>
+                            <Link href={`/parts/${encodeURIComponent(part.mpn)}`}>
+                              Details
+                            </Link>
+                          </Button>
                         </div>
-                        <Button variant="outline" size="sm" asChild>
-                          <Link href={`/parts/${encodeURIComponent(part.mpn)}`}>
-                            Details
-                          </Link>
-                        </Button>
+                        {/* Part-spezifische Attribute */}
+                        {part.attributeValues && part.attributeValues.length > 0 && (
+                          <PartAttributesList attributeValues={part.attributeValues} />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -241,20 +381,38 @@ export default async function ComponentDetailPage({ params }: PageProps) {
               </CardContent>
             </Card>
 
-            {/* Component Attributes */}
+            {/* Component Attributes - Strukturierte Attribute aus attributeValues */}
+            {component.attributeValues && component.attributeValues.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Settings2 className="h-5 w-5" />
+                    {t('detail.specifications')}
+                  </CardTitle>
+                  <CardDescription>
+                    Technische Spezifikationen (gültig für alle Varianten)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <StructuredAttributeTable attributeValues={component.attributeValues} />
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Legacy: commonAttributes als JSON (falls vorhanden) */}
             {component.commonAttributes && Object.keys(component.commonAttributes).length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
-                    {t('detail.specifications')}
+                    Zusätzliche Eigenschaften
                   </CardTitle>
                   <CardDescription>
-                    Gemeinsame Spezifikationen für alle Varianten
+                    Weitere Eigenschaften dieses Bauteils
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <AttributeTable attributes={component.commonAttributes} />
+                  <LegacyAttributeTable attributes={component.commonAttributes} />
                 </CardContent>
               </Card>
             )}

@@ -19,6 +19,7 @@ import type {
 } from '@electrovault/schemas';
 import { NotFoundError, ConflictError, BadRequestError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
+import { toJsonValue } from '../lib/json-helpers';
 import { categoryService } from './category.service';
 
 /**
@@ -86,13 +87,21 @@ export class PartService {
             where: { isPrimary: true },
             take: 1,
           },
+          attributeValues: {
+            include: {
+              definition: true,
+            },
+            orderBy: {
+              definition: { sortOrder: 'asc' },
+            },
+          },
         },
       }),
       prisma.manufacturerPart.count({ where }),
     ]);
 
     // Transform zu PartListItem
-    const items: PartListItem[] = parts.map((p) => ({
+    const items = parts.map((p) => ({
       id: p.id,
       coreComponentId: p.coreComponentId,
       manufacturerId: p.manufacturerId,
@@ -117,6 +126,24 @@ export class PartService {
       },
       package: p.package,
       primaryImage: p.images[0] || null,
+      attributeValues: p.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        isDeviation: av.isDeviation,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+        },
+      })),
       createdAt: p.createdAt,
       updatedAt: p.updatedAt,
     }));
@@ -290,7 +317,7 @@ export class PartService {
             partId: newPart.id,
             pinNumber: pin.pinNumber,
             pinName: pin.pinName,
-            pinFunction: pin.pinFunction,
+            pinFunction: toJsonValue(pin.pinFunction),
             pinType: pin.pinType,
             maxVoltage: pin.maxVoltage,
             maxCurrent: pin.maxCurrent,
@@ -304,7 +331,7 @@ export class PartService {
           data: data.hazardousMaterials.map((haz) => ({
             partId: newPart.id,
             materialType: haz.materialType,
-            details: haz.details,
+            details: toJsonValue(haz.details),
           })),
         });
       }
@@ -382,7 +409,7 @@ export class PartService {
               partId: id,
               pinNumber: pin.pinNumber,
               pinName: pin.pinName,
-              pinFunction: pin.pinFunction,
+              pinFunction: toJsonValue(pin.pinFunction),
               pinType: pin.pinType,
               maxVoltage: pin.maxVoltage,
               maxCurrent: pin.maxCurrent,
@@ -400,7 +427,7 @@ export class PartService {
             data: data.hazardousMaterials.map((haz) => ({
               partId: id,
               materialType: haz.materialType,
-              details: haz.details,
+              details: toJsonValue(haz.details),
             })),
           });
         }
@@ -496,7 +523,7 @@ export class PartService {
         targetId: data.targetId,
         relationshipType: data.relationshipType,
         confidence: data.confidence,
-        notes: data.notes,
+        notes: toJsonValue(data.notes),
         createdById: userId,
       },
     });
@@ -636,6 +663,14 @@ export class PartService {
           where: { isPrimary: true },
           take: 1,
         },
+        attributeValues: {
+          include: {
+            definition: true,
+          },
+          orderBy: {
+            definition: { sortOrder: 'asc' },
+          },
+        },
       },
       orderBy: [{ manufacturer: { name: 'asc' } }, { mpn: 'asc' }],
     });
@@ -647,7 +682,7 @@ export class PartService {
       mpn: p.mpn,
       orderingCode: p.orderingCode,
       packageId: p.packageId,
-      weightGrams: p.weightGrams,
+      weightGrams: p.weightGrams ? Number(p.weightGrams) : null,
       dateCodeFormat: p.dateCodeFormat,
       introductionYear: p.introductionYear,
       discontinuedYear: p.discontinuedYear,
@@ -665,6 +700,24 @@ export class PartService {
       },
       package: p.package,
       primaryImage: p.images[0] || null,
+      attributeValues: p.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        isDeviation: av.isDeviation,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+        },
+      })),
       createdAt: p.createdAt,
       updatedAt: p.updatedAt,
     }));

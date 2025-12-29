@@ -2,7 +2,7 @@
  * Category Schemas - Kategorie-Taxonomie API Schemas
  */
 import { z } from 'zod';
-import { LocalizedStringSchema, UUIDSchema, PaginationSchema, SortSchema } from './common';
+import { LocalizedStringSchema, LocalizedStringNullableSchema, LocalizedStringNullableOptionalSchema, UUIDSchema, PaginationSchema, SortSchema } from './common';
 
 // ============================================
 // CATEGORY RESPONSE SCHEMAS
@@ -16,7 +16,7 @@ export const CategoryBaseSchema = z.object({
   name: LocalizedStringSchema,
   slug: z.string(),
   level: z.number().int().min(0).max(4),
-  description: LocalizedStringSchema.nullable(),
+  description: LocalizedStringNullableSchema,
   iconUrl: z.string().nullable(),
   sortOrder: z.number(),
   isActive: z.boolean(),
@@ -123,10 +123,7 @@ export type CategoryPath = z.infer<typeof CategoryPathSchema>;
 export const CreateCategorySchema = z.object({
   name: LocalizedStringSchema,
   parentId: UUIDSchema.optional().nullable(),
-  description: z.object({
-    de: z.string().optional(),
-    en: z.string().optional(),
-  }).optional(),
+  description: LocalizedStringNullableOptionalSchema,
   iconUrl: z.string().url().optional().nullable(),
   sortOrder: z.number().int().min(0).default(0),
   isActive: z.boolean().default(true),
@@ -140,10 +137,7 @@ export type CreateCategoryInput = z.infer<typeof CreateCategorySchema>;
 export const UpdateCategorySchema = z.object({
   name: LocalizedStringSchema.optional(),
   parentId: UUIDSchema.optional().nullable(),
-  description: z.object({
-    de: z.string().optional(),
-    en: z.string().optional(),
-  }).optional(),
+  description: LocalizedStringNullableOptionalSchema,
   iconUrl: z.string().url().optional().nullable(),
   sortOrder: z.number().int().min(0).optional(),
   isActive: z.boolean().optional(),

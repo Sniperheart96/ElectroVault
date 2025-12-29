@@ -4,7 +4,8 @@
 import { z } from 'zod';
 import {
   LocalizedStringSchema,
-  LocalizedStringOptionalSchema,
+  LocalizedStringNullableSchema,
+  LocalizedStringNullableOptionalSchema,
   UUIDSchema,
   PaginationSchema,
   SortSchema,
@@ -27,7 +28,7 @@ import { ComponentBaseSchema, CreateAttributeValueSchema, SIPrefixSchema } from 
 export const HazardousMaterialSchema = z.object({
   id: UUIDSchema,
   materialType: HazardousMaterialTypeSchema,
-  details: LocalizedStringSchema.nullable(),
+  details: LocalizedStringNullableSchema,
 });
 
 export type HazardousMaterial = z.infer<typeof HazardousMaterialSchema>;
@@ -39,7 +40,7 @@ export const PinMappingSchema = z.object({
   id: UUIDSchema,
   pinNumber: z.string(),
   pinName: z.string(),
-  pinFunction: LocalizedStringSchema.nullable(),
+  pinFunction: LocalizedStringNullableSchema,
   pinType: z.enum(['POWER', 'GROUND', 'INPUT', 'OUTPUT', 'BIDIRECTIONAL', 'NC', 'ANALOG', 'DIGITAL', 'CLOCK', 'OTHER']).nullable(),
   maxVoltage: z.number().nullable(),
   maxCurrent: z.number().nullable(),
@@ -75,7 +76,7 @@ export const PartRelationshipSchema = z.object({
   targetId: UUIDSchema,
   relationshipType: RelationshipTypeSchema,
   confidence: z.number().int().min(0).max(100),
-  notes: LocalizedStringSchema.nullable(),
+  notes: LocalizedStringNullableSchema,
   createdAt: z.coerce.date(),
 });
 
@@ -234,7 +235,7 @@ export type PartListItem = z.infer<typeof PartListItemSchema>;
  */
 export const CreateHazardousMaterialSchema = z.object({
   materialType: HazardousMaterialTypeSchema,
-  details: LocalizedStringOptionalSchema,
+  details: LocalizedStringNullableOptionalSchema,
 });
 
 export type CreateHazardousMaterialInput = z.infer<typeof CreateHazardousMaterialSchema>;
@@ -245,7 +246,7 @@ export type CreateHazardousMaterialInput = z.infer<typeof CreateHazardousMateria
 export const CreatePinMappingSchema = z.object({
   pinNumber: z.string().min(1).max(20),
   pinName: z.string().min(1).max(100),
-  pinFunction: LocalizedStringOptionalSchema,
+  pinFunction: LocalizedStringNullableOptionalSchema,
   pinType: z.enum(['POWER', 'GROUND', 'INPUT', 'OUTPUT', 'BIDIRECTIONAL', 'NC', 'ANALOG', 'DIGITAL', 'CLOCK', 'OTHER']).optional(),
   maxVoltage: z.number().optional(),
   maxCurrent: z.number().optional(),
@@ -290,7 +291,7 @@ export const CreatePartRelationshipSchema = z.object({
   targetId: UUIDSchema,
   relationshipType: RelationshipTypeSchema,
   confidence: z.number().int().min(0).max(100).default(100),
-  notes: LocalizedStringOptionalSchema,
+  notes: LocalizedStringNullableOptionalSchema,
 });
 
 export type CreatePartRelationshipInput = z.infer<typeof CreatePartRelationshipSchema>;

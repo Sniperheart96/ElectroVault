@@ -3,8 +3,8 @@
  */
 import { z } from 'zod';
 import {
-  LocalizedStringSchema,
-  LocalizedStringOptionalSchema,
+  LocalizedStringNullableSchema,
+  LocalizedStringNullableOptionalSchema,
   UUIDSchema,
   PinTypeSchema,
 } from './common';
@@ -21,7 +21,7 @@ export const PinMappingSchema = z.object({
   partId: UUIDSchema,
   pinNumber: z.string(),
   pinName: z.string(),
-  pinFunction: LocalizedStringSchema.nullable(),
+  pinFunction: LocalizedStringNullableSchema,
   pinType: PinTypeSchema.nullable(),
   maxVoltage: z.number().nullable(),
   maxCurrent: z.number().nullable(),
@@ -39,7 +39,7 @@ export type PinMapping = z.infer<typeof PinMappingSchema>;
 export const CreatePinSchema = z.object({
   pinNumber: z.string().min(1).max(20),
   pinName: z.string().min(1).max(100),
-  pinFunction: LocalizedStringOptionalSchema,
+  pinFunction: LocalizedStringNullableOptionalSchema,
   pinType: PinTypeSchema.nullable().optional(),
   maxVoltage: z.number().positive().optional(),
   maxCurrent: z.number().positive().optional(),

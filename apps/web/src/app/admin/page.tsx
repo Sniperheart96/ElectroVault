@@ -1,7 +1,9 @@
 import { Suspense } from 'react';
-import { Package, Factory, FolderTree, Users } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import { Package, Factory, FolderTree, Users, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { getAuthenticatedApiClient } from '@/lib/api';
 
 async function getDashboardStats() {
@@ -33,13 +35,15 @@ function StatCard({
   title,
   value,
   icon: Icon,
+  href,
 }: {
   title: string;
   value: number;
   icon: React.ElementType;
+  href?: string;
 }) {
-  return (
-    <Card>
+  const content = (
+    <Card className={href ? 'hover:shadow-md transition-shadow cursor-pointer' : ''}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <Icon className="h-4 w-4 text-muted-foreground" />
@@ -49,6 +53,12 @@ function StatCard({
       </CardContent>
     </Card>
   );
+
+  if (href) {
+    return <Link href={href}>{content}</Link>;
+  }
+
+  return content;
 }
 
 function StatCardSkeleton() {
@@ -70,10 +80,10 @@ async function DashboardStats() {
 
   return (
     <>
-      <StatCard title="Komponenten" value={stats.componentsCount} icon={Package} />
-      <StatCard title="Hersteller" value={stats.manufacturersCount} icon={Factory} />
-      <StatCard title="Kategorien" value={stats.categoriesCount} icon={FolderTree} />
-      <StatCard title="Benutzer" value={0} icon={Users} />
+      <StatCard title="Bauteile" value={stats.componentsCount} icon={Package} href="/components" />
+      <StatCard title="Hersteller" value={stats.manufacturersCount} icon={Factory} href="/manufacturers" />
+      <StatCard title="Kategorien" value={stats.categoriesCount} icon={FolderTree} href="/components" />
+      <StatCard title="Benutzer" value={0} icon={Users} href="/admin/users" />
     </>
   );
 }
@@ -82,8 +92,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">Übersicht über die ElectroVault Datenbank</p>
+        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+        <p className="text-muted-foreground">Moderation und Benutzerverwaltung</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -104,50 +114,96 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Schnellaktionen</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              Moderation
+            </CardTitle>
+            <CardDescription>
+              Prüfen und genehmigen Sie eingereichte Inhalte
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <a
-              href="/admin/components"
-              className="block rounded-lg border p-3 hover:bg-accent transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Package className="h-5 w-5" />
-                <span className="font-medium">Neue Komponente erstellen</span>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-3 rounded-lg border">
+              <div className="flex items-center gap-3">
+                <Clock className="h-5 w-5 text-amber-500" />
+                <div>
+                  <p className="font-medium">Ausstehende Bauteile</p>
+                  <p className="text-sm text-muted-foreground">Warten auf Freigabe</p>
+                </div>
               </div>
-            </a>
-            <a
-              href="/admin/manufacturers"
-              className="block rounded-lg border p-3 hover:bg-accent transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <Factory className="h-5 w-5" />
-                <span className="font-medium">Neuen Hersteller anlegen</span>
+              <Button asChild>
+                <Link href="/admin/moderation">Zur Queue</Link>
+              </Button>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg border">
+              <div className="flex items-center gap-3">
+                <AlertCircle className="h-5 w-5 text-blue-500" />
+                <div>
+                  <p className="font-medium">Gemeldete Inhalte</p>
+                  <p className="text-sm text-muted-foreground">Benutzer-Meldungen prüfen</p>
+                </div>
               </div>
-            </a>
-            <a
-              href="/admin/categories"
-              className="block rounded-lg border p-3 hover:bg-accent transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <FolderTree className="h-5 w-5" />
-                <span className="font-medium">Kategorie verwalten</span>
-              </div>
-            </a>
+              <Button variant="outline" disabled>
+                Keine Meldungen
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Kürzlich aktualisiert</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Benutzerverwaltung
+            </CardTitle>
+            <CardDescription>
+              Benutzer und Rollen verwalten
+            </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Hier werden zuletzt bearbeitete Einträge angezeigt.
+              Die Benutzerverwaltung erfolgt über Keycloak. Hier können Sie Benutzeraktivitäten einsehen.
             </p>
+            <div className="flex gap-2">
+              <Button asChild variant="outline">
+                <Link href="/admin/users">Benutzer anzeigen</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <a
+                  href={`${process.env.NEXT_PUBLIC_KEYCLOAK_URL || 'http://localhost:8080'}/admin/electrovault/console`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Keycloak Admin
+                </a>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Hinweis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Die Verwaltung von Bauteilen, Herstellern, Kategorien und Bauformen erfolgt jetzt direkt in den jeweiligen öffentlichen Ansichten.
+            Eingeloggte Benutzer mit den entsprechenden Rechten (Contributor, Moderator, Admin) sehen dort automatisch die Bearbeitungsfunktionen.
+          </p>
+          <div className="flex gap-2 mt-4">
+            <Button asChild variant="outline" size="sm">
+              <Link href="/components">Bauteile verwalten</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/manufacturers">Hersteller verwalten</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/packages">Bauformen verwalten</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

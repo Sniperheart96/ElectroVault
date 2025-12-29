@@ -79,6 +79,7 @@ interface CategoryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   category?: Category | null;
+  parentId?: string | null;
   onSaved: () => void;
   allCategories?: Category[];
 }
@@ -105,6 +106,7 @@ export function CategoryDialog({
   open,
   onOpenChange,
   category,
+  parentId: initialParentId,
   onSaved,
   allCategories = [],
 }: CategoryDialogProps) {
@@ -236,14 +238,14 @@ export function CategoryDialog({
     } else {
       form.reset({
         name: { de: '', en: '' },
-        parentId: null,
+        parentId: initialParentId || null,
         description: { de: '', en: '' },
         iconUrl: null,
         sortOrder: 0,
         isActive: true,
       });
     }
-  }, [category, form]);
+  }, [category, initialParentId, form]);
 
   const onSubmit = async (data: CreateCategoryInput) => {
     try {

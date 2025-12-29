@@ -14,6 +14,7 @@ import type {
 import { NotFoundError, ConflictError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
 import { generateSlug, generateUniqueSlug } from '../lib/slug';
+import { toJsonValue } from '../lib/json-helpers';
 
 /**
  * Manufacturer Service
@@ -142,7 +143,7 @@ export class ManufacturerService {
           status: data.status,
           foundedYear: data.foundedYear,
           defunctYear: data.defunctYear,
-          description: data.description,
+          description: toJsonValue(data.description),
           createdById: userId,
           aliases: data.aliases
             ? {
@@ -158,7 +159,7 @@ export class ManufacturerService {
         },
       });
 
-      return manufacturer as ManufacturerWithAliases;
+      return manufacturer as unknown as ManufacturerWithAliases;
     } catch (error) {
       // Race Condition: Unique Constraint Violation
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
@@ -252,7 +253,7 @@ export class ManufacturerService {
           status: data.status,
           foundedYear: data.foundedYear,
           defunctYear: data.defunctYear,
-          description: data.description,
+          description: toJsonValue(data.description),
           acquiredById: data.acquiredById,
           acquisitionDate: data.acquisitionDate,
         },
@@ -262,7 +263,7 @@ export class ManufacturerService {
       });
     });
 
-    return manufacturer as ManufacturerWithAliases;
+    return manufacturer as unknown as ManufacturerWithAliases;
   }
 
   /**

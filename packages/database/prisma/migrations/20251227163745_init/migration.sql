@@ -212,6 +212,8 @@ CREATE TABLE "AttributeDefinition" (
     "scope" "AttributeScope" NOT NULL DEFAULT 'PART',
     "isFilterable" BOOLEAN NOT NULL DEFAULT true,
     "isRequired" BOOLEAN NOT NULL DEFAULT false,
+    "isLabel" BOOLEAN NOT NULL DEFAULT false,
+    "allowedPrefixes" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "siUnit" VARCHAR(20),
     "siMultiplier" DECIMAL(20,10),
     "sortOrder" INTEGER NOT NULL DEFAULT 0,
@@ -224,10 +226,10 @@ CREATE TABLE "ComponentAttributeValue" (
     "id" UUID NOT NULL,
     "componentId" UUID NOT NULL,
     "definitionId" UUID NOT NULL,
-    "displayValue" VARCHAR(255) NOT NULL,
     "normalizedValue" DECIMAL(30,15),
     "normalizedMin" DECIMAL(30,15),
     "normalizedMax" DECIMAL(30,15),
+    "prefix" VARCHAR(5),
     "stringValue" VARCHAR(255),
 
     CONSTRAINT "ComponentAttributeValue_pkey" PRIMARY KEY ("id")
@@ -238,10 +240,10 @@ CREATE TABLE "PartAttributeValue" (
     "id" UUID NOT NULL,
     "partId" UUID NOT NULL,
     "definitionId" UUID NOT NULL,
-    "displayValue" VARCHAR(255) NOT NULL,
     "normalizedValue" DECIMAL(30,15),
     "normalizedMin" DECIMAL(30,15),
     "normalizedMax" DECIMAL(30,15),
+    "prefix" VARCHAR(5),
     "stringValue" VARCHAR(255),
     "isDeviation" BOOLEAN NOT NULL DEFAULT false,
 

@@ -18,12 +18,48 @@ import type {
 import { NotFoundError, ConflictError, BadRequestError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
 import { generateSlug, generateUniqueSlug, getSlugSourceText } from '../lib/slug';
+import { toJsonValue } from '../lib/json-helpers';
 import { categoryService } from './category.service';
+
+/**
+ * Helper: Prüft ob ein LocalizedString mindestens eine Sprache mit Inhalt hat
+ */
+function hasLocalizedContent(value: LocalizedString | null | undefined): boolean {
+  if (!value || typeof value !== 'object') return false;
+  return Object.values(value).some((v) => typeof v === 'string' && v.trim().length > 0);
+}
 
 /**
  * Component Service
  */
 export class ComponentService {
+  /**
+   * Prüft ob eine Kategorie (inkl. Elternkategorien) Label-Attribute hat
+   */
+  private async categoryHasLabelAttributes(categoryId: string): Promise<boolean> {
+    // Alle Kategorie-IDs (inkl. Eltern) sammeln
+    const categoryIds: string[] = [];
+    let currentCategoryId: string | null = categoryId;
+
+    while (currentCategoryId) {
+      categoryIds.push(currentCategoryId);
+      const category = await prisma.categoryTaxonomy.findUnique({
+        where: { id: currentCategoryId },
+        select: { parentId: true },
+      });
+      currentCategoryId = category?.parentId ?? null;
+    }
+
+    // Prüfen ob es Label-Attribute in diesen Kategorien gibt
+    const labelAttribute = await prisma.attributeDefinition.findFirst({
+      where: {
+        categoryId: { in: categoryIds },
+        isLabel: true,
+      },
+    });
+
+    return labelAttribute !== null;
+  }
   /**
    * Gibt eine paginierte Liste von Components zurück
    */
@@ -96,6 +132,14 @@ export class ComponentService {
               slug: true,
             },
           },
+          attributeValues: {
+            include: {
+              definition: true,
+            },
+            orderBy: {
+              definition: { sortOrder: 'asc' },
+            },
+          },
           _count: {
             select: { manufacturerParts: true },
           },
@@ -117,6 +161,24 @@ export class ComponentService {
         name: c.category.name as LocalizedString,
         slug: c.category.slug,
       },
+      attributeValues: c.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+          isLabel: av.definition.isLabel,
+        },
+      })),
       manufacturerPartsCount: c._count.manufacturerParts,
       createdAt: c.createdAt,
       updatedAt: c.updatedAt,
@@ -170,6 +232,23 @@ export class ComponentService {
         name: component.category.name as LocalizedString,
         description: component.category.description as LocalizedString | null,
       },
+      attributeValues: component.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+        },
+      })),
     } as unknown as ComponentFull;
   }
 
@@ -184,6 +263,9 @@ export class ComponentService {
         attributeValues: {
           include: {
             definition: true,
+          },
+          orderBy: {
+            definition: { sortOrder: 'asc' },
           },
         },
         conceptRelations: {
@@ -213,6 +295,23 @@ export class ComponentService {
       fullDescription: component.fullDescription as LocalizedString | null,
       commonAttributes: component.commonAttributes as Record<string, unknown>,
       manufacturerPartsCount: component._count.manufacturerParts,
+      attributeValues: component.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+        },
+      })),
     } as unknown as ComponentFull;
   }
 
@@ -229,10 +328,22 @@ export class ComponentService {
       throw new BadRequestError(`Category '${data.categoryId}' not found`);
     }
 
+    // Validierung: name ist Pflicht wenn keine Label-Attribute in der Kategorie
+    const hasLabelAttrs = await this.categoryHasLabelAttributes(data.categoryId);
+    if (!hasLabelAttrs && !hasLocalizedContent(data.name as LocalizedString)) {
+      throw new BadRequestError(
+        'Name is required with at least one language when category has no label attributes'
+      );
+    }
+
     // Slug generieren falls nicht angegeben
     let slug = data.slug;
     if (!slug) {
-      const sourceText = getSlugSourceText(data.name as Record<string, string | undefined>);
+      // Wenn name vorhanden, daraus generieren, sonst aus series oder Fallback
+      const nameValue = data.name as Record<string, string | undefined> | undefined;
+      const sourceText = hasLocalizedContent(nameValue as LocalizedString)
+        ? getSlugSourceText(nameValue ?? {})
+        : data.series || 'component';
       const baseSlug = generateSlug(sourceText);
       const existingSlugs = await this.getExistingSlugs();
       slug = generateUniqueSlug(baseSlug, existingSlugs);
@@ -243,14 +354,15 @@ export class ComponentService {
     try {
       const component = await prisma.$transaction(async (tx) => {
         // Component erstellen
+        // name kann leer sein wenn Label-Attribute vorhanden (wird dann aus Attributen generiert)
         const newComponent = await tx.coreComponent.create({
           data: {
-            name: data.name as object,
+            name: (data.name as object) ?? {}, // Leeres Objekt falls nicht angegeben
             slug,
             series: data.series,
             categoryId: data.categoryId,
-            shortDescription: (data.shortDescription as object) || undefined,
-            fullDescription: (data.fullDescription as object) || undefined,
+            shortDescription: toJsonValue(data.shortDescription),
+            fullDescription: toJsonValue(data.fullDescription),
             commonAttributes: (data.commonAttributes as object) ?? {},
             status: data.status,
             createdById: userId,
@@ -296,6 +408,16 @@ export class ComponentService {
       throw new NotFoundError('Component', id);
     }
 
+    // Validierung: Wenn name explizit auf leer gesetzt wird, muss Kategorie Label-Attribute haben
+    if (data.name !== undefined && !hasLocalizedContent(data.name as LocalizedString)) {
+      const hasLabelAttrs = await this.categoryHasLabelAttributes(existing.categoryId);
+      if (!hasLabelAttrs) {
+        throw new BadRequestError(
+          'Name is required with at least one language when category has no label attributes'
+        );
+      }
+    }
+
     // Slug-Konflikt prüfen falls geändert
     if (data.slug && data.slug !== existing.slug) {
       const slugConflict = await prisma.coreComponent.findUnique({
@@ -329,8 +451,8 @@ export class ComponentService {
           name: data.name ? (data.name as object) : undefined,
           slug: data.slug,
           series: data.series,
-          shortDescription: data.shortDescription ? (data.shortDescription as object) : undefined,
-          fullDescription: data.fullDescription ? (data.fullDescription as object) : undefined,
+          shortDescription: toJsonValue(data.shortDescription),
+          fullDescription: toJsonValue(data.fullDescription),
           commonAttributes: data.commonAttributes ? (data.commonAttributes as object) : undefined,
           status: data.status,
           lastEditedById: userId,

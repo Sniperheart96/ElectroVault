@@ -16,6 +16,7 @@ import type {
 } from '@electrovault/schemas';
 import { NotFoundError, ConflictError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
+import { toJsonValue } from '../lib/json-helpers';
 import { auditService } from './audit.service';
 
 // Type für Kategorie aus Prisma
@@ -339,7 +340,7 @@ export class CategoryService {
             slug,
             level,
             parentId: data.parentId || null,
-            description: data.description || undefined,
+            description: toJsonValue(data.description),
             iconUrl: data.iconUrl || null,
             sortOrder: data.sortOrder ?? 0,
             isActive: data.isActive ?? true,
@@ -413,7 +414,7 @@ export class CategoryService {
       data: {
         ...(data.name && { name: data.name }),
         ...(data.parentId !== undefined && { parentId: data.parentId }),
-        ...(data.description !== undefined && { description: data.description }),
+        ...(data.description !== undefined && { description: toJsonValue(data.description) }),
         ...(data.iconUrl !== undefined && { iconUrl: data.iconUrl }),
         ...(data.sortOrder !== undefined && { sortOrder: data.sortOrder }),
         ...(data.isActive !== undefined && { isActive: data.isActive }),

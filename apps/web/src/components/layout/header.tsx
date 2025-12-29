@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useSession, signOut } from 'next-auth/react';
-import { Search, Menu, Zap, User, LogOut, Settings, Shield } from 'lucide-react';
+import { Menu, Zap, User, LogOut, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 interface HeaderProps {
   onMenuToggle?: () => void;
@@ -13,7 +12,6 @@ interface HeaderProps {
 
 export function Header({ onMenuToggle }: HeaderProps) {
   const t = useTranslations('nav');
-  const tHome = useTranslations('home');
   const { data: session, status } = useSession();
 
   const isAdmin = session?.user?.roles?.includes('admin');
@@ -48,16 +46,16 @@ export function Header({ onMenuToggle }: HeaderProps) {
             {t('components')}
           </Link>
           <Link
-            href="/categories"
-            className="transition-colors hover:text-foreground/80 text-foreground/60"
-          >
-            {t('categories')}
-          </Link>
-          <Link
             href="/manufacturers"
             className="transition-colors hover:text-foreground/80 text-foreground/60"
           >
             {t('manufacturers')}
+          </Link>
+          <Link
+            href="/packages"
+            className="transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            {t('packages')}
           </Link>
           {(isAdmin || isModerator) && (
             <Link
@@ -65,25 +63,13 @@ export function Header({ onMenuToggle }: HeaderProps) {
               className="transition-colors hover:text-foreground/80 text-foreground/60 flex items-center gap-1"
             >
               <Shield className="h-4 w-4" />
-              {t('admin')}
+              {t('moderation')}
             </Link>
           )}
         </nav>
 
         {/* Spacer */}
         <div className="flex-1" />
-
-        {/* Search */}
-        <div className="hidden md:flex items-center mr-4">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={tHome('searchPlaceholder')}
-              className="pl-8 w-64"
-            />
-          </div>
-        </div>
 
         {/* Auth section */}
         <div className="flex items-center space-x-2">

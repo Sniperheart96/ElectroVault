@@ -503,6 +503,7 @@ model AttributeDefinition {
 
   isFilterable    Boolean  @default(true)
   isRequired      Boolean  @default(false)
+  isLabel         Boolean  @default(false)  // Für dynamische Bauteilbezeichnung
 
   // SI-Präfix-System (ersetzt siMultiplier)
   allowedPrefixes String[] @default([])      // z.B. ["p", "n", "µ", "m", "", "k", "M"]

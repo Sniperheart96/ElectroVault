@@ -20,8 +20,10 @@
     "components": "Bauteile",
     "categories": "Kategorien",
     "manufacturers": "Hersteller",
+    "packages": "Bauformen",
     "search": "Suche",
     "admin": "Admin",
+    "moderation": "Moderation",
     "login": "Anmelden",
     "logout": "Abmelden",
     "profile": "Profil"
@@ -35,7 +37,8 @@
     "stats": {
       "components": "Bauteile",
       "manufacturers": "Hersteller",
-      "categories": "Kategorien"
+      "categories": "Kategorien",
+      "users": "Nutzer"
     }
   },
   "components": {

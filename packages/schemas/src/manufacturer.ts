@@ -3,8 +3,8 @@
  */
 import { z } from 'zod';
 import {
-  LocalizedStringSchema,
-  LocalizedStringOptionalSchema,
+  LocalizedStringNullableSchema,
+  LocalizedStringNullableOptionalSchema,
   UUIDSchema,
   SlugSchema,
   PaginationSchema,
@@ -41,7 +41,7 @@ export const ManufacturerBaseSchema = z.object({
   status: ManufacturerStatusSchema,
   foundedYear: z.number().nullable(),
   defunctYear: z.number().nullable(),
-  description: LocalizedStringSchema.nullable(),
+  description: LocalizedStringNullableSchema,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 });
@@ -86,7 +86,7 @@ export const CreateManufacturerSchema = z.object({
   status: ManufacturerStatusSchema.default('ACTIVE'),
   foundedYear: z.number().int().min(1800).max(2100).optional(),
   defunctYear: z.number().int().min(1800).max(2100).optional(),
-  description: LocalizedStringOptionalSchema,
+  description: LocalizedStringNullableOptionalSchema,
   aliases: z
     .array(
       z.object({

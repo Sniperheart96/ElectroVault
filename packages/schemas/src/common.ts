@@ -8,27 +8,56 @@ import { z } from 'zod';
 // ============================================
 
 /**
- * LocalizedString Schema - Mehrsprachige Texte
- * Mindestens eine Sprache muss vorhanden sein
+ * Basis-Objekt für LocalizedString (ohne Validierung)
  */
-export const LocalizedStringSchema = z
-  .object({
-    en: z.string().optional(),
-    de: z.string().optional(),
-    fr: z.string().optional(),
-    es: z.string().optional(),
-    zh: z.string().optional(),
-  })
-  .refine((data) => Object.values(data).some((val) => val && val.length > 0), {
-    message: 'At least one language translation is required',
-  });
+const LocalizedStringBaseSchema = z.object({
+  en: z.string().optional(),
+  de: z.string().optional(),
+  fr: z.string().optional(),
+  es: z.string().optional(),
+  zh: z.string().optional(),
+});
+
+/**
+ * LocalizedString Schema - Mehrsprachige Texte
+ * Mindestens eine Sprache muss vorhanden sein (für Pflichtfelder)
+ */
+export const LocalizedStringSchema = LocalizedStringBaseSchema.refine(
+  (data) => Object.values(data).some((val) => val && val.length > 0),
+  { message: 'At least one language translation is required' }
+);
 
 export type LocalizedString = z.infer<typeof LocalizedStringSchema>;
+
+/**
+ * LocalizedString ohne Pflicht-Validierung (für optionale Felder)
+ * Kann leer sein oder Sprachen enthalten
+ */
+export const LocalizedStringLooseSchema = LocalizedStringBaseSchema;
+
+export type LocalizedStringLoose = z.infer<typeof LocalizedStringLooseSchema>;
 
 /**
  * Optionales LocalizedString - Kann komplett undefined sein
  */
 export const LocalizedStringOptionalSchema = LocalizedStringSchema.optional();
+
+/**
+ * Optionales LocalizedString ohne Pflicht-Validierung
+ */
+export const LocalizedStringLooseOptionalSchema = LocalizedStringLooseSchema.optional();
+
+/**
+ * LocalizedString Nullable Schema - Für optionale mehrsprachige Felder
+ * Akzeptiert: null, undefined, leeres Objekt, oder Objekt mit beliebigen Sprachen
+ * Keine Pflicht für mindestens eine Sprache - perfekt für optionale Felder wie description
+ */
+export const LocalizedStringNullableSchema = LocalizedStringLooseSchema.nullable();
+
+/**
+ * LocalizedString Nullable Optional Schema - Kann null, undefined oder ein Objekt sein
+ */
+export const LocalizedStringNullableOptionalSchema = LocalizedStringNullableSchema.optional();
 
 // ============================================
 // COMMON VALIDATORS
