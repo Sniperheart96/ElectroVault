@@ -584,6 +584,83 @@ export class ApiClient {
   async getStats(): Promise<ApiResponse<Stats>> {
     return this.request<ApiResponse<Stats>>('/stats');
   }
+
+  // ============================================
+  // Files
+  // ============================================
+
+  async getFileById(id: string): Promise<ApiResponse<FileAttachment>> {
+    return this.request<ApiResponse<FileAttachment>>(`/files/${id}`);
+  }
+
+  async getFileDownloadUrl(id: string): Promise<ApiResponse<{ id: string; url: string; expiresIn: number }>> {
+    return this.request<ApiResponse<{ id: string; url: string; expiresIn: number }>>(`/files/${id}/download`);
+  }
+
+  async getFilesByComponent(componentId: string): Promise<ApiResponse<FileAttachment[]>> {
+    return this.request<ApiResponse<FileAttachment[]>>(`/files/component/${componentId}`);
+  }
+
+  async getFilesByPart(partId: string): Promise<ApiResponse<FileAttachment[]>> {
+    return this.request<ApiResponse<FileAttachment[]>>(`/files/part/${partId}`);
+  }
+
+  async deleteFile(id: string): Promise<void> {
+    await this.request<void>(`/files/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  /**
+   * Upload a file using multipart form data
+   * Note: This method handles file uploads differently from regular API calls
+   */
+  async uploadFile(
+    type: 'datasheet' | 'image' | 'pinout' | 'other',
+    file: File,
+    options?: {
+      partId?: string;
+      componentId?: string;
+      version?: string;
+      language?: string;
+      description?: string;
+    }
+  ): Promise<ApiResponse<FileAttachment>> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    if (options?.partId) formData.append('partId', options.partId);
+    if (options?.componentId) formData.append('componentId', options.componentId);
+    if (options?.version) formData.append('version', options.version);
+    if (options?.language) formData.append('language', options.language);
+    if (options?.description) formData.append('description', options.description);
+
+    const url = `${this.baseUrl}/files/${type}`;
+
+    const headers: HeadersInit = {};
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+    // Note: Don't set Content-Type for FormData - browser will set it with boundary
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      try {
+        const error: ApiError = JSON.parse(errorText);
+        throw new Error(error.error.message || 'File upload failed');
+      } catch {
+        throw new Error(`File upload failed: ${response.status} ${errorText}`);
+      }
+    }
+
+    return response.json();
+  }
 }
 
 // ============================================
@@ -821,6 +898,26 @@ export interface Stats {
   components: number;
   manufacturers: number;
   users: number;
+}
+
+export interface FileAttachment {
+  id: string;
+  originalName: string;
+  sanitizedName: string;
+  mimeType: string;
+  size: number;
+  fileType: 'DATASHEET' | 'IMAGE' | 'PINOUT' | 'OTHER';
+  bucketName: string;
+  bucketPath: string;
+  description: string | null;
+  version: string | null;
+  language: string | null;
+  componentId: string | null;
+  partId: string | null;
+  uploadedById: string;
+  createdAt: string;
+  updatedAt: string;
+  downloadUrl?: string;
 }
 
 export interface Pin {

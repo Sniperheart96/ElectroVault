@@ -40,6 +40,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { type Part, type Component, type Manufacturer, type Package, type SIPrefix } from '@/lib/api';
 import { AttributeFields } from '@/components/admin/attribute-fields';
 import { PinMappingEditor } from '@/components/admin/pin-mapping-editor';
+import { PartFilesManager } from '@/components/admin/part-files-manager';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
@@ -233,9 +234,12 @@ export function PartDialog({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="details">Stammdaten</TabsTrigger>
             <TabsTrigger value="attributes">Attribute</TabsTrigger>
+            <TabsTrigger value="files" disabled={!isEdit}>
+              Dateien
+            </TabsTrigger>
             <TabsTrigger value="pins" disabled={!isEdit}>
               Pin-Mapping
             </TabsTrigger>
@@ -681,6 +685,27 @@ export function PartDialog({
                 </Button>
               </DialogFooter>
             </div>
+          </TabsContent>
+
+          {/* Files Tab */}
+          <TabsContent value="files" className="mt-4">
+            {!isEdit ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Speichern Sie zuerst die Variante, um Dateien hochzuladen.</p>
+              </div>
+            ) : part ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Datenblätter, Bilder und andere Dateien für diese Hersteller-Variante verwalten.
+                </p>
+                <PartFilesManager partId={part.id} />
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => onOpenChange(false)}>
+                    Schließen
+                  </Button>
+                </DialogFooter>
+              </div>
+            ) : null}
           </TabsContent>
 
           {/* Pin-Mapping Tab */}
