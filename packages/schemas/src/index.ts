@@ -168,6 +168,11 @@ export {
   type ConceptRelationWithTarget,
   type ConceptRelationWithSource,
   type ComponentRelationsResponse,
+  // Pin Mapping Schemas (gehört zu CoreComponent)
+  PinMappingSchema,
+  CreatePinMappingSchema,
+  type PinMapping,
+  type CreatePinMappingInput,
   // Response Schemas
   ComponentBaseSchema,
   ComponentWithCategorySchema,
@@ -199,13 +204,11 @@ export {
 export {
   // Sub-Schemas
   HazardousMaterialSchema,
-  PinMappingSchema,
   PartAttributeValueSchema,
   PartRelationshipSchema,
   DatasheetSchema,
   PartImageSchema,
   type HazardousMaterial,
-  type PinMapping,
   type PartAttributeValue,
   type PartRelationship,
   type Datasheet,
@@ -221,7 +224,6 @@ export {
   type PartListItem,
   // Input Schemas
   CreateHazardousMaterialSchema,
-  CreatePinMappingSchema,
   CreateDatasheetSchema,
   CreatePartImageSchema,
   CreatePartRelationshipSchema,
@@ -229,7 +231,6 @@ export {
   UpdatePartSchema,
   SetPartAttributeValuesSchema,
   type CreateHazardousMaterialInput,
-  type CreatePinMappingInput,
   type CreateDatasheetInput,
   type CreatePartImageInput,
   type CreatePartRelationshipInput,
@@ -285,7 +286,7 @@ export {
 // PIN SCHEMAS
 // ============================================
 export {
-  // Response Schemas (PinMappingSchema already exported from part.ts)
+  // Response Schemas (PinMappingSchema exported from component.ts)
   // Input Schemas
   CreatePinSchema,
   UpdatePinSchema,

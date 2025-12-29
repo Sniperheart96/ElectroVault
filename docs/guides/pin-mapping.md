@@ -2,7 +2,7 @@
 
 ## Konzept
 
-Pin-Mapping ermöglicht die detaillierte Dokumentation der Pin-Belegung elektronischer Bauteile. Jedes ManufacturerPart kann eine beliebige Anzahl von Pins haben, die mit Namen, Typen und Funktionen beschrieben werden.
+Pin-Mapping ermöglicht die detaillierte Dokumentation der Pin-Belegung elektronischer Bauteile. Jedes CoreComponent kann eine beliebige Anzahl von Pins haben, die mit Namen, Typen und Funktionen beschrieben werden. Da alle Herstellervarianten eines Bauteils das gleiche Pin-Mapping haben müssen (sonst wäre es nicht das gleiche Bauteil), wird das Pin-Mapping auf Component-Ebene definiert.
 
 ### Wann wird Pin-Mapping verwendet?
 
@@ -28,7 +28,7 @@ Pin-Mapping ermöglicht die detaillierte Dokumentation der Pin-Belegung elektron
 | Feld | Typ | Beschreibung |
 |------|-----|--------------|
 | `id` | UUID | Eindeutige ID des Pins |
-| `partId` | UUID | Referenz zum ManufacturerPart |
+| `componentId` | UUID | Referenz zum CoreComponent |
 | `pinNumber` | String (max 20) | Pin-Nummer oder -Bezeichnung (z.B. "1", "VCC", "A0") |
 | `pinName` | String (max 100) | Technischer Name des Pins |
 | `pinFunction` | LocalizedString (optional) | Mehrsprachige Beschreibung der Pin-Funktion |
@@ -36,7 +36,7 @@ Pin-Mapping ermöglicht die detaillierte Dokumentation der Pin-Belegung elektron
 | `maxVoltage` | Decimal (optional) | Maximale Spannung in Volt |
 | `maxCurrent` | Decimal (optional) | Maximaler Strom in Ampere |
 
-**Constraint:** Die Kombination `(partId, pinNumber)` ist eindeutig - pro Part kann jede Pin-Nummer nur einmal vorkommen.
+**Constraint:** Die Kombination `(componentId, pinNumber)` ist eindeutig - pro Component kann jede Pin-Nummer nur einmal vorkommen.
 
 ### PinType Enum
 
@@ -59,9 +59,9 @@ Pin-Mapping ermöglicht die detaillierte Dokumentation der Pin-Belegung elektron
 
 ## API-Endpunkte
 
-### GET /api/v1/parts/:partId/pins
+### GET /api/v1/components/:componentId/pins
 
-Gibt alle Pins eines ManufacturerPart zurück.
+Gibt alle Pins eines CoreComponent zurück.
 
 **Authentifizierung:** Nicht erforderlich (öffentlich lesbar)
 
@@ -71,7 +71,7 @@ Gibt alle Pins eines ManufacturerPart zurück.
   "data": [
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
-      "partId": "660e8400-e29b-41d4-a716-446655440000",
+      "componentId": "660e8400-e29b-41d4-a716-446655440000",
       "pinNumber": "1",
       "pinName": "VCC",
       "pinFunction": {
@@ -86,7 +86,7 @@ Gibt alle Pins eines ManufacturerPart zurück.
 }
 ```
 
-### POST /api/v1/parts/:partId/pins
+### POST /api/v1/components/:componentId/pins
 
 Erstellt einen neuen Pin.
 
@@ -109,10 +109,10 @@ Erstellt einen neuen Pin.
 **Response:** `201 Created` mit erstelltem Pin
 
 **Fehler:**
-- `409 Conflict` - Pin-Nummer existiert bereits für dieses Part
-- `404 Not Found` - ManufacturerPart existiert nicht
+- `409 Conflict` - Pin-Nummer existiert bereits für dieses Component
+- `404 Not Found` - CoreComponent existiert nicht
 
-### POST /api/v1/parts/:partId/pins/bulk
+### POST /api/v1/components/:componentId/pins/bulk
 
 Erstellt mehrere Pins auf einmal.
 
@@ -171,7 +171,7 @@ Löscht einen Pin.
 
 **Response:** `204 No Content`
 
-### POST /api/v1/parts/:partId/pins/reorder
+### POST /api/v1/components/:componentId/pins/reorder
 
 Ändert die Reihenfolge oder Nummern von Pins.
 
@@ -191,11 +191,11 @@ Löscht einen Pin.
 **Response:** `200 OK` mit `{ "success": true }`
 
 **Fehler:**
-- `400 Bad Request` - Pins gehören nicht zum Part oder doppelte Nummern
+- `400 Bad Request` - Pins gehören nicht zum Component oder doppelte Nummern
 
-### DELETE /api/v1/parts/:partId/pins
+### DELETE /api/v1/components/:componentId/pins
 
-Löscht alle Pins eines Parts.
+Löscht alle Pins eines Components.
 
 **Authentifizierung:** `MODERATOR` oder höher
 
@@ -272,7 +272,7 @@ Löscht alle Pins eines Parts.
 
 ### Pin-Mapping-Editor Komponente
 
-Die Komponente `<PinMappingEditor partId="..." />` bietet eine vollständige Benutzeroberfläche zum Verwalten von Pins.
+Die Komponente `<PinMappingEditor componentId="..." />` bietet eine vollständige Benutzeroberfläche zum Verwalten von Pins.
 
 **Features:**
 - Einzelne Pins hinzufügen/bearbeiten/löschen
@@ -285,11 +285,11 @@ Die Komponente `<PinMappingEditor partId="..." />` bietet eine vollständige Ben
 ```tsx
 import { PinMappingEditor } from '@/components/admin/pin-mapping-editor';
 
-function PartEditPage({ partId }: { partId: string }) {
+function ComponentEditPage({ componentId }: { componentId: string }) {
   return (
     <div>
-      <h1>Bauteil bearbeiten</h1>
-      <PinMappingEditor partId={partId} />
+      <h1>Component bearbeiten</h1>
+      <PinMappingEditor componentId={componentId} />
     </div>
   );
 }
@@ -321,13 +321,13 @@ pinNummer,pinName,pinTyp;pinNummer,pinName,pinTyp;...
 import { useApi } from '@/hooks/use-api';
 import { useToast } from '@/hooks/use-toast';
 
-function MyComponent({ partId }: { partId: string }) {
+function MyComponent({ componentId }: { componentId: string }) {
   const api = useApi();
   const { toast } = useToast();
 
   const handleCreatePin = async () => {
     try {
-      await api.createPin(partId, {
+      await api.createPin(componentId, {
         pinNumber: '1',
         pinName: 'VCC',
         pinType: 'POWER',
@@ -439,7 +439,7 @@ Die Pin-Reihenfolge sollte der physischen Anordnung im Datenblatt entsprechen:
 
 - Pflichtfeld
 - Maximal 20 Zeichen
-- Muss eindeutig sein pro Part
+- Muss eindeutig sein pro Component
 - Kann alphanumerisch sein (z.B. "A1", "VCC", "GPIO0")
 
 ### Pin-Name
@@ -475,7 +475,7 @@ Die Pin-Reihenfolge sollte der physischen Anordnung im Datenblatt entsprechen:
 | Fehler | Ursache | Lösung |
 |--------|---------|--------|
 | `409 Conflict` | Pin-Nummer existiert bereits | Andere Pin-Nummer verwenden oder bestehenden Pin aktualisieren |
-| `404 Not Found` | Part-ID ungültig | Prüfen ob ManufacturerPart existiert |
+| `404 Not Found` | Component-ID ungültig | Prüfen ob CoreComponent existiert |
 | `400 Bad Request` | Doppelte Pin-Nummern im Bulk-Import | Duplikate entfernen |
 | `400 Bad Request` | Ungültiger PinType | Nur erlaubte PinType-Werte verwenden |
 
@@ -484,7 +484,7 @@ Die Pin-Reihenfolge sollte der physischen Anordnung im Datenblatt entsprechen:
 ```tsx
 const handleCreatePin = async (data: CreatePinInput) => {
   try {
-    await api.createPin(partId, data);
+    await api.createPin(componentId, data);
     toast({ title: 'Erfolg', description: 'Pin wurde erstellt.' });
   } catch (error) {
     console.error('Failed to create pin:', error);
@@ -495,7 +495,7 @@ const handleCreatePin = async (data: CreatePinInput) => {
       if (error.message.includes('already exists')) {
         errorMessage = 'Pin-Nummer existiert bereits.';
       } else if (error.message.includes('not found')) {
-        errorMessage = 'Bauteil nicht gefunden.';
+        errorMessage = 'Component nicht gefunden.';
       }
     }
 

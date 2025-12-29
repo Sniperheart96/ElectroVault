@@ -3,9 +3,24 @@
  */
 
 /**
- * Basis-URL der API aus Environment oder Default
+ * Gibt die API-Basis-URL zurück.
+ * Wird bei jedem Aufruf aus process.env gelesen, um ES Module Hoisting zu umgehen.
+ *
+ * WICHTIG: Die Variable API_BASE_URL muss in der .env gesetzt sein.
+ * Es gibt keinen Fallback, da ein falscher Wert zu schwer debugbaren Fehlern führt.
+ *
+ * @throws Error wenn API_BASE_URL nicht gesetzt ist
  */
-export const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001/api/v1';
+export function getApiBaseUrl(): string {
+  const url = process.env.API_BASE_URL;
+  if (!url) {
+    throw new Error(
+      'API_BASE_URL environment variable is required but not set. ' +
+      'Please configure it in apps/api/.env (e.g., API_BASE_URL=http://192.168.178.80:3001/api/v1)'
+    );
+  }
+  return url;
+}
 
 /**
  * MIME-Type Mapping für Bild-Dateien
@@ -35,7 +50,7 @@ export function getImageContentType(filename: string, fallback = 'image/png'): s
  */
 export function getManufacturerLogoProxyUrl(manufacturerId: string, logoUrl: string | null): string | null {
   if (!logoUrl) return null;
-  return `${API_BASE_URL}/manufacturers/${manufacturerId}/logo`;
+  return `${getApiBaseUrl()}/manufacturers/${manufacturerId}/logo`;
 }
 
 /**

@@ -41,11 +41,11 @@ Das ElectroVault-Datenbank-Schema ist in PostgreSQL implementiert und verwendet 
 │    │               │                                           │
 │    ├─ ComponentAttributeValue                                  │
 │    ├─ ComponentConceptRelation (Konzept-Beziehungen)           │
+│    ├─ PinMapping                                               │
 │    │                                                           │
 │    └──► ManufacturerPart ◄─────┤                               │
 │           │                                                     │
 │           ├─ PartAttributeValue                                │
-│           ├─ PinMapping                                        │
 │           ├─ HazardousMaterial                                 │
 │           ├─ PartRelationship (Part-Beziehungen)               │
 │           ├─ PartDatasheet (Legacy)                            │
@@ -111,6 +111,7 @@ Das logische Bauteil repräsentiert eine **herstellerunabhängige Bauteil-Konzep
 | `fullDescription` | JSON | Vollständige Beschreibung lokalisiert |
 | `commonAttributes` | JSON | Typische Eigenschaften (frei definierbar) |
 | `status` | ComponentStatus | DRAFT, PENDING, PUBLISHED, ARCHIVED |
+| `packageId` | UUID | Referenz zu PackageMaster (optional) |
 | `createdById` | UUID | Ersteller |
 | `lastEditedById` | UUID | Letzter Editor |
 | `deletedAt` | DateTime | Soft-Delete Timestamp |
@@ -120,10 +121,12 @@ Das logische Bauteil repräsentiert eine **herstellerunabhängige Bauteil-Konzep
 - `1:n` zu `ManufacturerPart` (ein logisches Bauteil → viele Hersteller-Produkte)
 - `1:n` zu `ComponentAttributeValue` (typische Attributwerte)
 - `1:n` zu `ComponentConceptRelation` (Konzept-Beziehungen zu anderen CoreComponents)
+- `1:n` zu `PinMapping` (Pin-Zuordnungen)
 - `1:n` zu `FileAttachment` (Dateien auf Component-Ebene)
+- `n:1` zu `PackageMaster` (Gehäuseform)
 
 **Indizes:**
-- `categoryId`, `status`, `deletedAt`, `slug` (unique)
+- `categoryId`, `status`, `deletedAt`, `packageId`, `slug` (unique)
 
 ---
 
@@ -138,7 +141,6 @@ Das konkrete Produkt eines Herstellers.
 | `manufacturerId` | UUID | Referenz zu ManufacturerMaster |
 | `mpn` | String(255) | Manufacturer Part Number |
 | `orderingCode` | String(255) | Bestellnummer (optional) |
-| `packageId` | UUID | Referenz zu PackageMaster (optional) |
 | `weightGrams` | Decimal(10,4) | Gewicht in Gramm |
 | `dateCodeFormat` | String(50) | Format des Datumscodes (z.B. "YYWW") |
 | `introductionYear` | Int | Einführungsjahr |
@@ -158,9 +160,7 @@ Das konkrete Produkt eines Herstellers.
 **Beziehungen:**
 - `n:1` zu `CoreComponent`
 - `n:1` zu `ManufacturerMaster`
-- `n:1` zu `PackageMaster`
 - `1:n` zu `HazardousMaterial` (Gefahrstoffe)
-- `1:n` zu `PinMapping` (Pin-Zuordnungen)
 - `1:n` zu `PartDatasheet` (Datenblätter)
 - `1:n` zu `PartImage` (Bilder)
 - `1:n` zu `PartEcadModel` (ECAD-Modelle)
@@ -169,7 +169,7 @@ Das konkrete Produkt eines Herstellers.
 - `1:n` zu `FileAttachment` (Dateien auf Part-Ebene)
 
 **Indizes:**
-- `mpn`, `coreComponentId`, `manufacturerId`, `packageId`, `nsn`, `status`, `lifecycleStatus`, `deletedAt`, `orderingCode`
+- `mpn`, `coreComponentId`, `manufacturerId`, `nsn`, `status`, `lifecycleStatus`, `deletedAt`, `orderingCode`
 - **Unique Constraint:** `(manufacturerId, mpn)` - Ein Hersteller kann dieselbe MPN nicht mehrfach haben
 
 ---
@@ -278,7 +278,7 @@ Level 1 (Domain): Passive Components
 | `description` | String | Beschreibung |
 
 **Beziehungen:**
-- `1:n` zu `ManufacturerPart`
+- `1:n` zu `CoreComponent`
 - `1:n` zu `EcadFootprint`
 - `1:n` zu `FileAttachment`
 
@@ -611,7 +611,7 @@ Beziehungen zwischen **CoreComponents** (logische Bauteile).
 | Feld | Typ | Beschreibung |
 |------|-----|--------------|
 | `id` | UUID | Primärschlüssel |
-| `partId` | UUID | Referenz zu ManufacturerPart |
+| `componentId` | UUID | Referenz zu CoreComponent |
 | `pinNumber` | String(20) | Pin-Nummer (z.B. "1", "A1", "VCC") |
 | `pinName` | String(100) | Pin-Name (z.B. "VCC", "GND", "OUT") |
 | `pinFunction` | JSON | Lokalisierte Funktionsbeschreibung |
@@ -619,10 +619,10 @@ Beziehungen zwischen **CoreComponents** (logische Bauteile).
 | `maxVoltage` | Decimal(10,4) | Max. Spannung in Volt |
 | `maxCurrent` | Decimal(10,4) | Max. Strom in Ampere |
 
-**Unique Constraint:** `(partId, pinNumber)`
+**Unique Constraint:** `(componentId, pinNumber)`
 
 **Indizes:**
-- `partId`
+- `componentId`
 
 ---
 
@@ -926,8 +926,8 @@ lastEditedBy   User?    @relation(..., fields: [lastEditedById], references: [id
 
 | Entität | Indizes |
 |---------|---------|
-| `CoreComponent` | `categoryId`, `status`, `deletedAt`, `slug` (unique) |
-| `ManufacturerPart` | `mpn`, `coreComponentId`, `manufacturerId`, `packageId`, `nsn`, `status`, `lifecycleStatus`, `deletedAt`, `orderingCode`, **(unique: manufacturerId + mpn)** |
+| `CoreComponent` | `categoryId`, `status`, `deletedAt`, `packageId`, `slug` (unique) |
+| `ManufacturerPart` | `mpn`, `coreComponentId`, `manufacturerId`, `nsn`, `status`, `lifecycleStatus`, `deletedAt`, `orderingCode`, **(unique: manufacturerId + mpn)** |
 | `CategoryTaxonomy` | `parentId`, `level`, `slug` (unique) |
 | `ManufacturerMaster` | `cageCode`, `slug` (unique) |
 | `ManufacturerAlias` | `aliasName`, **(unique: manufacturerId + aliasName)** |
@@ -936,7 +936,7 @@ lastEditedBy   User?    @relation(..., fields: [lastEditedById], references: [id
 | `AttributeDefinition` | `categoryId`, `scope`, **(unique: categoryId + name)** |
 | `ComponentAttributeValue` | `componentId`, `definitionId`, `normalizedValue`, **(unique: componentId + definitionId)** |
 | `PartAttributeValue` | `partId`, `definitionId`, `normalizedValue`, `stringValue`, **(unique: partId + definitionId)** |
-| `PinMapping` | `partId`, **(unique: partId + pinNumber)** |
+| `PinMapping` | `componentId`, **(unique: componentId + pinNumber)** |
 | `FileAttachment` | `componentId`, `partId`, `packageId`, `fileType`, `uploadedById`, `deletedAt`, `bucketPath` (unique) |
 | `PartRelationship` | `sourceId`, `targetId`, **(unique: sourceId + targetId + relationshipType)** |
 | `ComponentConceptRelation` | `sourceId`, `targetId`, **(unique: sourceId + targetId + relationType)** |

@@ -181,9 +181,6 @@ const stat = await getFileMetadata('manufacturers/logos/12345.png');
 ### Konstanten
 
 ```typescript
-// Basis-URL für API-Endpoints
-export const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001/api/v1';
-
 // MIME-Type Mapping
 export const IMAGE_CONTENT_TYPES: Record<string, string> = {
   jpg: 'image/jpeg',
@@ -196,6 +193,19 @@ export const IMAGE_CONTENT_TYPES: Record<string, string> = {
 
 ### Funktionen
 
+#### `getApiBaseUrl()`
+
+Gibt die API-Basis-URL aus der Umgebungsvariable `API_BASE_URL` zurück.
+
+```typescript
+const baseUrl = getApiBaseUrl();
+// z.B. 'http://192.168.178.80:3001/api/v1'
+```
+
+**Wichtig:** Die Variable `API_BASE_URL` muss in `apps/api/.env` gesetzt sein. Bei fehlender Konfiguration wird ein Fehler geworfen.
+
+**Wirft:** `Error` wenn `API_BASE_URL` nicht gesetzt ist
+
 #### `getImageContentType(filename, fallback?)`
 
 Ermittelt den Content-Type anhand der Dateiendung.
@@ -203,8 +213,8 @@ Ermittelt den Content-Type anhand der Dateiendung.
 ```typescript
 getImageContentType('logo.png');          // 'image/png'
 getImageContentType('photo.jpg');         // 'image/jpeg'
-getImageContentType('unknown.xyz');       // 'image/png' (fallback)
-getImageContentType('file', 'image/svg'); // 'image/svg' (custom fallback)
+getImageContentType('unknown.xyz');       // 'image/png' (default)
+getImageContentType('file', 'image/svg'); // 'image/svg' (custom)
 ```
 
 **Parameter:**
@@ -218,9 +228,9 @@ Transformiert eine MinIO-URL in eine API-Proxy-URL für Hersteller-Logos.
 ```typescript
 const proxyUrl = getManufacturerLogoProxyUrl(
   '12345-...',
-  'https://192.168.30.173:9000/electrovault-files/manufacturers/logos/12345.png?X-Amz-...'
+  'https://minio:9000/electrovault-files/manufacturers/logos/12345.png?X-Amz-...'
 );
-// 'http://localhost:3001/api/v1/manufacturers/12345-.../logo'
+// '{API_BASE_URL}/manufacturers/12345-.../logo'
 ```
 
 **Verwendung:** API-Route `/manufacturers/:id/logo` holt die Datei von MinIO und liefert sie aus.
@@ -238,11 +248,11 @@ Transformiert ein einzelnes Hersteller-Objekt mit Proxy-URL.
 const manufacturer = {
   id: '12345',
   name: 'Texas Instruments',
-  logoUrl: 'https://192.168.30.173:9000/...',
+  logoUrl: 'https://minio:9000/...',
 };
 
 const transformed = transformManufacturerLogoUrl(manufacturer);
-// { ...manufacturer, logoUrl: 'http://localhost:3001/api/v1/manufacturers/12345/logo' }
+// { ...manufacturer, logoUrl: '{API_BASE_URL}/manufacturers/12345/logo' }
 ```
 
 #### `transformManufacturerLogoUrls(manufacturers)`

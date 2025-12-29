@@ -1,8 +1,8 @@
 /**
  * Pin Mapping Schemas - Input-Schemas für Pin-Operationen
  *
- * Hinweis: Das Response-Schema PinMappingSchema ist in part.ts definiert,
- * da Pins immer im Kontext eines ManufacturerPart zurückgegeben werden.
+ * Hinweis: Das Response-Schema PinMappingSchema ist in component.ts definiert,
+ * da Pins immer im Kontext eines CoreComponent zurückgegeben werden.
  */
 import { z } from 'zod';
 import {

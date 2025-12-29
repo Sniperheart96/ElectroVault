@@ -17,8 +17,10 @@ import {
   ConceptRelationTypeSchema,
   AttributeScopeSchema,
   AttributeDataTypeSchema,
+  PinTypeSchema,
 } from './common';
 import { CategoryBaseSchema } from './category';
+import { PackageBaseSchema } from './package';
 
 // ============================================
 // ATTRIBUTE VALUE SCHEMAS
@@ -210,6 +212,39 @@ export const ComponentRelationsResponseSchema = z.object({
 export type ComponentRelationsResponse = z.infer<typeof ComponentRelationsResponseSchema>;
 
 // ============================================
+// PIN MAPPING SCHEMAS
+// ============================================
+
+/**
+ * Pin-Mapping (Response)
+ */
+export const PinMappingSchema = z.object({
+  id: UUIDSchema,
+  pinNumber: z.string(),
+  pinName: z.string(),
+  pinFunction: LocalizedStringNullableSchema,
+  pinType: PinTypeSchema.nullable(),
+  maxVoltage: z.number().nullable(),
+  maxCurrent: z.number().nullable(),
+});
+
+export type PinMapping = z.infer<typeof PinMappingSchema>;
+
+/**
+ * Input für Pin-Mapping
+ */
+export const CreatePinMappingSchema = z.object({
+  pinNumber: z.string().min(1).max(20),
+  pinName: z.string().min(1).max(100),
+  pinFunction: LocalizedStringNullableOptionalSchema,
+  pinType: z.enum(['POWER', 'GROUND', 'INPUT', 'OUTPUT', 'BIDIRECTIONAL', 'NC', 'ANALOG', 'DIGITAL', 'CLOCK', 'OTHER']).optional(),
+  maxVoltage: z.number().optional(),
+  maxCurrent: z.number().optional(),
+});
+
+export type CreatePinMappingInput = z.infer<typeof CreatePinMappingSchema>;
+
+// ============================================
 // COMPONENT RESPONSE SCHEMAS
 // ============================================
 
@@ -222,6 +257,7 @@ export const ComponentBaseSchema = z.object({
   slug: z.string(),
   series: z.string().nullable(),
   categoryId: UUIDSchema,
+  packageId: UUIDSchema.nullable(),
   shortDescription: LocalizedStringNullableSchema,
   fullDescription: LocalizedStringNullableSchema,
   commonAttributes: z.record(z.unknown()),
@@ -235,10 +271,11 @@ export const ComponentBaseSchema = z.object({
 export type ComponentBase = z.infer<typeof ComponentBaseSchema>;
 
 /**
- * Component mit Kategorie
+ * Component mit Kategorie und Package
  */
 export const ComponentWithCategorySchema = ComponentBaseSchema.extend({
   category: CategoryBaseSchema,
+  package: PackageBaseSchema.nullable(),
 });
 
 export type ComponentWithCategory = z.infer<typeof ComponentWithCategorySchema>;
@@ -248,6 +285,7 @@ export type ComponentWithCategory = z.infer<typeof ComponentWithCategorySchema>;
  */
 export const ComponentFullSchema = ComponentWithCategorySchema.extend({
   attributeValues: z.array(ComponentAttributeValueSchema),
+  pinMappings: z.array(PinMappingSchema),
   conceptRelations: z.array(
     ConceptRelationSchema.extend({
       target: ComponentBaseSchema,
@@ -302,11 +340,13 @@ export const CreateComponentSchema = z.object({
   slug: SlugSchema.optional(), // Auto-generiert wenn nicht angegeben
   series: z.string().max(255).optional(),
   categoryId: UUIDSchema,
+  packageId: UUIDSchema.optional(),
   shortDescription: LocalizedStringLooseOptionalSchema,
   fullDescription: LocalizedStringLooseOptionalSchema,
   commonAttributes: z.record(z.unknown()).optional(),
   status: ComponentStatusSchema.default('DRAFT'),
   attributeValues: z.array(CreateAttributeValueSchema).optional(),
+  pinMappings: z.array(CreatePinMappingSchema).optional(),
 });
 
 export type CreateComponentInput = z.infer<typeof CreateComponentSchema>;

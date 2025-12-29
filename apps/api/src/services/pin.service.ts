@@ -18,20 +18,20 @@ import { NotFoundError, ConflictError, BadRequestError } from '../lib/errors';
  */
 export class PinService {
   /**
-   * Gibt alle Pins eines ManufacturerPart zurück
+   * Gibt alle Pins eines CoreComponent zurück
    */
-  async getPinsByPartId(partId: string): Promise<PinMapping[]> {
-    // Prüfen ob Part existiert
-    const part = await prisma.manufacturerPart.findUnique({
-      where: { id: partId, deletedAt: null },
+  async getPinsByComponentId(componentId: string): Promise<PinMapping[]> {
+    // Prüfen ob Component existiert
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
     });
 
-    if (!part) {
-      throw new NotFoundError('ManufacturerPart', partId);
+    if (!component) {
+      throw new NotFoundError('CoreComponent', componentId);
     }
 
     const pins = await prisma.pinMapping.findMany({
-      where: { partId },
+      where: { componentId },
       orderBy: [
         // Numerische Sortierung falls pinNumber eine Zahl ist
         { pinNumber: 'asc' },
@@ -50,24 +50,24 @@ export class PinService {
    * Erstellt einen neuen Pin
    */
   async createPin(
-    partId: string,
+    componentId: string,
     data: CreatePinInput,
     userId?: string
   ): Promise<PinMapping> {
-    // Prüfen ob Part existiert
-    const part = await prisma.manufacturerPart.findUnique({
-      where: { id: partId, deletedAt: null },
+    // Prüfen ob Component existiert
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
     });
 
-    if (!part) {
-      throw new NotFoundError('ManufacturerPart', partId);
+    if (!component) {
+      throw new NotFoundError('CoreComponent', componentId);
     }
 
     // Prüfen ob pinNumber bereits existiert
     const existing = await prisma.pinMapping.findUnique({
       where: {
-        partId_pinNumber: {
-          partId,
+        componentId_pinNumber: {
+          componentId,
           pinNumber: data.pinNumber,
         },
       },
@@ -75,13 +75,13 @@ export class PinService {
 
     if (existing) {
       throw new ConflictError(
-        `Pin with number '${data.pinNumber}' already exists for this part`
+        `Pin with number '${data.pinNumber}' already exists for this component`
       );
     }
 
     const pin = await prisma.pinMapping.create({
       data: {
-        partId,
+        componentId,
         pinNumber: data.pinNumber,
         pinName: data.pinName,
         pinFunction: data.pinFunction ? (data.pinFunction as object) : undefined,
@@ -119,8 +119,8 @@ export class PinService {
     if (data.pinNumber && data.pinNumber !== existing.pinNumber) {
       const conflict = await prisma.pinMapping.findUnique({
         where: {
-          partId_pinNumber: {
-            partId: existing.partId,
+          componentId_pinNumber: {
+            componentId: existing.componentId,
             pinNumber: data.pinNumber,
           },
         },
@@ -128,7 +128,7 @@ export class PinService {
 
       if (conflict) {
         throw new ConflictError(
-          `Pin with number '${data.pinNumber}' already exists for this part`
+          `Pin with number '${data.pinNumber}' already exists for this component`
         );
       }
     }
@@ -174,17 +174,17 @@ export class PinService {
    * Erstellt mehrere Pins auf einmal
    */
   async bulkCreatePins(
-    partId: string,
+    componentId: string,
     data: BulkCreatePinsInput,
     userId?: string
   ): Promise<PinMapping[]> {
-    // Prüfen ob Part existiert
-    const part = await prisma.manufacturerPart.findUnique({
-      where: { id: partId, deletedAt: null },
+    // Prüfen ob Component existiert
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
     });
 
-    if (!part) {
-      throw new NotFoundError('ManufacturerPart', partId);
+    if (!component) {
+      throw new NotFoundError('CoreComponent', componentId);
     }
 
     // Prüfen auf doppelte pinNumbers im Input
@@ -200,7 +200,7 @@ export class PinService {
     // Prüfen ob pinNumbers bereits existieren
     const existingPins = await prisma.pinMapping.findMany({
       where: {
-        partId,
+        componentId,
         pinNumber: { in: pinNumbers },
       },
     });
@@ -217,7 +217,7 @@ export class PinService {
       data.pins.map((pin) =>
         prisma.pinMapping.create({
           data: {
-            partId,
+            componentId,
             pinNumber: pin.pinNumber,
             pinName: pin.pinName,
             pinFunction: pin.pinFunction ? (pin.pinFunction as object) : undefined,
@@ -241,30 +241,30 @@ export class PinService {
    * Ändert die Reihenfolge/Nummern von Pins
    */
   async reorderPins(
-    partId: string,
+    componentId: string,
     pinOrder: ReorderPinInput[],
     userId?: string
   ): Promise<void> {
-    // Prüfen ob Part existiert
-    const part = await prisma.manufacturerPart.findUnique({
-      where: { id: partId, deletedAt: null },
+    // Prüfen ob Component existiert
+    const component = await prisma.coreComponent.findUnique({
+      where: { id: componentId, deletedAt: null },
     });
 
-    if (!part) {
-      throw new NotFoundError('ManufacturerPart', partId);
+    if (!component) {
+      throw new NotFoundError('CoreComponent', componentId);
     }
 
-    // Prüfen ob alle Pins zum Part gehören
+    // Prüfen ob alle Pins zum Component gehören
     const pinIds = pinOrder.map((p) => p.id);
     const pins = await prisma.pinMapping.findMany({
       where: {
         id: { in: pinIds },
-        partId,
+        componentId,
       },
     });
 
     if (pins.length !== pinIds.length) {
-      throw new BadRequestError('Some pins do not belong to this part or do not exist');
+      throw new BadRequestError('Some pins do not belong to this component or do not exist');
     }
 
     // Prüfen auf doppelte pinNumbers im neuen Layout
@@ -289,11 +289,11 @@ export class PinService {
   }
 
   /**
-   * Löscht alle Pins eines Parts
+   * Löscht alle Pins eines Components
    */
-  async deleteAllPins(partId: string, userId?: string): Promise<number> {
+  async deleteAllPins(componentId: string, userId?: string): Promise<number> {
     const result = await prisma.pinMapping.deleteMany({
-      where: { partId },
+      where: { componentId },
     });
 
     return result.count;

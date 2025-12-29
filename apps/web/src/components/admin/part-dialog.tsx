@@ -37,9 +37,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { type Part, type Component, type Manufacturer, type Package, type SIPrefix } from '@/lib/api';
+import { type Part, type Component, type Manufacturer, type SIPrefix } from '@/lib/api';
 import { AttributeFields } from '@/components/admin/attribute-fields';
-import { PinMappingEditor } from '@/components/admin/pin-mapping-editor';
 import { PartFilesManager } from '@/components/admin/part-files-manager';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
@@ -77,7 +76,6 @@ export function PartDialog({
 
   const [components, setComponents] = useState<Component[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('details');
 
@@ -94,7 +92,6 @@ export function PartDialog({
       manufacturerId: '',
       mpn: '',
       orderingCode: '',
-      packageId: '',
       weightGrams: undefined,
       dateCodeFormat: '',
       introductionYear: undefined,
@@ -113,14 +110,12 @@ export function PartDialog({
     const loadData = async () => {
       try {
         setLoading(true);
-        const [componentsResult, manufacturersResult, packagesResult] = await Promise.all([
+        const [componentsResult, manufacturersResult] = await Promise.all([
           api.getComponents({ limit: 100 }),
           api.getManufacturers({ limit: 100 }),
-          api.getPackages({ limit: 100 }),
         ]);
         setComponents(componentsResult.data);
         setManufacturers(manufacturersResult.data);
-        setPackages(packagesResult.data);
       } catch (error) {
         console.error('Failed to load dropdown data:', error);
         toast({
@@ -151,7 +146,6 @@ export function PartDialog({
         manufacturerId: part.manufacturerId,
         mpn: part.mpn,
         orderingCode: part.orderingCode || '',
-        packageId: part.packageId || '',
         weightGrams: part.weightGrams || undefined,
         dateCodeFormat: part.dateCodeFormat || '',
         introductionYear: part.introductionYear || undefined,
@@ -169,7 +163,6 @@ export function PartDialog({
         manufacturerId: '',
         mpn: '',
         orderingCode: '',
-        packageId: '',
         weightGrams: undefined,
         dateCodeFormat: '',
         introductionYear: undefined,
@@ -190,7 +183,6 @@ export function PartDialog({
       const cleanData = {
         ...data,
         orderingCode: data.orderingCode || undefined,
-        packageId: data.packageId || undefined,
         dateCodeFormat: data.dateCodeFormat || undefined,
         nsn: data.nsn || undefined,
         milSpec: data.milSpec || undefined,
@@ -234,14 +226,11 @@ export function PartDialog({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="details">Stammdaten</TabsTrigger>
             <TabsTrigger value="attributes">Attribute</TabsTrigger>
             <TabsTrigger value="files" disabled={!isEdit}>
               Dateien
-            </TabsTrigger>
-            <TabsTrigger value="pins" disabled={!isEdit}>
-              Pin-Mapping
             </TabsTrigger>
           </TabsList>
 
@@ -355,40 +344,6 @@ export function PartDialog({
                       </FormControl>
                       <FormDescription>
                         Alternative Bestellnummer (falls abweichend von MPN)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Package */}
-                <FormField
-                  control={form.control}
-                  name="packageId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bauform (Package)</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(value === '__none__' ? '' : value)}
-                        value={field.value || '__none__'}
-                        defaultValue="__none__"
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={loading ? 'Lädt...' : 'Bauform auswählen'} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="__none__">Keine Bauform</SelectItem>
-                          {packages.map((pkg) => (
-                            <SelectItem key={pkg.id} value={pkg.id}>
-                              {pkg.name} ({pkg.mountingType})
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Die physische Bauform (z.B. DIP-8, SOIC-8)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -699,27 +654,6 @@ export function PartDialog({
                   Datenblätter, Bilder und andere Dateien für diese Hersteller-Variante verwalten.
                 </p>
                 <PartFilesManager partId={part.id} />
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => onOpenChange(false)}>
-                    Schließen
-                  </Button>
-                </DialogFooter>
-              </div>
-            ) : null}
-          </TabsContent>
-
-          {/* Pin-Mapping Tab */}
-          <TabsContent value="pins" className="mt-4">
-            {!isEdit ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <p>Speichern Sie zuerst die Variante, um das Pin-Mapping zu bearbeiten.</p>
-              </div>
-            ) : part ? (
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Definieren Sie die Pin-Belegung für diese Hersteller-Variante.
-                </p>
-                <PinMappingEditor partId={part.id} />
                 <DialogFooter>
                   <Button variant="outline" onClick={() => onOpenChange(false)}>
                     Schließen

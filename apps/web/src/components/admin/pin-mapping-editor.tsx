@@ -48,7 +48,7 @@ import { Trash2, Plus, ArrowUp, ArrowDown, Upload } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface PinMappingEditorProps {
-  partId: string;
+  componentId: string;
 }
 
 const PIN_TYPE_LABELS: Record<string, string> = {
@@ -77,7 +77,7 @@ const PIN_TYPE_COLORS: Record<string, string> = {
   OTHER: 'bg-gray-600 text-white',
 };
 
-export function PinMappingEditor({ partId }: PinMappingEditorProps) {
+export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
   const api = useApi();
   const { toast } = useToast();
 
@@ -103,7 +103,7 @@ export function PinMappingEditor({ partId }: PinMappingEditorProps) {
     const loadPins = async () => {
       try {
         setLoading(true);
-        const response = await api.getPinsByPartId(partId);
+        const response = await api.getPinsByComponentId(componentId);
         setPins(response.data);
       } catch (error) {
         console.error('Failed to load pins:', error);
@@ -118,11 +118,11 @@ export function PinMappingEditor({ partId }: PinMappingEditorProps) {
     };
 
     loadPins();
-  }, [partId, api, toast, refreshKey]);
+  }, [componentId, api, toast, refreshKey]);
 
   const handleAddPin = async (data: CreatePinInput) => {
     try {
-      await api.createPin(partId, data);
+      await api.createPin(componentId, data);
       toast({
         title: 'Erfolg',
         description: 'Pin wurde hinzugefügt.',
@@ -205,7 +205,7 @@ export function PinMappingEditor({ partId }: PinMappingEditorProps) {
         };
       });
 
-      await api.bulkCreatePins(partId, pinsToCreate);
+      await api.bulkCreatePins(componentId, pinsToCreate);
       toast({
         title: 'Erfolg',
         description: `${pinsToCreate.length} Pins wurden importiert.`,
@@ -238,7 +238,7 @@ export function PinMappingEditor({ partId }: PinMappingEditorProps) {
     }));
 
     try {
-      await api.reorderPins(partId, reorderedPins);
+      await api.reorderPins(componentId, reorderedPins);
       toast({
         title: 'Erfolg',
         description: 'Pin-Reihenfolge wurde aktualisiert.',

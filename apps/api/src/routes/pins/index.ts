@@ -19,52 +19,52 @@ export default async function pinRoutes(
   _opts: FastifyPluginOptions
 ) {
   /**
-   * GET /parts/:partId/pins
-   * Alle Pins eines ManufacturerPart
+   * GET /components/:componentId/pins
+   * Alle Pins eines CoreComponent
    */
-  app.get<{ Params: { partId: string } }>(
-    '/parts/:partId/pins',
+  app.get<{ Params: { componentId: string } }>(
+    '/components/:componentId/pins',
     async (request, reply) => {
-      const { partId } = request.params;
-      const pins = await pinService.getPinsByPartId(partId);
+      const { componentId } = request.params;
+      const pins = await pinService.getPinsByComponentId(componentId);
       return reply.send({ data: pins });
     }
   );
 
   /**
-   * POST /parts/:partId/pins
+   * POST /components/:componentId/pins
    * Neuen Pin erstellen (Auth required)
    */
-  app.post<{ Params: { partId: string } }>(
-    '/parts/:partId/pins',
+  app.post<{ Params: { componentId: string } }>(
+    '/components/:componentId/pins',
     {
       onRequest: app.requireRole('CONTRIBUTOR'),
     },
     async (request, reply) => {
-      const { partId } = request.params;
+      const { componentId } = request.params;
       const data = CreatePinSchema.parse(request.body);
       const userId = request.user?.dbId;
 
-      const pin = await pinService.createPin(partId, data, userId);
+      const pin = await pinService.createPin(componentId, data, userId);
       return reply.code(201).send({ data: pin });
     }
   );
 
   /**
-   * POST /parts/:partId/pins/bulk
+   * POST /components/:componentId/pins/bulk
    * Mehrere Pins auf einmal erstellen (Auth required)
    */
-  app.post<{ Params: { partId: string } }>(
-    '/parts/:partId/pins/bulk',
+  app.post<{ Params: { componentId: string } }>(
+    '/components/:componentId/pins/bulk',
     {
       onRequest: app.requireRole('CONTRIBUTOR'),
     },
     async (request, reply) => {
-      const { partId } = request.params;
+      const { componentId } = request.params;
       const data = BulkCreatePinsSchema.parse(request.body);
       const userId = request.user?.dbId;
 
-      const pins = await pinService.bulkCreatePins(partId, data, userId);
+      const pins = await pinService.bulkCreatePins(componentId, data, userId);
       return reply.code(201).send({ data: pins });
     }
   );
@@ -107,38 +107,38 @@ export default async function pinRoutes(
   );
 
   /**
-   * POST /parts/:partId/pins/reorder
+   * POST /components/:componentId/pins/reorder
    * Pin-Reihenfolge ändern (Auth required)
    */
-  app.post<{ Params: { partId: string } }>(
-    '/parts/:partId/pins/reorder',
+  app.post<{ Params: { componentId: string } }>(
+    '/components/:componentId/pins/reorder',
     {
       onRequest: app.requireRole('CONTRIBUTOR'),
     },
     async (request, reply) => {
-      const { partId } = request.params;
+      const { componentId } = request.params;
       const data = BulkReorderPinsSchema.parse(request.body);
       const userId = request.user?.dbId;
 
-      await pinService.reorderPins(partId, data.pins, userId);
+      await pinService.reorderPins(componentId, data.pins, userId);
       return reply.send({ success: true });
     }
   );
 
   /**
-   * DELETE /parts/:partId/pins
-   * Alle Pins eines Parts löschen (Moderator required)
+   * DELETE /components/:componentId/pins
+   * Alle Pins eines Components löschen (Moderator required)
    */
-  app.delete<{ Params: { partId: string } }>(
-    '/parts/:partId/pins',
+  app.delete<{ Params: { componentId: string } }>(
+    '/components/:componentId/pins',
     {
       onRequest: app.requireRole('MODERATOR'),
     },
     async (request, reply) => {
-      const { partId } = request.params;
+      const { componentId } = request.params;
       const userId = request.user?.dbId;
 
-      const count = await pinService.deleteAllPins(partId, userId);
+      const count = await pinService.deleteAllPins(componentId, userId);
       return reply.send({ deletedCount: count });
     }
   );

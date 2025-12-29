@@ -395,19 +395,19 @@ export class ApiClient {
   // Pin Mappings
   // ============================================
 
-  async getPinsByPartId(partId: string): Promise<ApiResponse<Pin[]>> {
-    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins`);
+  async getPinsByComponentId(componentId: string): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/components/${componentId}/pins`);
   }
 
-  async createPin(partId: string, data: unknown): Promise<ApiResponse<Pin>> {
-    return this.request<ApiResponse<Pin>>(`/parts/${partId}/pins`, {
+  async createPin(componentId: string, data: unknown): Promise<ApiResponse<Pin>> {
+    return this.request<ApiResponse<Pin>>(`/components/${componentId}/pins`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  async bulkCreatePins(partId: string, pins: unknown[]): Promise<ApiResponse<Pin[]>> {
-    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins/bulk`, {
+  async bulkCreatePins(componentId: string, pins: unknown[]): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/components/${componentId}/pins/bulk`, {
       method: 'POST',
       body: JSON.stringify({ pins }),
     });
@@ -426,15 +426,15 @@ export class ApiClient {
     });
   }
 
-  async reorderPins(partId: string, pins: { id: string; pinNumber: string }[]): Promise<ApiResponse<Pin[]>> {
-    return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins/reorder`, {
+  async reorderPins(componentId: string, pins: { id: string; pinNumber: string }[]): Promise<ApiResponse<Pin[]>> {
+    return this.request<ApiResponse<Pin[]>>(`/components/${componentId}/pins/reorder`, {
       method: 'POST',
       body: JSON.stringify({ pins }),
     });
   }
 
-  async deleteAllPins(partId: string): Promise<void> {
-    await this.request<void>(`/parts/${partId}/pins`, {
+  async deleteAllPins(componentId: string): Promise<void> {
+    await this.request<void>(`/components/${componentId}/pins`, {
       method: 'DELETE',
     });
   }
@@ -903,6 +903,7 @@ export interface Component {
   slug: string;
   series: string | null;
   categoryId: string;
+  packageId: string | null;
   shortDescription: LocalizedString | null;
   fullDescription: LocalizedString | null;
   status: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
@@ -911,6 +912,8 @@ export interface Component {
   updatedAt: string;
   deletedAt: string | null;
   category?: Category;
+  package?: Package;
+  pinMappings?: Pin[];
   attributeValues?: ComponentAttributeValue[];
   manufacturerPartsCount?: number;
 }
@@ -940,7 +943,6 @@ export interface Part {
   manufacturerId: string;
   mpn: string;
   orderingCode: string | null;
-  packageId: string | null;
   weightGrams: number | null;
   dateCodeFormat: string | null;
   introductionYear: number | null;
@@ -956,7 +958,6 @@ export interface Part {
   deletedAt?: string | null;
   coreComponent?: Component;
   manufacturer?: Manufacturer;
-  package?: Package;
   attributeValues?: PartAttributeValue[];
 }
 
@@ -1040,7 +1041,7 @@ export interface FileAttachment {
 
 export interface Pin {
   id: string;
-  partId: string;
+  componentId: string;
   pinNumber: string;
   pinName: string;
   pinFunction: LocalizedString | null;

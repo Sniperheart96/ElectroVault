@@ -38,7 +38,7 @@ Authorization: Bearer <JWT_TOKEN>
 | Hersteller | `/manufacturers` | Hersteller-Verwaltung |
 | Parts | `/parts` | ManufacturerParts (konkrete Produkte) |
 | Packages | `/packages` | Gehäuseformen und Bauformen |
-| Pins | `/parts/:partId/pins` | Pin-Mappings für Parts |
+| Pins | `/components/:componentId/pins` | Pin-Mappings für Components |
 | Attribute | `/attributes` | Attribut-Definitionen |
 | Dateien | `/files` | Datei-Uploads (Datasheets, Bilder, 3D-Modelle) |
 | Moderation | `/moderation` | Moderations-Queue und Freigaben |
@@ -747,7 +747,6 @@ Liste aller ManufacturerParts mit Paginierung und Filterung.
       "componentId": "uuid",
       "manufacturerId": "uuid",
       "status": "ACTIVE",
-      "packageId": "uuid",
       "imageUrl": "http://...",
       "manufacturer": {
         "id": "uuid",
@@ -805,7 +804,6 @@ Einzelnes ManufacturerPart nach ID.
     "mpn": "NE555P",
     "componentId": "uuid",
     "manufacturerId": "uuid",
-    "packageId": "uuid",
     "status": "ACTIVE",
     "imageUrl": "http://...",
     "manufacturer": {
@@ -817,11 +815,6 @@ Einzelnes ManufacturerPart nach ID.
       "id": "uuid",
       "name": { "de": "555 Timer", "en": "555 Timer" },
       "slug": "555-timer"
-    },
-    "package": {
-      "id": "uuid",
-      "name": "DIP-8",
-      "slug": "dip-8"
     }
   }
 }
@@ -887,7 +880,6 @@ Neues ManufacturerPart erstellen.
   "mpn": "NE555P",
   "componentId": "uuid",
   "manufacturerId": "uuid",
-  "packageId": "uuid",
   "status": "ACTIVE"
 }
 ```
@@ -1226,11 +1218,11 @@ ECAD-Footprint entfernen.
 
 ---
 
-## Pins (`/parts/:partId/pins`)
+## Pins (`/components/:componentId/pins`)
 
-### GET `/parts/:partId/pins`
+### GET `/components/:componentId/pins`
 
-Alle Pins eines ManufacturerPart.
+Alle Pins eines CoreComponent.
 
 **Response:**
 
@@ -1239,17 +1231,17 @@ Alle Pins eines ManufacturerPart.
   "data": [
     {
       "id": "uuid",
-      "partId": "uuid",
+      "componentId": "uuid",
       "pinNumber": "1",
-      "pinName": { "de": "Ground", "en": "Ground" },
-      "pinType": "POWER",
-      "description": { "de": "Masse", "en": "Ground" }
+      "pinName": "GND",
+      "pinType": "GROUND",
+      "pinFunction": { "de": "Masse", "en": "Ground" }
     }
   ]
 }
 ```
 
-### POST `/parts/:partId/pins`
+### POST `/components/:componentId/pins`
 
 Neuen Pin erstellen.
 
@@ -1260,9 +1252,9 @@ Neuen Pin erstellen.
 ```json
 {
   "pinNumber": "1",
-  "pinName": { "de": "Ground", "en": "Ground" },
-  "pinType": "POWER",
-  "description": { "de": "Masse", "en": "Ground" }
+  "pinName": "GND",
+  "pinType": "GROUND",
+  "pinFunction": { "de": "Masse", "en": "Ground" }
 }
 ```
 
@@ -1273,12 +1265,12 @@ Neuen Pin erstellen.
   "data": {
     "id": "uuid",
     "pinNumber": "1",
-    "pinName": { "de": "Ground", "en": "Ground" }
+    "pinName": "GND"
   }
 }
 ```
 
-### POST `/parts/:partId/pins/bulk`
+### POST `/components/:componentId/pins/bulk`
 
 Mehrere Pins auf einmal erstellen.
 
@@ -1291,12 +1283,12 @@ Mehrere Pins auf einmal erstellen.
   "pins": [
     {
       "pinNumber": "1",
-      "pinName": { "de": "Ground", "en": "Ground" },
-      "pinType": "POWER"
+      "pinName": "GND",
+      "pinType": "GROUND"
     },
     {
       "pinNumber": "2",
-      "pinName": { "de": "Trigger", "en": "Trigger" },
+      "pinName": "TRIGGER",
       "pinType": "INPUT"
     }
   ]
@@ -1330,8 +1322,8 @@ Pin aktualisieren.
 
 ```json
 {
-  "pinName": { "de": "Aktualisiert", "en": "Updated" },
-  "description": { "de": "Neue Beschreibung", "en": "New Description" }
+  "pinName": "Updated",
+  "pinFunction": { "de": "Neue Beschreibung", "en": "New Description" }
 }
 ```
 
@@ -1342,7 +1334,7 @@ Pin aktualisieren.
   "data": {
     "id": "uuid",
     "pinNumber": "1",
-    "pinName": { "de": "Aktualisiert", "en": "Updated" }
+    "pinName": "Updated"
   }
 }
 ```
@@ -1355,7 +1347,7 @@ Pin löschen.
 
 **Response:** HTTP 204 (No Content)
 
-### POST `/parts/:partId/pins/reorder`
+### POST `/components/:componentId/pins/reorder`
 
 Pin-Reihenfolge ändern.
 
@@ -1366,8 +1358,8 @@ Pin-Reihenfolge ändern.
 ```json
 {
   "pins": [
-    { "id": "uuid1", "order": 1 },
-    { "id": "uuid2", "order": 2 }
+    { "id": "uuid1", "pinNumber": "1" },
+    { "id": "uuid2", "pinNumber": "2" }
   ]
 }
 ```
@@ -1380,9 +1372,9 @@ Pin-Reihenfolge ändern.
 }
 ```
 
-### DELETE `/parts/:partId/pins`
+### DELETE `/components/:componentId/pins`
 
-Alle Pins eines Parts löschen.
+Alle Pins eines Components löschen.
 
 **Auth:** MODERATOR
 

@@ -323,7 +323,7 @@ model PackageMaster {
 
   drawingUrl      String?  @db.VarChar(512)
 
-  parts           ManufacturerPart[]
+  components      CoreComponent[]
   ecadFootprints  EcadFootprint[]
   files           FileAttachment[]
 
@@ -363,12 +363,17 @@ model CoreComponent {
   // Status
   status          ComponentStatus @default(DRAFT)
 
+  // Package (Bauform)
+  packageId       String?  @db.Uuid
+  package         PackageMaster? @relation(fields: [packageId], references: [id], onDelete: SetNull)
+
   // Relationen
   manufacturerParts ManufacturerPart[]
   attributeValues   ComponentAttributeValue[]
   conceptRelations      ComponentConceptRelation[] @relation("SourceConcept")
   relatedFromConcepts   ComponentConceptRelation[] @relation("TargetConcept")
   fileAttachments   FileAttachment[]
+  pinMappings       PinMapping[]
 
   // Audit
   createdAt       DateTime @default(now())
@@ -386,6 +391,7 @@ model CoreComponent {
   @@index([categoryId])
   @@index([status])
   @@index([deletedAt])
+  @@index([packageId])
 }
 
 // Konzept-Beziehungen zwischen CoreComponents
@@ -427,10 +433,6 @@ model ManufacturerPart {
   mpn             String   @db.VarChar(255)   // Manufacturer Part Number
   orderingCode    String?  @db.VarChar(255)
 
-  // Package
-  packageId       String?  @db.Uuid
-  package         PackageMaster? @relation(fields: [packageId], references: [id], onDelete: SetNull)
-
   // Physische Eigenschaften
   weightGrams     Decimal? @db.Decimal(10, 4)
 
@@ -456,7 +458,6 @@ model ManufacturerPart {
 
   // Relationen
   hazardousMaterials HazardousMaterial[]
-  pinMappings     PinMapping[]
   datasheets      PartDatasheet[]
   images          PartImage[]
   ecadModels      PartEcadModel[]
@@ -482,7 +483,6 @@ model ManufacturerPart {
   @@index([mpn])
   @@index([coreComponentId])
   @@index([manufacturerId])
-  @@index([packageId])
   @@index([nsn])
   @@index([status])
   @@index([lifecycleStatus])
@@ -624,8 +624,8 @@ model PartRelationship {
 
 model PinMapping {
   id           String   @id @default(uuid()) @db.Uuid
-  partId       String   @db.Uuid
-  part         ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  componentId  String   @db.Uuid
+  component    CoreComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
   pinNumber    String   @db.VarChar(20)
   pinName      String   @db.VarChar(100)
@@ -635,8 +635,8 @@ model PinMapping {
   maxVoltage   Decimal? @db.Decimal(10, 4)
   maxCurrent   Decimal? @db.Decimal(10, 4)
 
-  @@unique([partId, pinNumber])
-  @@index([partId])
+  @@unique([componentId, pinNumber])
+  @@index([componentId])
 }
 
 // ============================================

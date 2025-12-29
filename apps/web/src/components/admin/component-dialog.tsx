@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateComponentSchema, type CreateComponentInput } from '@electrovault/schemas';
-import { Plus, Pencil, Trash2, AlertCircle, Package as PackageIcon } from 'lucide-react';
+import { Plus, Pencil, Trash2, AlertCircle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -55,6 +55,7 @@ import { PartDialog } from '@/components/admin/part-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { AttributeFields } from '@/components/admin/attribute-fields';
 import { RelationsEditor } from '@/components/admin/relations-editor';
+import { PinMappingEditor } from '@/components/admin/pin-mapping-editor';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 
@@ -114,6 +115,7 @@ export function ComponentDialog({
     defaultValues: {
       name: { de: '', en: '' },
       categoryId: '',
+      packageId: undefined,
       status: 'DRAFT',
       shortDescription: { de: '', en: '' },
       fullDescription: { de: '', en: '' },
@@ -152,18 +154,22 @@ export function ComponentDialog({
     }
   }, [open]);
 
-  // Load categories
+  // Load categories and packages
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadInitialData = async () => {
       try {
         setLoadingCategories(true);
-        const result = await api.getCategoryTree();
-        setCategoryTree(result.data);
+        const [categoriesResult, packagesResult] = await Promise.all([
+          api.getCategoryTree(),
+          api.getPackages({ limit: 100 }),
+        ]);
+        setCategoryTree(categoriesResult.data);
+        setPackages(packagesResult.data);
       } catch (error) {
-        console.error('Failed to load categories:', error);
+        console.error('Failed to load initial data:', error);
         toast({
           title: 'Fehler',
-          description: 'Kategorien konnten nicht geladen werden.',
+          description: 'Daten konnten nicht geladen werden.',
           variant: 'destructive',
         });
       } finally {
@@ -171,7 +177,7 @@ export function ComponentDialog({
       }
     };
     if (open) {
-      loadCategories();
+      loadInitialData();
     }
   }, [open, toast]);
 
@@ -216,6 +222,7 @@ export function ComponentDialog({
       form.reset({
         name: localComponent.name || { de: '', en: '' },
         categoryId: localComponent.categoryId,
+        packageId: localComponent.packageId || undefined,
         status: localComponent.status,
         shortDescription: localComponent.shortDescription || { de: '', en: '' },
         fullDescription: localComponent.fullDescription || { de: '', en: '' },
@@ -247,6 +254,7 @@ export function ComponentDialog({
       form.reset({
         name: { de: '', en: '' },
         categoryId: '',
+        packageId: undefined,
         status: 'DRAFT',
         shortDescription: { de: '', en: '' },
         fullDescription: { de: '', en: '' },
@@ -399,12 +407,6 @@ export function ComponentDialog({
     return manufacturer?.name || 'Unbekannt';
   };
 
-  const getPackageName = (packageId: string | null) => {
-    if (!packageId) return null;
-    const pkg = packages.find((p) => p.id === packageId);
-    return pkg?.name || null;
-  };
-
   const handleClose = () => {
     onOpenChange(false);
   };
@@ -430,9 +432,12 @@ export function ComponentDialog({
           </div>
         ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="details">Stammdaten</TabsTrigger>
             <TabsTrigger value="attributes">Attribute</TabsTrigger>
+            <TabsTrigger value="pins" disabled={!isEdit}>
+              Pin-Mapping
+            </TabsTrigger>
             <TabsTrigger value="parts" disabled={!isEdit}>
               Varianten {isEdit && `(${parts.length})`}
             </TabsTrigger>
@@ -526,6 +531,39 @@ export function ComponentDialog({
                       </FormControl>
                       <FormDescription>
                         Optionale Bauteil-Serie oder -Familie
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="packageId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bauform (Package)</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(value === '__none__' ? undefined : value)}
+                        value={field.value || '__none__'}
+                        defaultValue="__none__"
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Bauform auswählen" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="__none__">Keine Bauform</SelectItem>
+                          {packages.map((pkg) => (
+                            <SelectItem key={pkg.id} value={pkg.id}>
+                              {pkg.name} ({pkg.mountingType})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Die physische Bauform (z.B. DIP-8, SOIC-8)
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -628,6 +666,27 @@ export function ComponentDialog({
             </div>
           </TabsContent>
 
+          {/* Pin-Mapping Tab */}
+          <TabsContent value="pins" className="mt-4">
+            {!isEdit ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Speichern Sie zuerst das Bauteil, um das Pin-Mapping zu bearbeiten.</p>
+              </div>
+            ) : localComponent ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Definieren Sie die Pin-Belegung für dieses Bauteil. Das Pin-Mapping gilt für alle Hersteller-Varianten.
+                </p>
+                <PinMappingEditor componentId={localComponent.id} />
+                <DialogFooter>
+                  <Button variant="outline" onClick={handleClose}>
+                    Schließen
+                  </Button>
+                </DialogFooter>
+              </div>
+            ) : null}
+          </TabsContent>
+
           {/* Parts Tab */}
           <TabsContent value="parts" className="mt-4">
             {!isEdit ? (
@@ -669,7 +728,6 @@ export function ComponentDialog({
                         <TableRow>
                           <TableHead>MPN</TableHead>
                           <TableHead>Hersteller</TableHead>
-                          <TableHead>Bauform</TableHead>
                           <TableHead>Status</TableHead>
                           <TableHead>Lifecycle</TableHead>
                           <TableHead className="text-right">Aktionen</TableHead>
@@ -690,18 +748,6 @@ export function ComponentDialog({
                             </TableCell>
                             <TableCell>
                               {part.manufacturer?.name || getManufacturerName(part.manufacturerId)}
-                            </TableCell>
-                            <TableCell>
-                              {part.package?.name || getPackageName(part.packageId) ? (
-                                <div className="flex items-center gap-1">
-                                  <PackageIcon className="h-3 w-3" />
-                                  <span className="text-sm">
-                                    {part.package?.name || getPackageName(part.packageId)}
-                                  </span>
-                                </div>
-                              ) : (
-                                <span className="text-sm text-muted-foreground">-</span>
-                              )}
                             </TableCell>
                             <TableCell>{getStatusBadge(part.status)}</TableCell>
                             <TableCell>{getLifecycleBadge(part.lifecycleStatus)}</TableCell>

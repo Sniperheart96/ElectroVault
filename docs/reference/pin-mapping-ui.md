@@ -2,7 +2,7 @@
 
 ## Übersicht
 
-Das Pin-Mapping-Feature ermöglicht es, die Pin-Belegung von Bauteilen (ManufacturerParts) zu dokumentieren und zu verwalten.
+Das Pin-Mapping-Feature ermöglicht es, die Pin-Belegung von Bauteilen (CoreComponents) zu dokumentieren und zu verwalten. Da alle Herstellervarianten eines Bauteils das gleiche Pin-Mapping haben müssen, wird es auf Component-Ebene definiert.
 
 ## Komponenten
 
@@ -10,7 +10,7 @@ Das Pin-Mapping-Feature ermöglicht es, die Pin-Belegung von Bauteilen (Manufact
 
 **Datei:** `apps/web/src/components/admin/pin-mapping-editor.tsx`
 
-Eine vollständige UI zur Verwaltung von Pin-Definitionen für ein Part.
+Eine vollständige UI zur Verwaltung von Pin-Definitionen für ein Component.
 
 #### Features
 
@@ -25,7 +25,7 @@ Eine vollständige UI zur Verwaltung von Pin-Definitionen für ein Part.
 
 ```typescript
 interface PinMappingEditorProps {
-  partId: string;
+  componentId: string;
 }
 ```
 
@@ -34,7 +34,7 @@ interface PinMappingEditorProps {
 ```typescript
 interface Pin {
   id: string;
-  partId: string;
+  componentId: string;
   pinNumber: string;       // "1", "2", "VCC", "GND", etc.
   pinName: string;         // Name des Pins
   pinFunction: LocalizedString | null;
@@ -74,38 +74,22 @@ Beispiel:
 
 Der Pin-Typ ist optional. Wird er weggelassen, ist der Pin ohne Typ.
 
-### Integration in PartDialog
+### Integration in ComponentDialog
 
-**Datei:** `apps/web/src/components/admin/part-dialog.tsx`
+**Datei:** `apps/web/src/components/admin/component-dialog.tsx`
 
-Der PinMappingEditor ist als ausklappbare Sektion in den Part-Dialog integriert.
+Der PinMappingEditor ist als Tab im Component-Dialog integriert.
 
 #### Verhalten
 
-- Wird nur angezeigt, wenn das Part bereits gespeichert ist (isEdit mode)
-- Als Collapsible-Komponente, um Platz zu sparen
-- Badge zeigt an, dass Pin-Belegung verfügbar ist
-- Öffnet standardmäßig geschlossen
+- Wird nur angezeigt, wenn das Component bereits gespeichert ist (isEdit mode)
+- Als Tab innerhalb des Component-Dialogs
+- Ermöglicht die Verwaltung aller Pins eines Components
 
 ```tsx
-{isEdit && part && (
-  <div className="border-t pt-4 mt-4">
-    <Collapsible open={pinMappingOpen} onOpenChange={setPinMappingOpen}>
-      <CollapsibleTrigger asChild>
-        <Button variant="outline" className="w-full justify-between">
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Pin-Mapping</span>
-            <Badge variant="secondary">Belegung</Badge>
-          </div>
-          {pinMappingOpen ? <ChevronUp /> : <ChevronDown />}
-        </Button>
-      </CollapsibleTrigger>
-      <CollapsibleContent className="mt-4">
-        <PinMappingEditor partId={part.id} />
-      </CollapsibleContent>
-    </Collapsible>
-  </div>
-)}
+<TabsContent value="pins" className="space-y-4 mt-4">
+  <PinMappingEditor componentId={component.id} />
+</TabsContent>
 ```
 
 ## API-Integration
@@ -118,28 +102,28 @@ Folgende Methoden wurden zum ApiClient hinzugefügt:
 
 ```typescript
 // Pin Management
-getPinsByPartId(partId: string): Promise<ApiResponse<Pin[]>>
-createPin(partId: string, data: CreatePinInput): Promise<ApiResponse<Pin>>
-bulkCreatePins(partId: string, pins: CreatePinInput[]): Promise<ApiResponse<Pin[]>>
+getPinsByComponentId(componentId: string): Promise<ApiResponse<Pin[]>>
+createPin(componentId: string, data: CreatePinInput): Promise<ApiResponse<Pin>>
+bulkCreatePins(componentId: string, pins: CreatePinInput[]): Promise<ApiResponse<Pin[]>>
 updatePin(id: string, data: UpdatePinInput): Promise<ApiResponse<Pin>>
 deletePin(id: string): Promise<void>
-reorderPins(partId: string, pins: ReorderPinInput[]): Promise<ApiResponse<Pin[]>>
-deleteAllPins(partId: string): Promise<void>
+reorderPins(componentId: string, pins: ReorderPinInput[]): Promise<ApiResponse<Pin[]>>
+deleteAllPins(componentId: string): Promise<void>
 ```
 
-> **Hinweis:** `getPin(id)` wurde entfernt, da Pins immer über den Part geladen werden (`getPinsByPartId`). Für Edit/Delete wird nur die Pin-ID benötigt.
+> **Hinweis:** `getPin(id)` wurde entfernt, da Pins immer über das Component geladen werden (`getPinsByComponentId`). Für Edit/Delete wird nur die Pin-ID benötigt.
 
 ### Backend Endpoints
 
 Die UI nutzt folgende Backend-Endpoints:
 
-- `GET /parts/:partId/pins` - Alle Pins eines Parts
-- `POST /parts/:partId/pins` - Neuen Pin erstellen
-- `POST /parts/:partId/pins/bulk` - Mehrere Pins erstellen
+- `GET /components/:componentId/pins` - Alle Pins eines Components
+- `POST /components/:componentId/pins` - Neuen Pin erstellen
+- `POST /components/:componentId/pins/bulk` - Mehrere Pins erstellen
 - `PATCH /pins/:id` - Pin aktualisieren
 - `DELETE /pins/:id` - Pin löschen
-- `POST /parts/:partId/pins/reorder` - Pin-Reihenfolge ändern
-- `DELETE /parts/:partId/pins` - Alle Pins löschen (Moderator)
+- `POST /components/:componentId/pins/reorder` - Pin-Reihenfolge ändern
+- `DELETE /components/:componentId/pins` - Alle Pins löschen (Moderator)
 
 ## Zod Schemas
 
@@ -180,11 +164,11 @@ const [refreshKey, setRefreshKey] = useState(0);
 
 useEffect(() => {
   const loadPins = async () => {
-    const response = await api.getPinsByPartId(partId);
+    const response = await api.getPinsByComponentId(componentId);
     setPins(response.data);
   };
   loadPins();
-}, [partId, api, toast, refreshKey]);
+}, [componentId, api, toast, refreshKey]);
 
 // Nach Änderungen
 setRefreshKey((prev) => prev + 1);

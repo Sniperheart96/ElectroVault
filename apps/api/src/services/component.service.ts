@@ -195,6 +195,10 @@ export class ComponentService {
       where: { id, deletedAt: null },
       include: {
         category: true,
+        package: true,
+        pinMappings: {
+          orderBy: { pinNumber: 'asc' },
+        },
         attributeValues: {
           include: {
             definition: true,
@@ -232,6 +236,19 @@ export class ComponentService {
         name: component.category.name as LocalizedString,
         description: component.category.description as LocalizedString | null,
       },
+      package: component.package ? {
+        ...component.package,
+        description: component.package.description as LocalizedString | null,
+      } : null,
+      pinMappings: component.pinMappings.map((pin) => ({
+        id: pin.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinFunction: pin.pinFunction as LocalizedString | null,
+        pinType: pin.pinType,
+        maxVoltage: pin.maxVoltage ? Number(pin.maxVoltage) : null,
+        maxCurrent: pin.maxCurrent ? Number(pin.maxCurrent) : null,
+      })),
       attributeValues: component.attributeValues.map((av) => ({
         id: av.id,
         definitionId: av.definitionId,
@@ -260,6 +277,10 @@ export class ComponentService {
       where: { slug, deletedAt: null },
       include: {
         category: true,
+        package: true,
+        pinMappings: {
+          orderBy: { pinNumber: 'asc' },
+        },
         attributeValues: {
           include: {
             definition: true,
@@ -295,6 +316,24 @@ export class ComponentService {
       fullDescription: component.fullDescription as LocalizedString | null,
       commonAttributes: component.commonAttributes as Record<string, unknown>,
       manufacturerPartsCount: component._count.manufacturerParts,
+      category: {
+        ...component.category,
+        name: component.category.name as LocalizedString,
+        description: component.category.description as LocalizedString | null,
+      },
+      package: component.package ? {
+        ...component.package,
+        description: component.package.description as LocalizedString | null,
+      } : null,
+      pinMappings: component.pinMappings.map((pin) => ({
+        id: pin.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinFunction: pin.pinFunction as LocalizedString | null,
+        pinType: pin.pinType,
+        maxVoltage: pin.maxVoltage ? Number(pin.maxVoltage) : null,
+        maxCurrent: pin.maxCurrent ? Number(pin.maxCurrent) : null,
+      })),
       attributeValues: component.attributeValues.map((av) => ({
         id: av.id,
         definitionId: av.definitionId,
@@ -326,6 +365,17 @@ export class ComponentService {
 
     if (!category) {
       throw new BadRequestError(`Category '${data.categoryId}' not found`);
+    }
+
+    // Prüfen ob Package existiert falls angegeben
+    if (data.packageId) {
+      const pkg = await prisma.packageMaster.findUnique({
+        where: { id: data.packageId },
+      });
+
+      if (!pkg) {
+        throw new BadRequestError(`Package '${data.packageId}' not found`);
+      }
     }
 
     // Validierung: name ist Pflicht wenn keine Label-Attribute in der Kategorie
@@ -361,6 +411,7 @@ export class ComponentService {
             slug,
             series: data.series,
             categoryId: data.categoryId,
+            packageId: data.packageId,
             shortDescription: toJsonValue(data.shortDescription),
             fullDescription: toJsonValue(data.fullDescription),
             commonAttributes: (data.commonAttributes as object) ?? {},
@@ -370,6 +421,7 @@ export class ComponentService {
           },
           include: {
             category: true,
+            package: true,
           },
         });
 
@@ -429,6 +481,17 @@ export class ComponentService {
       }
     }
 
+    // Prüfen ob Package existiert falls angegeben
+    if (data.packageId) {
+      const pkg = await prisma.packageMaster.findUnique({
+        where: { id: data.packageId },
+      });
+
+      if (!pkg) {
+        throw new BadRequestError(`Package '${data.packageId}' not found`);
+      }
+    }
+
     // Transaktion für Update + AttributeValues
     const component = await prisma.$transaction(async (tx) => {
       // Attributwerte aktualisieren falls angegeben
@@ -451,6 +514,7 @@ export class ComponentService {
           name: data.name ? (data.name as object) : undefined,
           slug: data.slug,
           series: data.series,
+          packageId: data.packageId,
           shortDescription: toJsonValue(data.shortDescription),
           fullDescription: toJsonValue(data.fullDescription),
           commonAttributes: data.commonAttributes ? (data.commonAttributes as object) : undefined,
@@ -459,6 +523,7 @@ export class ComponentService {
         },
         include: {
           category: true,
+          package: true,
         },
       });
     });

@@ -45,7 +45,6 @@ export class PartService {
       ...(query.lifecycleStatus && { lifecycleStatus: query.lifecycleStatus }),
       ...(query.coreComponentId && { coreComponentId: query.coreComponentId }),
       ...(query.manufacturerId && { manufacturerId: query.manufacturerId }),
-      ...(query.packageId && { packageId: query.packageId }),
       ...(query.rohsCompliant !== undefined && { rohsCompliant: query.rohsCompliant }),
       ...(categoryIds && {
         coreComponent: { categoryId: { in: categoryIds } },
@@ -80,9 +79,6 @@ export class PartService {
           manufacturer: {
             select: { id: true, name: true, slug: true },
           },
-          package: {
-            select: { id: true, name: true, slug: true },
-          },
           images: {
             where: { isPrimary: true },
             take: 1,
@@ -107,7 +103,6 @@ export class PartService {
       manufacturerId: p.manufacturerId,
       mpn: p.mpn,
       orderingCode: p.orderingCode,
-      packageId: p.packageId,
       weightGrams: p.weightGrams,
       dateCodeFormat: p.dateCodeFormat,
       introductionYear: p.introductionYear,
@@ -124,7 +119,6 @@ export class PartService {
         name: p.coreComponent.name as LocalizedString,
         slug: p.coreComponent.slug,
       },
-      package: p.package,
       primaryImage: p.images[0] || null,
       attributeValues: p.attributeValues.map((av) => ({
         id: av.id,
@@ -160,11 +154,7 @@ export class PartService {
       include: {
         coreComponent: true,
         manufacturer: true,
-        package: true,
         hazardousMaterials: true,
-        pinMappings: {
-          orderBy: { pinNumber: 'asc' },
-        },
         datasheets: {
           orderBy: [{ isPrimary: 'desc' }, { createdAt: 'desc' }],
         },
@@ -203,11 +193,7 @@ export class PartService {
       include: {
         coreComponent: true,
         manufacturer: true,
-        package: true,
         hazardousMaterials: true,
-        pinMappings: {
-          orderBy: { pinNumber: 'asc' },
-        },
         datasheets: {
           orderBy: [{ isPrimary: 'desc' }, { createdAt: 'desc' }],
         },
@@ -255,17 +241,6 @@ export class PartService {
       throw new BadRequestError(`Manufacturer '${data.manufacturerId}' not found`);
     }
 
-    // Prüfen ob Package existiert (falls angegeben)
-    if (data.packageId) {
-      const pkg = await prisma.packageMaster.findUnique({
-        where: { id: data.packageId },
-      });
-
-      if (!pkg) {
-        throw new BadRequestError(`Package '${data.packageId}' not found`);
-      }
-    }
-
     // Prüfen ob MPN bereits existiert für diesen Hersteller
     const existing = await prisma.manufacturerPart.findFirst({
       where: {
@@ -289,7 +264,6 @@ export class PartService {
           manufacturerId: data.manufacturerId,
           mpn: data.mpn,
           orderingCode: data.orderingCode,
-          packageId: data.packageId,
           weightGrams: data.weightGrams,
           dateCodeFormat: data.dateCodeFormat,
           introductionYear: data.introductionYear,
@@ -306,24 +280,8 @@ export class PartService {
         include: {
           coreComponent: true,
           manufacturer: true,
-          package: true,
         },
       });
-
-      // Pin-Mappings erstellen falls angegeben
-      if (data.pinMappings && data.pinMappings.length > 0) {
-        await tx.pinMapping.createMany({
-          data: data.pinMappings.map((pin) => ({
-            partId: newPart.id,
-            pinNumber: pin.pinNumber,
-            pinName: pin.pinName,
-            pinFunction: toJsonValue(pin.pinFunction),
-            pinType: pin.pinType,
-            maxVoltage: pin.maxVoltage,
-            maxCurrent: pin.maxCurrent,
-          })),
-        });
-      }
 
       // Gefahrstoffe erstellen falls angegeben
       if (data.hazardousMaterials && data.hazardousMaterials.length > 0) {
@@ -386,38 +344,8 @@ export class PartService {
       throw new NotFoundError('Part', id);
     }
 
-    // Package prüfen falls geändert
-    if (data.packageId && data.packageId !== existing.packageId) {
-      const pkg = await prisma.packageMaster.findUnique({
-        where: { id: data.packageId },
-      });
-
-      if (!pkg) {
-        throw new BadRequestError(`Package '${data.packageId}' not found`);
-      }
-    }
-
     // Transaktion für Update + Sub-Entitäten
     const part = await prisma.$transaction(async (tx) => {
-      // Pin-Mappings aktualisieren falls angegeben
-      if (data.pinMappings !== undefined) {
-        await tx.pinMapping.deleteMany({ where: { partId: id } });
-
-        if (data.pinMappings && data.pinMappings.length > 0) {
-          await tx.pinMapping.createMany({
-            data: data.pinMappings.map((pin) => ({
-              partId: id,
-              pinNumber: pin.pinNumber,
-              pinName: pin.pinName,
-              pinFunction: toJsonValue(pin.pinFunction),
-              pinType: pin.pinType,
-              maxVoltage: pin.maxVoltage,
-              maxCurrent: pin.maxCurrent,
-            })),
-          });
-        }
-      }
-
       // Gefahrstoffe aktualisieren falls angegeben
       if (data.hazardousMaterials !== undefined) {
         await tx.hazardousMaterial.deleteMany({ where: { partId: id } });
@@ -439,7 +367,6 @@ export class PartService {
         data: {
           mpn: data.mpn,
           orderingCode: data.orderingCode,
-          packageId: data.packageId,
           weightGrams: data.weightGrams,
           dateCodeFormat: data.dateCodeFormat,
           introductionYear: data.introductionYear,
@@ -455,7 +382,6 @@ export class PartService {
         include: {
           coreComponent: true,
           manufacturer: true,
-          package: true,
         },
       });
     });
@@ -656,9 +582,6 @@ export class PartService {
         coreComponent: {
           select: { id: true, name: true, slug: true },
         },
-        package: {
-          select: { id: true, name: true, slug: true },
-        },
         images: {
           where: { isPrimary: true },
           take: 1,
@@ -681,7 +604,6 @@ export class PartService {
       manufacturerId: p.manufacturerId,
       mpn: p.mpn,
       orderingCode: p.orderingCode,
-      packageId: p.packageId,
       weightGrams: p.weightGrams ? Number(p.weightGrams) : null,
       dateCodeFormat: p.dateCodeFormat,
       introductionYear: p.introductionYear,
@@ -698,7 +620,6 @@ export class PartService {
         name: p.coreComponent.name as LocalizedString,
         slug: p.coreComponent.slug,
       },
-      package: p.package,
       primaryImage: p.images[0] || null,
       attributeValues: p.attributeValues.map((av) => ({
         id: av.id,

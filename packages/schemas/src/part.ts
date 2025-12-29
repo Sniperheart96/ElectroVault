@@ -16,7 +16,6 @@ import {
   PinTypeSchema,
 } from './common';
 import { ManufacturerBaseSchema } from './manufacturer';
-import { PackageBaseSchema } from './package';
 import { ComponentBaseSchema, CreateAttributeValueSchema, SIPrefixSchema } from './component';
 
 // ============================================
@@ -130,7 +129,6 @@ export const PartBaseSchema = z.object({
   manufacturerId: UUIDSchema,
   mpn: z.string(),
   orderingCode: z.string().nullable(),
-  packageId: UUIDSchema.nullable(),
   weightGrams: z.number().nullable(),
   dateCodeFormat: z.string().nullable(),
   introductionYear: z.number().nullable(),
@@ -155,7 +153,6 @@ export type PartBase = z.infer<typeof PartBaseSchema>;
 export const PartWithRelationsSchema = PartBaseSchema.extend({
   coreComponent: ComponentBaseSchema,
   manufacturer: ManufacturerBaseSchema,
-  package: PackageBaseSchema.nullable(),
 });
 
 export type PartWithRelations = z.infer<typeof PartWithRelationsSchema>;
@@ -165,7 +162,6 @@ export type PartWithRelations = z.infer<typeof PartWithRelationsSchema>;
  */
 export const PartFullSchema = PartWithRelationsSchema.extend({
   hazardousMaterials: z.array(HazardousMaterialSchema),
-  pinMappings: z.array(PinMappingSchema),
   datasheets: z.array(DatasheetSchema),
   images: z.array(PartImageSchema),
   attributeValues: z.array(PartAttributeValueSchema),
@@ -192,7 +188,6 @@ export const PartListItemSchema = z.object({
   manufacturerId: UUIDSchema,               // Direct ID for easy access
   mpn: z.string(),
   orderingCode: z.string().nullable(),
-  packageId: UUIDSchema.nullable(),         // Direct ID for easy access
   weightGrams: z.number().nullable(),
   dateCodeFormat: z.string().nullable(),
   introductionYear: z.number().int().nullable(),
@@ -213,13 +208,6 @@ export const PartListItemSchema = z.object({
     name: LocalizedStringSchema,
     slug: z.string(),
   }),
-  package: z
-    .object({
-      id: UUIDSchema,
-      name: z.string(),
-      slug: z.string(),
-    })
-    .nullable(),
   primaryImage: PartImageSchema.nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
@@ -305,7 +293,6 @@ export const CreatePartSchema = z.object({
   manufacturerId: UUIDSchema,
   mpn: z.string().min(1).max(255),
   orderingCode: z.string().max(255).optional(),
-  packageId: UUIDSchema.optional(),
   weightGrams: z.number().positive().optional(),
   dateCodeFormat: z.string().max(50).optional(),
   introductionYear: z.number().int().min(1800).max(2100).optional(),
@@ -317,7 +304,6 @@ export const CreatePartSchema = z.object({
   status: PartStatusSchema.default('DRAFT'),
   lifecycleStatus: LifecycleStatusSchema.default('ACTIVE'),
   attributeValues: z.array(CreateAttributeValueSchema).optional(),
-  pinMappings: z.array(CreatePinMappingSchema).optional(),
   hazardousMaterials: z.array(CreateHazardousMaterialSchema).optional(),
 });
 
@@ -345,7 +331,6 @@ export const PartListQuerySchema = PaginationSchema.merge(SortSchema).extend({
   lifecycleStatus: LifecycleStatusSchema.optional(),
   coreComponentId: UUIDSchema.optional(),
   manufacturerId: UUIDSchema.optional(),
-  packageId: UUIDSchema.optional(),
   categoryId: UUIDSchema.optional(),
   rohsCompliant: z.coerce.boolean().optional(),
   search: z.string().max(100).optional(),

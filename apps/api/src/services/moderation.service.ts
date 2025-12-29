@@ -122,12 +122,6 @@ export class ModerationService {
               slug: true,
             },
           },
-          package: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
           createdBy: {
             select: {
               id: true,
@@ -344,7 +338,6 @@ export class ModerationService {
         include: {
           coreComponent: true,
           manufacturer: true,
-          package: true,
         },
       });
 
