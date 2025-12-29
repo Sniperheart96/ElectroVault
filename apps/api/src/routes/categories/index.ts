@@ -12,6 +12,8 @@ import {
   UpdateCategorySchema,
   CategoryAttributesQuerySchema,
 } from '@electrovault/schemas';
+import { minioClient, BUCKET_NAME } from '../../lib/minio';
+import { NotFoundError, getImageContentType } from '../../lib';
 
 /**
  * Category Routes Plugin
@@ -159,6 +161,56 @@ export default async function categoryRoutes(
 
       await categoryService.delete(id, userId);
       return reply.code(204).send();
+    }
+  );
+
+  /**
+   * GET /categories/:id/icon
+   * Icon-Proxy: Holt das Icon von MinIO und sendet es an den Client
+   * Löst CORS-Probleme, da alle Requests über die gleiche Origin laufen
+   */
+  app.get<{ Params: { id: string } }>(
+    '/:id/icon',
+    async (request, reply) => {
+      const { id } = request.params;
+
+      // Kategorie abrufen um iconUrl zu bekommen
+      const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+      const category = isUuid
+        ? await categoryService.getById(id)
+        : await categoryService.getBySlug(id);
+
+      if (!category.iconUrl) {
+        throw new NotFoundError('Icon', id);
+      }
+
+      // Extrahiere Bucket-Pfad aus iconUrl
+      // iconUrl Format: http://192.168.178.80:9000/electrovault-files/images/categories/...
+      const url = new URL(category.iconUrl);
+      const pathParts = url.pathname.split('/');
+      // Entferne leeren ersten Teil und Bucket-Namen
+      const bucketPath = pathParts.slice(2).join('/'); // images/categories/...
+
+      try {
+        // Hole das Objekt von MinIO
+        const stream = await minioClient.getObject(BUCKET_NAME.toString(), bucketPath);
+
+        // Setze Header für Cross-Origin Zugriff
+        // WICHTIG: Cross-Origin-Resource-Policy muss 'cross-origin' sein,
+        // damit das Frontend (Port 3000) Bilder von der API (Port 3001) laden kann
+        reply.header('Content-Type', getImageContentType(bucketPath));
+        reply.header('Cache-Control', 'public, max-age=604800'); // 7 Tage
+        reply.header('Cross-Origin-Resource-Policy', 'cross-origin');
+        reply.header('Access-Control-Allow-Origin', '*');
+
+        // Streame das Bild an den Client
+        return reply.send(stream);
+      } catch (error) {
+        console.error('[Category Icon Proxy] Failed to fetch icon:', error);
+        throw new NotFoundError('Icon file', bucketPath);
+      }
     }
   );
 }

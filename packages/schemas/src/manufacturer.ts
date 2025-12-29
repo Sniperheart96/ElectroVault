@@ -82,7 +82,22 @@ export const CreateManufacturerSchema = z.object({
   cageCode: z.string().max(5).optional(),
   countryCode: z.string().length(2).optional(),
   website: z.string().url().max(512).optional(),
-  logoUrl: z.string().url().max(512).optional(),
+  // logoUrl kann eine normale URL oder eine Data-URL (base64) sein
+  logoUrl: z.string().refine(
+    (val) => {
+      if (!val) return true;
+      // Erlaube Data-URLs (base64 encoded images)
+      if (val.startsWith('data:image/')) return true;
+      // Erlaube normale URLs
+      try {
+        new URL(val);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { message: 'Ungültige URL oder Data-URL' }
+  ).optional(),
   status: ManufacturerStatusSchema.default('ACTIVE'),
   foundedYear: z.number().int().min(1800).max(2100).optional(),
   defunctYear: z.number().int().min(1800).max(2100).optional(),

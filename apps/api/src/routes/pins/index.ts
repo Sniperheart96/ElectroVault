@@ -32,16 +32,6 @@ export default async function pinRoutes(
   );
 
   /**
-   * GET /pins/:id
-   * Einzelner Pin nach ID
-   */
-  app.get<{ Params: { id: string } }>('/pins/:id', async (request, reply) => {
-    const { id } = request.params;
-    const pin = await pinService.getPinById(id);
-    return reply.send({ data: pin });
-  });
-
-  /**
    * POST /parts/:partId/pins
    * Neuen Pin erstellen (Auth required)
    */

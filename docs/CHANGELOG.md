@@ -1,504 +1,65 @@
 # Changelog
 
-Alle wichtigen Änderungen am ElectroVault-Projekt werden in dieser Datei dokumentiert.
+Alle wichtigen Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
+
+Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
+und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
----
-
-## [0.7.0] - 2025-12-28 - Phase 4: Community-Features
-
 ### Hinzugefügt
-
-#### File Upload System (MinIO)
-- **MinIO Client** (`apps/api/src/lib/minio.ts`)
-  - Singleton Client für MinIO S3-Speicher
-  - Automatische Bucket-Erstellung beim Start
-  - Presigned URLs für sichere Downloads (24h Gültigkeit)
-
-- **File Service** (`apps/api/src/services/file.service.ts`)
-  - Upload für Datasheets (PDF, max 50MB)
-  - Upload für Bilder (JPG/PNG/WebP, max 10MB)
-  - Upload für Pinout-Diagramme
-  - Soft-Delete mit Berechtigungsprüfung
-
-- **File Routes** (`apps/api/src/routes/files/index.ts`)
-  - POST `/files/datasheet`, `/files/image`, `/files/pinout`
-  - GET `/files/:id`, `/files/:id/download`
-  - GET `/files/component/:id`, `/files/part/:id`
-  - DELETE `/files/:id`
-  - GET `/files/stats` (Admin)
-
-- **FileAttachment Model** - Prisma Schema für Datei-Metadaten
-- **FileType Enum** - DATASHEET, IMAGE, PINOUT, OTHER
-- **FileUpload Component** (`apps/web/src/components/admin/file-upload.tsx`)
-  - Drag & Drop Upload
-  - Progress-Anzeige
-  - Typ-spezifische Validierung
-
-#### Pin-Mapping Editor
-- **Pin Service** (`apps/api/src/services/pin.service.ts`)
-  - CRUD für Pin-Definitionen
-  - Bulk-Create für viele Pins gleichzeitig
-  - Reorder-Funktion für Pin-Reihenfolge
-
-- **Pin Routes** (`apps/api/src/routes/pins/index.ts`)
-  - GET/POST `/parts/:partId/pins`
-  - POST `/parts/:partId/pins/bulk`, `/reorder`
-  - PATCH/DELETE `/pins/:id`
-
-- **PinMappingEditor Component** (`apps/web/src/components/admin/pin-mapping-editor.tsx`)
-  - Tabellenansicht mit Inline-Editing
-  - Farbige Pin-Typ-Badges (Power=rot, Ground=schwarz, etc.)
-  - Bulk-Import via CSV: `1,VCC,POWER;2,GND,GROUND`
-  - Pfeil-Buttons für Reorder
-  - AlertDialog für Löschen-Bestätigung
-
-- **Part-Dialog Integration** - Collapsible Pin-Mapping Sektion
-
-#### Beziehungs-Editor
-- **RelationsEditor Component** (`apps/web/src/components/admin/relations-editor.tsx`)
-  - 8 Beziehungstypen mit deutschen Labels und Icons
-  - Component-Suche mit Live-Filter
-  - Bidirectional-Toggle
-  - Beschreibung (de/en)
-  - Card-basierte Darstellung
-
-- **Component-Dialog Integration** - Neuer "Beziehungen" Tab
-
-#### Moderations-Queue
-- **ModerationLog Model** - Tracking aller Moderationsaktionen
-- **Moderation Service** (`apps/api/src/services/moderation.service.ts`)
-  - Combined Queue für Components + Parts
-  - Approve/Reject mit Transaktionen
-  - Batch-Operationen
-  - Tagesstatistiken
-
-- **Moderation Routes** (`apps/api/src/routes/moderation/index.ts`)
-  - GET `/moderation/queue`, `/stats`
-  - POST `/moderation/component/:id/approve`, `/reject`
-  - POST `/moderation/batch/approve`, `/reject`
-
-- **Moderation Page** (`apps/web/src/app/admin/moderation/page.tsx`)
-  - Stats-Karten (Pending, Approved Today, Rejected Today)
-  - Tab-Navigation (Alle/Components/Parts)
-  - Batch-Selection mit Checkboxen
-  - Approve/Reject Actions
-
-- **Admin-Sidebar** - Neuer "Moderation" Eintrag (MODERATOR+)
-
-#### Dynamische Attribute
-- **AttributeFields Component** (`apps/web/src/components/admin/attribute-fields.tsx`)
-  - Automatisch generierte Felder basierend auf Kategorie
-  - Unterstützt: BOOLEAN, INTEGER, DECIMAL, STRING, RANGE
-  - SI-Einheiten-Normalisierung
-  - Kategorie-Vererbung
-
-### API Client Erweiterungen
-- Pin-Methoden: `getPinsByPartId`, `createPin`, `bulkCreatePins`, `updatePin`, `deletePin`, `reorderPins`
-- Relation-Methoden: `getComponentRelations`, `createRelation`, `updateRelation`, `deleteRelation`
-- Moderation-Methoden: `getModerationQueue`, `approveComponent`, `rejectComponent`, `batchApprove`
-- Pin Interface, ComponentRelation Interface, RelationType Type
+- **Bekannte Probleme Dokumentation** (2025-12-29)
+  - Neue Datei `docs/reference/known-issues.md` erstellt
+  - 7 aktive Probleme dokumentiert (AUTH-001, STORAGE-001/002, MODERATION-001/002, I18N-001, MINIO-001, GIT-001)
+  - 5 bekannte Limitierungen dokumentiert (L-001 bis L-005)
+  - Workarounds und Best Practices für häufige Probleme
+  - Troubleshooting-Sektion für MinIO, Keycloak, Prisma
+  - ID-Schema für neue Probleme definiert (`BEREICH-NNN`)
 
 ### Dokumentation
-- `docs/phases/phase-4-community.md` - Vollständig aktualisiert (100%)
-- `docs/moderation-queue-implementation.md` - Detaillierte Implementierung
-- `docs/architecture/pin-mapping-ui.md` - Pin-Editor Dokumentation
-- `docs/examples/pin-mapping-usage.md` - Verwendungsbeispiele
-
----
-
-## [0.6.1] - 2025-12-28 - Fixes und Component Relations
-
-### Hinzugefügt
-- **Component Relations API** (`apps/api/src/routes/components/index.ts`)
-  - GET `/components/:id/relations` - Alle Beziehungen eines Components abrufen
-  - POST `/components/:id/relations` - Neue Beziehung erstellen (Auth: CONTRIBUTOR)
-  - PATCH `/components/:id/relations/:relationId` - Beziehung aktualisieren (Auth: CONTRIBUTOR)
-  - DELETE `/components/:id/relations/:relationId` - Beziehung löschen (Auth: MODERATOR)
-  - Unterstützt Outgoing und Incoming Relations
-  - Relation Types: DUAL_VERSION, QUAD_VERSION, LOW_POWER_VERSION, HIGH_SPEED_VERSION, MILITARY_VERSION, AUTOMOTIVE_VERSION, FUNCTIONAL_EQUIV
-
-- **Component Service erweitert** (`apps/api/src/services/component.service.ts`)
-  - `getConceptRelations()` - Lädt alle Beziehungen mit Source/Target-Details
-  - `updateConceptRelation()` - Aktualisiert Relation Notes
-  - Bestehend: `addConceptRelation()`, `removeConceptRelation()`
-
-- **Neue Schemas** (`packages/schemas/src/component.ts`)
-  - `UpdateConceptRelationSchema` - Validierung für Relation-Updates
-  - `ConceptRelationWithTargetSchema` - Response-Schema mit Ziel-Component
-  - `ConceptRelationWithSourceSchema` - Response-Schema mit Quell-Component
-  - `ComponentRelationsResponseSchema` - Response-Schema für GET /relations
-
-- **Dokumentation**
-  - `docs/features/component-relations.md` - Vollständige Feature-Dokumentation
-  - `apps/api/src/routes/components/test-relations-manual.md` - Manual Test Guide
-  - `apps/api/src/routes/components/relations.test.ts` - Integration Tests (WIP)
-
-### Behoben
-- **Schema-Export-Duplikat** (`packages/schemas/src/index.ts`)
-  - `PinMappingSchema` wurde doppelt exportiert (part.ts und pin.ts)
-  - Jetzt nur noch einmal in part.ts exportiert
-
-### Geändert
-- **Entwicklungsumgebung:** Claude Code läuft jetzt direkt auf ITME-SERVER
-  - Alle UNC-Pfad-Referenzen entfernt
-  - Dokumentation für direkten Server-Betrieb aktualisiert
-  - Befehle können ohne Workarounds ausgeführt werden
-
-### Aktualisierte Dateien
-- `.claude/CLAUDE.md` - Neuer Abschnitt "Ausführungsumgebung" und "Wichtige Hinweise"
-- `.claude/agents/infrastructure-agent.md` - Lokale Pfade statt Netzwerk-Pfade
-- `INSTALL.md` - Überarbeitet für direkten Server-Zugriff
-
----
-
-## [0.6.0] - 2025-12-28 - UI-Restrukturierung: Integrierte Dialoge
-
-### Geändert
-
-#### Dialoge erweitert mit Tab-Navigation
-- **ComponentDialog** (`apps/web/src/components/admin/component-dialog.tsx`)
-  - Neu: Tab-Navigation mit "Stammdaten" und "Hersteller-Varianten"
-  - Hersteller-Varianten werden jetzt direkt im Dialog verwaltet (nicht mehr separate Seite)
-  - Tab "Hersteller-Varianten" nur beim Bearbeiten aktiv
-  - Warnung wenn keine Varianten vorhanden (mind. 1 erforderlich)
-  - CRUD für Parts direkt im Dialog integriert
-
-- **CategoryDialog** (`apps/web/src/components/admin/category-dialog.tsx`)
-  - Neu: Tab-Navigation mit "Stammdaten" und "Attribute"
-  - Attribute werden jetzt direkt im Dialog verwaltet (nicht mehr separate Seite)
-  - Tab "Attribute" nur beim Bearbeiten aktiv
-  - Zeigt eigene Attribute und vererbte Attribute (von Parent-Kategorien)
-  - Vererbte Attribute in Collapsible-Bereich mit Quell-Kategorie
-  - CRUD für Attribute direkt im Dialog integriert
-
-#### Admin-Seiten vereinfacht
-- **Categories-Seite** (`apps/web/src/app/admin/categories/page.tsx`)
-  - Zurück auf 1-Spalten-Layout (nur Kategorie-Baum)
-  - Kein separates Attribut-Panel mehr nötig
-
-- **Components-Seite** (`apps/web/src/app/admin/components/page.tsx`)
-  - Zurück auf 1-Spalten-Layout (nur Bauteil-Tabelle)
-  - Kein separates Parts-Panel mehr nötig
+- **API Helper-Funktionen dokumentiert** (2025-12-29)
+  - Neue Datei `docs/architecture/api-helpers.md` erstellt
+  - MinIO-Integration komplett dokumentiert (Lazy Init, Presigned URLs, File Operations)
+  - URL-Helpers für Proxy-URLs und MIME-Types
+  - Error Classes (ApiError, NotFoundError, ConflictError, etc.)
+  - Slug-Generierung mit Umlaut-Handling
+  - Pagination-Utilities für Prisma
+  - JSON-Helpers für LocalizedString-Konvertierung
+  - Best Practices für alle Helper-Module
+- **i18n.md aktualisiert** (2025-12-29)
+  - Code-Beispiele an tatsächliche Implementierung angepasst
+  - `FALLBACK_LOCALE` Konstante dokumentiert (statt hard-coded `'de'` oder `'en'`)
+  - `SUPPORTED_LOCALES` Array dokumentiert
+  - Anleitung "Neue Sprache hinzufügen" erweitert (inkl. `SUPPORTED_LOCALES` Update)
+  - Imports in Code-Beispielen korrigiert (`packages/shared/src/i18n/types`)
 
 ### Entfernt
-- `apps/web/src/app/admin/attributes/` - Separate Attribut-Seite (in CategoryDialog integriert)
-- `apps/web/src/app/admin/parts/` - Separate Parts-Seite (in ComponentDialog integriert)
-- `apps/web/src/components/admin/category-attributes-panel.tsx` - Nicht mehr benötigt
-- `apps/web/src/components/admin/component-parts-panel.tsx` - Nicht mehr benötigt
-- Admin-Sidebar-Einträge für "Attribute" und "Hersteller-Varianten"
+- **Pin-Mapping API-Bereinigung** (2025-12-29)
+  - Ungenutztes `PinMappingSchema` mit `partId` aus `packages/schemas/src/pin.ts` entfernt
+  - API-Methode `api.getPin(id)` entfernt - Pins werden über Part geladen (`getPinsByPartId`)
+  - Backend-Route `GET /pins/:id` entfernt
+  - Service-Methode `getPinById()` entfernt
+  - **Begründung:** Pins gehören immer zu einem ManufacturerPart. Einzelne Pin-Abfragen ohne Part-Kontext sind unnötig.
+
+### Geändert
+- **Schema-Konsistenz** (2025-12-29)
+  - Inline `z.enum()` für PinType in `packages/schemas/src/part.ts` durch `PinTypeSchema` ersetzt
+
+## [0.1.0] - 2025-12-28
 
 ### Hinzugefügt
-- **Tabs UI-Komponente** (`apps/web/src/components/ui/tabs.tsx`)
-  - Radix UI Tabs-Wrapper für shadcn/ui Styling
-  - Package: `@radix-ui/react-tabs`
+- Phase 2: Component API komplett implementiert
+- Phase 3: Frontend mit Admin-Panel
+- Phase 4: Community Features (MVP)
+- Datei-Upload-System mit MinIO
+- Pin-Mapping Editor für Bauteile
+- Moderation-System für User-Beiträge
 
-### Workflow-Änderungen
-**Vorher:**
-- Separate Seiten für Attribute und Hersteller-Varianten
-- Nutzer musste zwischen Seiten wechseln
-
-**Nachher:**
-- Alles in einem Dialog
-- Bauteil bearbeiten → Tab "Hersteller-Varianten" → Varianten verwalten
-- Kategorie bearbeiten → Tab "Attribute" → Attribute verwalten (mit Vererbungsanzeige)
+### Dokumentation
+- Architektur-Dokumentation erstellt
+- Phasen-Dokumentation für Phase 0-4
+- Pin-Mapping UI-Dokumentation
 
 ---
 
-## [0.5.0] - 2025-12-28 - Admin-Panel & 2-Ebenen-Architektur UI
-
-### Hinzugefügt
-
-#### Attribut-Definition Verwaltung
-- **API & Service** (`apps/api/src/services/attribute.service.ts`)
-  - CRUD für Attribut-Definitionen pro Kategorie
-  - Kategorie-Vererbung (Attribute von Parent-Kategorien)
-  - Audit-Logging für alle Änderungen
-- **Routes** (`apps/api/src/routes/attributes/index.ts`)
-  - `GET /api/v1/attributes` - Liste mit Filterung
-  - `POST /api/v1/attributes` - Neue Definition erstellen
-  - `GET /api/v1/attributes/:id` - Details abrufen
-  - `PATCH /api/v1/attributes/:id` - Aktualisieren
-  - `DELETE /api/v1/attributes/:id` - Löschen
-- **Admin-UI** (`apps/web/src/app/admin/attributes/page.tsx`)
-  - Tabelle mit Filterung nach Kategorie
-  - Dialog für Erstellen/Bearbeiten
-  - Datentyp-Auswahl (Decimal, Integer, String, Boolean, Range)
-  - Scope-Auswahl (Component, Part, Both)
-
-#### ManufacturerPart (Hersteller-Varianten) Verwaltung
-- **Erweiterte API** (`apps/api/src/routes/parts/index.ts`)
-  - `GET /api/v1/parts/:id/attributes` - Attributwerte abrufen
-  - `PUT /api/v1/parts/:id/attributes` - Attributwerte setzen
-- **Erweiterte Routes** (`apps/api/src/routes/components/index.ts`)
-  - `GET /api/v1/components/:id/parts` - Parts eines Components
-- **Admin-UI** (`apps/web/src/app/admin/parts/page.tsx`)
-  - Vollständige CRUD-Oberfläche
-  - Auswahl von Component, Hersteller, Package
-  - Lifecycle-Status (ACTIVE, NRND, EOL, OBSOLETE)
-  - Compliance-Felder (RoHS, REACH)
-
-#### Package/Bauformen Verwaltung
-- **Admin-UI** (`apps/web/src/app/admin/packages/page.tsx`)
-  - Tabelle mit Suche
-  - Dialog für Erstellen/Bearbeiten
-  - Mounting-Types: THT, SMD, Radial, Axial, Chassis, Other
-  - Dimensionen (L/W/H), Pitch, Pin-Count
-  - JEDEC/EIA Standards
-
-### Korrigiert
-
-#### TypeScript-Fehler & Schema-Konsistenz
-- **Component Status** korrigiert: `DRAFT | PENDING | PUBLISHED | ARCHIVED`
-  - Vorher fälschlicherweise `ACTIVE | NRND | EOL | OBSOLETE` verwendet
-  - Betrifft: `component-dialog.tsx`, `admin/components/page.tsx`, `api.ts`
-- **Part Interface** erweitert um:
-  - `coreComponentId` (statt `componentId`)
-  - `lifecycleStatus` (ACTIVE/NRND/EOL/OBSOLETE)
-  - `orderingCode`, `package`, `weightGrams`, `dateCodeFormat`
-  - `rohsCompliant`, `reachCompliant`, `nsn`, `milSpec`
-- **Package MountingType** korrigiert: `THT | SMD | RADIAL | AXIAL | CHASSIS | OTHER`
-  - Vorher fälschlicherweise `HYBRID` verwendet
-- **AuditService-Aufrufe** in `category.service.ts`:
-  - `auditService.log()` → `auditService.logCreate/logUpdate/logDelete()`
-- **zodResolver Type-Casting** für react-hook-form Kompatibilität
-
-### Neue Dateien
-```
-apps/api/src/
-├── services/attribute.service.ts      # Attribut-Definition Service
-├── routes/attributes/index.ts         # Attribut-Endpoints
-packages/schemas/src/
-├── attribute.ts                       # Attribut-Definition Schemas
-apps/web/src/
-├── app/admin/
-│   ├── attributes/page.tsx           # Attribut-Verwaltung
-│   ├── packages/page.tsx             # Package-Verwaltung
-│   └── parts/page.tsx                # Parts-Verwaltung
-├── components/admin/
-│   ├── attribute-dialog.tsx          # Attribut-Formular
-│   ├── package-dialog.tsx            # Package-Formular
-│   └── part-dialog.tsx               # Part-Formular
-├── hooks/
-│   └── use-categories-flat.ts        # Kategorie-Helfer Hook
-```
-
-### Technische Details
-- **TypeScript:** Alle Fehler in Web und API behoben
-- **Schemas:** Attribut-Schemas hinzugefügt zu `@electrovault/schemas`
-- **Admin-Sidebar:** Neue Links für Attribute, Bauformen, Hersteller-Varianten
-
----
-
-## [0.4.0] - 2025-12-27 - Phase 3: Frontend Basis (In Arbeit)
-
-### Hinzugefügt
-- **Next.js 15 Frontend** (`@electrovault/web`)
-  - App Router mit Server Components
-  - TailwindCSS + shadcn/ui Design System
-  - next-intl für Mehrsprachigkeit (DE/EN)
-  - React 19 mit neuesten Features
-
-- **Seiten**
-  - Homepage mit Suchfeld, Statistiken, Featured Categories
-  - Komponenten-Liste mit Pagination
-  - Kategorie-Browser mit rekursiver Baum-Darstellung
-  - Hersteller-Liste mit Pagination und Status-Badges
-  - Auth-Seiten (Sign-in, Sign-out, Error)
-
-- **NextAuth Integration**
-  - KeycloakProvider konfiguriert
-  - JWT Token Refresh
-  - Rollen-Extraktion aus Keycloak Token
-  - Session mit accessToken und Rollen
-  - Logout-Sync mit Keycloak
-
-- **Route Protection** (`middleware.ts`)
-  - `/admin/*` erfordert admin oder moderator Rolle
-  - `/profile/*` erfordert Authentifizierung
-  - `/contribute/*` erfordert contributor Rolle
-
-- **UI-Komponenten**
-  - Button (alle Varianten)
-  - Input
-  - Card (Header, Content, Footer)
-  - Badge (success, warning, destructive)
-
-- **Utilities**
-  - API-Client mit Auth-Support
-  - Server-side Auth Utilities
-  - cn() Helper für Tailwind
-
-### Neue Dateien
-```
-apps/web/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx                  # Homepage
-│   │   ├── components/page.tsx       # Komponenten-Liste
-│   │   ├── categories/page.tsx       # Kategorie-Browser
-│   │   ├── manufacturers/page.tsx    # Hersteller-Liste
-│   │   ├── auth/signin/page.tsx      # Login
-│   │   ├── auth/signout/page.tsx     # Logout
-│   │   ├── auth/error/page.tsx       # Auth-Fehler
-│   │   └── api/auth/[...nextauth]/route.ts
-│   ├── components/
-│   │   ├── ui/{button,input,card,badge}.tsx
-│   │   ├── layout/{header,footer}.tsx
-│   │   └── providers/session-provider.tsx
-│   ├── lib/
-│   │   ├── api.ts                    # API-Client
-│   │   ├── auth.ts                   # NextAuth Config
-│   │   ├── auth-server.ts            # Server-side Auth
-│   │   └── utils.ts
-│   ├── middleware.ts                 # Route Protection
-│   └── i18n/request.ts               # next-intl Config
-├── messages/{de,en}.json             # Übersetzungen
-└── {next,tailwind,postcss}.config.*  # Konfiguration
-```
-
-### Technische Details
-- **Next.js:** 15.1.3 mit App Router
-- **React:** 19.0.0
-- **Auth:** NextAuth 4.24.0 + Keycloak
-- **i18n:** next-intl 3.20.0
-- **Styling:** TailwindCSS 3.4.0 + Radix UI
-
-### Dokumentiert
-- `docs/phases/phase-3-frontend.md` - Vollständig aktualisiert (90%)
-
-### Ausstehend
-- Komponenten-Detailseite
-- Such-Interface
-- Admin-Dashboard
-- Formular-Komponenten
-
----
-
-## [0.3.0] - 2025-12-27 - Phase 2: Component API
-
-### Hinzugefügt
-- **Zod-Schemas** (`@electrovault/schemas`)
-  - `common.ts` - LocalizedString, Pagination, Enums
-  - `category.ts` - Category-Schemas (Base, Tree, Path)
-  - `manufacturer.ts` - Manufacturer-Schemas (CRUD)
-  - `package.ts` - Package-Schemas (CRUD, Footprints)
-  - `component.ts` - CoreComponent-Schemas (CRUD, Relations)
-  - `part.ts` - ManufacturerPart-Schemas (CRUD)
-  - `audit.ts` - AuditLog-Schemas (Query, History)
-  - 42 Schema-Tests
-
-- **Services** (`apps/api/src/services/`)
-  - `category.service.ts` - Read-Only, Baum-Struktur, Pfad-Navigation
-  - `manufacturer.service.ts` - CRUD mit Schnellsuche
-  - `package.service.ts` - CRUD mit Footprint-Verwaltung
-  - `component.service.ts` - CRUD mit Konzept-Relations
-  - `part.service.ts` - CRUD mit Lagerbestand-Updates
-  - `audit.service.ts` - Logging, History, Statistiken
-
-- **Routes** (`apps/api/src/routes/`)
-  - `/api/v1/categories` - Kategorie-Endpoints (read-only)
-  - `/api/v1/manufacturers` - Hersteller-Endpoints (CRUD)
-  - `/api/v1/packages` - Package-Endpoints (CRUD)
-  - `/api/v1/components` - Component-Endpoints (CRUD)
-  - `/api/v1/parts` - Part-Endpoints (CRUD)
-  - `/api/v1/audit` - Audit-Log-Endpoints
-
-- **Utilities** (`apps/api/src/lib/`)
-  - `errors.ts` - ApiError, NotFoundError, ValidationError
-  - `pagination.ts` - Prisma Pagination-Helpers
-  - `slug.ts` - Slug-Generierung aus LocalizedString
-
-### Technische Details
-- **Tests:** 81 Tests (alle bestehen)
-- **Endpoints:** 35+ API-Endpoints
-- **Auth:** Role-based Access Control (VIEWER, CONTRIBUTOR, MODERATOR, ADMIN)
-- **Features:** Soft-Delete, Audit-Logging, Pagination, Autocomplete-Suche
-
-### Dokumentiert
-- `docs/phases/phase-2-component-api.md` - Vollständig aktualisiert
-- `docs/README.md` - Phase 2 Status auf 100%
-
----
-
-## [0.2.0] - 2025-12-27 - Phase 1 Implementiert
-
-### Hinzugefügt
-- **Auth-Package** (`@electrovault/auth`)
-  - Keycloak JWT-Token-Validierung mit JWKS
-  - Fastify Auth-Plugin mit `requireAuth`, `requireRole`, `optionalAuth`
-  - NextAuth-Integration mit automatischem Token-Refresh
-  - User-Sync-Service für Keycloak → PostgreSQL
-  - 17 Tests (9 Unit, 8 Integration)
-
-- **Fastify-Server** (`@electrovault/api`)
-  - App-Builder mit CORS, Helmet, Rate-Limiting
-  - Auth-Plugin-Integration
-  - Health-Check-Endpoint (`/health`)
-  - Protected User-Info-Endpoint (`/api/v1/me`)
-  - Error-Handling & Not-Found-Handler
-  - Graceful Shutdown
-  - 6 Integration-Tests
-
-- **Seed-Daten** (`packages/database/prisma/seed.ts`)
-  - Kategorie-Hierarchie (Passive Components, Semiconductors, Vacuum Tubes)
-  - Attribut-Definitionen (Capacitance, Voltage Rating, ESR, Resistance, Tolerance)
-  - Package Masters (DIP-8, DIP-14, TO-220, SOIC-8, 0805, 1206, Radial)
-  - Hersteller (Texas Instruments, NXP, Signetics)
-
-### Dokumentiert
-- [`docs/database/PHASE-1-COMPLETE.md`](database/PHASE-1-COMPLETE.md) - Vollständiger Implementierungsbericht
-- [`docs/IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md) - Phase 1 auf 95% aktualisiert
-
-### Technische Details
-- **Prisma-Schema:** 716 Zeilen (vollständig)
-- **Tests:** 23 Tests (Auth: 17, API: 6)
-- **Dependencies:** Fastify 4.x, jose 5.x, next-auth 4.x
-- **Auth-Flow:** Keycloak OAuth → JWT → User Sync → Session
-
-**Fehlende Komponente:** Initiale Prisma-Migration
-
----
-
-### 2025-12-27 - Korrektur: PostgreSQL Development Server
-
-#### Geändert
-- **Klarstellung:** ElectroVault nutzt den **existierenden PostgreSQL Development Server** auf ITME-SERVER
-- Alle Dokumentation aktualisiert, um dies klarzustellen
-- Keine Installation eines neuen "PostgreSQL 18" Servers erforderlich
-
-#### Hinzugefügt
-- PostgreSQL Admin-Passwort zu `.env.local` und `.env.example`
-- `scripts/setup-database.ps1` - Automatisches Setup-Script für Datenbank und User
-- `scripts/README.md` - Dokumentation für Setup-Scripts
-- Detaillierte Anweisungen in README.md für Datenbank-Setup
-
-#### Aktualisierte Dateien
-- `.env.local` - PostgreSQL Admin-Credentials hinzugefügt
-- `.env.example` - Template für Admin-Credentials
-- `README.md` - Voraussetzungen und Setup-Schritte aktualisiert
-- `docs/PHASE_0_STATUS.md` - Datenbank-Setup-Anweisungen
-- `docs/IMPLEMENTATION_PLAN.md` - Server-Status aktualisiert
-
-#### Technische Details
-- **PostgreSQL Server:** Development Server auf ITME-SERVER:5432
-- **Datenbank:** ElectroVault_Dev (wird von Script erstellt)
-- **User:** ElectroVault_dev_user / Passwort: password
-- **Admin:** postgres / Passwort: [in .env.local gespeichert]
-
----
-
-## [0.1.0] - 2025-12-27 - Phase 0 Abgeschlossen
-
-### Hinzugefügt
-- Komplettes Monorepo-Setup mit Turborepo und pnpm
-- Vollständiges Prisma-Schema (2-Ebenen-Bauteil-Architektur)
-- i18n-Infrastruktur (LocalizedString mit Fallback-Kette)
-- Docker Compose für lokale Entwicklung
-- Keycloak Realm-Konfiguration
-- MinIO Bucket-Setup
-- 7 spezialisierte Claude-Agenten
-- Umfassende Dokumentation
-
-Siehe [`docs/PHASE_0_STATUS.md`](PHASE_0_STATUS.md) für Details.
+*Format: [Version] - YYYY-MM-DD*

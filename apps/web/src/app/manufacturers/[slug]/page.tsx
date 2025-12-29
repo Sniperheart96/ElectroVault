@@ -7,14 +7,7 @@ import { Footer } from '@/components/layout/footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/layout/breadcrumb';
 import { api, type Manufacturer, type Part } from '@/lib/api';
 
 interface PageProps {
@@ -82,21 +75,12 @@ export default async function ManufacturerDetailPage({ params }: PageProps) {
 
       <main className="flex-1 container py-8">
         {/* Breadcrumb */}
-        <Breadcrumb className="mb-6">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">{tCommon('back')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/manufacturers">{t('title')}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{manufacturer.name}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Breadcrumb
+          items={[
+            { label: t('title'), href: '/manufacturers' },
+            { label: manufacturer.name },
+          ]}
+        />
 
         {/* Manufacturer Header */}
         <div className="mb-8">

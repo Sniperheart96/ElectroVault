@@ -9,6 +9,7 @@ import {
   uploadFile,
   deleteFile,
   getPresignedUrl,
+  getPublicLogoUrl,
   BUCKET_NAME,
 } from '../lib/minio';
 import {
@@ -38,6 +39,24 @@ const FILE_LIMITS = {
     allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'],
     allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.pdf'],
   },
+  LOGO: {
+    maxSize: 5 * 1024 * 1024, // 5 MB
+    allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'],
+    allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.svg'],
+  },
+  MODEL_3D: {
+    maxSize: 50 * 1024 * 1024, // 50 MB
+    allowedMimeTypes: [
+      'application/octet-stream', // .step, .stp, .stl
+      'model/step',
+      'model/stl',
+      'model/x.step-xml+zip',
+      'application/sla', // STL
+      'model/vrml', // .wrl
+      'application/iges', // .igs, .iges
+    ],
+    allowedExtensions: ['.step', '.stp', '.stl', '.wrl', '.iges', '.igs', '.3mf', '.obj'],
+  },
   OTHER: {
     maxSize: 50 * 1024 * 1024, // 50 MB
     allowedMimeTypes: [], // Alle erlaubt
@@ -59,10 +78,10 @@ export interface FileMetadata {
   bucketName: string;
   bucketPath: string;
   description?: string | null;
-  version?: string | null;
-  language?: string | null;
+  languages: string[];  // Array für Mehrfachauswahl (z.B. ["de", "en"])
   componentId?: string | null;
   partId?: string | null;
+  packageId?: string | null;
   uploadedById: string;
   createdAt: Date;
   updatedAt: Date;
@@ -73,10 +92,20 @@ export interface UploadOptions {
   userId: string;
   componentId?: string;
   partId?: string;
+  packageId?: string;
   description?: string;
-  version?: string;
-  language?: string;
+  languages?: string[];  // Array für Mehrfachauswahl
 }
+
+/**
+ * Konfigurations-Typ für Datei-Limits
+ * Zentral definiert, um Duplikation zu vermeiden
+ */
+type LimitsConfig = {
+  maxSize: number;
+  allowedMimeTypes: string[];
+  allowedExtensions: string[];
+};
 
 // ============================================
 // HELPER FUNKTIONEN
@@ -119,25 +148,22 @@ function generateBucketPath(
 
 /**
  * Validiert eine Datei gegen die FileType-spezifischen Limits
+ * @param fileTypeOrLabel - FileType enum oder ein beschreibendes Label (z.B. 'images', 'logos')
  */
 function validateFile(
   buffer: Buffer,
   filename: string,
   mimeType: string,
-  fileType: FileType
+  fileTypeOrLabel: FileType | keyof typeof FILE_LIMITS,
+  label?: string
 ): void {
-  type LimitsConfig = {
-    maxSize: number;
-    allowedMimeTypes: string[];
-    allowedExtensions: string[];
-  };
-
-  const limits: LimitsConfig = FILE_LIMITS[fileType as keyof typeof FILE_LIMITS];
+  const limits: LimitsConfig = FILE_LIMITS[fileTypeOrLabel as keyof typeof FILE_LIMITS];
+  const displayLabel = label || fileTypeOrLabel;
 
   // Dateigröße prüfen
   if (buffer.length > limits.maxSize) {
     throw new BadRequestError(
-      `File size exceeds limit of ${limits.maxSize / 1024 / 1024}MB for ${fileType}`,
+      `File size exceeds limit of ${limits.maxSize / 1024 / 1024}MB for ${displayLabel}`,
       {
         maxSize: limits.maxSize,
         actualSize: buffer.length,
@@ -148,10 +174,10 @@ function validateFile(
   // MIME-Type prüfen (wenn spezifiziert)
   if (
     limits.allowedMimeTypes.length > 0 &&
-    !(limits.allowedMimeTypes as string[]).includes(mimeType.toLowerCase())
+    !limits.allowedMimeTypes.includes(mimeType.toLowerCase())
   ) {
     throw new BadRequestError(
-      `MIME type '${mimeType}' is not allowed for ${fileType}`,
+      `MIME type '${mimeType}' is not allowed for ${displayLabel}`,
       {
         allowedMimeTypes: limits.allowedMimeTypes,
         actualMimeType: mimeType,
@@ -163,10 +189,10 @@ function validateFile(
   const ext = path.extname(filename).toLowerCase();
   if (
     limits.allowedExtensions.length > 0 &&
-    !(limits.allowedExtensions as string[]).includes(ext)
+    !limits.allowedExtensions.includes(ext)
   ) {
     throw new BadRequestError(
-      `File extension '${ext}' is not allowed for ${fileType}`,
+      `File extension '${ext}' is not allowed for ${displayLabel}`,
       {
         allowedExtensions: limits.allowedExtensions,
         actualExtension: ext,
@@ -189,16 +215,17 @@ class FileService {
     mimeType: string,
     options: UploadOptions
   ): Promise<FileMetadata> {
-    const { fileType, userId, componentId, partId, description, version, language } =
+    const { fileType, userId, componentId, partId, packageId, description, languages } =
       options;
 
     // Validierung
     validateFile(buffer, filename, mimeType, fileType);
 
-    // Prüfe dass entweder componentId oder partId gesetzt ist (optional)
-    if (componentId && partId) {
+    // Prüfe dass nur eine Verknüpfung gesetzt ist (optional)
+    const attachments = [componentId, partId, packageId].filter(Boolean);
+    if (attachments.length > 1) {
       throw new BadRequestError(
-        'File can only be attached to either a component or a part, not both'
+        'File can only be attached to one entity (component, part, or package)'
       );
     }
 
@@ -215,6 +242,7 @@ class FileService {
     });
 
     // Metadaten in Datenbank speichern
+    // WICHTIG: BUCKET_NAME ist ein Proxy-Objekt, daher muss es explizit in einen String konvertiert werden
     const fileAttachment = await prisma.fileAttachment.create({
       data: {
         originalName: filename,
@@ -222,14 +250,14 @@ class FileService {
         mimeType,
         size: buffer.length,
         fileType,
-        bucketName: BUCKET_NAME,
+        bucketName: BUCKET_NAME.toString(),
         bucketPath,
         uploadedById: userId,
         componentId: componentId || undefined,
         partId: partId || undefined,
+        packageId: packageId || undefined,
         description: description || undefined,
-        version: version || undefined,
-        language: language || undefined,
+        languages: languages || [],
       },
     });
 
@@ -238,20 +266,23 @@ class FileService {
 
   /**
    * Lädt ein Datasheet hoch (Shortcut)
+   * Sprachen sind Pflichtfeld (Mehrfachauswahl)
    */
   async uploadDatasheet(
     buffer: Buffer,
     filename: string,
     mimeType: string,
     userId: string,
-    options?: {
+    options: {
       partId?: string;
       componentId?: string;
-      version?: string;
-      language?: string;
+      languages: string[];  // Pflichtfeld - mindestens eine Sprache
       description?: string;
     }
   ): Promise<FileMetadata> {
+    if (!options.languages || options.languages.length === 0) {
+      throw new BadRequestError('At least one language must be specified for datasheets');
+    }
     return this.uploadFile(buffer, filename, mimeType, {
       fileType: FileType.DATASHEET,
       userId,
@@ -296,6 +327,51 @@ class FileService {
   ): Promise<FileMetadata> {
     return this.uploadFile(buffer, filename, mimeType, {
       fileType: FileType.PINOUT,
+      userId,
+      ...options,
+    });
+  }
+
+  /**
+   * Lädt ein 3D-Modell hoch (Shortcut)
+   * Für Package-Gehäuse: .step, .stl, .3mf, etc.
+   */
+  async upload3DModel(
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    userId: string,
+    options: {
+      packageId: string;
+      description?: string;
+    }
+  ): Promise<FileMetadata> {
+    return this.uploadFile(buffer, filename, mimeType, {
+      fileType: FileType.MODEL_3D,
+      userId,
+      ...options,
+    });
+  }
+
+  /**
+   * Lädt eine sonstige Datei hoch (Shortcut)
+   * Für Applikationshinweise, Zusatzdokumente, etc.
+   * Sprachen sind optional (Mehrfachauswahl)
+   */
+  async uploadOther(
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    userId: string,
+    options?: {
+      partId?: string;
+      componentId?: string;
+      description?: string;
+      languages?: string[];  // Optional - Mehrfachauswahl
+    }
+  ): Promise<FileMetadata> {
+    return this.uploadFile(buffer, filename, mimeType, {
+      fileType: FileType.OTHER,
       userId,
       ...options,
     });
@@ -385,6 +461,19 @@ class FileService {
   }
 
   /**
+   * Holt alle Files eines Packages
+   */
+  async getFilesByPackage(packageId: string): Promise<FileMetadata[]> {
+    return prisma.fileAttachment.findMany({
+      where: {
+        packageId,
+        deletedAt: null,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  /**
    * Holt alle Files eines Users
    */
   async getFilesByUser(userId: string): Promise<FileMetadata[]> {
@@ -417,6 +506,7 @@ class FileService {
       DATASHEET: 0,
       IMAGE: 0,
       PINOUT: 0,
+      MODEL_3D: 0,
       OTHER: 0,
     };
 
@@ -425,6 +515,103 @@ class FileService {
     });
 
     return { totalFiles, totalSize, byFileType };
+  }
+
+  /**
+   * Lädt ein Part-Bild hoch
+   * KEINE FileAttachment wird erstellt - nur Upload und URL-Rückgabe
+   * Es gibt nur ein Bild pro Part (wird bei neuem Upload überschrieben)
+   */
+  async uploadPartImage(
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    partId: string
+  ): Promise<{ imageUrl: string }> {
+    // Validierung mit IMAGE-Limits
+    validateFile(buffer, filename, mimeType, 'IMAGE', 'images');
+
+    // Dateinamen sanitieren
+    const sanitizedName = sanitizeFilename(filename);
+
+    // Bucket-Pfad: images/parts/{partId}_{uuid}_{filename}
+    const uuid = crypto.randomUUID();
+    const bucketPath = `images/parts/${partId}_${uuid}_${sanitizedName}`;
+
+    // Upload zu MinIO
+    await uploadFile(bucketPath, buffer, {
+      'Content-Type': mimeType,
+      'Cache-Control': 'public, max-age=604800', // 7 Tage
+    });
+
+    // Öffentliche URL generieren (7 Tage Gültigkeit)
+    const imageUrl = await getPublicLogoUrl(bucketPath);
+
+    return { imageUrl };
+  }
+
+  /**
+   * Lädt ein Hersteller-Logo hoch
+   * KEINE FileAttachment wird erstellt - nur Upload und URL-Rückgabe
+   */
+  async uploadManufacturerLogo(
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    manufacturerId: string
+  ): Promise<{ logoUrl: string }> {
+    // Validierung mit LOGO-Limits
+    validateFile(buffer, filename, mimeType, 'LOGO', 'logos');
+
+    // Dateinamen sanitieren
+    const sanitizedName = sanitizeFilename(filename);
+
+    // Bucket-Pfad: logos/manufacturers/{manufacturerId}_{uuid}_{filename}
+    const uuid = crypto.randomUUID();
+    const bucketPath = `logos/manufacturers/${manufacturerId}_${uuid}_${sanitizedName}`;
+
+    // Upload zu MinIO
+    await uploadFile(bucketPath, buffer, {
+      'Content-Type': mimeType,
+      'Cache-Control': 'public, max-age=604800', // 7 Tage
+    });
+
+    // Öffentliche URL generieren (7 Tage Gültigkeit)
+    const logoUrl = await getPublicLogoUrl(bucketPath);
+
+    return { logoUrl };
+  }
+
+  /**
+   * Lädt ein Kategorie-Icon hoch
+   * KEINE FileAttachment wird erstellt - nur Upload und URL-Rückgabe
+   */
+  async uploadCategoryIcon(
+    buffer: Buffer,
+    filename: string,
+    mimeType: string,
+    categoryId: string
+  ): Promise<{ iconUrl: string }> {
+    // Validierung mit LOGO-Limits (gleiche wie bei Logos)
+    validateFile(buffer, filename, mimeType, 'LOGO', 'icons');
+
+    // Dateinamen sanitieren
+    const sanitizedName = sanitizeFilename(filename);
+
+    // Bucket-Pfad: images/categories/{categoryId}_{uuid}_{filename}
+    const uuid = crypto.randomUUID();
+    const bucketPath = `images/categories/${categoryId}_${uuid}_${sanitizedName}`;
+
+    // Upload zu MinIO
+    await uploadFile(bucketPath, buffer, {
+      'Content-Type': mimeType,
+      'Cache-Control': 'public, max-age=604800', // 7 Tage
+    });
+
+    // Öffentliche URL generieren (7 Tage Gültigkeit)
+    const iconUrl = await getPublicLogoUrl(bucketPath);
+
+    return { iconUrl };
   }
 }
 

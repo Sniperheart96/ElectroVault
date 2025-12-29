@@ -47,26 +47,6 @@ export class PinService {
   }
 
   /**
-   * Gibt einen einzelnen Pin zurück
-   */
-  async getPinById(id: string): Promise<PinMapping> {
-    const pin = await prisma.pinMapping.findUnique({
-      where: { id },
-    });
-
-    if (!pin) {
-      throw new NotFoundError('PinMapping', id);
-    }
-
-    return {
-      ...pin,
-      pinFunction: pin.pinFunction as LocalizedString | null,
-      maxVoltage: pin.maxVoltage ? Number(pin.maxVoltage) : null,
-      maxCurrent: pin.maxCurrent ? Number(pin.maxCurrent) : null,
-    };
-  }
-
-  /**
    * Erstellt einen neuen Pin
    */
   async createPin(

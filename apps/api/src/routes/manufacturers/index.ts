@@ -9,6 +9,13 @@ import {
   CreateManufacturerSchema,
   UpdateManufacturerSchema,
 } from '@electrovault/schemas';
+import { minioClient, BUCKET_NAME } from '../../lib/minio';
+import {
+  NotFoundError,
+  transformManufacturerLogoUrls,
+  transformManufacturerLogoUrl,
+  getImageContentType,
+} from '../../lib';
 
 /**
  * Manufacturer Routes Plugin
@@ -24,6 +31,10 @@ export default async function manufacturerRoutes(
   app.get('/', async (request, reply) => {
     const query = ManufacturerListQuerySchema.parse(request.query);
     const result = await manufacturerService.list(query);
+
+    // Ersetze MinIO-URLs mit API-Proxy-URLs
+    result.data = transformManufacturerLogoUrls(result.data);
+
     return reply.send(result);
   });
 
@@ -41,7 +52,9 @@ export default async function manufacturerRoutes(
       }
 
       const manufacturers = await manufacturerService.search(q, limit);
-      return reply.send({ data: manufacturers });
+
+      // Ersetze MinIO-URLs mit API-Proxy-URLs
+      return reply.send({ data: transformManufacturerLogoUrls(manufacturers) });
     }
   );
 
@@ -60,7 +73,8 @@ export default async function manufacturerRoutes(
       ? await manufacturerService.getById(id)
       : await manufacturerService.getBySlug(id);
 
-    return reply.send({ data: manufacturer });
+    // Ersetze MinIO-URL mit API-Proxy-URL
+    return reply.send({ data: transformManufacturerLogoUrl(manufacturer) });
   });
 
   /**
@@ -115,6 +129,56 @@ export default async function manufacturerRoutes(
       const { id } = request.params;
       await manufacturerService.delete(id);
       return reply.code(204).send();
+    }
+  );
+
+  /**
+   * GET /manufacturers/:id/logo
+   * Logo-Proxy: Holt das Logo von MinIO und sendet es an den Client
+   * Löst CORS-Probleme, da alle Requests über die gleiche Origin laufen
+   */
+  app.get<{ Params: { id: string } }>(
+    '/:id/logo',
+    async (request, reply) => {
+      const { id } = request.params;
+
+      // Hersteller abrufen um logoUrl zu bekommen
+      const isUuid =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+      const manufacturer = isUuid
+        ? await manufacturerService.getById(id)
+        : await manufacturerService.getBySlug(id);
+
+      if (!manufacturer.logoUrl) {
+        throw new NotFoundError('Logo', id);
+      }
+
+      // Extrahiere Bucket-Pfad aus logoUrl
+      // logoUrl Format: http://192.168.178.80:9000/electrovault-files/logos/manufacturers/...
+      const url = new URL(manufacturer.logoUrl);
+      const pathParts = url.pathname.split('/');
+      // Entferne leeren ersten Teil und Bucket-Namen
+      const bucketPath = pathParts.slice(2).join('/'); // logos/manufacturers/...
+
+      try {
+        // Hole das Objekt von MinIO
+        const stream = await minioClient.getObject(BUCKET_NAME.toString(), bucketPath);
+
+        // Setze Header für Cross-Origin Zugriff
+        // WICHTIG: Cross-Origin-Resource-Policy muss 'cross-origin' sein,
+        // damit das Frontend (Port 3000) Bilder von der API (Port 3001) laden kann
+        reply.header('Content-Type', getImageContentType(bucketPath));
+        reply.header('Cache-Control', 'public, max-age=604800'); // 7 Tage
+        reply.header('Cross-Origin-Resource-Policy', 'cross-origin');
+        reply.header('Access-Control-Allow-Origin', '*');
+
+        // Streame das Bild an den Client
+        return reply.send(stream);
+      } catch (error) {
+        console.error('[Manufacturer Logo Proxy] Failed to fetch logo:', error);
+        throw new NotFoundError('Logo file', bucketPath);
+      }
     }
   );
 }

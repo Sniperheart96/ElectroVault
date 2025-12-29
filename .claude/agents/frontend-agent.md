@@ -82,6 +82,18 @@ apps/web/
 │   │   │       └── page.tsx
 │   │   ├── search/               # Suche
 │   │   │   └── page.tsx
+│   │   ├── impressum/            # Impressum
+│   │   │   └── page.tsx
+│   │   ├── datenschutz/          # Datenschutz
+│   │   │   └── page.tsx
+│   │   ├── about/                # Über ElectroVault
+│   │   │   └── page.tsx
+│   │   ├── help/                 # Hilfe
+│   │   │   └── page.tsx
+│   │   ├── contact/              # Kontakt
+│   │   │   └── page.tsx
+│   │   ├── packages/             # Gehäuse-Katalog
+│   │   │   └── page.tsx
 │   │   ├── admin/                # Admin-Bereich
 │   │   │   ├── layout.tsx        # Admin-Layout mit Sidebar
 │   │   │   ├── page.tsx          # Admin-Dashboard

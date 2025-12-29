@@ -43,7 +43,7 @@ export class ComponentService {
 
     while (currentCategoryId) {
       categoryIds.push(currentCategoryId);
-      const category = await prisma.categoryTaxonomy.findUnique({
+      const category: { parentId: string | null } | null = await prisma.categoryTaxonomy.findUnique({
         where: { id: currentCategoryId },
         select: { parentId: true },
       });

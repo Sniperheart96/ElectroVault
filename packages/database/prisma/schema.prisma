@@ -142,6 +142,7 @@ enum FileType {
   DATASHEET
   IMAGE
   PINOUT
+  MODEL_3D    // 3D-Modelle (STEP, STL, etc.)
   OTHER
 }
 
@@ -233,7 +234,8 @@ model CategoryTaxonomy {
   children        CategoryTaxonomy[] @relation("CategoryHierarchy")
 
   description     Json?    // LocalizedString
-  iconUrl         String?  @db.VarChar(512)
+  levelLabel      Json?    // LocalizedString - Bezeichnung für Unterkategorien (z.B. "Typ", "Klasse", "Familie")
+  iconUrl         String?  @db.VarChar(512)  // MinIO-URL für hochgeladenes Icon
   sortOrder       Int      @default(0)
   isActive        Boolean  @default(true)
 
@@ -323,6 +325,7 @@ model PackageMaster {
 
   parts           ManufacturerPart[]
   ecadFootprints  EcadFootprint[]
+  files           FileAttachment[]
 
   description     String?  @db.Text
 
@@ -439,6 +442,9 @@ model ManufacturerPart {
   // Compliance
   rohsCompliant   Boolean?
   reachCompliant  Boolean?
+
+  // Vorschaubild (wie logoUrl bei Manufacturer)
+  imageUrl        String?  @db.VarChar(512)
 
   // Militär / Industrie
   nsn             String?  @db.VarChar(13)    // NATO Stock Number
@@ -654,15 +660,17 @@ model FileAttachment {
 
   // Optional: Zusätzliche Metadaten
   description     String?  @db.Text
-  version         String?  @db.VarChar(50)
-  language        String?  @db.VarChar(10)
+  languages       String[] @default([])  // Sprachen als Array für Mehrfachauswahl (z.B. ["de", "en"])
 
-  // Verknüpfungen (optional - ein Attachment kann zu Component oder Part gehören)
+  // Verknüpfungen (optional - ein Attachment kann zu Component, Part oder Package gehören)
   componentId     String?  @db.Uuid
   component       CoreComponent? @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
   partId          String?  @db.Uuid
   part            ManufacturerPart? @relation(fields: [partId], references: [id], onDelete: Cascade)
+
+  packageId       String?  @db.Uuid
+  package         PackageMaster? @relation(fields: [packageId], references: [id], onDelete: Cascade)
 
   // Audit
   uploadedById    String   @db.Uuid
@@ -675,6 +683,7 @@ model FileAttachment {
 
   @@index([componentId])
   @@index([partId])
+  @@index([packageId])
   @@index([fileType])
   @@index([uploadedById])
   @@index([deletedAt])

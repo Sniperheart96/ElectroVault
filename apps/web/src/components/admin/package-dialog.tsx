@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreatePackageSchema, type CreatePackageInput } from '@electrovault/schemas';
@@ -28,12 +28,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { type Package } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
+import { Package3DModels } from '@/components/admin/package-3d-models';
 
 interface PackageDialogProps {
   open: boolean;
@@ -51,6 +58,7 @@ export function PackageDialog({
   const api = useApi();
   const { toast } = useToast();
   const isEdit = !!packageData;
+  const [activeTab, setActiveTab] = useState('details');
 
   const form = useForm<CreatePackageInput>({
     resolver: zodResolver(CreatePackageSchema) as never,
@@ -108,9 +116,15 @@ export function PackageDialog({
     }
   };
 
+  useEffect(() => {
+    if (open) {
+      setActiveTab('details');
+    }
+  }, [open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{isEdit ? 'Bauform bearbeiten' : 'Neue Bauform'}</DialogTitle>
           <DialogDescription>
@@ -118,8 +132,18 @@ export function PackageDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="details">Stammdaten</TabsTrigger>
+            <TabsTrigger value="models" disabled={!isEdit}>
+              3D-Modelle
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Stammdaten Tab */}
+          <TabsContent value="details" className="mt-4">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -339,16 +363,39 @@ export function PackageDialog({
               )}
             />
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Abbrechen
-              </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                    Abbrechen
+                  </Button>
+                  <Button type="submit" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </TabsContent>
+
+          {/* 3D-Modelle Tab */}
+          <TabsContent value="models" className="mt-4">
+            {!isEdit ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Speichern Sie zuerst die Bauform, um 3D-Modelle hochzuladen.</p>
+              </div>
+            ) : packageData ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  3D-Modelle für diese Bauform (STEP, STL, 3MF, OBJ, etc.)
+                </p>
+                <Package3DModels packageId={packageData.id} />
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => onOpenChange(false)}>
+                    Schließen
+                  </Button>
+                </DialogFooter>
+              </div>
+            ) : null}
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

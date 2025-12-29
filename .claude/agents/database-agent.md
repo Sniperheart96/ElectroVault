@@ -263,7 +263,8 @@ model CategoryTaxonomy {
   children        CategoryTaxonomy[] @relation("CategoryHierarchy")
 
   description     Json?    // LocalizedString
-  iconUrl         String?  @db.VarChar(512)
+  levelLabel      Json?    // LocalizedString - Bezeichnung für Unterkategorien (z.B. "Typ", "Klasse", "Familie")
+  iconUrl         String?  @db.VarChar(512)  // MinIO-URL für hochgeladenes Icon
   sortOrder       Int      @default(0)
   isActive        Boolean  @default(true)
 

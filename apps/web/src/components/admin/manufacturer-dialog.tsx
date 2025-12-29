@@ -37,6 +37,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 import { cn } from '@/lib/utils';
 
+// API Base URL für Proxy-Endpunkte
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+
 interface ManufacturerDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -55,7 +58,8 @@ export function ManufacturerDialog({
   const isEdit = !!manufacturer;
 
   // Logo upload state
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
   const [logoUploading, setLogoUploading] = useState(false);
   const [logoDragging, setLogoDragging] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -82,11 +86,23 @@ export function ManufacturerDialog({
         defunctYear: manufacturer.defunctYear || undefined,
         description: manufacturer.description || { de: '', en: '' },
       });
-      setLogoUrl(manufacturer.logoUrl || null);
+      // Verwende Proxy-URL für die Vorschau, um CORS-Probleme zu vermeiden
+      setLogoPreviewUrl(manufacturer.logoUrl ? `${API_BASE_URL}/manufacturers/${manufacturer.id}/logo` : null);
+      setLogoFile(null);
     } else {
-      setLogoUrl(null);
+      setLogoPreviewUrl(null);
+      setLogoFile(null);
     }
   }, [manufacturer, form]);
+
+  // Cleanup object URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (logoPreviewUrl && logoPreviewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(logoPreviewUrl);
+      }
+    };
+  }, [logoPreviewUrl]);
 
   // Logo upload handler
   const handleLogoUpload = async (file: File) => {
@@ -111,27 +127,36 @@ export function ManufacturerDialog({
       return;
     }
 
-    setLogoUploading(true);
-    try {
-      // For now, we'll create a data URL for preview
-      // The actual upload will happen when the form is submitted
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = e.target?.result as string;
-        setLogoUrl(dataUrl);
-        // Note: In production, you would upload to MinIO and get a URL
-        // For now, we'll store the data URL (works for small images)
-        form.setValue('logoUrl', dataUrl);
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
-      toast({
-        title: 'Fehler',
-        description: 'Logo konnte nicht hochgeladen werden.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLogoUploading(false);
+    // Bei bestehendem Hersteller: Sofort hochladen
+    if (isEdit && manufacturer) {
+      setLogoUploading(true);
+      try {
+        const result = await api.uploadManufacturerLogo(file, manufacturer.id);
+        const uploadedUrl = result.data.logoUrl;
+
+        // Verwende Proxy-URL für die Vorschau, um CORS-Probleme zu vermeiden
+        // Füge timestamp hinzu um Browser-Cache zu umgehen nach Upload
+        setLogoPreviewUrl(`${API_BASE_URL}/manufacturers/${manufacturer.id}/logo?t=${Date.now()}`);
+        form.setValue('logoUrl', uploadedUrl);
+
+        toast({
+          title: 'Erfolg',
+          description: 'Logo wurde hochgeladen.',
+        });
+      } catch (error) {
+        toast({
+          title: 'Fehler',
+          description: 'Logo konnte nicht hochgeladen werden.',
+          variant: 'destructive',
+        });
+      } finally {
+        setLogoUploading(false);
+      }
+    } else {
+      // Bei neuem Hersteller: Nur File speichern und lokale Vorschau erstellen
+      setLogoFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setLogoPreviewUrl(previewUrl);
     }
   };
 
@@ -144,7 +169,30 @@ export function ManufacturerDialog({
           description: 'Hersteller wurde aktualisiert.',
         });
       } else {
-        await api.createManufacturer(data);
+        // Neuer Hersteller: Erst erstellen, dann Logo hochladen falls vorhanden
+        const result = await api.createManufacturer(data);
+        const newManufacturerId = result.data.id;
+
+        // Logo hochladen falls ausgewählt
+        if (logoFile && newManufacturerId) {
+          try {
+            const uploadResult = await api.uploadManufacturerLogo(logoFile, newManufacturerId);
+            const uploadedUrl = uploadResult.data.logoUrl;
+
+            // Hersteller mit logoUrl aktualisieren
+            await api.updateManufacturer(newManufacturerId, {
+              ...data,
+              logoUrl: uploadedUrl,
+            });
+          } catch (uploadError) {
+            toast({
+              title: 'Warnung',
+              description: 'Hersteller erstellt, aber Logo-Upload fehlgeschlagen.',
+              variant: 'destructive',
+            });
+          }
+        }
+
         toast({
           title: 'Erfolg',
           description: 'Hersteller wurde erstellt.',
@@ -278,11 +326,11 @@ export function ManufacturerDialog({
 
                   {logoUploading ? (
                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                  ) : logoUrl ? (
+                  ) : logoPreviewUrl ? (
                     <>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={logoUrl}
+                        src={logoPreviewUrl}
                         alt="Logo"
                         className="w-full h-full object-contain p-1"
                       />
@@ -290,7 +338,8 @@ export function ManufacturerDialog({
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setLogoUrl(null);
+                          setLogoPreviewUrl(null);
+                          setLogoFile(null);
                           form.setValue('logoUrl', undefined);
                         }}
                         className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full shadow"

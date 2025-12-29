@@ -117,11 +117,23 @@ export async function getPresignedUrl(
   expirySeconds: number = 24 * 60 * 60
 ): Promise<string> {
   try {
-    return await getMinioClient().presignedGetObject(
+    const url = await getMinioClient().presignedGetObject(
       getBucketName(),
       bucketPath,
       expirySeconds
     );
+
+    // Ersetze localhost mit der öffentlichen URL wenn konfiguriert
+    // Dies ist nötig, da der MinIO-Client intern mit localhost arbeitet,
+    // aber externe Clients die Server-IP benötigen
+    const publicEndpoint = process.env.MINIO_PUBLIC_ENDPOINT;
+    if (publicEndpoint) {
+      const endpoint = process.env.MINIO_ENDPOINT || 'localhost';
+      const port = process.env.MINIO_PORT || '9000';
+      return url.replace(`${endpoint}:${port}`, publicEndpoint);
+    }
+
+    return url;
   } catch (error) {
     console.error(`[MinIO] Failed to generate presigned URL:`, error);
     throw new ApiError(
@@ -227,4 +239,14 @@ export async function getFileMetadata(
       error
     );
   }
+}
+
+/**
+ * Generiert eine öffentliche URL für Logos mit langer Gültigkeit (7 Tage)
+ * @param bucketPath - Pfad im Bucket
+ */
+export async function getPublicLogoUrl(bucketPath: string): Promise<string> {
+  // 7 Tage Gültigkeit für Logo-URLs
+  const expirySeconds = 7 * 24 * 60 * 60;
+  return getPresignedUrl(bucketPath, expirySeconds);
 }

@@ -18,11 +18,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 import type { ModerationQueueItem, ModerationStats, LocalizedString, Component, Part } from '@/lib/api';
 import { ModerationActions } from '@/components/admin/moderation-actions';
+import { getLocalizedText as getLocalized, type LocalizedString as SharedLocalizedString } from '@electrovault/shared';
 
 function getLocalizedText(text: LocalizedString | string | undefined): string {
   if (!text) return '[MISSING]';
   if (typeof text === 'string') return text;
-  return text.de || text.en || Object.values(text)[0] || '[MISSING]';
+  return getLocalized(text as SharedLocalizedString, 'de');
 }
 
 function formatDate(dateString: string): string {

@@ -119,7 +119,6 @@ Folgende Methoden wurden zum ApiClient hinzugefügt:
 ```typescript
 // Pin Management
 getPinsByPartId(partId: string): Promise<ApiResponse<Pin[]>>
-getPin(id: string): Promise<ApiResponse<Pin>>
 createPin(partId: string, data: CreatePinInput): Promise<ApiResponse<Pin>>
 bulkCreatePins(partId: string, pins: CreatePinInput[]): Promise<ApiResponse<Pin[]>>
 updatePin(id: string, data: UpdatePinInput): Promise<ApiResponse<Pin>>
@@ -128,12 +127,13 @@ reorderPins(partId: string, pins: ReorderPinInput[]): Promise<ApiResponse<Pin[]>
 deleteAllPins(partId: string): Promise<void>
 ```
 
+> **Hinweis:** `getPin(id)` wurde entfernt, da Pins immer über den Part geladen werden (`getPinsByPartId`). Für Edit/Delete wird nur die Pin-ID benötigt.
+
 ### Backend Endpoints
 
 Die UI nutzt folgende Backend-Endpoints:
 
 - `GET /parts/:partId/pins` - Alle Pins eines Parts
-- `GET /pins/:id` - Einzelner Pin
 - `POST /parts/:partId/pins` - Neuen Pin erstellen
 - `POST /parts/:partId/pins/bulk` - Mehrere Pins erstellen
 - `PATCH /pins/:id` - Pin aktualisieren
@@ -234,23 +234,8 @@ Für ICs mit vielen Pins ist der Bulk-Import effizienter als einzelnes Hinzufüg
 - Ungültige Bulk-Import-Daten zeigen spezifische Fehlermeldung
 - Keine Dummy-Daten im Fehlerfall (siehe CLAUDE.md)
 
-## Zukünftige Erweiterungen
-
-Mögliche Features für zukünftige Versionen:
-
-- [ ] Visueller Pin-Layout-Editor (grafische Darstellung des Packages)
-- [ ] Pin-Gruppen (z.B. Datenbus D0-D7)
-- [ ] Import aus ECAD-Formaten (Eagle, KiCad)
-- [ ] Pin-Äquivalenzen (z.B. mehrere GND-Pins)
-- [ ] Pin-Validierung gegen Package-Definition
-
 ## Verwandte Dokumentation
 
-- [Database Schema - Pin-Mapping](../database-schema.md#pinmapping)
-- [API Routes - Pins](../../apps/api/src/routes/pins/index.ts)
-- [Zod Schemas - Pins](../../packages/schemas/src/pin.ts)
-
----
-
-*Erstellt: 2025-12-28*
-*Version: 1.0*
+- [Database Schema](../architecture/database-schema.md)
+- [API-Endpunkte](api-endpoints.md)
+- [Pin-Mapping Anleitung](../guides/pin-mapping.md)

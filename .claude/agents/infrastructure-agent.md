@@ -29,7 +29,7 @@ Server: Windows Server 2019 (ITME-SERVER)
 Arbeitsverzeichnis: C:\Users\Administrator.ITME-SERVER\Documents\Projekte\ElectroVault
 
 Lokale Dienste:
-├── PostgreSQL 15
+├── PostgreSQL 18
 │   ├── Port: 5432 (localhost)
 │   ├── Datenbank: ElectroVault_Dev
 │   └── User: ElectroVault_dev_user
@@ -85,17 +85,17 @@ Lokale Dienste:
 Get-Service postgresql*
 
 # Service starten/stoppen
-Start-Service postgresql-x64-15
-Stop-Service postgresql-x64-15
+Start-Service postgresql-x64-18
+Stop-Service postgresql-x64-18
 
 # Verbindung testen
-& "C:\Program Files\PostgreSQL\15\bin\psql.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -c "SELECT 1"
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -c "SELECT 1"
 
 # Backup erstellen
-& "C:\Program Files\PostgreSQL\15\bin\pg_dump.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -F c -f "D:\Backups\electrovault_$(Get-Date -Format 'yyyy-MM-dd').dump"
+& "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -F c -f "D:\Backups\electrovault_$(Get-Date -Format 'yyyy-MM-dd').dump"
 
 # Backup wiederherstellen
-& "C:\Program Files\PostgreSQL\15\bin\pg_restore.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -c "D:\Backups\electrovault_2024-01-15.dump"
+& "C:\Program Files\PostgreSQL\18\bin\pg_restore.exe" -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -c "D:\Backups\electrovault_2024-01-15.dump"
 ```
 
 ### Docker Container
@@ -179,7 +179,7 @@ $timestamp = Get-Date -Format "yyyy-MM-dd_HHmmss"
 $backupDir = "D:\Backups\ElectroVault"
 
 # PostgreSQL Backup
-$pgDump = "C:\Program Files\PostgreSQL\15\bin\pg_dump.exe"
+$pgDump = "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe"
 & $pgDump -h localhost -U ElectroVault_dev_user -d ElectroVault_Dev -F c -f "$backupDir\db_$timestamp.dump"
 
 # MinIO Daten (Docker Volume)

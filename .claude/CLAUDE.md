@@ -42,22 +42,14 @@ ManufacturerPart (Konkretes Produkt)
 
 ### Lokalisierung (LocalizedString)
 
-Alle Freitextfelder werden als JSON gespeichert:
+Alle Freitextfelder werden als JSON gespeichert.
 
-```typescript
-type LocalizedString = {
-  en?: string;
-  de?: string;
-  fr?: string;
-  es?: string;
-  zh?: string;
-};
+**Details:** Siehe [docs/architecture/i18n.md](docs/architecture/i18n.md)
 
-// Beispiel
-{ "de": "Kondensator", "en": "Capacitor" }
-```
-
-**Fallback-Kette:** Angefragte Sprache → Englisch → Erste verfügbare
+**Kurz:**
+- Type: `LocalizedString = { en?: string; de?: string; fr?: string; es?: string; zh?: string }`
+- Beispiel: `{ "de": "Kondensator", "en": "Capacitor" }`
+- Fallback: Angefragte Sprache → Englisch → Erste verfügbare
 
 ### Kategorie-Hierarchie
 
@@ -221,16 +213,9 @@ WebFetch(
 
 **Keine Authentifizierung nötig** für öffentliche Repository-Daten (Actions, Issues, PRs).
 
-### CI/CD Status
-
-- **Aktive Jobs:** Unit Tests, Integration Tests
-- **Deaktiviert (Phase 0):** E2E Tests, Lint & Type Check
-  - Werden in Phase 1 aktiviert, sobald Apps existieren
-
 ### Branches
 
 - `main` - Production-ready Code
-- `develop` - Development Branch (TODO: erstellen)
 
 ---
 
@@ -312,66 +297,6 @@ Spezialisierte Agenten für verschiedene Aufgabenbereiche:
 
 ---
 
-## Agenten-Workflow: Dokumentations-Meldepflicht
-
-**KRITISCH:** Nach jeder abgeschlossenen Arbeit MUSS der Documentation Agent informiert werden!
-
-### Ablauf
-
-```
-1. Agent erledigt Aufgabe (z.B. API Agent implementiert neuen Endpoint)
-2. Agent meldet an Documentation Agent:
-   - Was wurde implementiert?
-   - Welche Schnittstellen (APIs, Enums, Types)?
-   - Welche Namenskonventionen?
-   - Welche Phase betrifft es?
-3. Documentation Agent aktualisiert:
-   - Phasen-Dokument (Status)
-   - Feature-Dokumentation
-   - Schnittstellen-Glossar
-   - CHANGELOG
-```
-
-### Meldungs-Template
-
-```markdown
-## Meldung an Documentation Agent
-
-**Agent:** [api|database|frontend|auth|infrastructure|testing|component-data]
-**Phase:** [0-5]
-**Typ:** [Feature|Bugfix|Refactoring|Schema-Änderung|Security-Fix]
-
-### Zusammenfassung
-[1-2 Sätze was gemacht wurde]
-
-### Implementierte Features
-- Feature 1: [Beschreibung]
-
-### Neue/Geänderte Schnittstellen
-| Name | Typ | Beschreibung |
-|------|-----|--------------|
-| POST /api/v1/example | API | Beispiel |
-| ExampleEnum | Enum | WERT_1, WERT_2 |
-
-### Namenskonventionen verwendet
-| Begriff | Deutsch | Englisch | Kontext |
-|---------|---------|----------|---------|
-| Example | Beispiel | Example | Kontext |
-
-### Betroffene Dateien
-- path/to/file.ts (neu/geändert)
-```
-
-### Warum ist das wichtig?
-
-1. **Konsistente Dokumentation** - Alles wird an der richtigen Stelle dokumentiert
-2. **Namenskonventionen** - Einheitliche Begriffe über alle Agenten
-3. **Schnittstellen-Übersicht** - Zentrale Referenz für APIs, Enums, Types
-4. **Phasen-Tracking** - Status der Implementierung immer aktuell
-5. **CHANGELOG** - Automatische Änderungshistorie
-
----
-
 ## Wichtige Hinweise für Claude Code
 
 ### Direkter Server-Zugriff
@@ -435,64 +360,56 @@ netstat -ano | findstr ":5432 :8080 :9000"
 
 ---
 
-## Dokumentations-Richtlinien
+## Dokumentations-Struktur
 
-### Struktur
+Die Dokumentation beschreibt ausschließlich den **Ist-Zustand** des Projekts.
 
 ```
 docs/
-├── README.md                      # Hauptübersicht mit Links
+├── README.md                      # Einstiegspunkt & Navigation
 ├── CHANGELOG.md                   # Änderungshistorie
-├── architecture/                  # Architektur-Entscheidungen
-│   ├── tech-stack.md             # Technologie-Entscheidungen
-│   ├── i18n.md                   # Internationalisierung
-│   ├── database-schema.md        # Prisma-Schema Details
-│   └── development-environment.md # Server-Setup
-└── phases/                        # Implementierungs-Phasen
-    ├── phase-0-setup.md          # Projekt-Setup
-    ├── phase-1-database-auth.md  # Datenbank & Auth
-    ├── phase-2-component-api.md  # Component API
-    ├── phase-3-frontend.md       # Frontend
-    ├── phase-4-community.md      # Community-Features
-    └── phase-5-devices.md        # Geräte-Reparatur-DB
+├── architecture/                  # System-Architektur
+│   ├── tech-stack.md             # Technologien & Libraries
+│   ├── database-schema.md        # Prisma-Schema
+│   ├── auth-keycloak.md          # Auth-Implementierung
+│   ├── i18n.md                   # Lokalisierung
+│   ├── api-helpers.md            # Backend-Helper
+│   └── frontend-components.md    # UI-Komponenten
+├── guides/                        # Anleitungen
+│   ├── development-setup.md      # Server, Credentials, Setup
+│   └── pin-mapping.md            # Pin-Mapping Nutzung
+└── reference/                     # Referenz-Material
+    ├── api-endpoints.md          # REST-API Übersicht
+    ├── pin-mapping-ui.md         # Pin-Mapping UI-Komponenten
+    └── known-issues.md           # Bekannte Probleme
 ```
 
 ### Dateinamen-Konventionen
 
-- **Kleinschreibung** mit Bindestrichen: `phase-1-database-auth.md`
+- **Kleinschreibung** mit Bindestrichen: `development-setup.md`
 - **Keine Unterstriche** oder CamelCase
 - **Sprechende Namen**: Inhalt beschreiben
-- **Einheitlich**: Alle Phasen-Dateien folgen dem Muster `phase-X-beschreibung.md`
 
 ### Markdown-Regeln
 
 1. **Überschriften**: Maximal 3 Ebenen (`#`, `##`, `###`)
 2. **Code-Blöcke**: Immer mit Sprach-Tag (```typescript, ```bash, etc.)
 3. **Links**: Relative Pfade zu anderen Docs
-4. **Status-Icons**: ✅ Fertig, ⏳ In Arbeit, ❌ Blockiert
-5. **Keine Emojis** in Überschriften (außer Status-Icons)
-6. **Tabellen**: Für strukturierte Daten bevorzugen
+4. **Keine Emojis** in Überschriften
+5. **Tabellen**: Für strukturierte Daten bevorzugen
 
 ### Was gehört wohin?
 
 | Inhalt | Dokument |
 |--------|----------|
 | Technologie-Entscheidungen | `architecture/tech-stack.md` |
-| i18n-Details | `architecture/i18n.md` |
 | Datenbank-Schema | `architecture/database-schema.md` |
-| Server/Credentials | `architecture/development-environment.md` |
-| Phase-spezifische Aufgaben | `phases/phase-X-*.md` |
+| Auth-Details | `architecture/auth-keycloak.md` |
+| Server/Setup | `guides/development-setup.md` |
+| API-Referenz | `reference/api-endpoints.md` |
+| Bekannte Probleme | `reference/known-issues.md` |
 | Änderungen | `CHANGELOG.md` |
-| Schnellübersicht | `docs/README.md` |
-
-### Neue Dokumentation erstellen
-
-1. Passenden Ordner wählen (`architecture/` oder `phases/`)
-2. Dateiname nach Konvention
-3. Einheitliche Struktur (Übersicht → Details → Nächste Schritte)
-4. Links zu verwandten Dokumenten am Ende
-5. In `docs/README.md` verlinken
 
 ---
 
-*Letzte Aktualisierung: 2025-12-28 (Agenten-Pflicht hinzugefügt)*
+*Letzte Aktualisierung: 2025-12-29*

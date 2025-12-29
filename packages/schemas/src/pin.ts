@@ -1,33 +1,15 @@
 /**
- * Pin Mapping Schemas - Pin-Definitionen für ManufacturerParts
+ * Pin Mapping Schemas - Input-Schemas für Pin-Operationen
+ *
+ * Hinweis: Das Response-Schema PinMappingSchema ist in part.ts definiert,
+ * da Pins immer im Kontext eines ManufacturerPart zurückgegeben werden.
  */
 import { z } from 'zod';
 import {
-  LocalizedStringNullableSchema,
   LocalizedStringNullableOptionalSchema,
   UUIDSchema,
   PinTypeSchema,
 } from './common';
-
-// ============================================
-// PIN RESPONSE SCHEMAS
-// ============================================
-
-/**
- * Pin-Mapping Response
- */
-export const PinMappingSchema = z.object({
-  id: UUIDSchema,
-  partId: UUIDSchema,
-  pinNumber: z.string(),
-  pinName: z.string(),
-  pinFunction: LocalizedStringNullableSchema,
-  pinType: PinTypeSchema.nullable(),
-  maxVoltage: z.number().nullable(),
-  maxCurrent: z.number().nullable(),
-});
-
-export type PinMapping = z.infer<typeof PinMappingSchema>;
 
 // ============================================
 // PIN INPUT SCHEMAS

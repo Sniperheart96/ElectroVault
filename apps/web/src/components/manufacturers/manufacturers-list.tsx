@@ -232,20 +232,35 @@ export function ManufacturersList({
                 {filteredManufacturers.map((manufacturer) => (
                   <Card key={manufacturer.id} className="hover:shadow-md transition-shadow group">
                     <CardHeader className="pb-2">
-                      <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <Factory className="h-5 w-5 text-muted-foreground" />
-                          <Link
-                            href={`/manufacturers/${manufacturer.slug}`}
-                            className="hover:underline"
-                          >
-                            {manufacturer.name}
-                          </Link>
-                        </CardTitle>
+                      <div className="flex justify-between items-start gap-3">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          {manufacturer.logoUrl ? (
+                            <div className="flex-shrink-0 w-12 h-12 border rounded-md p-1 bg-white flex items-center justify-center">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={manufacturer.logoUrl}
+                                alt={`${manufacturer.name} Logo`}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                          ) : (
+                            <div className="flex-shrink-0 w-12 h-12 border rounded-md bg-muted flex items-center justify-center">
+                              <Factory className="h-6 w-6 text-muted-foreground" />
+                            </div>
+                          )}
+                          <CardTitle className="text-lg truncate">
+                            <Link
+                              href={`/manufacturers/${manufacturer.slug}`}
+                              className="hover:underline"
+                            >
+                              {manufacturer.name}
+                            </Link>
+                          </CardTitle>
+                        </div>
                         {getStatusBadge(manufacturer.status)}
                       </div>
                       {manufacturer.description && (
-                        <CardDescription className="line-clamp-2">
+                        <CardDescription className="line-clamp-2 mt-2">
                           {manufacturer.description.de || manufacturer.description.en}
                         </CardDescription>
                       )}

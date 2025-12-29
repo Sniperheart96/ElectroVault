@@ -1,34 +1,247 @@
 # Tech-Stack
 
-> Technologie-Entscheidungen für ElectroVault
+> Aktueller Technologie-Stack von ElectroVault
 
-## Kern-Technologien
+## Übersicht
 
-| Komponente | Technologie |
-|------------|-------------|
-| Frontend | Next.js 14+ (App Router), React 18, TailwindCSS |
-| Backend | Node.js, Fastify, Prisma ORM |
-| Datenbank | PostgreSQL 15+ |
-| Auth | Keycloak (Self-Hosted) + next-auth |
-| File Storage | MinIO (S3-kompatibel, Self-Hosted) |
-| Monorepo | Turborepo + pnpm |
-| Sprache | Deutsch (i18n-ready) |
+| Komponente | Technologie | Version |
+|------------|-------------|---------|
+| **Frontend** | Next.js (App Router) | 15.1.3 |
+| **UI Framework** | React | 19.0.0 |
+| **Backend** | Fastify | 4.28.0 |
+| **ORM** | Prisma | 6.1.0 |
+| **Datenbank** | PostgreSQL | 18 (Development) |
+| **Auth** | Keycloak + next-auth | 4.24.0 |
+| **File Storage** | MinIO (S3-kompatibel) | 8.0.6 |
+| **Monorepo** | Turborepo + pnpm | 2.3.3 / 9.15.0 |
+| **Runtime** | Node.js | ≥20.0.0 |
+| **Sprache** | TypeScript | 5.7.2 |
 
 ---
 
-## Entwicklungs-Beschleuniger
+## Frontend
 
-| Aufgabe | Bibliothek | Status |
-|---------|------------|--------|
-| **Schema-Validierung** | `Zod` + Fastify | ✅ Implementiert |
-| **Formulare** | `react-hook-form` + `@hookform/resolvers/zod` | ✅ Implementiert |
-| **UI-Komponenten** | `shadcn/ui` | ✅ Implementiert (20+ Komponenten) |
-| **Audit-Logging** | Manuell in Services | ✅ Implementiert (nicht als Extension) |
-| **Soft-Delete** | Manuell in Services | ✅ Implementiert (nicht als Extension) |
-| **Einheiten-Parsing** | `mathjs` | ❌ Noch nicht implementiert |
-| **Tabellen/Listen** | `@tanstack/react-table` | ❌ Noch nicht implementiert |
+### Next.js & React
 
-> **Hinweis:** Prisma Client Extensions für Soft-Delete und Audit-Logging wurden zugunsten manueller Service-Implementierungen verworfen, da dies mehr Kontrolle und Flexibilität bietet.
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `next` | 15.1.3 | App Router, Server Components, API Routes |
+| `react` | 19.0.0 | UI-Library |
+| `react-dom` | 19.0.0 | DOM-Rendering |
+
+### UI & Styling
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `tailwindcss` | 3.4.0 | Utility-First CSS Framework |
+| `@radix-ui/*` | diverse | Headless UI-Komponenten (Basis für shadcn/ui) |
+| `lucide-react` | 0.400.0 | Icon-Library |
+| `class-variance-authority` | 0.7.1 | Dynamische Klassen-Generierung |
+| `tailwind-merge` | 2.6.0 | Tailwind-Klassen zusammenführen |
+| `tailwindcss-animate` | 1.0.7 | Animation-Utilities |
+| `clsx` | 2.1.1 | Klassen-Zusammenführung |
+
+**Verwendete shadcn/ui Komponenten (in `apps/web/src/components/ui/`):**
+- Accordion, Alert Dialog, Avatar, Checkbox, Collapsible
+- Dialog, Dropdown Menu, Label, Navigation Menu, Popover
+- Progress, Scroll Area, Select, Separator, Slot
+- Tabs, Toast, Tooltip
+
+### Formulare & Validierung
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `react-hook-form` | 7.69.0 | Formular-Management |
+| `@hookform/resolvers` | 5.2.2 | Zod-Integration für react-hook-form |
+| `zod` | 3.25.76 / 3.23.8 | Schema-Validierung (shared) |
+
+### Internationalisierung
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `next-intl` | 3.20.0 | i18n für Next.js |
+
+### Weitere Frontend-Dependencies
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `cmdk` | 1.0.0 | Command Menu (⌘K) |
+| `next-auth` | 4.24.0 | Auth-Client für Next.js |
+
+---
+
+## Backend
+
+### Fastify
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `fastify` | 4.28.0 | HTTP-Server |
+| `fastify-plugin` | 5.0.0 | Plugin-System |
+
+### Fastify Plugins
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `@fastify/cors` | 8.0.0 | Cross-Origin Resource Sharing |
+| `@fastify/helmet` | 11.0.0 | Security Headers |
+| `@fastify/rate-limit` | 9.0.0 | Rate Limiting |
+| `@fastify/compress` | 7.0.0 | Response Compression (gzip/brotli) |
+| `@fastify/multipart` | 8.3.1 | Datei-Upload (multipart/form-data) |
+| `@fastify/jwt` | 8.0.0 | JWT-Token Handling (via @electrovault/auth) |
+
+### Logging
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `pino` | 9.0.0 | Strukturiertes Logging |
+| `pino-pretty` | 11.0.0 | Pretty-Printing für Development |
+
+### File Storage
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `minio` | 8.0.6 | S3-kompatibler Object Storage Client |
+
+---
+
+## Datenbank
+
+### Prisma
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `prisma` | 6.1.0 | Prisma CLI (Migrationen, Studio) |
+| `@prisma/client` | 6.1.0 | Type-Safe Datenbank-Client |
+
+**PostgreSQL Version:** 18 (Development Server: ITME-SERVER)
+
+**Prisma Features:**
+- Type-Safe Queries
+- Auto-Generierte Types
+- Migration System
+- Prisma Studio (GUI)
+
+---
+
+## Auth
+
+### Keycloak Integration
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `next-auth` | 4.24.0 | Auth-Library für Next.js |
+| `@fastify/jwt` | 8.0.0 | JWT-Validierung im Backend |
+| `jose` | 5.2.0 | JWT-Verarbeitung (JOSE Standard) |
+
+**Keycloak Setup:**
+- Self-Hosted Docker Container (Port 8080)
+- Realm: `electrovault`
+- OpenID Connect (OIDC)
+
+---
+
+## Monorepo-Tools
+
+### Build & Package Management
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `turbo` | 2.3.3 | Monorepo Build System |
+| `@turbo/gen` | 2.3.3 | Turbo Code Generator |
+| `pnpm` | 9.15.0 | Package Manager |
+
+**pnpm Workspaces:**
+- `apps/*` - Anwendungen (web, api)
+- `packages/*` - Shared Packages (database, schemas, auth, shared)
+
+---
+
+## Development Tools
+
+### TypeScript
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `typescript` | 5.7.2 | TypeScript Compiler (strict mode) |
+| `tsx` | 4.19.2 | TypeScript Executor (für Seed-Scripts) |
+| `ts-node` | 10.9.2 | TypeScript REPL |
+
+### Testing
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `vitest` | 1.0.0 | Unit & Integration Tests |
+| `@vitest/ui` | 1.0.0 | Vitest UI |
+| `@vitest/coverage-v8` | 1.0.0 | Code Coverage |
+| `@vitejs/plugin-react` | 4.2.0 | React-Support für Vitest |
+| `@testing-library/react` | 14.0.0 | React Testing Utilities |
+| `@testing-library/jest-dom` | 6.0.0 | Custom Jest Matchers |
+| `@testing-library/user-event` | 14.0.0 | User Interaction Simulation |
+| `jsdom` | 23.0.0 | DOM-Simulation für Tests |
+| `vite-tsconfig-paths` | 4.2.0 | Path Aliases für Vitest |
+
+**API Testing:**
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `supertest` | 6.3.0 | HTTP-Assertions |
+| `@types/supertest` | 6.0.0 | TypeScript Types |
+
+**E2E Testing:**
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `@playwright/test` | 1.57.0 | End-to-End Tests |
+| `playwright` | 1.57.0 | Browser Automation |
+
+### Linting & Formatting
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `eslint` | 9.0.0 | Code Linting |
+| `eslint-config-next` | 15.1.3 | Next.js ESLint Config |
+| `prettier` | 3.4.2 | Code Formatting |
+
+### Weitere Dev-Tools
+
+| Package | Version | Verwendung |
+|---------|---------|------------|
+| `dotenv` | 17.2.3 | Environment Variables |
+| `autoprefixer` | 10.4.20 | CSS-Vendor-Prefixes |
+| `postcss` | 8.4.47 | CSS-Transformation |
+
+---
+
+## Shared Packages
+
+### @electrovault/database
+
+**Dependencies:**
+- `@prisma/client` 6.1.0
+
+**Zweck:** Prisma Client & Schema
+
+### @electrovault/schemas
+
+**Dependencies:**
+- `zod` 3.23.8
+
+**Zweck:** Zod-Validierungs-Schemas (shared zwischen API & Frontend)
+
+### @electrovault/auth
+
+**Dependencies:**
+- `@fastify/jwt` 8.0.0
+- `fastify-plugin` 5.0.0
+- `jose` 5.2.0
+- `next-auth` 4.24.0
+
+**Zweck:** Auth-Wrapper für Fastify & Next.js
+
+### @electrovault/shared
+
+**Dependencies:** Keine externen Dependencies
+
+**Zweck:** Shared Types, Utils, i18n-Helpers
 
 ---
 
@@ -42,153 +255,62 @@ Refine wurde gestrichen weil:
 3. Ein `/admin`-Ordner im Next.js App Router reicht völlig aus
 4. Konsistente Codebase ist wichtiger als "magische" Generierung
 
+### Manuelle Service-Implementierung statt Prisma Extensions
+
+**Soft-Delete & Audit-Logging** werden manuell in API-Services implementiert (nicht als Prisma Client Extensions), da dies mehr Kontrolle und Flexibilität bietet.
+
+### shadcn/ui in apps/web statt packages/ui
+
+Die shadcn/ui Komponenten befinden sich direkt in `apps/web/src/components/ui/` statt in einem separaten `packages/ui/` Package. Dies ist pragmatisch, da nur eine Frontend-App existiert.
+
 ---
 
-## Code-Beispiele
+## Code-Beispiel: Zod-Schemas (shared)
 
-### Einheiten mit mathjs (Geplant)
-
-> **Status:** Noch nicht implementiert. Das folgende Beispiel zeigt die geplante Funktionalität.
+**Ein Schema, drei Verwendungen:**
 
 ```typescript
-import { unit, Unit } from 'mathjs';
+// packages/schemas/src/component.ts
+import { z } from 'zod';
 
-// Benutzer gibt "100µF" ein
-const input = "100 uF";
-const parsed = unit(input);
-
-// Automatisch normalisiert zu SI-Einheit (Farad)
-const normalizedValue = parsed.toNumber('F'); // 0.0001
-
-// Für die Datenbank
-await prisma.attributeValue.create({
-  data: {
-    displayValue: "100µF",           // Für Anzeige
-    normalizedValue: normalizedValue, // 0.0001 für Filter-Queries
-  }
+export const CreateComponentSchema = z.object({
+  name: z.record(z.string()),
+  categoryId: z.string().uuid(),
+  // ... weitere Felder
 });
 ```
 
-### Zod + Fastify (Implementiert)
-
+**1. API - Fastify Validierung:**
 ```typescript
-import { z } from 'zod';
-import { ZodTypeProvider } from 'fastify-type-provider-zod';
+// apps/api/src/routes/components/index.ts
+import { CreateComponentSchema } from '@electrovault/schemas';
 
-// Schema einmal definieren - gilt für API UND Frontend
-const ComponentSchema = z.object({
-  mpn: z.string().min(1).max(255),
-  manufacturerId: z.string().uuid(),
-  categoryId: z.string().uuid(),
-  attributes: z.record(z.unknown()).default({}),
-});
-
-// Fastify Route mit automatischer Validierung
-fastify.withTypeProvider<ZodTypeProvider>().post('/components', {
-  schema: {
-    body: ComponentSchema,
-  },
+fastify.post('/components', {
+  schema: { body: CreateComponentSchema }
 }, async (request) => {
-  // request.body ist bereits validiert und typisiert!
-  return componentService.create(request.body);
+  // request.body ist bereits validiert!
 });
+```
 
-// Gleiches Schema im Frontend
-import { useForm } from 'react-hook-form';
+**2. Frontend - react-hook-form:**
+```typescript
+// apps/web/src/components/admin/component-dialog.tsx
+import { CreateComponentSchema } from '@electrovault/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const form = useForm({
-  resolver: zodResolver(ComponentSchema),
+  resolver: zodResolver(CreateComponentSchema),
 });
 ```
 
----
+**3. Types - TypeScript:**
+```typescript
+import { z } from 'zod';
+import { CreateComponentSchema } from '@electrovault/schemas';
 
-## Projektstruktur
-
+type CreateComponentInput = z.infer<typeof CreateComponentSchema>;
 ```
-electrovault/
-├── .claude/                    # KI-Kontext & Agenten
-│   ├── CLAUDE.md              # Hauptkontext-Dokument
-│   └── agents/                # Agenten-Definitionen
-├── .github/workflows/         # CI/CD
-├── apps/
-│   ├── web/                   # Next.js Frontend + Admin
-│   │   └── src/components/ui/ # shadcn/ui Komponenten (nicht in packages/ui)
-│   └── api/                   # Fastify Backend
-├── packages/
-│   ├── auth/                  # Wiederverwendbares Auth-Package
-│   ├── database/              # Prisma Schema & Client
-│   ├── schemas/               # Zod-Schemas (shared)
-│   └── shared/                # Types, Constants, Utils
-├── docker/
-│   └── docker-compose.yml     # Dev-Stack
-└── docs/                      # Dokumentation
-```
-
-> **Hinweis:** Die shadcn/ui Komponenten befinden sich direkt in `apps/web/src/components/ui/` statt in einem separaten `packages/ui/` Package. Dies ist pragmatisch, da nur eine Frontend-App existiert.
-
-### Package-Details
-
-#### packages/schemas/
-
-```
-packages/schemas/
-├── src/
-│   ├── attribute.ts           # AttributeDefinition Schemas
-│   ├── audit.ts               # AuditLog Schemas
-│   ├── category.ts            # Category Schemas
-│   ├── common.ts              # Shared Types (LocalizedString, PaginationParams)
-│   ├── component.ts           # CoreComponent Schemas
-│   ├── manufacturer.ts        # Manufacturer Schemas
-│   ├── package.ts             # Package Schemas
-│   ├── part.ts                # ManufacturerPart Schemas
-│   ├── pin.ts                 # PinMapping Schemas
-│   ├── schemas.test.ts        # Tests
-│   └── index.ts               # Re-exports
-└── package.json
-```
-
-**Vorteil:** Ein Schema, drei Verwendungen:
-1. **API:** Fastify Request-Validierung
-2. **Frontend:** react-hook-form Validierung
-3. **Types:** TypeScript-Typen automatisch generiert (`z.infer<typeof Schema>`)
-
-#### packages/shared/
-
-```
-packages/shared/
-├── src/
-│   ├── i18n/
-│   │   ├── types.ts           # LocalizedString Type
-│   │   ├── localized-string.ts # Hilfsfunktionen
-│   │   └── index.ts           # Re-exports
-│   ├── utils/
-│   │   ├── localization.ts    # getLocalizedValue Helper
-│   │   └── localization.test.ts
-│   └── index.ts
-└── package.json
-```
-
-> **Geplant aber noch nicht implementiert:**
-> - `units/` - mathjs-basiertes Einheiten-Parsing
-> - `constants/` - Enums (derzeit in Prisma Schema definiert)
-
-#### packages/database/
-
-```
-packages/database/
-├── prisma/
-│   ├── schema.prisma          # Datenbank-Schema
-│   ├── migrations/            # Prisma Migrationen
-│   └── seed.ts                # Seed-Daten (Kategorien, Packages)
-├── src/
-│   └── index.ts               # Prisma Client Export
-└── package.json
-```
-
-> **Hinweis:** Prisma Client Extensions für Soft-Delete und Audit-Logging wurden zugunsten manueller Service-Implementierungen verworfen (siehe Tabelle oben). Soft-Delete und Audit-Logging werden direkt in den API-Services implementiert.
 
 ---
 
-*Siehe auch: [i18n.md](i18n.md) | [database-schema.md](database-schema.md)*
+*Siehe auch: [i18n.md](i18n.md) | [database-schema.md](database-schema.md) | [Projekt-README](../README.md)*

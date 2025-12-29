@@ -1,14 +1,8 @@
-/**
- * LocalizedString Type
- * Repräsentiert mehrsprachige Texte
- */
-export type LocalizedString = {
-  en?: string;
-  de?: string;
-  fr?: string;
-  es?: string;
-  zh?: string;
-};
+import type { LocalizedString, Locale } from '../i18n/types';
+import { FALLBACK_LOCALE } from '../i18n/types';
+
+// Re-export für einfachen Import
+export type { LocalizedString, Locale };
 
 /**
  * Extrahiert den Text in der gewünschten Sprache mit Fallback-Kette
@@ -20,16 +14,16 @@ export type LocalizedString = {
  */
 export function getLocalizedText(
   data: LocalizedString,
-  locale: string = 'de'
+  locale: Locale | string = FALLBACK_LOCALE
 ): string {
   // 1. Versuch: Angefragte Sprache
   if (data[locale as keyof LocalizedString]) {
     return data[locale as keyof LocalizedString]!;
   }
 
-  // 2. Versuch: Englisch als Fallback
-  if (data.en) {
-    return data.en;
+  // 2. Versuch: Fallback-Sprache (Englisch)
+  if (data[FALLBACK_LOCALE]) {
+    return data[FALLBACK_LOCALE]!;
   }
 
   // 3. Versuch: Erste verfügbare Sprache
@@ -56,7 +50,7 @@ export function hasTranslation(data: LocalizedString): boolean {
  */
 export function slugifyLocalized(
   data: LocalizedString,
-  locale: string = 'de'
+  locale: Locale | string = FALLBACK_LOCALE
 ): string {
   const text = getLocalizedText(data, locale);
 

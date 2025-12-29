@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { LocalizedStringSchema } from '@electrovault/schemas';
-import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, ArrowDown } from 'lucide-react';
+import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, ArrowDown, X, Loader2, Image as ImageIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -59,6 +59,10 @@ import { AttributeDialog } from '@/components/admin/attribute-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
+import { cn } from '@/lib/utils';
+
+// API Base URL für Proxy-Endpunkte
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 // Local schema for category creation/editing
 const CreateCategorySchema = z.object({
@@ -115,6 +119,13 @@ export function CategoryDialog({
   const isEdit = !!category;
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
+
+  // Icon upload state
+  const [iconFile, setIconFile] = useState<File | null>(null);
+  const [iconPreviewUrl, setIconPreviewUrl] = useState<string | null>(null);
+  const [iconUploading, setIconUploading] = useState(false);
+  const [iconDragging, setIconDragging] = useState(false);
+  const iconInputRef = useRef<HTMLInputElement>(null);
 
   // Attributes state
   const [ownAttributes, setOwnAttributes] = useState<AttributeDefinition[]>([]);
@@ -235,6 +246,9 @@ export function CategoryDialog({
         sortOrder: category.sortOrder,
         isActive: category.isActive,
       });
+      // Verwende Proxy-URL für die Vorschau, um CORS-Probleme zu vermeiden
+      setIconPreviewUrl(category.iconUrl ? `${API_BASE_URL}/categories/${category.id}/icon` : null);
+      setIconFile(null);
     } else {
       form.reset({
         name: { de: '', en: '' },
@@ -244,8 +258,75 @@ export function CategoryDialog({
         sortOrder: 0,
         isActive: true,
       });
+      setIconPreviewUrl(null);
+      setIconFile(null);
     }
   }, [category, initialParentId, form]);
+
+  // Cleanup object URLs to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (iconPreviewUrl && iconPreviewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(iconPreviewUrl);
+      }
+    };
+  }, [iconPreviewUrl]);
+
+  // Icon upload handler
+  const handleIconUpload = async (file: File) => {
+    // Validate file
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast({
+        title: 'Fehler',
+        description: 'Icon darf maximal 5 MB groß sein.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: 'Fehler',
+        description: 'Nur JPEG, PNG, WebP oder SVG erlaubt.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Bei bestehender Kategorie: Sofort hochladen
+    if (isEdit && category) {
+      setIconUploading(true);
+      try {
+        const result = await api.uploadCategoryIcon(file, category.id);
+        const uploadedUrl = result.data.iconUrl;
+
+        // Verwende Proxy-URL für die Vorschau, um CORS-Probleme zu vermeiden
+        // Füge timestamp hinzu um Browser-Cache zu umgehen nach Upload
+        setIconPreviewUrl(`${API_BASE_URL}/categories/${category.id}/icon?t=${Date.now()}`);
+        form.setValue('iconUrl', uploadedUrl);
+
+        toast({
+          title: 'Erfolg',
+          description: 'Icon wurde hochgeladen.',
+        });
+      } catch (error) {
+        toast({
+          title: 'Fehler',
+          description: 'Icon konnte nicht hochgeladen werden.',
+          variant: 'destructive',
+        });
+      } finally {
+        setIconUploading(false);
+      }
+    } else {
+      // Bei neuer Kategorie: Nur File speichern und lokale Vorschau erstellen
+      setIconFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setIconPreviewUrl(previewUrl);
+    }
+  };
 
   const onSubmit = async (data: CreateCategoryInput) => {
     try {
@@ -263,7 +344,30 @@ export function CategoryDialog({
           description: 'Kategorie wurde aktualisiert.',
         });
       } else {
-        await api.createCategory(payload);
+        // Neue Kategorie: Erst erstellen, dann Icon hochladen falls vorhanden
+        const result = await api.createCategory(payload);
+        const newCategoryId = result.data.id;
+
+        // Icon hochladen falls ausgewählt
+        if (iconFile && newCategoryId) {
+          try {
+            const uploadResult = await api.uploadCategoryIcon(iconFile, newCategoryId);
+            const uploadedUrl = uploadResult.data.iconUrl;
+
+            // Kategorie mit iconUrl aktualisieren
+            await api.updateCategory(newCategoryId, {
+              ...payload,
+              iconUrl: uploadedUrl,
+            });
+          } catch (uploadError) {
+            toast({
+              title: 'Warnung',
+              description: 'Kategorie erstellt, aber Icon-Upload fehlgeschlagen.',
+              variant: 'destructive',
+            });
+          }
+        }
+
         toast({
           title: 'Erfolg',
           description: 'Kategorie wurde erstellt.',
@@ -495,27 +599,90 @@ export function CategoryDialog({
                   />
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="iconUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Icon-URL</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://example.com/icon.svg"
-                          {...field}
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        URL zu einem Icon-Bild (optional)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Icon Upload */}
+                <div className="space-y-2">
+                  <FormLabel>Icon</FormLabel>
+                  <div className="flex items-start gap-4">
+                    {/* Icon Preview */}
+                    <div
+                      className={cn(
+                        'relative flex items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer transition-colors',
+                        iconDragging && 'border-primary bg-primary/5',
+                        !iconDragging && 'hover:border-primary/50 hover:bg-muted/30',
+                        iconUploading && 'opacity-50 cursor-not-allowed',
+                      )}
+                      onClick={() => !iconUploading && iconInputRef.current?.click()}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setIconDragging(true);
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault();
+                        setIconDragging(false);
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIconDragging(false);
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                          handleIconUpload(files[0]);
+                        }
+                      }}
+                    >
+                      <input
+                        ref={iconInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/svg+xml"
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          if (files && files.length > 0) {
+                            handleIconUpload(files[0]);
+                          }
+                          e.target.value = '';
+                        }}
+                        className="hidden"
+                      />
+
+                      {iconUploading ? (
+                        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                      ) : iconPreviewUrl ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={iconPreviewUrl}
+                            alt="Icon"
+                            className="w-full h-full object-contain p-1"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setIconPreviewUrl(null);
+                              setIconFile(null);
+                              form.setValue('iconUrl', null);
+                            }}
+                            className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full shadow"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </>
+                      ) : (
+                        <div className="text-center">
+                          <ImageIcon className="h-6 w-6 text-muted-foreground mx-auto" />
+                          <span className="text-xs text-muted-foreground">Icon</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground">
+                        Kategorie-Icon hochladen. Max. 5 MB, JPEG/PNG/WebP/SVG.
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Klicken oder Datei hierher ziehen.
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

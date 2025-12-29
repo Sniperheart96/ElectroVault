@@ -2,15 +2,16 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { Upload, X, FileText, Image as ImageIcon, File, Loader2, ExternalLink } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { cn, formatFileSize } from '@/lib/utils';
 
 // ============================================
 // TYPES
 // ============================================
 
-export type FileUploadType = 'datasheet' | 'image' | 'pinout' | 'logo' | 'model3d' | 'other';
+export type FileUploadType = 'datasheet' | 'part-image' | 'pinout' | 'logo' | 'category-icon' | 'model3d' | 'other';
 
 export interface UploadedFile {
   id: string;
@@ -21,7 +22,13 @@ export interface UploadedFile {
   fileType: string;
   bucketPath: string;
   description?: string | null;
+  languages?: string[];
   downloadUrl?: string;
+}
+
+// Result from part-image and logo uploads (no FileAttachment, just URL)
+export interface ImageUploadResult {
+  imageUrl: string;
 }
 
 export interface FileUploadProps {
@@ -30,7 +37,7 @@ export interface FileUploadProps {
   /** Current uploaded file (for display) */
   value?: UploadedFile | null;
   /** Callback when file is uploaded */
-  onUpload: (file: UploadedFile) => void;
+  onUpload: (file: UploadedFile | ImageUploadResult) => void;
   /** Callback when file is removed */
   onRemove?: () => void;
   /** ID of the part to associate with */
@@ -39,8 +46,12 @@ export interface FileUploadProps {
   componentId?: string;
   /** ID of the manufacturer to associate with (for logo) */
   manufacturerId?: string;
+  /** ID of the category to associate with (for icon) */
+  categoryId?: string;
   /** ID of the package to associate with (for 3D model) */
   packageId?: string;
+  /** Languages for datasheet (required) or other (optional) */
+  languages?: string[];
   /** Custom label */
   label?: string;
   /** Description text */
@@ -56,6 +67,7 @@ export interface FileUploadProps {
 }
 
 // File type configurations
+// WICHTIG: Endpoint-Namen müssen mit den API-Routes übereinstimmen!
 const FILE_CONFIGS: Record<FileUploadType, {
   accept: string;
   maxSize: number;
@@ -63,6 +75,8 @@ const FILE_CONFIGS: Record<FileUploadType, {
   icon: typeof FileText;
   label: string;
   endpoint: string;
+  requiresLanguages?: boolean;  // Sprachen erforderlich
+  supportsLanguages?: boolean;  // Sprachen optional
 }> = {
   datasheet: {
     accept: 'application/pdf',
@@ -71,14 +85,15 @@ const FILE_CONFIGS: Record<FileUploadType, {
     icon: FileText,
     label: 'Datenblatt (PDF)',
     endpoint: '/files/datasheet',
+    requiresLanguages: true,  // Sprachen sind Pflicht für Datasheets
   },
-  image: {
+  'part-image': {
     accept: 'image/jpeg,image/png,image/webp',
     maxSize: 10 * 1024 * 1024,
     maxSizeLabel: '10 MB',
     icon: ImageIcon,
     label: 'Bild',
-    endpoint: '/files/image',
+    endpoint: '/files/part-image',  // Neuer Endpoint - gibt nur imageUrl zurück
   },
   pinout: {
     accept: 'image/jpeg,image/png,image/webp,application/pdf',
@@ -94,15 +109,23 @@ const FILE_CONFIGS: Record<FileUploadType, {
     maxSizeLabel: '5 MB',
     icon: ImageIcon,
     label: 'Logo',
-    endpoint: '/files/logo',
+    endpoint: '/files/manufacturer-logo',
+  },
+  'category-icon': {
+    accept: 'image/jpeg,image/png,image/webp,image/svg+xml',
+    maxSize: 5 * 1024 * 1024,
+    maxSizeLabel: '5 MB',
+    icon: ImageIcon,
+    label: 'Icon',
+    endpoint: '/files/category-icon',
   },
   model3d: {
-    accept: '.step,.stp,.stl,.wrl,.iges,.igs',
+    accept: '.step,.stp,.stl,.wrl,.iges,.igs,.3mf,.obj',
     maxSize: 50 * 1024 * 1024,
     maxSizeLabel: '50 MB',
     icon: File,
     label: '3D-Modell',
-    endpoint: '/files/model3d',
+    endpoint: '/files/package-3d',
   },
   other: {
     accept: '*/*',
@@ -111,6 +134,7 @@ const FILE_CONFIGS: Record<FileUploadType, {
     icon: File,
     label: 'Datei',
     endpoint: '/files/other',
+    supportsLanguages: true,  // Sprachen optional für Other
   },
 };
 
@@ -126,7 +150,9 @@ export function FileUpload({
   partId,
   componentId,
   manufacturerId,
+  categoryId,
   packageId,
+  languages,
   label,
   description,
   disabled = false,
@@ -134,6 +160,7 @@ export function FileUpload({
   apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1',
   token,
 }: FileUploadProps) {
+  const { data: session } = useSession();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -142,12 +169,9 @@ export function FileUpload({
 
   const config = FILE_CONFIGS[type];
 
-  // Format file size for display
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
+  // Use provided token or get from session
+  const authToken = token || session?.accessToken || null;
+
 
   // Handle file upload
   const handleUpload = useCallback(async (file: File) => {
@@ -174,6 +198,12 @@ export function FileUpload({
       return;
     }
 
+    // Validierung: Sprachen für Datasheets prüfen
+    if (config.requiresLanguages && (!languages || languages.length === 0)) {
+      setError('Bitte wählen Sie mindestens eine Sprache aus');
+      return;
+    }
+
     setIsUploading(true);
     setUploadProgress(0);
 
@@ -184,7 +214,13 @@ export function FileUpload({
       if (partId) formData.append('partId', partId);
       if (componentId) formData.append('componentId', componentId);
       if (manufacturerId) formData.append('manufacturerId', manufacturerId);
+      if (categoryId) formData.append('categoryId', categoryId);
       if (packageId) formData.append('packageId', packageId);
+
+      // Sprachen als kommaseparierter String
+      if (languages && languages.length > 0 && (config.requiresLanguages || config.supportsLanguages)) {
+        formData.append('languages', languages.join(','));
+      }
 
       // Simulate progress for better UX
       const progressInterval = setInterval(() => {
@@ -193,7 +229,7 @@ export function FileUpload({
 
       const response = await fetch(`${apiBaseUrl}${config.endpoint}`, {
         method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
         body: formData,
       });
 
@@ -218,7 +254,7 @@ export function FileUpload({
       setUploadProgress(0);
       setError(err instanceof Error ? err.message : 'Upload fehlgeschlagen');
     }
-  }, [config, partId, componentId, manufacturerId, packageId, apiBaseUrl, token, onUpload]);
+  }, [config, partId, componentId, manufacturerId, categoryId, packageId, languages, apiBaseUrl, authToken, onUpload]);
 
   // Drag & Drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {

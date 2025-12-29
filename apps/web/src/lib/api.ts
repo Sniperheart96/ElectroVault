@@ -399,10 +399,6 @@ export class ApiClient {
     return this.request<ApiResponse<Pin[]>>(`/parts/${partId}/pins`);
   }
 
-  async getPin(id: string): Promise<ApiResponse<Pin>> {
-    return this.request<ApiResponse<Pin>>(`/pins/${id}`);
-  }
-
   async createPin(partId: string, data: unknown): Promise<ApiResponse<Pin>> {
     return this.request<ApiResponse<Pin>>(`/parts/${partId}/pins`, {
       method: 'POST',
@@ -605,6 +601,10 @@ export class ApiClient {
     return this.request<ApiResponse<FileAttachment[]>>(`/files/part/${partId}`);
   }
 
+  async getFilesByPackage(packageId: string): Promise<ApiResponse<FileAttachment[]>> {
+    return this.request<ApiResponse<FileAttachment[]>>(`/files/package/${packageId}`);
+  }
+
   async deleteFile(id: string): Promise<void> {
     await this.request<void>(`/files/${id}`, {
       method: 'DELETE',
@@ -656,6 +656,124 @@ export class ApiClient {
         throw new Error(error.error.message || 'File upload failed');
       } catch {
         throw new Error(`File upload failed: ${response.status} ${errorText}`);
+      }
+    }
+
+    return response.json();
+  }
+
+  /**
+   * Upload eines 3D-Modells für ein Package
+   * @param file 3D-Datei (.step, .stl, .3mf, .obj, etc.)
+   * @param packageId UUID des Packages
+   * @param description Optionale Beschreibung
+   */
+  async upload3DModel(
+    file: File,
+    packageId: string,
+    description?: string
+  ): Promise<ApiResponse<FileAttachment>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('packageId', packageId);
+    if (description) formData.append('description', description);
+
+    const url = `${this.baseUrl}/files/package-3d`;
+
+    const headers: HeadersInit = {};
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      try {
+        const error: ApiError = JSON.parse(errorText);
+        throw new Error(error.error.message || '3D model upload failed');
+      } catch {
+        throw new Error(`3D model upload failed: ${response.status} ${errorText}`);
+      }
+    }
+
+    return response.json();
+  }
+
+  /**
+   * Upload eines Hersteller-Logos
+   * Gibt eine öffentliche MinIO-URL zurück (7 Tage Gültigkeit)
+   */
+  async uploadManufacturerLogo(
+    file: File,
+    manufacturerId: string
+  ): Promise<ApiResponse<{ logoUrl: string }>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('manufacturerId', manufacturerId);
+
+    const url = `${this.baseUrl}/files/manufacturer-logo`;
+
+    const headers: HeadersInit = {};
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      try {
+        const error: ApiError = JSON.parse(errorText);
+        throw new Error(error.error.message || 'Logo upload failed');
+      } catch {
+        throw new Error(`Logo upload failed: ${response.status} ${errorText}`);
+      }
+    }
+
+    return response.json();
+  }
+
+  /**
+   * Upload eines Kategorie-Icons
+   * Gibt eine öffentliche MinIO-URL zurück (7 Tage Gültigkeit)
+   */
+  async uploadCategoryIcon(
+    file: File,
+    categoryId: string
+  ): Promise<ApiResponse<{ iconUrl: string }>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('categoryId', categoryId);
+
+    const url = `${this.baseUrl}/files/category-icon`;
+
+    const headers: HeadersInit = {};
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      try {
+        const error: ApiError = JSON.parse(errorText);
+        throw new Error(error.error.message || 'Icon upload failed');
+      } catch {
+        throw new Error(`Icon upload failed: ${response.status} ${errorText}`);
       }
     }
 
@@ -906,14 +1024,14 @@ export interface FileAttachment {
   sanitizedName: string;
   mimeType: string;
   size: number;
-  fileType: 'DATASHEET' | 'IMAGE' | 'PINOUT' | 'OTHER';
+  fileType: 'DATASHEET' | 'IMAGE' | 'PINOUT' | 'MODEL_3D' | 'OTHER';
   bucketName: string;
   bucketPath: string;
   description: string | null;
-  version: string | null;
-  language: string | null;
+  languages: string[];  // Array für Mehrfachauswahl (z.B. ["de", "en"])
   componentId: string | null;
   partId: string | null;
+  packageId: string | null;
   uploadedById: string;
   createdAt: string;
   updatedAt: string;

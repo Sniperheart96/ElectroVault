@@ -41,6 +41,7 @@ Ressourcen:
 ├── /files              # File-Upload und Download (MinIO)
 ├── /moderation         # Moderations-Queue (PENDING -> APPROVED/REJECTED)
 ├── /audit              # Audit-Log (Änderungshistorie)
+├── /stats              # Statistiken (Dashboard-Daten)
 └── /pins               # Pin-Mappings (Nested unter /parts)
 ```
 
@@ -101,9 +102,9 @@ Ressourcen:
 ```
 apps/api/
 ├── src/
-│   ├── server.ts               # Entry Point (nicht index.ts!)
+│   ├── server.ts               # Entry Point
 │   ├── app.ts                  # Fastify App Setup
-│   ├── lib/                    # Utilities (nicht plugins!)
+│   ├── lib/                    # Utilities
 │   │   ├── errors.ts           # Custom Error Classes
 │   │   ├── pagination.ts       # Pagination Helpers
 │   │   ├── slug.ts             # Slug-Generierung
@@ -135,8 +136,8 @@ apps/api/
 ```
 
 **WICHTIG:**
-- Entry Point ist `server.ts`, NICHT `index.ts`
-- Utilities in `lib/`, NICHT `plugins/` oder `utils/`
+- Entry Point ist `server.ts`
+- Utilities in `lib/`
 - Routes sind monolithisch: EINE Datei pro Ressource
 - Error Handler ist INLINE in `app.ts`, kein separates Plugin
 

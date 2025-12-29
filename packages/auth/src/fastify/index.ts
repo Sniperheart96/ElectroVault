@@ -12,6 +12,48 @@ export interface AuthenticatedUser extends UserInfo {
   dbRole?: UserRole;
 }
 
+/**
+ * Vollständig authentifizierter User mit garantierten DB-Feldern
+ * Verwende diesen Type nach assertAuthenticated()
+ */
+export interface VerifiedUser extends UserInfo {
+  /** Local database user ID (UUID) - garantiert vorhanden */
+  dbId: string;
+  /** Local database role - garantiert vorhanden */
+  dbRole: UserRole;
+}
+
+/**
+ * Request mit verifiziertem User
+ * Verwende diesen Type nach assertAuthenticated()
+ */
+export interface AuthenticatedRequest extends FastifyRequest {
+  user: VerifiedUser;
+}
+
+/**
+ * Type Guard / Assertion Function für authentifizierte Requests
+ *
+ * Wirft einen Fehler wenn der User nicht vollständig authentifiziert ist.
+ * Nach dem Aufruf weiß TypeScript, dass request.user.dbId und request.user.dbRole existieren.
+ *
+ * @example
+ * ```typescript
+ * async (request, reply) => {
+ *   assertAuthenticated(request);
+ *   // TypeScript weiß jetzt: request.user.dbId existiert!
+ *   const userId = request.user.dbId;
+ * }
+ * ```
+ */
+export function assertAuthenticated(
+  request: FastifyRequest
+): asserts request is AuthenticatedRequest {
+  if (!request.user?.dbId || !request.user?.dbRole) {
+    throw new Error('User not authenticated or not synced to database');
+  }
+}
+
 declare module 'fastify' {
   interface FastifyRequest {
     user?: AuthenticatedUser;

@@ -1,2 +1,2 @@
 export * from './types';
-export * from './localized-string';
+export * from '../utils/localization';

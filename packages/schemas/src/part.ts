@@ -13,6 +13,7 @@ import {
   LifecycleStatusSchema,
   RelationshipTypeSchema,
   HazardousMaterialTypeSchema,
+  PinTypeSchema,
 } from './common';
 import { ManufacturerBaseSchema } from './manufacturer';
 import { PackageBaseSchema } from './package';
@@ -41,7 +42,7 @@ export const PinMappingSchema = z.object({
   pinNumber: z.string(),
   pinName: z.string(),
   pinFunction: LocalizedStringNullableSchema,
-  pinType: z.enum(['POWER', 'GROUND', 'INPUT', 'OUTPUT', 'BIDIRECTIONAL', 'NC', 'ANALOG', 'DIGITAL', 'CLOCK', 'OTHER']).nullable(),
+  pinType: PinTypeSchema.nullable(),
   maxVoltage: z.number().nullable(),
   maxCurrent: z.number().nullable(),
 });

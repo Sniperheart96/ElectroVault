@@ -54,13 +54,14 @@ describe('getLocalizedText', () => {
     );
   });
 
-  it('should use "de" as default locale', () => {
+  it('should use English (FALLBACK_LOCALE) as default locale', () => {
     const data: LocalizedString = {
       de: 'Deutsch',
       en: 'English',
     };
 
-    expect(getLocalizedText(data)).toBe('Deutsch');
+    // FALLBACK_LOCALE ist 'en' - Englisch als internationaler Standard
+    expect(getLocalizedText(data)).toBe('English');
   });
 });
 
