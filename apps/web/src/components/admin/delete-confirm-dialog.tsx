@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +27,8 @@ export function DeleteConfirmDialog({
   description,
   onConfirm,
 }: DeleteConfirmDialogProps) {
+  const t = useTranslations();
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -34,9 +37,9 @@ export function DeleteConfirmDialog({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} className="bg-destructive hover:bg-destructive/90">
-            Löschen
+            {t('common.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

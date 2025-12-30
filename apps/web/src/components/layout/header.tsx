@@ -2,20 +2,23 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useSession, signOut } from 'next-auth/react';
-import { Menu, Zap, User, LogOut, Shield } from 'lucide-react';
+import { Menu, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { UserMenu, AdminNavLink, MyElectroVaultNavLink } from './user-menu';
+import { LocaleSwitcher } from './locale-switcher';
 
 interface HeaderProps {
   onMenuToggle?: () => void;
 }
 
+/**
+ * Header - Hauptnavigation mit Shell First Pattern
+ *
+ * Die statische Navigation (Logo, Links) rendert sofort.
+ * Das UserMenu (Auth-State) wird separat geladen.
+ */
 export function Header({ onMenuToggle }: HeaderProps) {
   const t = useTranslations('nav');
-  const { data: session, status } = useSession();
-
-  const isAdmin = session?.user?.roles?.includes('admin');
-  const isModerator = session?.user?.roles?.includes('moderator');
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -31,13 +34,13 @@ export function Header({ onMenuToggle }: HeaderProps) {
           <span className="sr-only">Toggle menu</span>
         </Button>
 
-        {/* Logo */}
+        {/* Logo - Static, rendert sofort */}
         <Link href="/" className="flex items-center space-x-2 mr-6">
           <Zap className="h-6 w-6 text-primary" />
           <span className="hidden font-bold sm:inline-block">ElectroVault</span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Static, rendert sofort */}
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           <Link
             href="/components"
@@ -57,61 +60,20 @@ export function Header({ onMenuToggle }: HeaderProps) {
           >
             {t('packages')}
           </Link>
-          {(isAdmin || isModerator) && (
-            <Link
-              href="/admin"
-              className="transition-colors hover:text-foreground/80 text-foreground/60 flex items-center gap-1"
-            >
-              <Shield className="h-4 w-4" />
-              {t('moderation')}
-            </Link>
-          )}
+          {/* Mein ElectroVault - nur fuer eingeloggte User */}
+          <MyElectroVaultNavLink />
+          {/* Admin-Link lädt Auth-State separat */}
+          <AdminNavLink />
         </nav>
 
         {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Auth section */}
-        <div className="flex items-center space-x-2">
-          {status === 'loading' ? (
-            <div className="h-8 w-20 animate-pulse bg-muted rounded" />
-          ) : session?.user ? (
-            <>
-              {/* User info and dropdown */}
-              <div className="hidden sm:flex items-center gap-2 mr-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/50">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">
-                    {session.user.name || session.user.email || 'Benutzer'}
-                  </span>
-                  {isAdmin && (
-                    <span className="text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded">
-                      Admin
-                    </span>
-                  )}
-                  {isModerator && !isAdmin && (
-                    <span className="text-xs bg-secondary text-secondary-foreground px-1.5 py-0.5 rounded">
-                      Mod
-                    </span>
-                  )}
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => signOut({ callbackUrl: '/' })}
-                className="flex items-center gap-1"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">{t('logout')}</span>
-              </Button>
-            </>
-          ) : (
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/auth/signin">{t('login')}</Link>
-            </Button>
-          )}
-        </div>
+        {/* Locale Switcher - Sprachauswahl */}
+        <LocaleSwitcher />
+
+        {/* User Menu - Lädt Auth-State separat */}
+        <UserMenu />
       </div>
     </header>
   );

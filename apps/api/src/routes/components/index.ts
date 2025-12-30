@@ -6,7 +6,7 @@ import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { componentService } from '../../services/component.service';
 import { partService } from '../../services/part.service';
 import {
-  ComponentListQuerySchema,
+  ComponentSearchQuerySchema,
   CreateComponentSchema,
   UpdateComponentSchema,
   CreateConceptRelationSchema,
@@ -23,10 +23,54 @@ export default async function componentRoutes(
   /**
    * GET /components
    * Liste aller Components mit Paginierung und Filterung
+   *
+   * Unterstützt Attribut-basierte Filter über den Query-Parameter 'attributeFilters'.
+   * Filter werden als JSON-Array übergeben, z.B.:
+   * ?attributeFilters=[{"definitionId":"uuid","operator":"between","value":1e-6,"valueTo":100e-6}]
+   *
+   * Wenn includeDrafts=true, werden eigene Entwuerfe mit angezeigt.
+   * Die userId wird automatisch vom Backend gesetzt falls der User eingeloggt ist.
    */
-  app.get('/', async (request, reply) => {
-    const query = ComponentListQuerySchema.parse(request.query);
-    const result = await componentService.list(query);
+  app.get('/', {
+    // Optional Auth: User wird gesetzt wenn Token vorhanden, sonst anonym
+    onRequest: app.optionalAuth,
+  }, async (request, reply) => {
+    console.log('[FilterDebug] GET /components - Raw query:', request.query);
+
+    // attributeFilters aus Query-String parsen (als JSON string)
+    const rawQuery = request.query as Record<string, unknown>;
+    if (typeof rawQuery.attributeFilters === 'string') {
+      console.log('[FilterDebug] attributeFilters string (raw):', rawQuery.attributeFilters);
+      try {
+        rawQuery.attributeFilters = JSON.parse(rawQuery.attributeFilters);
+        console.log('[FilterDebug] attributeFilters parsed:', rawQuery.attributeFilters);
+      } catch (error) {
+        // Parse-Fehler loggen (nicht stillschweigend ignorieren)
+        request.log.warn({
+          msg: 'Failed to parse attributeFilters JSON',
+          input: rawQuery.attributeFilters?.substring(0, 100),
+          error: error instanceof Error ? error.message : 'Unknown parse error',
+        });
+        console.log('[FilterDebug] attributeFilters parse FAILED:', error);
+        delete rawQuery.attributeFilters;
+      }
+    }
+
+    const parsedQuery = ComponentSearchQuerySchema.parse(rawQuery);
+    console.log('[FilterDebug] Parsed query:', parsedQuery);
+
+    // Wenn includeDrafts gesetzt ist und User eingeloggt, userId hinzufuegen
+    const query = {
+      ...parsedQuery,
+      // userId nur setzen wenn includeDrafts=true und User authentifiziert
+      userId: parsedQuery.includeDrafts && request.user?.dbId ? request.user.dbId : undefined,
+    };
+
+    // searchWithFilters nutzen wenn Filter vorhanden, sonst list()
+    const result = query.attributeFilters && query.attributeFilters.length > 0
+      ? await componentService.searchWithFilters(query)
+      : await componentService.list(query);
+
     return reply.send(result);
   });
 

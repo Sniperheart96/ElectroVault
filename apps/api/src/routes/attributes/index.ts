@@ -9,6 +9,7 @@ import {
   CreateAttributeDefinitionSchema,
   UpdateAttributeDefinitionSchema,
   CategoryAttributesQuerySchema,
+  ReorderAttributesSchema,
 } from '@electrovault/schemas';
 
 /**
@@ -116,6 +117,24 @@ export default async function attributeRoutes(
 
       await attributeService.delete(id, userId);
       return reply.code(204).send();
+    }
+  );
+
+  /**
+   * POST /attributes/reorder
+   * Sortierreihenfolge von Attributen aktualisieren (MODERATOR)
+   */
+  app.post(
+    '/reorder',
+    {
+      onRequest: app.requireRole('MODERATOR'),
+    },
+    async (request, reply) => {
+      const data = ReorderAttributesSchema.parse(request.body);
+      const userId = request.user?.dbId;
+
+      await attributeService.reorder(data.categoryId, data.attributes, userId);
+      return reply.send({ success: true });
     }
   );
 }

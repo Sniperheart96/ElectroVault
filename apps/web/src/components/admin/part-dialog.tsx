@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreatePartSchema, type CreatePartInput } from '@electrovault/schemas';
+import { useLocale, useTranslations } from 'next-intl';
+import { CreatePartSchema, type CreatePartInput, type UILocale } from '@electrovault/schemas';
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,7 @@ import { AttributeFields } from '@/components/admin/attribute-fields';
 import { PartFilesManager } from '@/components/admin/part-files-manager';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
+import { getLocalizedValue } from '@/components/ui/localized-text';
 
 interface AttributeValue {
   definitionId: string;
@@ -72,6 +74,10 @@ export function PartDialog({
 }: PartDialogProps) {
   const api = useApi();
   const { toast } = useToast();
+  const locale = useLocale() as UILocale;
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
+  const tComponents = useTranslations('components');
   const isEdit = !!part;
 
   const [components, setComponents] = useState<Component[]>([]);
@@ -119,8 +125,8 @@ export function PartDialog({
       } catch (error) {
         console.error('Failed to load dropdown data:', error);
         toast({
-          title: 'Fehler',
-          description: 'Dropdown-Daten konnten nicht geladen werden.',
+          title: t('messages.error'),
+          description: t('messages.part.loadFailed'),
           variant: 'destructive',
         });
       } finally {
@@ -191,21 +197,21 @@ export function PartDialog({
       if (isEdit) {
         await api.updatePart(part.id, cleanData);
         toast({
-          title: 'Erfolg',
-          description: 'Hersteller-Variante wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.part.updated'),
         });
       } else {
         await api.createPart(cleanData);
         toast({
-          title: 'Erfolg',
-          description: 'Hersteller-Variante wurde erstellt.',
+          title: t('messages.success'),
+          description: t('messages.part.created'),
         });
       }
       onSaved();
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Hersteller-Variante konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.part.saveFailed'),
         variant: 'destructive',
       });
     }
@@ -216,21 +222,19 @@ export function PartDialog({
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto z-[60]">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? 'Hersteller-Variante bearbeiten' : 'Neue Hersteller-Variante'}
+            {isEdit ? t('dialogs.part.titleEdit') : t('dialogs.part.title')}
           </DialogTitle>
           <DialogDescription>
-            {isEdit
-              ? 'Informationen zur Hersteller-Variante ändern'
-              : 'Neue konkrete Hersteller-Variante eines Bauteils erstellen'}
+            {isEdit ? t('dialogs.part.descriptionEdit') : t('dialogs.part.description')}
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="details">Stammdaten</TabsTrigger>
-            <TabsTrigger value="attributes">Attribute</TabsTrigger>
+            <TabsTrigger value="details">{t('tabs.details')}</TabsTrigger>
+            <TabsTrigger value="attributes">{t('tabs.attributes')}</TabsTrigger>
             <TabsTrigger value="files" disabled={!isEdit}>
-              Dateien
+              {t('tabs.files')}
             </TabsTrigger>
           </TabsList>
 
@@ -245,7 +249,7 @@ export function PartDialog({
                     name="coreComponentId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Generisches Bauteil *</FormLabel>
+                        <FormLabel>{t('partForm.coreComponent')} *</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
@@ -254,20 +258,20 @@ export function PartDialog({
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue
-                                placeholder={loading ? 'Lädt...' : 'Bauteil auswählen'}
+                                placeholder={loading ? tCommon('loading') : t('partForm.selectComponent')}
                               />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {components.map((comp) => (
                               <SelectItem key={comp.id} value={comp.id}>
-                                {comp.name.de || comp.name.en}
+                                {getLocalizedValue(comp.name, locale)}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                         <FormDescription>
-                          Das herstellerunabhängige Bauteil (z.B. 555 Timer)
+                          {t('partForm.coreComponentDesc')}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -281,7 +285,7 @@ export function PartDialog({
                   name="manufacturerId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Hersteller *</FormLabel>
+                      <FormLabel>{t('partForm.manufacturer')} *</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -290,7 +294,7 @@ export function PartDialog({
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue
-                              placeholder={loading ? 'Lädt...' : 'Hersteller auswählen'}
+                              placeholder={loading ? tCommon('loading') : t('partForm.manufacturerPlaceholder')}
                             />
                           </SelectTrigger>
                         </FormControl>
@@ -303,7 +307,7 @@ export function PartDialog({
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Der Hersteller dieser konkreten Variante (z.B. Texas Instruments)
+                        {t('partForm.manufacturerDesc')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -316,12 +320,12 @@ export function PartDialog({
                   name="mpn"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>MPN (Manufacturer Part Number) *</FormLabel>
+                      <FormLabel>{t('partForm.mpn')} *</FormLabel>
                       <FormControl>
-                        <Input placeholder="z.B. NE555P" {...field} />
+                        <Input placeholder={t('partForm.mpnPlaceholder')} {...field} />
                       </FormControl>
                       <FormDescription>
-                        Die eindeutige Herstellerteilenummer
+                        {t('partForm.mpnDesc')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -334,16 +338,16 @@ export function PartDialog({
                   name="orderingCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bestellnummer</FormLabel>
+                      <FormLabel>{t('partForm.orderingCode')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Optional"
+                          placeholder={t('partForm.orderingCodePlaceholder')}
                           {...field}
                           value={field.value || ''}
                         />
                       </FormControl>
                       <FormDescription>
-                        Alternative Bestellnummer (falls abweichend von MPN)
+                        {t('partForm.orderingCodeDesc')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -357,7 +361,7 @@ export function PartDialog({
                     name="status"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Datensatz-Status</FormLabel>
+                        <FormLabel>{t('partForm.statusRecord')}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
@@ -369,10 +373,10 @@ export function PartDialog({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="DRAFT">Entwurf</SelectItem>
-                            <SelectItem value="PENDING">Prüfung</SelectItem>
-                            <SelectItem value="PUBLISHED">Veröffentlicht</SelectItem>
-                            <SelectItem value="ARCHIVED">Archiviert</SelectItem>
+                            <SelectItem value="DRAFT">{tComponents('status.DRAFT')}</SelectItem>
+                            <SelectItem value="PENDING">{tComponents('status.PENDING')}</SelectItem>
+                            <SelectItem value="PUBLISHED">{tComponents('status.PUBLISHED')}</SelectItem>
+                            <SelectItem value="ARCHIVED">{tComponents('status.ARCHIVED')}</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -385,7 +389,7 @@ export function PartDialog({
                     name="lifecycleStatus"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Lifecycle-Status</FormLabel>
+                        <FormLabel>{t('partForm.lifecycleStatus')}</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
@@ -397,10 +401,10 @@ export function PartDialog({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="ACTIVE">Aktiv</SelectItem>
-                            <SelectItem value="NRND">Nicht für Neuentwicklungen</SelectItem>
-                            <SelectItem value="EOL">Auslaufend</SelectItem>
-                            <SelectItem value="OBSOLETE">Obsolet</SelectItem>
+                            <SelectItem value="ACTIVE">{tComponents('lifecycle.ACTIVE')}</SelectItem>
+                            <SelectItem value="NRND">{tComponents('lifecycle.NRND')}</SelectItem>
+                            <SelectItem value="EOL">{tComponents('lifecycle.EOL')}</SelectItem>
+                            <SelectItem value="OBSOLETE">{tComponents('lifecycle.OBSOLETE')}</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -416,11 +420,11 @@ export function PartDialog({
                     name="introductionYear"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Einführungsjahr</FormLabel>
+                        <FormLabel>{t('partForm.introductionYear')}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="z.B. 1972"
+                            placeholder={t('partForm.introductionYearPlaceholder')}
                             {...field}
                             value={field.value || ''}
                             onChange={(e) =>
@@ -438,11 +442,11 @@ export function PartDialog({
                     name="discontinuedYear"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Einstellungsjahr</FormLabel>
+                        <FormLabel>{t('partForm.discontinuedYear')}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="z.B. 2020"
+                            placeholder={t('partForm.discontinuedYearPlaceholder')}
                             {...field}
                             value={field.value || ''}
                             onChange={(e) =>
@@ -472,9 +476,9 @@ export function PartDialog({
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel>RoHS-konform</FormLabel>
+                          <FormLabel>{t('partForm.rohsCompliant')}</FormLabel>
                           <FormDescription>
-                            Erfüllt RoHS-Richtlinien
+                            {t('partForm.rohsDesc')}
                           </FormDescription>
                         </div>
                       </FormItem>
@@ -495,9 +499,9 @@ export function PartDialog({
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel>REACH-konform</FormLabel>
+                          <FormLabel>{t('partForm.reachCompliant')}</FormLabel>
                           <FormDescription>
-                            Erfüllt REACH-Verordnung
+                            {t('partForm.reachDesc')}
                           </FormDescription>
                         </div>
                       </FormItem>
@@ -512,12 +516,12 @@ export function PartDialog({
                     name="weightGrams"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Gewicht (Gramm)</FormLabel>
+                        <FormLabel>{t('partForm.weight')}</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             step="0.01"
-                            placeholder="z.B. 0.5"
+                            placeholder={t('partForm.weightPlaceholder')}
                             {...field}
                             value={field.value || ''}
                             onChange={(e) =>
@@ -535,16 +539,16 @@ export function PartDialog({
                     name="dateCodeFormat"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Datumscodierung</FormLabel>
+                        <FormLabel>{t('partForm.dateCodeFormat')}</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="z.B. YYWW"
+                            placeholder={t('partForm.dateCodePlaceholder')}
                             {...field}
                             value={field.value || ''}
                           />
                         </FormControl>
                         <FormDescription>
-                          Format des Datumscodes auf dem Bauteil
+                          {t('partForm.dateCodeDesc')}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -559,10 +563,10 @@ export function PartDialog({
                     name="nsn"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>NSN (NATO Stock Number)</FormLabel>
+                        <FormLabel>{t('partForm.nsn')}</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="z.B. 5962-01-123-4567"
+                            placeholder={t('partForm.nsnPlaceholder')}
                             {...field}
                             value={field.value || ''}
                           />
@@ -577,10 +581,10 @@ export function PartDialog({
                     name="milSpec"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Militärspezifikation</FormLabel>
+                        <FormLabel>{t('partForm.milSpec')}</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="z.B. MIL-PRF-38534"
+                            placeholder={t('partForm.milSpecPlaceholder')}
                             {...field}
                             value={field.value || ''}
                           />
@@ -593,14 +597,14 @@ export function PartDialog({
 
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                    Abbrechen
+                    {tCommon('cancel')}
                   </Button>
                   <Button type="submit" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting
-                      ? 'Speichern...'
+                      ? t('buttons.saving')
                       : isEdit
-                      ? 'Aktualisieren'
-                      : 'Erstellen'}
+                      ? t('buttons.update')
+                      : tCommon('create')}
                   </Button>
                 </DialogFooter>
               </form>
@@ -611,7 +615,7 @@ export function PartDialog({
           <TabsContent value="attributes" className="mt-4">
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Hersteller-spezifische Attribute basierend auf der Kategorie des Bauteils.
+                {t('partForm.partAttributesDesc')}
               </p>
 
               <AttributeFields
@@ -619,13 +623,13 @@ export function PartDialog({
                 scope="PART"
                 values={partAttributes}
                 onChange={setPartAttributes}
-                sectionLabel="Hersteller-spezifische Attribute"
+                sectionLabel={t('partForm.partAttributesLabel')}
                 includeInherited={true}
               />
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                  Abbrechen
+                  {tCommon('cancel')}
                 </Button>
                 <Button
                   type="button"
@@ -633,10 +637,10 @@ export function PartDialog({
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting
-                    ? 'Speichern...'
+                    ? t('buttons.saving')
                     : isEdit
-                    ? 'Aktualisieren'
-                    : 'Erstellen'}
+                    ? t('buttons.update')
+                    : tCommon('create')}
                 </Button>
               </DialogFooter>
             </div>
@@ -646,17 +650,17 @@ export function PartDialog({
           <TabsContent value="files" className="mt-4">
             {!isEdit ? (
               <div className="text-center py-8 text-muted-foreground">
-                <p>Speichern Sie zuerst die Variante, um Dateien hochzuladen.</p>
+                <p>{t('dialogs.part.saveFirstFiles')}</p>
               </div>
             ) : part ? (
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Datenblätter, Bilder und andere Dateien für diese Hersteller-Variante verwalten.
+                  {t('partForm.filesDesc')}
                 </p>
                 <PartFilesManager partId={part.id} />
                 <DialogFooter>
                   <Button variant="outline" onClick={() => onOpenChange(false)}>
-                    Schließen
+                    {t('partForm.close')}
                   </Button>
                 </DialogFooter>
               </div>

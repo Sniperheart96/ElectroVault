@@ -44,6 +44,7 @@ Authorization: Bearer <JWT_TOKEN>
 | Moderation | `/moderation` | Moderations-Queue und Freigaben |
 | Audit | `/audit` | Audit-Logs und Änderungshistorie |
 | Statistiken | `/stats` | Öffentliche Dashboard-Statistiken |
+| User Dashboard | `/users` | "Mein ElectroVault" - persönliche Statistiken und Entwürfe |
 
 ---
 
@@ -314,6 +315,58 @@ Liste aller CoreComponents mit Paginierung und Filterung.
 | search | string | - | Suchbegriff (Name, Slug) |
 | categoryId | string | - | Kategorie-Filter |
 | status | string | - | Status-Filter (DRAFT, PENDING, PUBLISHED) |
+| includeDrafts | boolean | false | Eigene Entwürfe (DRAFT) einbeziehen (nur für eingeloggte User) |
+| attributeFilters | string (JSON) | - | Array von AttributeFilter-Objekten als JSON-String |
+
+**Hinweis:** Standardmäßig werden keine Entwürfe (DRAFT) angezeigt. Mit `includeDrafts=true` werden die eigenen Entwürfe des eingeloggten Users zusätzlich angezeigt (ausgegraut in der UI).
+
+#### Attribut-basierte Filterung
+
+Die Bauteil-Suche unterstützt attribut-basierte Filter über den Query-Parameter `attributeFilters`.
+
+**AttributeFilter-Objekt:**
+
+```json
+{
+  "definitionId": "uuid",      // Attribut-Definition ID (Pflicht)
+  "operator": "between",       // Filter-Operator (Pflicht)
+  "value": 1e-6,              // Hauptwert (Typ variiert)
+  "valueTo": 100e-6           // Zweiter Wert (nur für 'between')
+}
+```
+
+**Verfügbare Operatoren:**
+
+| Operator | Datentypen | Beschreibung | Beispiel-Value |
+|----------|------------|--------------|----------------|
+| eq | DECIMAL, INTEGER, STRING | Gleich | `100` |
+| ne | DECIMAL, INTEGER, STRING | Ungleich | `100` |
+| gt | DECIMAL, INTEGER | Größer als | `50` |
+| gte | DECIMAL, INTEGER | Größer oder gleich | `50` |
+| lt | DECIMAL, INTEGER | Kleiner als | `200` |
+| lte | DECIMAL, INTEGER | Kleiner oder gleich | `200` |
+| between | DECIMAL, INTEGER | Zwischen (inklusiv) | `value: 10, valueTo: 100` |
+| contains | STRING | Enthält Teilstring | `"Timer"` |
+| isTrue | BOOLEAN | Ist wahr | - |
+| isFalse | BOOLEAN | Ist falsch | - |
+| withinRange | RANGE | Wert liegt im gespeicherten Bereich | `25` |
+| in | SELECT | Wert in Liste | `["NPN", "PNP"]` |
+| notIn | SELECT | Wert nicht in Liste | `["MOSFET"]` |
+| hasAny | MULTISELECT | Mind. ein Wert vorhanden (OR) | `["RoHS", "REACH"]` |
+| hasAll | MULTISELECT | Alle Werte vorhanden (AND) | `["RoHS", "REACH"]` |
+
+**Beispiel-Anfrage:**
+
+```bash
+# Kondensatoren mit Kapazität zwischen 1µF und 100µF
+GET /components?categoryId=<uuid>&attributeFilters=[{"definitionId":"<capacitance-uuid>","operator":"between","value":0.000001,"valueTo":0.0001}]
+```
+
+**Wichtig:**
+- Numerische Werte müssen in SI-Basiseinheit angegeben werden (z.B. 100µF = 0.0001 Farad)
+- Das Array muss URL-encoded werden (`encodeURIComponent`)
+- Filter werden auf `ManufacturerPart`-Attributen angewendet
+- Ein Component wird angezeigt, wenn mindestens ein Part alle Filter erfüllt
 
 **Response:**
 
@@ -2321,6 +2374,143 @@ Audit-Statistiken.
     "components": 1500,
     "manufacturers": 250,
     "users": 150
+  }
+}
+```
+
+---
+
+## User Dashboard (`/users`)
+
+Endpunkte für das "Mein ElectroVault" Dashboard. Alle Endpunkte erfordern Authentifizierung.
+
+### GET `/users/me/stats`
+
+Statistiken des aktuellen Users.
+
+**Auth:** VIEWER+
+
+**Response:**
+
+```json
+{
+  "data": {
+    "components": {
+      "total": 12,
+      "draft": 3,
+      "pending": 2,
+      "published": 6,
+      "archived": 1
+    },
+    "parts": 8
+  }
+}
+```
+
+### GET `/users/me/components`
+
+Eigene Bauteile des aktuellen Users.
+
+**Auth:** VIEWER+
+
+**Query-Parameter:**
+
+| Parameter | Typ | Standard | Beschreibung |
+|-----------|-----|----------|--------------|
+| status | string | - | Filter nach Status (DRAFT, PENDING, PUBLISHED, ARCHIVED) |
+| limit | number | 20 | Maximale Anzahl |
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "name": { "de": "555 Timer", "en": "555 Timer" },
+      "slug": "555-timer",
+      "status": "PUBLISHED",
+      "category": {
+        "id": "uuid",
+        "name": { "de": "Timer/Oszillatoren", "en": "Timer/Oscillators" },
+        "slug": "timer-oscillators"
+      },
+      "manufacturerPartsCount": 5,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-20T14:00:00Z"
+    }
+  ]
+}
+```
+
+### GET `/users/me/drafts`
+
+Entwürfe (DRAFT) des aktuellen Users.
+
+**Auth:** VIEWER+
+
+**Query-Parameter:**
+
+| Parameter | Typ | Standard | Beschreibung |
+|-----------|-----|----------|--------------|
+| limit | number | 10 | Maximale Anzahl |
+
+**Response:** Wie `/users/me/components` mit `status: "DRAFT"`.
+
+### GET `/users/me/activity`
+
+Aktivitätsverlauf des aktuellen Users.
+
+**Auth:** VIEWER+
+
+**Query-Parameter:**
+
+| Parameter | Typ | Standard | Beschreibung |
+|-----------|-----|----------|--------------|
+| limit | number | 50 | Maximale Anzahl |
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "userId": "uuid",
+      "action": "CREATE",
+      "entityType": "COMPONENT",
+      "entityId": "uuid",
+      "changes": { ... },
+      "createdAt": "2024-01-15T10:30:00Z"
+    }
+  ]
+}
+```
+
+### GET `/users/me/dashboard`
+
+Kombinierte Dashboard-Daten (Stats + Drafts + Activity).
+
+**Auth:** VIEWER+
+
+**Query-Parameter:**
+
+| Parameter | Typ | Standard | Beschreibung |
+|-----------|-----|----------|--------------|
+| draftsLimit | number | 5 | Maximale Anzahl Entwürfe |
+| activityLimit | number | 10 | Maximale Anzahl Aktivitäten |
+
+**Response:**
+
+```json
+{
+  "data": {
+    "stats": {
+      "components": { "total": 12, "draft": 3, "pending": 2, "published": 6, "archived": 1 },
+      "parts": 8
+    },
+    "drafts": [ ... ],
+    "activity": [ ... ]
   }
 }
 ```

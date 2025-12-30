@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "טוען...",
+    "error": "שגיאה",
+    "save": "שמור",
+    "cancel": "ביטול",
+    "delete": "מחק",
+    "edit": "ערוך",
+    "create": "צור",
+    "search": "חפש",
+    "back": "חזור",
+    "next": "הבא",
+    "previous": "הקודם",
+    "noResults": "לא נמצאו תוצאות",
+    "all": "הכל",
+    "yes": "כן",
+    "no": "לא",
+    "actions": {
+      "details": "פרטים"
+    }
+  },
+  "locale": {
+    "switch": "שנה שפה",
+    "current": "שפה נוכחית",
+    "languages": {
+      "en": "אנגלית",
+      "de": "גרמנית",
+      "fr": "צרפתית",
+      "es": "ספרדית",
+      "zh": "סינית",
+      "ja": "יפנית",
+      "ko": "קוריאנית",
+      "it": "איטלקית"
+    }
+  },
+  "nav": {
+    "home": "בית",
+    "components": "רכיבים",
+    "categories": "קטגוריות",
+    "manufacturers": "יצרנים",
+    "packages": "מארזים",
+    "search": "חיפוש",
+    "admin": "ניהול",
+    "moderation": "פיקוח",
+    "myElectroVault": "ElectroVault שלי",
+    "login": "התחבר",
+    "logout": "התנתק",
+    "profile": "פרופיל"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "מאגר רכיבים אלקטרוניים המתוחזק על ידי הקהילה",
+    "searchPlaceholder": "חפש רכיבים...",
+    "featuredCategories": "קטגוריות מומלצות",
+    "recentComponents": "רכיבים עדכניים",
+    "stats": {
+      "components": "רכיבים",
+      "manufacturers": "יצרנים",
+      "categories": "קטגוריות",
+      "users": "משתמשים"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "מאגר רכיבים אלקטרוניים המתוחזק על ידי הקהילה"
+    },
+    "stats": {
+      "components": "רכיבים",
+      "manufacturers": "יצרנים",
+      "users": "משתמשים"
+    }
+  },
+  "packages": {
+    "title": "מארזים",
+    "totalCount": "{count} מארזים במאגר הנתונים",
+    "addNew": "מארז חדש",
+    "searchPlaceholder": "חפש לפי שם או slug...",
+    "filterPlaceholder": "סוג מארז",
+    "filterAll": "כל הסוגים",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "רדיאלי",
+      "AXIAL": "אקסיאלי",
+      "CHASSIS": "שאסי",
+      "OTHER": "אחר"
+    },
+    "table": {
+      "name": "שם",
+      "type": "סוג",
+      "pinCount": "מספר פינים",
+      "dimensions": "מידות (L x W x H מ\"מ)",
+      "pitch": "מרווח",
+      "actions": "פעולות"
+    },
+    "loading": "טוען...",
+    "noResults": "לא נמצאו מארזים",
+    "noPackagesFound": "לא נמצאו מארזים",
+    "createFirst": "צור מארז ראשון",
+    "error": "שגיאה",
+    "success": "הצלחה",
+    "loadError": "לא ניתן לטעון מארזים.",
+    "deleteSuccess": "המארז נמחק.",
+    "deleteError": "לא ניתן למחוק מארז.",
+    "deleteDialog": {
+      "title": "למחוק מארז?",
+      "description": "האם אתה באמת רוצה למחוק את המארז \"{name}\"? פעולה זו אינה הפיכה."
+    }
+  },
+  "components": {
+    "title": "רכיבים",
+    "description": "עיין במאגר המקיף שלנו של רכיבים אלקטרוניים",
+    "filters": {
+      "category": "קטגוריה",
+      "manufacturer": "יצרן",
+      "status": "סטטוס",
+      "mountingType": "סוג הרכבה"
+    },
+    "detail": {
+      "overview": "סקירה כללית",
+      "specifications": "מפרט טכני",
+      "datasheets": "דפי נתונים",
+      "parts": "חלקי יצרן",
+      "history": "היסטוריית גרסאות",
+      "backToOverview": "חזור לסקירה כללית",
+      "category": "קטגוריה",
+      "statistics": "סטטיסטיקות",
+      "manufacturerVariants": "גרסאות יצרן",
+      "activeVariants": "גרסאות פעילות",
+      "additionalProperties": "מאפיינים נוספים",
+      "furtherProperties": "מאפיינים נוספים של רכיב זה",
+      "validForAllVariants": "מפרטים טכניים (תקפים לכל הגרסאות)",
+      "variantCount": "גרסת יצרן {count}",
+      "variantCountPlural": "{count} גרסאות יצרן",
+      "noVariantsAvailable": "אין גרסאות יצרן זמינות",
+      "noVariantsForComponent": "אין גרסאות יצרן זמינות לרכיב זה.",
+      "noAttributesAvailable": "אין תכונות זמינות.",
+      "manufacturer": "יצרן",
+      "orderingCode": "קוד הזמנה",
+      "details": "פרטים",
+      "allInCategory": "הכל בקטגוריה",
+      "status": "סטטוס",
+      "moreAttributes": "+{count} נוספים"
+    },
+    "status": {
+      "DRAFT": "טיוטה",
+      "PENDING": "ממתין",
+      "PUBLISHED": "פורסם",
+      "ARCHIVED": "בארכיון"
+    },
+    "lifecycle": {
+      "ACTIVE": "פעיל",
+      "NRND": "לא מומלץ לעיצובים חדשים",
+      "EOL": "סוף חיים",
+      "OBSOLETE": "מיושן"
+    }
+  },
+  "categories": {
+    "title": "קטגוריות",
+    "browseAll": "עיין בכל הקטגוריות",
+    "subcategories": "תת-קטגוריות",
+    "componentsInCategory": "רכיבים בקטגוריה זו"
+  },
+  "manufacturers": {
+    "title": "יצרנים",
+    "status": {
+      "ACTIVE": "פעיל",
+      "ACQUIRED": "נרכש",
+      "DEFUNCT": "לא פעיל"
+    }
+  },
+  "auth": {
+    "login": "התחבר",
+    "logout": "התנתק",
+    "loginWith": "התחבר עם {provider}",
+    "welcome": "ברוך שובך",
+    "signInToContinue": "התחבר כדי להמשיך",
+    "signIn": {
+      "title": "התחברות",
+      "description": "התחבר לחשבונך",
+      "button": "התחבר עם Keycloak",
+      "loading": "מתחבר...",
+      "hint": "תועבר אל Keycloak"
+    },
+    "signOut": {
+      "title": "התנתקות",
+      "description": "האם אתה בטוח שברצונך להתנתק?",
+      "button": "התנתק",
+      "loading": "מתנתק...",
+      "cancel": "ביטול"
+    },
+    "error": {
+      "title": "שגיאת אימות",
+      "description": "אירעה שגיאה במהלך ההתחברות",
+      "tryAgain": "נסה שוב",
+      "backHome": "חזור לעמוד הבית"
+    },
+    "errors": {
+      "configuration": "שגיאת תצורת שרת. אנא צור קשר עם המנהל.",
+      "accessDenied": "הגישה נדחתה. אין לך הרשאה.",
+      "verification": "קישור האימות פג או כבר נעשה בו שימוש.",
+      "oauthSignin": "שגיאה בהתחלת התחברות OAuth.",
+      "oauthCallback": "שגיאה בעיבוד callback של OAuth.",
+      "oauthCreateAccount": "שגיאה ביצירת חשבון משתמש.",
+      "emailCreateAccount": "שגיאה ביצירת חשבון דוא\"ל.",
+      "callback": "שגיאה בעיבוד callback.",
+      "oauthAccountNotLinked": "כתובת הדוא\"ל כבר קשורה לחשבון אחר.",
+      "sessionRequired": "אנא התחבר כדי לגשת לדף זה.",
+      "default": "אירעה שגיאה לא ידועה. אנא נסה שוב."
+    }
+  },
+  "admin": {
+    "dashboard": "לוח בקרה",
+    "sidebar": {
+      "dashboard": "לוח בקרה",
+      "moderation": "פיקוח",
+      "moderationDescription": "תור אישורים",
+      "users": "משתמשים",
+      "backToHome": "חזור לדף הבית",
+      "user": "משתמש",
+      "logout": "התנתק"
+    },
+    "components": {
+      "title": "ניהול רכיבים",
+      "new": "רכיב חדש",
+      "edit": "ערוך רכיב"
+    },
+    "moderation": {
+      "title": "פיקוח",
+      "pendingReviews": "ממתין לבדיקה",
+      "approve": "אשר",
+      "reject": "דחה",
+      "batchApproval": "אישור מרובה",
+      "confirmApprove": "אשר אישור",
+      "confirmApproveDescription": "האם אתה באמת רוצה לאשר {type} זה? הוא יהיה גלוי לציבור לאחר מכן.",
+      "confirmBatchApproval": "האם לאשר {count} פריטים? פעולה זו אינה הפיכה.",
+      "rejectWithReason": "דחה עם נימוק",
+      "rejectDescription": "אנא ספק נימוק לדחייה. זה יוצג ליוצר.",
+      "rejectReasonLabel": "נימוק",
+      "rejectReasonPlaceholder": "מדוע פריט זה נדחה?",
+      "rejectReasonHelp": "נימוק משמעותי עוזר ליוצר להבין את הדחייה.",
+      "batchApproveButton": "אשר {count}",
+      "typeComponent": "רכיב",
+      "typePart": "חלק",
+      "draft": "טיוטה"
+    },
+    "users": {
+      "title": "משתמשים",
+      "manage": "ניהול משתמשים"
+    },
+    "myDashboard": {
+      "title": "לוח הבקרה שלי",
+      "stats": {
+        "componentsTotal": "סך כל הרכיבים",
+        "componentsTotalDesc": "רכיבים שנוצרו על ידך",
+        "variants": "גרסאות",
+        "variantsDesc": "גרסאות יצרן",
+        "drafts": "טיוטות",
+        "draftsDesc": "עדיין לא הוגש",
+        "pending": "בבדיקה",
+        "pendingDesc": "ממתין לפיקוח",
+        "published": "פורסם",
+        "archived": "בארכיון"
+      },
+      "draftsSection": {
+        "title": "הטיוטות שלי",
+        "description": "טיוטות הן שמירות ביניים פרטיות ועדיין לא הוגשו לפיקוח.",
+        "newComponent": "רכיב חדש",
+        "empty": "אין טיוטות זמינות. צור רכיב חדש ושמור אותו כטיוטה.",
+        "draftBadge": "טיוטה",
+        "noName": "[אין שם]"
+      },
+      "activitySection": {
+        "title": "היסטוריית פעילות",
+        "description": "הפעולות האחרונות שלך ב-ElectroVault",
+        "empty": "עדיין אין פעילות."
+      },
+      "entities": {
+        "COMPONENT": "רכיב",
+        "PART": "גרסה",
+        "MANUFACTURER": "יצרן",
+        "CATEGORY": "קטגוריה",
+        "PACKAGE": "מארז"
+      },
+      "error": "לא ניתן לטעון את לוח הבקרה. אנא נסה שוב."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "תכונה חדשה",
+        "titleEdit": "ערוך תכונה",
+        "description": "הגדרת תכונה לרכיבים"
+      },
+      "category": {
+        "title": "קטגוריה חדשה",
+        "titleEdit": "ערוך קטגוריה",
+        "description": "נהל מידע קטגוריה ותכונות",
+        "saveFirst": "שמור את הקטגוריה תחילה כדי להוסיף תכונות"
+      },
+      "component": {
+        "title": "רכיב חדש",
+        "titleEdit": "ערוך רכיב",
+        "description": "צור רכיב חדש - לאחר השמירה תוכל להוסיף גרסאות יצרן",
+        "descriptionEdit": "נהל מידע רכיבים וגרסאות יצרן",
+        "saveFirstPinMapping": "שמור את הרכיב תחילה כדי לערוך מיפוי פינים",
+        "saveFirstParts": "שמור את הרכיב תחילה כדי להוסיף גרסאות יצרן",
+        "saveFirstRelations": "שמור את הרכיב תחילה כדי להוסיף קשרים",
+        "createdWithVariants": "הרכיב נוצר. כעת תוכל להוסיף גרסאות יצרן",
+        "noPartsWarning": "לרכיב זה אין גרסאות יצרן. נדרשת לפחות גרסה אחת"
+      },
+      "manufacturer": {
+        "title": "יצרן חדש",
+        "titleEdit": "ערוך יצרן",
+        "description": "נהל מידע יצרן"
+      },
+      "part": {
+        "title": "גרסה חדשה",
+        "titleEdit": "ערוך גרסה",
+        "description": "צור גרסה קונקרטית חדשה של יצרן עבור רכיב",
+        "descriptionEdit": "שנה מידע על גרסת יצרן",
+        "saveFirstFiles": "שמור את הגרסה תחילה כדי להעלות קבצים"
+      },
+      "package": {
+        "title": "מארז חדש",
+        "titleEdit": "ערוך מארז",
+        "description": "מידע על מארז/טביעת רגל"
+      },
+      "delete": {
+        "title": "אישור מחיקה",
+        "message": "האם אתה בטוח שברצונך למחוק פריט זה?",
+        "messageFile": "האם אתה באמת רוצה למחוק קובץ זה?",
+        "messagePin": "האם אתה באמת רוצה למחוק פין זה?",
+        "message3dModel": "האם אתה באמת רוצה למחוק מודל תלת-ממד זה?",
+        "messageRelation": "האם אתה באמת רוצה למחוק קשר זה?"
+      }
+    },
+    "buttons": {
+      "saving": "שומר...",
+      "saveAsDraft": "שמור כטיוטה",
+      "update": "עדכן",
+      "addPin": "הוסף פין",
+      "addRelation": "הוסף קשר"
+    },
+    "messages": {
+      "success": "הצלחה",
+      "error": "שגיאה",
+      "warning": "אזהרה",
+      "attribute": {
+        "created": "התכונה נוצרה",
+        "updated": "התכונה עודכנה",
+        "deleted": "התכונה נמחקה",
+        "loadFailed": "כשל בטעינת תכונות",
+        "saveFailed": "כשל בשמירת תכונה",
+        "deleteFailed": "כשל במחיקת תכונה"
+      },
+      "category": {
+        "created": "הקטגוריה נוצרה",
+        "updated": "הקטגוריה עודכנה",
+        "deleted": "הקטגוריה נמחקה",
+        "loadFailed": "כשל בטעינת קטגוריות",
+        "saveFailed": "כשל בשמירת קטגוריה",
+        "deleteFailed": "כשל במחיקת קטגוריה"
+      },
+      "component": {
+        "created": "הרכיב נוצר",
+        "updated": "הרכיב עודכן",
+        "deleted": "הרכיב נמחק",
+        "loadFailed": "כשל בטעינת רכיבים",
+        "saveFailed": "כשל בשמירת רכיב",
+        "deleteFailed": "כשל במחיקת רכיב"
+      },
+      "manufacturer": {
+        "created": "היצרן נוצר",
+        "updated": "היצרן עודכן",
+        "deleted": "היצרן נמחק",
+        "loadFailed": "כשל בטעינת יצרנים",
+        "saveFailed": "כשל בשמירת יצרן",
+        "deleteFailed": "כשל במחיקת יצרן",
+        "logoUploaded": "הלוגו הועלה",
+        "logoUploadFailed": "כשל בהעלאת לוגו"
+      },
+      "part": {
+        "created": "הגרסה נוצרה",
+        "updated": "הגרסה עודכנה",
+        "deleted": "הגרסה נמחקה",
+        "loadFailed": "כשל בטעינת גרסאות",
+        "saveFailed": "כשל בשמירת גרסה",
+        "deleteFailed": "כשל במחיקת גרסה"
+      },
+      "package": {
+        "created": "המארז נוצר",
+        "updated": "המארז עודכן",
+        "deleted": "המארז נמחק",
+        "loadFailed": "כשל בטעינת מארזים",
+        "saveFailed": "כשל בשמירת מארז",
+        "deleteFailed": "כשל במחיקת מארז"
+      },
+      "file": {
+        "uploaded": "הקובץ הועלה",
+        "deleted": "הקובץ נמחק",
+        "uploadFailed": "כשל בהעלאת קובץ",
+        "deleteFailed": "כשל במחיקת קובץ",
+        "loadFailed": "כשל בטעינת קבצים",
+        "downloadUrlFailed": "לא ניתן ליצור URL להורדה"
+      },
+      "pin": {
+        "created": "הפין נוסף",
+        "updated": "הפין עודכן",
+        "deleted": "הפין נמחק",
+        "createFailed": "כשל ביצירת פין",
+        "loadFailed": "כשל בטעינת פינים",
+        "updateFailed": "כשל בעדכון פין",
+        "deleteFailed": "כשל במחיקת פין"
+      },
+      "relation": {
+        "created": "הקשר נוסף",
+        "deleted": "הקשר נמחק",
+        "createFailed": "כשל ביצירת קשר",
+        "deleteFailed": "כשל במחיקת קשר"
+      }
+    },
+    "pinMapping": {
+      "title": "מיפוי פינים",
+      "addPin": "הוסף פין",
+      "newPin": "הוסף פין חדש",
+      "pinNumber": "מספר פין (לדוגמה 1, VCC)",
+      "pinName": "שם פין",
+      "selectType": "בחר סוג פין",
+      "noDescription": "אין תיאור",
+      "noType": "אין סוג",
+      "loading": "טוען פינים...",
+      "pinsCount": "{count} פינים",
+      "tabList": "רשימת פינים",
+      "tabBulkImport": "ייבוא המוני",
+      "noPins": "לא הוגדרו פינים. הוסף פינים בנפרד או השתמש בייבוא המוני.",
+      "columnPinNumber": "מס' פין",
+      "columnName": "שם",
+      "columnType": "סוג",
+      "columnFunction": "פונקציה (DE)",
+      "columnActions": "פעולות",
+      "functionPlaceholder": "לדוגמה מתח אספקה",
+      "deleteTitle": "למחוק פין?",
+      "deleteMessage": "האם אתה באמת רוצה למחוק פין {pinNumber} ({pinName})? פעולה זו אינה הפיכה.",
+      "reorderSuccess": "סדר הפינים עודכן",
+      "reorderFailed": "לא ניתן לשנות את הסדר",
+      "bulkImport": {
+        "formatLabel": "פורמט:",
+        "exampleLabel": "דוגמה:",
+        "typeHint": "pinType הוא אופציונלי. סוגים זמינים: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "הזן פינים בפורמט CSV...",
+        "importButton": "ייבא פינים",
+        "noPinsFound": "לא נמצאו נתוני פינים תקפים.",
+        "success": "{count} פינים יובאו.",
+        "failed": "ייבוא המוני נכשל."
+      }
+    },
+    "files": {
+      "uploadImage": "העלה תמונת מוצר",
+      "uploadDatasheet": "העלה דף נתונים",
+      "uploadDocument": "העלה מסמך",
+      "selectLanguage": "בחר שפה",
+      "noFiles": "אין קבצים זמינים",
+      "confirmDelete": "למחוק קובץ?",
+      "productImage": "תמונת מוצר",
+      "productImageDescription": "תמונת תצוגה מקדימה לגרסת יצרן זו",
+      "addImage": "תמונה",
+      "imageDescription": "JPEG, PNG או WebP (עד 10 MB)",
+      "noImageUploaded": "עדיין לא הועלתה תמונה",
+      "datasheets": "דפי נתונים",
+      "datasheetsDescription": "דפי נתונים בפורמט PDF לגרסת יצרן זו",
+      "addDatasheet": "דף נתונים",
+      "languagesRequired": "שפות דף הנתונים",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "יש לבחור לפחות שפה אחת",
+      "datasheetFileDescription": "קובץ PDF של דף הנתונים של היצרן",
+      "noDatasheets": "עדיין לא הועלו דפי נתונים",
+      "otherFiles": "קבצים אחרים",
+      "otherFilesDescription": "מסמכים נוספים, הערות יישום, וכו'",
+      "addDocument": "מסמך",
+      "languagesOptional": "שפות (אופציונלי)",
+      "anyFileDescription": "קבצים כלשהם (PDF, TXT, ZIP, וכו')",
+      "noDocuments": "עדיין לא הועלו מסמכים",
+      "fileName": "קובץ",
+      "fileSize": "גודל",
+      "languages": "שפות",
+      "actions": "פעולות",
+      "imageCount": "תמונה {count}",
+      "fileCount": "{count} קובץ{plural}",
+      "datasheetCount": "{count} דף נתונים{plural}",
+      "imageUploaded": "תמונה הועלתה",
+      "imageRemoved": "תמונה הוסרה"
+    },
+    "model3d": {
+      "title": "מודלים תלת-ממדיים",
+      "confirmDelete": "למחוק מודל תלת-ממד?",
+      "upload": "העלה מודל תלת-ממד",
+      "noModels": "אין מודלים תלת-ממדיים זמינים"
+    },
+    "lists": {
+      "searchPlaceholder": "חפש...",
+      "searchByName": "חפש לפי שם או slug...",
+      "searchByNameCage": "חפש לפי שם, slug או קוד CAGE...",
+      "noResults": "לא נמצאו תוצאות",
+      "createFirst": "צור את הערך הראשון",
+      "noPackagesFound": "לא נמצאו מארזים",
+      "createFirstPackage": "צור מארז ראשון"
+    },
+    "filters": {
+      "allStatus": "כל הסטטוסים",
+      "myDrafts": "הטיוטות שלי"
+    },
+    "manufacturer": {
+      "title": "יצרנים",
+      "count": "{count} יצרנים במאגר הנתונים",
+      "create": "יצרן חדש",
+      "createFirst": "צור יצרן ראשון",
+      "deleteTitle": "למחוק יצרן?",
+      "deleteDescription": "האם אתה באמת רוצה למחוק את היצרן \"{name}\"? פעולה זו אינה הפיכה.",
+      "status": {
+        "active": "פעיל",
+        "acquired": "נרכש",
+        "defunct": "לא פעיל"
+      }
+    },
+    "form": {
+      "package": "מארז (Package)",
+      "selectPackage": "בחר מארז",
+      "noPackage": "אין מארז",
+      "editIn": "ערוך ב:",
+      "searchLanguage": "חפש שפה...",
+      "noLanguageFound": "לא נמצאה שפה",
+      "original": "מקור",
+      "backToOverview": "חזור לסקירה כללית",
+      "name": "שם",
+      "nameDescription": "השם בגרמנית ו/או אנגלית. שדה חובה אם לקטגוריה אין תכונות תווית",
+      "namePlaceholder": "שם רכיב",
+      "series": "סדרה",
+      "seriesDescription": "סדרת רכיבים או משפחה אופציונלית",
+      "seriesPlaceholder": "לדוגמה 74HC, ATmega",
+      "packageDescription": "הצורה הפיזית (לדוגמה DIP-8, SOIC-8)",
+      "shortDescription": "תיאור קצר",
+      "shortDescriptionDescription": "משפט קצר לתיאור הרכיב",
+      "shortDescriptionPlaceholder": "תיאור קצר",
+      "fullDescription": "תיאור מפורט",
+      "fullDescriptionPlaceholder": "תיאור מפורט",
+      "attributesDescription": "תכונות טכניות על בסיס הקטגוריה שנבחרה",
+      "selectCategoryFirst": "אנא בחר תחילה קטגוריה בלשונית \"נתונים בסיסיים\"",
+      "pinMappingDescription": "הגדר את מיפוי הפינים עבור רכיב זה. מיפוי הפינים תקף לכל גרסאות היצרן",
+      "partsDescription": "גרסאות ספציפיות ליצרן של רכיב זה",
+      "newVariant": "גרסה חדשה",
+      "close": "סגור",
+      "parentCategory": "קטגוריית על",
+      "parentCategoryPlaceholder": "ללא (קטגוריית שורש)",
+      "parentCategoryDescription": "השאר ריק עבור קטגוריה ראשית (רמה 0)",
+      "categoryName": "שם קטגוריה",
+      "categoryDescription": "תיאור",
+      "categoryDescriptionPlaceholder": "תיאור הקטגוריה",
+      "sortOrder": "סדר מיון",
+      "sortOrderDescription": "ערכים נמוכים יותר = גבוה יותר",
+      "status": "סטטוס",
+      "active": "פעיל",
+      "inactive": "לא פעיל",
+      "icon": "אייקון",
+      "iconUploadDescription": "העלה אייקון קטגוריה. מקסימום 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "לחץ או גרור קובץ לכאן.",
+      "iconMaxSize": "האייקון יכול להיות בגודל מקסימלי של 5 MB.",
+      "iconAllowedTypes": "רק JPEG, PNG, WebP או SVG מותרים.",
+      "iconUploaded": "האייקון הועלה.",
+      "iconUploadFailed": "כשל בהעלאת האייקון.",
+      "categoryCreatedIconFailed": "הקטגוריה נוצרה, אך העלאת האייקון נכשלה.",
+      "loading": "טוען...",
+      "newAttribute": "תכונה חדשה",
+      "ownAttributes": "תכונות עצמיות ({count})",
+      "noOwnAttributes": "לא הוגדרו תכונות עצמיות.",
+      "inheritedAttributes": "תכונות מורשות ({count})",
+      "inheritedAttributesDescription": "תכונות מורשות ניתנות לעריכה רק בקטגוריית המקור שלהן.",
+      "attributesInherited": "תכונות של קטגוריה זו (מועברות לתת-קטגוריות)",
+      "cageCode": "קוד CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "קוד בן 5 ספרות",
+      "country": "מדינה",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "אתר אינטרנט",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "לוגו",
+      "logoUploadHint": "העלה לוגו יצרן. מקסימום 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "לחץ או גרור קובץ לכאן.",
+      "statusActive": "פעיל",
+      "statusAcquired": "נרכש",
+      "statusDefunct": "לא פעיל",
+      "foundedYear": "שנת הקמה",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "שנת פירוק",
+      "defunctYearPlaceholder": "2020",
+      "description": "תיאור",
+      "descriptionPlaceholder": "תיאור",
+      "logoMaxSize": "הלוגו יכול להיות בגודל מקסימלי של 5 MB.",
+      "logoAllowedTypes": "רק JPEG, PNG, WebP או SVG מותרים.",
+      "createdAsDraft": "היצרן נשמר כטיוטה.",
+      "manufacturerCreatedLogoFailed": "היצרן נוצר, אך העלאת הלוגו נכשלה.",
+      "save": "שמור"
+    },
+    "audit": {
+      "created": "נוצר",
+      "updated": "עודכן",
+      "deleted": "נמחק",
+      "restored": "שוחזר",
+      "approved": "אושר",
+      "rejected": "נדחה"
+    },
+    "tabs": {
+      "basicInfo": "מידע בסיסי",
+      "attributes": "תכונות",
+      "pinMapping": "מיפוי פינים",
+      "parts": "גרסאות יצרן",
+      "relations": "קשרים",
+      "files": "קבצים",
+      "details": "נתונים בסיסיים",
+      "pins": "מיפוי פינים",
+      "models": "מודלים תלת-ממדיים"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "יצרן",
+      "status": "סטטוס",
+      "lifecycle": "מחזור חיים",
+      "actions": "פעולות",
+      "variantCount": "גרסה {count}",
+      "variantCountPlural": "{count} גרסאות",
+      "activeCount": "{count} פעיל",
+      "obsoleteCount": "{count} מיושן",
+      "unknown": "לא ידוע"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "שם ייחודי של המארז",
+      "mountingType": "סוג מארז",
+      "mountingTypes": {
+        "SMD": "SMD - התקן הרכבה על פני השטח",
+        "THT": "THT - טכנולוגיית חור עובר",
+        "RADIAL": "רדיאלי - תיול רדיאלי",
+        "AXIAL": "אקסיאלי - תיול אקסיאלי",
+        "CHASSIS": "שאסי - הרכבת מארז",
+        "OTHER": "אחר"
+      },
+      "pinCount": "מספר פינים",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "אורך (מ\"מ)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "רוחב (מ\"מ)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "גובה (מ\"מ)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "מרווח (מ\"מ)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "מרחק בין הפינים",
+      "jedecStandard": "תקן JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "תקן EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL ציור",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "קישור לציור טכני או דף נתונים",
+      "description": "תיאור",
+      "descriptionPlaceholder": "מידע נוסף על המארז...",
+      "saveFirstModels": "שמור תחילה את המארז כדי להעלות מודלים תלת-ממדיים.",
+      "modelsDescription": "מודלים תלת-ממדיים למארז זה (STEP, STL, 3MF, OBJ, וכו')"
+    },
+    "partForm": {
+      "coreComponent": "רכיב גנרי",
+      "coreComponentDesc": "הרכיב הבלתי תלוי ביצרן (לדוגמה 555 Timer)",
+      "manufacturer": "יצרן",
+      "manufacturerDesc": "היצרן של גרסה קונקרטית זו (לדוגמה Texas Instruments)",
+      "manufacturerPlaceholder": "בחר יצרן",
+      "mpn": "MPN (מספר חלק של יצרן)",
+      "mpnPlaceholder": "לדוגמה NE555P",
+      "mpnDesc": "מספר חלק ייחודי של היצרן",
+      "orderingCode": "קוד הזמנה",
+      "orderingCodePlaceholder": "אופציונלי",
+      "orderingCodeDesc": "קוד הזמנה חלופי (אם שונה מ-MPN)",
+      "statusRecord": "סטטוס רשומה",
+      "lifecycleStatus": "סטטוס מחזור חיים",
+      "introductionYear": "שנת הצגה",
+      "introductionYearPlaceholder": "לדוגמה 1972",
+      "discontinuedYear": "שנת הפסקה",
+      "discontinuedYearPlaceholder": "לדוגמה 2020",
+      "rohsCompliant": "תואם RoHS",
+      "rohsDesc": "עומד בהנחיות RoHS",
+      "reachCompliant": "תואם REACH",
+      "reachDesc": "עומד בתקנת REACH",
+      "weight": "משקל (גרם)",
+      "weightPlaceholder": "לדוגמה 0.5",
+      "dateCodeFormat": "קידוד תאריך",
+      "dateCodePlaceholder": "לדוגמה YYWW",
+      "dateCodeDesc": "פורמט קוד התאריך על הרכיב",
+      "nsn": "NSN (מספר מלאי נאט\"ו)",
+      "nsnPlaceholder": "לדוגמה 5962-01-123-4567",
+      "milSpec": "מפרט צבאי",
+      "milSpecPlaceholder": "לדוגמה MIL-PRF-38534",
+      "partAttributesDesc": "תכונות ספציפיות ליצרן על בסיס קטגוריית הרכיב.",
+      "partAttributesLabel": "תכונות ספציפיות ליצרן",
+      "filesDesc": "נהל דפי נתונים, תמונות וקבצים אחרים לגרסת יצרן זו.",
+      "close": "סגור",
+      "selectComponent": "בחר רכיב"
+    }
+  },
+  "errors": {
+    "notFound": "הדף לא נמצא",
+    "unauthorized": "לא מורשה",
+    "serverError": "שגיאת שרת"
+  },
+  "footer": {
+    "tagline": "מאגר רכיבים אלקטרוניים המתוחזק על ידי הקהילה",
+    "navigation": "ניווט",
+    "community": "קהילה",
+    "legal": "משפטי",
+    "about": "אודות",
+    "help": "עזרה",
+    "contact": "צור קשר",
+    "contribute": "תרום",
+    "github": "GitHub",
+    "privacy": "פרטיות",
+    "imprint": "קולופון",
+    "copyright": "קוד פתוח תחת MIT License"
+  },
+  "about": {
+    "title": "אודות ElectroVault",
+    "subtitle": "מאגר רכיבים אלקטרוניים המתוחזק על ידי הקהילה",
+    "mission": {
+      "title": "המשימה שלנו",
+      "description": "ElectroVault הוא מאגר חופשי ופתוח לרכיבים אלקטרוניים - מצינורות היסטוריים ועד ננוטכנולוגיה מודרנית. מטרתנו היא לשמר ידע על רכיבים אלקטרוניים ולהנגיש אותו לכולם."
+    },
+    "features": {
+      "title": "תכונות",
+      "comprehensive": {
+        "title": "מאגר מקיף",
+        "description": "מנגדים וקבלים ועד למעגלים משולבים מורכבים - אנו מתעדים את כל הרכיבים החשובים עם מפרטים מפורטים."
+      },
+      "historical": {
+        "title": "ארכיון היסטורי",
+        "description": "תיעוד של רכיבים היסטוריים לצורך תיקון ושיקום של ציוד וינטג'."
+      },
+      "community": {
+        "title": "מונע על ידי קהילה",
+        "description": "כולם יכולים לתרום ולשתף את הידע שלהם. ביחד אנו בונים את מאגר הרכיבים המקיף ביותר."
+      },
+      "open": {
+        "title": "קוד פתוח",
+        "description": "שקוף לחלוטין וזמין בחינם תחת MIT License."
+      }
+    },
+    "contribute": {
+      "title": "השתתף",
+      "description": "ElectroVault משגשג בזכות הקהילה שלו. הנה כמה דרכים שבהן תוכל לתרום:",
+      "dataEntry": "הוסף או ערוך רכיבים",
+      "datasheets": "העלה דפי נתונים",
+      "code": "תרומות קוד ב-GitHub",
+      "feedback": "משוב והצעות לשיפור"
+    }
+  },
+  "help": {
+    "title": "עזרה ושאלות נפוצות",
+    "subtitle": "שאלות נפוצות",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "עיין ברכיבים",
+        "description": "מצא רכיבים במאגר הנתונים שלנו"
+      },
+      "createAccount": {
+        "title": "צור חשבון",
+        "description": "תרום למאגר הנתונים"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "תיעוד ו-Issues"
+      }
+    },
+    "contactCta": {
+      "title": "לא נענתה לשאלתך?",
+      "description": "אנא צור איתנו קשר ישירות.",
+      "button": "צור קשר"
+    },
+    "general": {
+      "title": "כללי",
+      "what": {
+        "question": "מה זה ElectroVault?",
+        "answer": "ElectroVault הוא מאגר חופשי המתוחזק על ידי קהילה לרכיבים חשמליים ואלקטרוניים. אנו מתעדים רכיבים מצינורות היסטוריים ועד מעגלים משולבים מודרניים עם מטא-נתונים מקיפים, דפי נתונים ומפרטים."
+      },
+      "free": {
+        "question": "האם ElectroVault חינמי?",
+        "answer": "כן, ElectroVault הוא לחלוטין חינמי וקוד פתוח. גם השימוש וגם קוד המקור זמינים בחינם."
+      }
+    },
+    "search": {
+      "title": "חיפוש",
+      "how": {
+        "question": "כיצד אני מוצא רכיב ספציפי?",
+        "answer": "השתמש בפונקציית החיפוש בפינה הימנית העליונה או נווט דרך הקטגוריות. תוכל לחפש לפי מספר חלק, יצרן או מאפיינים."
+      },
+      "filters": {
+        "question": "אילו מסננים זמינים?",
+        "answer": "תוכל לסנן לפי קטגוריה, יצרן, סטטוס (פעיל/מיושן), סוג מארז ופרמטרים טכניים רבים אחרים."
+      }
+    },
+    "contribute": {
+      "title": "תרומה",
+      "account": {
+        "question": "האם אני צריך חשבון כדי לתרום?",
+        "answer": "כן, כדי להוסיף או לערוך רכיבים, אתה צריך חשבון חינמי. זה עוזר לנו להבטיח איכות נתונים."
+      },
+      "how": {
+        "question": "כיצד אני יכול להוסיף רכיב?",
+        "answer": "לאחר ההתחברות, תוכל ליצור רכיבים חדשים דרך כפתור 'רכיב חדש' בסקירת הרכיבים. מפקח יבדוק את התרומה שלך לפני הפרסום."
+      },
+      "quality": {
+        "question": "כיצד מובטחת איכות הנתונים?",
+        "answer": "כל התרומות נבדקות על ידי מפקחים מנוסים. בנוסף, משתמשים רשומים יכולים להציע תיקונים."
+      }
+    }
+  },
+  "contact": {
+    "title": "צור קשר",
+    "subtitle": "יש לך שאלות או הצעות?",
+    "form": {
+      "heading": "שלח הודעה",
+      "name": "שם",
+      "email": "דוא\"ל",
+      "subject": "נושא",
+      "message": "הודעה",
+      "namePlaceholder": "יוחנן ישראלי",
+      "emailPlaceholder": "yohanan@example.com",
+      "subjectPlaceholder": "נושא ההודעה שלך",
+      "messagePlaceholder": "ההודעה שלך...",
+      "demoNote": "הערה: טופס יצירת הקשר הוא כעת הדגמה. האינטגרציה של הקצה האחורי תתבצע בשלב מאוחר יותר. לבקשות חשובות, אנא השתמש ב-GitHub או בכתובת הדוא\"ל שסופקה.",
+      "send": "שלח הודעה",
+      "sending": "שולח...",
+      "success": "ההודעה נשלחה בהצלחה!",
+      "error": "שגיאה בשליחת ההודעה"
+    },
+    "alternatives": {
+      "title": "אפשרויות יצירת קשר נוספות",
+      "githubTitle": "GitHub Issues",
+      "github": "צור issue ב-GitHub",
+      "emailTitle": "דוא\"ל",
+      "email": "שלח לנו דוא\"ל"
+    },
+    "responseTime": {
+      "title": "זמני תגובה",
+      "description": "מכיוון ש-ElectroVault הוא פרויקט קהילתי, בקשות מטופלות על ידי מתנדבים. אנא היה סבלני - בדרך כלל אנו עונים תוך 48 שעות."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "תמיכת קהילה",
+        "description": "השתמש ב-GitHub Discussions לשאלות כלליות"
+      },
+      "bugReports": {
+        "title": "דיווחי באגים",
+        "description": "דווח על בעיות טכניות ישירות ב-GitHub"
+      },
+      "partnerships": {
+        "title": "בקשות שותפות",
+        "description": "לבקשות עסקיות השתמש בטופס"
+      }
+    }
+  },
+  "imprint": {
+    "title": "קולופון",
+    "responsible": "אחראי לתוכן",
+    "contact": "צור קשר",
+    "disclaimer": {
+      "title": "הצהרת אחריות",
+      "content": "למרות בקרת תוכן קפדנית, איננו נוטלים אחריות על תוכן הקישורים החיצוניים. מפעילי הדפים המקושרים אחראים בלבד לתוכנם.",
+      "liability": "תכני דפים אלה נוצרו בזהירות רבה. עם זאת, איננו יכולים להבטיח את הדיוק, השלמות והעדכניות של התוכן."
+    },
+    "opensource": {
+      "title": "קוד פתוח",
+      "description": "ElectroVault הוא פרויקט קוד פתוח תחת MIT License. קוד המקור זמין ב-GitHub."
+    }
+  },
+  "privacy": {
+    "title": "מדיניות פרטיות",
+    "lastUpdated": "עודכן לאחרונה",
+    "intro": "אנו לוקחים את ההגנה על המידע האישי שלך ברצינות רבה. מדיניות פרטיות זו מודיעה לך על האופי, ההיקף והמטרה של עיבוד נתונים אישיים.",
+    "responsible": {
+      "title": "בקר נתונים",
+      "description": "האחראי על עיבוד הנתונים באתר זה הוא:"
+    },
+    "collection": {
+      "title": "איסוף ואחסון של נתונים אישיים",
+      "description": "כשאתה מבקר באתר שלנו, מידע נאסף אוטומטית שהדפדפן שלך משדר:",
+      "data": "כתובת IP, תאריך ושעת גישה, סוג וגרסת דפדפן, מערכת הפעלה בשימוש, URL מפנה"
+    },
+    "cookies": {
+      "title": "עוגיות",
+      "description": "האתר שלנו משתמש בעוגיות. עוגיות הן קבצי טקסט קטנים המאוחסנים במכשיר שלך.",
+      "essential": "עוגיות נחוצות טכנית לאימות וניהול הפעלה",
+      "functional": "עוגיות פונקציונליות לשיפור חוויית המשתמש"
+    },
+    "auth": {
+      "title": "אימות",
+      "description": "אנו משתמשים ב-Keycloak לרישום והתחברות. הנתונים הבאים נשמרים:",
+      "data": "שם משתמש, כתובת דוא\"ל, תמונת פרופיל (אופציונלי), תפקיד והרשאות"
+    },
+    "rights": {
+      "title": "הזכויות שלך",
+      "description": "יש לך את הזכויות הבאות בנוגע למידע האישי שלך:",
+      "access": "זכות גישה",
+      "correction": "זכות לתיקון",
+      "deletion": "זכות למחיקה",
+      "restriction": "זכות להגבלת עיבוד",
+      "portability": "זכות להעברת נתונים",
+      "objection": "זכות להתנגד"
+    },
+    "contact": {
+      "title": "יצירת קשר לשאלות פרטיות",
+      "description": "אם יש לך שאלות בנושא פרטיות, תוכל ליצור איתנו קשר בכל עת."
+    }
+  }
+}

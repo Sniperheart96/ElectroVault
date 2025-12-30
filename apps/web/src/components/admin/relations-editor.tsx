@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useLocale } from 'next-intl';
+import { type UILocale } from '@electrovault/schemas';
 import {
   Plus,
   Pencil,
@@ -56,6 +58,7 @@ import {
 } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
+import { getLocalizedValue } from '@/components/ui/localized-text';
 
 interface RelationsEditorProps {
   componentId: string;
@@ -141,6 +144,7 @@ const RELATION_TYPE_CONFIG: Record<
 export function RelationsEditor({ componentId, componentName }: RelationsEditorProps) {
   const api = useApi();
   const { toast } = useToast();
+  const locale = useLocale() as UILocale;
   const [relations, setRelations] = useState<ComponentRelation[]>([]);
   const [loading, setLoading] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -197,8 +201,7 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
       const filtered = result.data.filter(
         (c) =>
           c.id !== componentId &&
-          (c.name.de?.toLowerCase().includes(query.toLowerCase()) ||
-            c.name.en?.toLowerCase().includes(query.toLowerCase()) ||
+          (getLocalizedValue(c.name, locale).toLowerCase().includes(query.toLowerCase()) ||
             c.slug.toLowerCase().includes(query.toLowerCase()))
       );
       setSearchResults(filtered);
@@ -291,16 +294,16 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
 
   const getTargetName = (relation: ComponentRelation): string => {
     if (relation.target) {
-      return relation.target.name.de || relation.target.name.en || 'Unbekannt';
+      return getLocalizedValue(relation.target.name, locale) || 'Unbekannt';
     }
     return 'Unbekannt';
   };
 
   const getSourceName = (relation: ComponentRelation): string => {
     if (relation.source) {
-      return relation.source.name.de || relation.source.name.en || 'Unbekannt';
+      return getLocalizedValue(relation.source.name, locale) || 'Unbekannt';
     }
-    return componentName.de || componentName.en || 'Unbekannt';
+    return getLocalizedValue(componentName, locale) || 'Unbekannt';
   };
 
   // Load relations on mount
@@ -379,9 +382,9 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
                       </span>
                       <span>{targetName}</span>
                     </div>
-                    {relation.notes && (relation.notes.de || relation.notes.en) && (
+                    {relation.notes && getLocalizedValue(relation.notes, locale) && (
                       <p className="text-sm text-muted-foreground">
-                        {relation.notes.de || relation.notes.en}
+                        {getLocalizedValue(relation.notes, locale)}
                       </p>
                     )}
                   </div>
@@ -427,12 +430,12 @@ export function RelationsEditor({ componentId, componentName }: RelationsEditorP
                           className="w-full text-left px-3 py-2 hover:bg-muted border-b last:border-0"
                           onClick={() => {
                             form.setValue('targetId', component.id);
-                            setSearchQuery(component.name.de || component.name.en || '');
+                            setSearchQuery(getLocalizedValue(component.name, locale) || '');
                             setSearchResults([]);
                           }}
                         >
                           <div className="font-medium">
-                            {component.name.de || component.name.en}
+                            {getLocalizedValue(component.name, locale)}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {component.slug}

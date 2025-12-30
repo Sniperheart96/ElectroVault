@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 import { LocalizedStringSchema, SIPrefixSchema } from '@electrovault/schemas';
 import {
   Dialog,
@@ -34,11 +35,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { LocalizedInput } from '@/components/forms/localized-input';
+import { DialogEditLocaleSelector } from '@/components/forms/dialog-edit-locale-selector';
+import { EditLocaleProvider } from '@/contexts/edit-locale-context';
 import { type AttributeDefinition, type SIPrefix } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
-import { useCategoriesFlat } from '@/hooks/use-categories-flat';
-import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // Alle verfügbaren SI-Präfixe mit Anzeigenamen
 const ALL_SI_PREFIXES: { value: SIPrefix; label: string; name: string }[] = [
@@ -59,23 +61,40 @@ const ALL_SI_PREFIXES: { value: SIPrefix; label: string; name: string }[] = [
   { value: 'f', label: 'f', name: 'Femto (10⁻¹⁵)' },
 ];
 
-// Schema für Attribut-Definition
+// Feste Sortierreihenfolge für Präfixe (groß → klein)
+const PREFIX_ORDER = ['P', 'T', 'G', 'M', 'k', 'h', 'da', '', 'd', 'c', 'm', '\u00B5', 'n', 'p', 'f'];
+
+const sortPrefixes = (prefixes: SIPrefix[]): SIPrefix[] => {
+  return [...prefixes].sort((a, b) =>
+    PREFIX_ORDER.indexOf(a) - PREFIX_ORDER.indexOf(b)
+  );
+};
+
+// Schema für Attribut-Definition (categoryId wird via presetCategoryId gesetzt, sortOrder via D&D)
 const CreateAttributeSchema = z.object({
   categoryId: z.string().uuid(),
   name: z.string().min(1).max(100),
   displayName: LocalizedStringSchema,
   unit: z.string().max(50).optional().nullable(),
-  dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN']),
+  dataType: z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN', 'RANGE', 'SELECT', 'MULTISELECT']),
   scope: z.enum(['COMPONENT', 'PART', 'BOTH']),
   isFilterable: z.boolean().default(true),
   isRequired: z.boolean().default(false),
   isLabel: z.boolean().default(false),
-  sortOrder: z.number().int().min(0).default(0),
   allowedPrefixes: z.array(SIPrefixSchema).default([]),
-  enumValues: z.string().optional(), // Kommaseparierte Liste für ENUM (später)
+  allowedValues: z.string().optional(), // Kommaseparierte Liste für SELECT/MULTISELECT
 }).refine(
   (data) => !data.isLabel || data.isRequired,
   { message: 'Label erfordert Pflichtfeld', path: ['isLabel'] }
+).refine(
+  (data) => {
+    // SELECT und MULTISELECT erfordern allowedValues
+    if (data.dataType === 'SELECT' || data.dataType === 'MULTISELECT') {
+      return data.allowedValues && data.allowedValues.trim().length > 0;
+    }
+    return true;
+  },
+  { message: 'Auswahlfelder erfordern mindestens eine Option', path: ['allowedValues'] }
 );
 
 type CreateAttributeInput = z.infer<typeof CreateAttributeSchema>;
@@ -85,7 +104,7 @@ interface AttributeDialogProps {
   onOpenChange: (open: boolean) => void;
   attribute?: AttributeDefinition | null;
   onSaved: () => void;
-  presetCategoryId?: string;
+  presetCategoryId: string; // Pflicht - Kategorie wird immer vom CategoryDialog gesetzt
 }
 
 export function AttributeDialog({
@@ -97,13 +116,14 @@ export function AttributeDialog({
 }: AttributeDialogProps) {
   const api = useApi();
   const { toast } = useToast();
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
   const isEdit = !!attribute;
-  const { categories, loading: loadingCategories } = useCategoriesFlat();
 
   const form = useForm<CreateAttributeInput>({
     resolver: zodResolver(CreateAttributeSchema) as never,
     defaultValues: {
-      categoryId: presetCategoryId || '',
+      categoryId: presetCategoryId,
       name: '',
       displayName: { de: '', en: '' },
       unit: null,
@@ -112,15 +132,15 @@ export function AttributeDialog({
       isFilterable: true,
       isRequired: false,
       isLabel: false,
-      sortOrder: 0,
       allowedPrefixes: [],
-      enumValues: '',
+      allowedValues: '',
     },
   });
 
-  // Watch dataType to show/hide prefix selection
+  // Watch dataType to show/hide prefix selection and allowed values
   const dataType = form.watch('dataType');
-  const showPrefixes = dataType === 'DECIMAL' || dataType === 'INTEGER';
+  const showPrefixes = dataType === 'DECIMAL' || dataType === 'INTEGER' || dataType === 'RANGE';
+  const showAllowedValues = dataType === 'SELECT' || dataType === 'MULTISELECT';
 
   // Watch isRequired for isLabel checkbox
   const isRequired = form.watch('isRequired');
@@ -139,18 +159,18 @@ export function AttributeDialog({
         name: attribute.name,
         displayName: attribute.displayName || { de: '', en: '' },
         unit: attribute.unit,
-        dataType: (attribute.dataType as string) === 'RANGE' ? 'DECIMAL' : attribute.dataType,
+        dataType: attribute.dataType,
         scope: attribute.scope,
         isFilterable: attribute.isFilterable,
         isRequired: attribute.isRequired,
         isLabel: attribute.isLabel || false,
-        sortOrder: attribute.sortOrder,
         allowedPrefixes: attribute.allowedPrefixes || [],
-        enumValues: '',
+        // allowedValues als kommaseparierter String aus Array
+        allowedValues: attribute.allowedValues ? attribute.allowedValues.join(', ') : '',
       });
     } else {
       form.reset({
-        categoryId: presetCategoryId || '',
+        categoryId: presetCategoryId,
         name: '',
         displayName: { de: '', en: '' },
         unit: null,
@@ -159,43 +179,52 @@ export function AttributeDialog({
         isFilterable: true,
         isRequired: false,
         isLabel: false,
-        sortOrder: 0,
         allowedPrefixes: [],
-        enumValues: '',
+        allowedValues: '',
       });
     }
   }, [attribute, form, presetCategoryId]);
 
   const onSubmit = async (data: CreateAttributeInput) => {
     try {
-      // Remove enumValues from payload (not yet supported in backend)
-      // Clear allowedPrefixes if not a numeric type
-      const { enumValues, ...rest } = data;
+      // allowedValues String zu Array konvertieren
+      // allowedPrefixes nur bei numerischen Typen senden
+      const { allowedValues, ...rest } = data;
+
+      // allowedValues: kommaseparierter String -> Array (nur für SELECT/MULTISELECT)
+      const parsedAllowedValues = (data.dataType === 'SELECT' || data.dataType === 'MULTISELECT')
+        ? (allowedValues || '').split(',').map(v => v.trim()).filter(v => v.length > 0)
+        : null;
+
+      // Präfixe sortieren (groß → klein) bevor sie gespeichert werden
+      const sortedPrefixes = (data.dataType === 'DECIMAL' || data.dataType === 'INTEGER' || data.dataType === 'RANGE')
+        ? sortPrefixes(data.allowedPrefixes)
+        : [];
+
       const payload = {
         ...rest,
-        allowedPrefixes: (data.dataType === 'DECIMAL' || data.dataType === 'INTEGER')
-          ? data.allowedPrefixes
-          : [],
+        allowedPrefixes: sortedPrefixes,
+        allowedValues: parsedAllowedValues,
       };
 
       if (isEdit) {
         await api.updateAttributeDefinition(attribute.id, payload);
         toast({
-          title: 'Erfolg',
-          description: 'Attribut-Definition wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.attribute.updated'),
         });
       } else {
         await api.createAttributeDefinition(payload);
         toast({
-          title: 'Erfolg',
-          description: 'Attribut-Definition wurde erstellt.',
+          title: t('messages.success'),
+          description: t('messages.attribute.created'),
         });
       }
       onSaved();
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Attribut-Definition konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.attribute.saveFailed'),
         variant: 'destructive',
       });
     }
@@ -211,80 +240,27 @@ export function AttributeDialog({
     }
   };
 
-  // Helper to get prefix label
-  const getPrefixLabel = (prefix: SIPrefix) => {
-    const found = ALL_SI_PREFIXES.find((p) => p.value === prefix);
-    return found?.label || prefix || '-';
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {isEdit ? 'Attribut-Definition bearbeiten' : 'Neue Attribut-Definition'}
-          </DialogTitle>
-          <DialogDescription>
-            {isEdit
-              ? 'Attribut-Informationen ändern'
-              : 'Neue Attribut-Definition für eine Kategorie erstellen'}
-          </DialogDescription>
-        </DialogHeader>
+        <EditLocaleProvider>
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle>
+                  {isEdit ? t('dialogs.attribute.titleEdit') : t('dialogs.attribute.title')}
+                </DialogTitle>
+                <DialogDescription>
+                  {t('dialogs.attribute.description')}
+                </DialogDescription>
+              </div>
+              <DialogEditLocaleSelector />
+            </div>
+          </DialogHeader>
 
-        <Form {...form}>
+          <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {!presetCategoryId && (
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Kategorie *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={loadingCategories ? 'Lädt...' : 'Kategorie wählen'}
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat.id} value={cat.id}>
-                            {cat.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Kategorie, für die dieses Attribut gilt
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name (Intern) *</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="z.B. capacitance, voltage_max"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Interner Name für API/Datenbank (keine Leerzeichen)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
+            {/* Anzeigename zuerst */}
             <FormField
               control={form.control}
               name="displayName"
@@ -306,51 +282,48 @@ export function AttributeDialog({
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="unit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Einheit</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="z.B. µF, V, Ω"
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Maßeinheit (optional)
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Interner Name */}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name (Intern) *</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="z.B. capacitance, voltage_max"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Interner Name für API/Datenbank (keine Leerzeichen)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="sortOrder"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sortierreihenfolge</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        {...field}
-                        value={field.value || 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Niedrigere Werte = weiter oben
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* Einheit */}
+            <FormField
+              control={form.control}
+              name="unit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Einheit</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="z.B. µF, V, Ω"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Maßeinheit (optional)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -368,8 +341,11 @@ export function AttributeDialog({
                       <SelectContent>
                         <SelectItem value="DECIMAL">Dezimalzahl</SelectItem>
                         <SelectItem value="INTEGER">Ganzzahl</SelectItem>
+                        <SelectItem value="RANGE">Bereich (Min-Max)</SelectItem>
                         <SelectItem value="STRING">Text</SelectItem>
                         <SelectItem value="BOOLEAN">Ja/Nein</SelectItem>
+                        <SelectItem value="SELECT">Einfachauswahl</SelectItem>
+                        <SelectItem value="MULTISELECT">Mehrfachauswahl</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -412,43 +388,24 @@ export function AttributeDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Erlaubte SI-Präfixe</FormLabel>
-                    <FormDescription>
-                      Wählen Sie die Präfixe aus, die bei der Eingabe verwendet werden können.
+                    <FormDescription className="text-xs">
                       Ohne Auswahl wird kein Präfix-Dropdown angezeigt.
                     </FormDescription>
 
-                    {/* Ausgewählte Präfixe als Badges */}
-                    {field.value && field.value.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {field.value.map((prefix) => (
-                          <Badge
-                            key={prefix || 'base'}
-                            variant="secondary"
-                            className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
-                            onClick={() => togglePrefix(prefix)}
-                          >
-                            {getPrefixLabel(prefix)}
-                            <X className="ml-1 h-3 w-3" />
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Präfix-Grid zur Auswahl */}
-                    <div className="grid grid-cols-5 gap-1 p-2 border rounded-md bg-muted/30">
+                    {/* Kompaktes Präfix-Grid (einzeilig) */}
+                    <div className="flex flex-wrap gap-0.5 p-1.5 border rounded bg-muted/30">
                       {ALL_SI_PREFIXES.map((prefix) => {
                         const isSelected = field.value?.includes(prefix.value);
                         return (
                           <button
                             key={prefix.value || 'base'}
                             type="button"
-                            className={`
-                              p-2 text-sm rounded border transition-colors
-                              ${isSelected
+                            className={cn(
+                              'px-1.5 py-0.5 text-xs rounded border transition-colors min-w-[26px]',
+                              isSelected
                                 ? 'bg-primary text-primary-foreground border-primary'
                                 : 'bg-background hover:bg-accent border-input'
-                              }
-                            `}
+                            )}
                             onClick={() => togglePrefix(prefix.value)}
                             title={prefix.name}
                           >
@@ -457,6 +414,39 @@ export function AttributeDialog({
                         );
                       })}
                     </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Erlaubte Werte für SELECT/MULTISELECT */}
+            {showAllowedValues && (
+              <FormField
+                control={form.control}
+                name="allowedValues"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Erlaubte Werte *</FormLabel>
+                    <FormDescription>
+                      Geben Sie die Auswahloptionen kommasepariert ein (z.B. &quot;NPN, PNP&quot; oder &quot;SMD, THT, Axial&quot;).
+                    </FormDescription>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Option 1, Option 2, Option 3"
+                      />
+                    </FormControl>
+                    {/* Vorschau der Optionen als Badges */}
+                    {field.value && field.value.trim().length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {field.value.split(',').map((v, i) => v.trim()).filter(v => v.length > 0).map((v, i) => (
+                          <Badge key={i} variant="outline">
+                            {v}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -528,18 +518,19 @@ export function AttributeDialog({
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Abbrechen
+                {tCommon('cancel')}
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting
-                  ? 'Speichern...'
+                  ? t('buttons.saving')
                   : isEdit
-                    ? 'Aktualisieren'
-                    : 'Erstellen'}
+                    ? t('buttons.update')
+                    : tCommon('create')}
               </Button>
             </DialogFooter>
           </form>
         </Form>
+        </EditLocaleProvider>
       </DialogContent>
     </Dialog>
   );

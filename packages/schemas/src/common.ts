@@ -2,28 +2,71 @@
  * Common Schemas - Wiederverwendbare Basis-Schemas
  */
 import { z } from 'zod';
+import { SUPPORTED_UI_LOCALES } from './locale';
 
 // ============================================
 // LOCALIZED STRING
 // ============================================
 
 /**
- * Basis-Objekt für LocalizedString (ohne Validierung)
+ * Basis-Objekt für LocalizedString mit Original-Marker
+ *
+ * _original: Die Sprache in der der Text ursprünglich verfasst wurde
+ *
+ * Alle 26 UI-Sprachen werden unterstützt:
+ * - Westeuropäisch: en, de, fr, es, it, nl, pt
+ * - Nordisch: da, fi, no, sv
+ * - Osteuropäisch: pl, ru, tr, cs, uk, el
+ * - Asiatisch: zh, ja, ko, hi, id, vi, th
+ * - Semitisch (RTL): ar, he
  */
 const LocalizedStringBaseSchema = z.object({
+  // Metadaten: Originalsprache
+  _original: z.enum(SUPPORTED_UI_LOCALES).optional(),
+  // Westeuropäisch
   en: z.string().optional(),
   de: z.string().optional(),
   fr: z.string().optional(),
   es: z.string().optional(),
+  it: z.string().optional(),
+  nl: z.string().optional(),
+  pt: z.string().optional(),
+  // Nordisch
+  da: z.string().optional(),
+  fi: z.string().optional(),
+  no: z.string().optional(),
+  sv: z.string().optional(),
+  // Osteuropäisch
+  pl: z.string().optional(),
+  ru: z.string().optional(),
+  tr: z.string().optional(),
+  cs: z.string().optional(),
+  uk: z.string().optional(),
+  el: z.string().optional(),
+  // Asiatisch
   zh: z.string().optional(),
+  ja: z.string().optional(),
+  ko: z.string().optional(),
+  hi: z.string().optional(),
+  id: z.string().optional(),
+  vi: z.string().optional(),
+  th: z.string().optional(),
+  // Semitisch (RTL)
+  ar: z.string().optional(),
+  he: z.string().optional(),
 });
 
 /**
  * LocalizedString Schema - Mehrsprachige Texte
  * Mindestens eine Sprache muss vorhanden sein (für Pflichtfelder)
+ * _original wird bei der Validierung ignoriert (ist Metadaten, kein Text)
  */
 export const LocalizedStringSchema = LocalizedStringBaseSchema.refine(
-  (data) => Object.values(data).some((val) => val && val.length > 0),
+  (data) => {
+    // Alle Sprachcodes außer _original prüfen
+    const { _original, ...translations } = data;
+    return Object.values(translations).some((val) => val && val.length > 0);
+  },
   { message: 'At least one language translation is required' }
 );
 
@@ -134,7 +177,15 @@ export type ManufacturerStatus = z.infer<typeof ManufacturerStatusSchema>;
 export const MountingTypeSchema = z.enum(['THT', 'SMD', 'RADIAL', 'AXIAL', 'CHASSIS', 'OTHER']);
 export type MountingType = z.infer<typeof MountingTypeSchema>;
 
-export const AttributeDataTypeSchema = z.enum(['DECIMAL', 'INTEGER', 'STRING', 'BOOLEAN', 'RANGE']);
+export const AttributeDataTypeSchema = z.enum([
+  'DECIMAL',
+  'INTEGER',
+  'STRING',
+  'BOOLEAN',
+  'RANGE',
+  'SELECT',      // Einfachauswahl aus vordefinierter Liste
+  'MULTISELECT', // Mehrfachauswahl aus vordefinierter Liste
+]);
 export type AttributeDataType = z.infer<typeof AttributeDataTypeSchema>;
 
 export const AttributeScopeSchema = z.enum(['COMPONENT', 'PART', 'BOTH']);

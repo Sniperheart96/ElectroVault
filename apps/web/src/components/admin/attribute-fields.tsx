@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useLocale } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,6 +15,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { type AttributeDefinition, type SIPrefix, SI_PREFIX_FACTORS } from '@/lib/api';
+import { getLocalizedValue } from '@/components/ui/localized-text';
+import { type UILocale } from '@electrovault/schemas';
 
 // Konstante für Basis-Präfix (leerer String) - Radix UI erlaubt keine leeren Strings als value
 const BASE_PREFIX_VALUE = '__BASE__';
@@ -213,6 +216,7 @@ export function AttributeFields({
   includeInherited = true,
 }: AttributeFieldsProps) {
   const api = useApi();
+  const locale = useLocale() as UILocale;
   const [attributes, setAttributes] = useState<AttributeDefinition[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -392,7 +396,7 @@ export function AttributeFields({
       <div className="grid gap-4">
         {attributes.map((attr) => {
           const currentValue = getValue(attr.id);
-          const displayName = attr.displayName.de || attr.displayName.en || attr.name;
+          const displayName = getLocalizedValue(attr.displayName, locale) || attr.name;
           const hasAllowedPrefixes = attr.allowedPrefixes && attr.allowedPrefixes.length > 0;
 
           return (

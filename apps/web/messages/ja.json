@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "search": "検索",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "noResults": "結果が見つかりません",
+    "all": "すべて",
+    "yes": "はい",
+    "no": "いいえ",
+    "actions": {
+      "details": "詳細"
+    }
+  },
+  "locale": {
+    "switch": "言語を変更",
+    "current": "現在の言語",
+    "languages": {
+      "en": "英語",
+      "de": "ドイツ語",
+      "fr": "フランス語",
+      "es": "スペイン語",
+      "zh": "中国語",
+      "ja": "日本語",
+      "ko": "韓国語",
+      "it": "イタリア語"
+    }
+  },
+  "nav": {
+    "home": "ホーム",
+    "components": "部品",
+    "categories": "カテゴリ",
+    "manufacturers": "メーカー",
+    "packages": "パッケージ",
+    "search": "検索",
+    "admin": "管理",
+    "moderation": "モデレーション",
+    "myElectroVault": "マイElectroVault",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "profile": "プロフィール"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "コミュニティ運営の電子部品データベース",
+    "searchPlaceholder": "部品を検索...",
+    "featuredCategories": "人気のカテゴリ",
+    "recentComponents": "最新の部品",
+    "stats": {
+      "components": "部品",
+      "manufacturers": "メーカー",
+      "categories": "カテゴリ",
+      "users": "ユーザー"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "コミュニティ運営の電子部品データベース"
+    },
+    "stats": {
+      "components": "部品",
+      "manufacturers": "メーカー",
+      "users": "ユーザー"
+    }
+  },
+  "packages": {
+    "title": "パッケージ",
+    "totalCount": "データベース内の{count}パッケージ",
+    "addNew": "新しいパッケージ",
+    "searchPlaceholder": "名前またはスラッグで検索...",
+    "filterPlaceholder": "パッケージタイプ",
+    "filterAll": "すべてのタイプ",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "ラジアル",
+      "AXIAL": "アキシャル",
+      "CHASSIS": "シャーシ",
+      "OTHER": "その他"
+    },
+    "table": {
+      "name": "名前",
+      "type": "タイプ",
+      "pinCount": "ピン数",
+      "dimensions": "寸法（L x W x H mm）",
+      "pitch": "ピッチ",
+      "actions": "操作"
+    },
+    "loading": "読み込み中...",
+    "noResults": "パッケージが見つかりません",
+    "noPackagesFound": "パッケージが見つかりません",
+    "createFirst": "最初のパッケージを作成",
+    "error": "エラー",
+    "success": "成功",
+    "loadError": "パッケージを読み込めませんでした。",
+    "deleteSuccess": "パッケージが削除されました。",
+    "deleteError": "パッケージを削除できませんでした。",
+    "deleteDialog": {
+      "title": "パッケージを削除しますか？",
+      "description": "パッケージ「{name}」を本当に削除しますか？この操作は元に戻せません。"
+    }
+  },
+  "components": {
+    "title": "部品",
+    "description": "豊富な電子部品データベースを閲覧",
+    "filters": {
+      "category": "カテゴリ",
+      "manufacturer": "メーカー",
+      "status": "ステータス",
+      "mountingType": "実装タイプ"
+    },
+    "detail": {
+      "overview": "概要",
+      "specifications": "仕様",
+      "datasheets": "データシート",
+      "parts": "メーカーバリエーション",
+      "history": "バージョン履歴",
+      "backToOverview": "概要に戻る",
+      "category": "カテゴリ",
+      "statistics": "統計",
+      "manufacturerVariants": "メーカーバリエーション",
+      "activeVariants": "アクティブなバリエーション",
+      "additionalProperties": "追加プロパティ",
+      "furtherProperties": "この部品のその他のプロパティ",
+      "validForAllVariants": "技術仕様（すべてのバリエーションで有効）",
+      "variantCount": "{count}個のメーカーバリエーション",
+      "variantCountPlural": "{count}個のメーカーバリエーション",
+      "noVariantsAvailable": "メーカーバリエーションがありません",
+      "noVariantsForComponent": "この部品にはメーカーバリエーションがありません。",
+      "noAttributesAvailable": "属性がありません。",
+      "manufacturer": "メーカー",
+      "orderingCode": "注文コード",
+      "details": "詳細",
+      "allInCategory": "カテゴリ内のすべて",
+      "status": "ステータス",
+      "moreAttributes": "他{count}件"
+    },
+    "status": {
+      "DRAFT": "下書き",
+      "PENDING": "審査待ち",
+      "PUBLISHED": "公開済み",
+      "ARCHIVED": "アーカイブ済み"
+    },
+    "lifecycle": {
+      "ACTIVE": "製造中",
+      "NRND": "新規設計非推奨",
+      "EOL": "製造終了",
+      "OBSOLETE": "廃止"
+    }
+  },
+  "categories": {
+    "title": "カテゴリ",
+    "browseAll": "すべてのカテゴリを閲覧",
+    "subcategories": "サブカテゴリ",
+    "componentsInCategory": "このカテゴリの部品"
+  },
+  "manufacturers": {
+    "title": "メーカー",
+    "status": {
+      "ACTIVE": "活動中",
+      "ACQUIRED": "買収済み",
+      "DEFUNCT": "廃業"
+    }
+  },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "loginWith": "{provider}でログイン",
+    "welcome": "おかえりなさい",
+    "signInToContinue": "続行するにはログインしてください",
+    "signIn": {
+      "title": "ログイン",
+      "description": "アカウントにログイン",
+      "button": "Keycloakでログイン",
+      "loading": "ログイン中...",
+      "hint": "Keycloakにリダイレクトされます"
+    },
+    "signOut": {
+      "title": "ログアウト",
+      "description": "本当にログアウトしますか？",
+      "button": "ログアウト",
+      "loading": "ログアウト中...",
+      "cancel": "キャンセル"
+    },
+    "error": {
+      "title": "認証エラー",
+      "description": "ログイン中にエラーが発生しました",
+      "tryAgain": "再試行",
+      "backHome": "ホームに戻る"
+    },
+    "errors": {
+      "configuration": "サーバー設定エラー。管理者にお問い合わせください。",
+      "accessDenied": "アクセスが拒否されました。権限がありません。",
+      "verification": "確認リンクが期限切れか、既に使用されています。",
+      "oauthSignin": "OAuthログインの開始中にエラーが発生しました。",
+      "oauthCallback": "OAuthコールバックの処理中にエラーが発生しました。",
+      "oauthCreateAccount": "ユーザーアカウントの作成中にエラーが発生しました。",
+      "emailCreateAccount": "メールアカウントの作成中にエラーが発生しました。",
+      "callback": "コールバックの処理中にエラーが発生しました。",
+      "oauthAccountNotLinked": "このメールアドレスは既に別のアカウントにリンクされています。",
+      "sessionRequired": "このページにアクセスするにはログインしてください。",
+      "default": "不明なエラーが発生しました。もう一度お試しください。"
+    }
+  },
+  "admin": {
+    "dashboard": "ダッシュボード",
+    "sidebar": {
+      "dashboard": "ダッシュボード",
+      "moderation": "モデレーション",
+      "moderationDescription": "承認キュー",
+      "users": "ユーザー",
+      "backToHome": "ホームページに戻る",
+      "user": "ユーザー",
+      "logout": "ログアウト"
+    },
+    "components": {
+      "title": "部品管理",
+      "new": "新規部品",
+      "edit": "部品を編集"
+    },
+    "moderation": {
+      "title": "モデレーション",
+      "pendingReviews": "審査待ち",
+      "approve": "承認",
+      "reject": "却下",
+      "batchApproval": "一括承認",
+      "confirmApprove": "承認の確認",
+      "confirmApproveDescription": "この{type}を承認してもよろしいですか？公開されます。",
+      "confirmBatchApproval": "{count}件のアイテムを承認しますか？この操作は元に戻せません。",
+      "rejectWithReason": "理由を付けて却下",
+      "rejectDescription": "却下の理由を入力してください。作成者に表示されます。",
+      "rejectReasonLabel": "理由",
+      "rejectReasonPlaceholder": "なぜこのアイテムは却下されますか？",
+      "rejectReasonHelp": "明確な理由は作成者が却下を理解するのに役立ちます。",
+      "batchApproveButton": "{count}件を承認",
+      "typeComponent": "部品",
+      "typePart": "パート",
+      "draft": "下書き"
+    },
+    "users": {
+      "title": "ユーザー",
+      "manage": "ユーザー管理"
+    },
+    "myDashboard": {
+      "title": "マイダッシュボード",
+      "stats": {
+        "componentsTotal": "部品合計",
+        "componentsTotalDesc": "作成した部品",
+        "variants": "バリエーション",
+        "variantsDesc": "メーカーバリエーション",
+        "drafts": "下書き",
+        "draftsDesc": "未提出",
+        "pending": "審査中",
+        "pendingDesc": "モデレーション待ち",
+        "published": "公開済み",
+        "archived": "アーカイブ済み"
+      },
+      "draftsSection": {
+        "title": "マイ下書き",
+        "description": "下書きはプライベートな一時保存で、まだモデレーションに提出されていません。",
+        "newComponent": "新しい部品",
+        "empty": "下書きがありません。新しい部品を作成して下書きとして保存してください。",
+        "draftBadge": "下書き",
+        "noName": "[名前なし]"
+      },
+      "activitySection": {
+        "title": "アクティビティ履歴",
+        "description": "ElectroVaultでの最近のアクション",
+        "empty": "まだアクティビティがありません。"
+      },
+      "entities": {
+        "COMPONENT": "部品",
+        "PART": "バリエーション",
+        "MANUFACTURER": "メーカー",
+        "CATEGORY": "カテゴリ",
+        "PACKAGE": "パッケージ"
+      },
+      "error": "ダッシュボードを読み込めませんでした。もう一度お試しください。"
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "新規属性",
+        "titleEdit": "属性を編集",
+        "description": "部品の属性定義"
+      },
+      "category": {
+        "title": "新規カテゴリ",
+        "titleEdit": "カテゴリを編集",
+        "description": "カテゴリ情報と属性を管理",
+        "saveFirst": "属性を追加するには、まずカテゴリを保存してください"
+      },
+      "component": {
+        "title": "新規部品",
+        "titleEdit": "部品を編集",
+        "description": "新規部品を作成 - 保存後、メーカーバリエーションを追加できます",
+        "descriptionEdit": "部品情報とメーカーバリエーションを管理",
+        "saveFirstPinMapping": "ピン配置を編集するには、まず部品を保存してください",
+        "saveFirstParts": "メーカーバリエーションを追加するには、まず部品を保存してください",
+        "saveFirstRelations": "関連を追加するには、まず部品を保存してください",
+        "createdWithVariants": "部品が作成されました。メーカーバリエーションを追加できます",
+        "noPartsWarning": "この部品にはメーカーバリエーションがありません。少なくとも1つのバリエーションが必要です"
+      },
+      "manufacturer": {
+        "title": "新規メーカー",
+        "titleEdit": "メーカーを編集",
+        "description": "メーカー情報を管理"
+      },
+      "part": {
+        "title": "新規バリエーション",
+        "titleEdit": "バリエーションを編集",
+        "description": "メーカー固有のバリエーション",
+        "descriptionEdit": "メーカーバリエーション情報を変更",
+        "saveFirstFiles": "ファイルをアップロードするには、まずバリエーションを保存してください"
+      },
+      "package": {
+        "title": "新規パッケージ",
+        "titleEdit": "パッケージを編集",
+        "description": "パッケージ/フットプリント情報"
+      },
+      "delete": {
+        "title": "削除の確認",
+        "message": "本当にこの項目を削除しますか？",
+        "messageFile": "本当にこのファイルを削除しますか？",
+        "messagePin": "本当にこのピンを削除しますか？",
+        "message3dModel": "本当にこの3Dモデルを削除しますか？",
+        "messageRelation": "本当にこの関連を削除しますか？"
+      }
+    },
+    "buttons": {
+      "saving": "保存中...",
+      "saveAsDraft": "下書きとして保存",
+      "update": "更新",
+      "addPin": "ピンを追加",
+      "addRelation": "関連を追加"
+    },
+    "messages": {
+      "success": "成功",
+      "error": "エラー",
+      "warning": "警告",
+      "attribute": {
+        "created": "属性が作成されました",
+        "updated": "属性が更新されました",
+        "deleted": "属性が削除されました",
+        "loadFailed": "属性の読み込みに失敗しました",
+        "saveFailed": "属性の保存に失敗しました",
+        "deleteFailed": "属性の削除に失敗しました"
+      },
+      "category": {
+        "created": "カテゴリが作成されました",
+        "updated": "カテゴリが更新されました",
+        "deleted": "カテゴリが削除されました",
+        "loadFailed": "カテゴリの読み込みに失敗しました",
+        "saveFailed": "カテゴリの保存に失敗しました",
+        "deleteFailed": "カテゴリの削除に失敗しました"
+      },
+      "component": {
+        "created": "部品が作成されました",
+        "updated": "部品が更新されました",
+        "deleted": "部品が削除されました",
+        "loadFailed": "部品の読み込みに失敗しました",
+        "saveFailed": "部品の保存に失敗しました",
+        "deleteFailed": "部品の削除に失敗しました"
+      },
+      "manufacturer": {
+        "created": "メーカーが作成されました",
+        "updated": "メーカーが更新されました",
+        "deleted": "メーカーが削除されました",
+        "loadFailed": "メーカーの読み込みに失敗しました",
+        "saveFailed": "メーカーの保存に失敗しました",
+        "deleteFailed": "メーカーの削除に失敗しました",
+        "logoUploaded": "ロゴがアップロードされました",
+        "logoUploadFailed": "ロゴのアップロードに失敗しました"
+      },
+      "part": {
+        "created": "バリエーションが作成されました",
+        "updated": "バリエーションが更新されました",
+        "deleted": "バリエーションが削除されました",
+        "loadFailed": "バリエーションの読み込みに失敗しました",
+        "saveFailed": "バリエーションの保存に失敗しました",
+        "deleteFailed": "バリエーションの削除に失敗しました"
+      },
+      "package": {
+        "created": "パッケージが作成されました",
+        "updated": "パッケージが更新されました",
+        "deleted": "パッケージが削除されました",
+        "loadFailed": "パッケージの読み込みに失敗しました",
+        "saveFailed": "パッケージの保存に失敗しました",
+        "deleteFailed": "パッケージの削除に失敗しました"
+      },
+      "file": {
+        "uploaded": "ファイルがアップロードされました",
+        "deleted": "ファイルが削除されました",
+        "uploadFailed": "ファイルのアップロードに失敗しました",
+        "deleteFailed": "ファイルの削除に失敗しました",
+        "loadFailed": "ファイルの読み込みに失敗しました",
+        "downloadUrlFailed": "ダウンロードURLを生成できませんでした"
+      },
+      "pin": {
+        "created": "ピンが追加されました",
+        "updated": "ピンが更新されました",
+        "deleted": "ピンが削除されました",
+        "createFailed": "ピンの作成に失敗しました",
+        "loadFailed": "ピンの読み込みに失敗しました",
+        "updateFailed": "ピンの更新に失敗しました",
+        "deleteFailed": "ピンの削除に失敗しました"
+      },
+      "relation": {
+        "created": "関連が追加されました",
+        "deleted": "関連が削除されました",
+        "createFailed": "関連の作成に失敗しました",
+        "deleteFailed": "関連の削除に失敗しました"
+      }
+    },
+    "pinMapping": {
+      "title": "ピン配置",
+      "addPin": "ピンを追加",
+      "newPin": "新しいピンを追加",
+      "pinNumber": "ピン番号（例：1、VCC）",
+      "pinName": "ピン名",
+      "selectType": "ピンタイプを選択",
+      "noDescription": "説明なし",
+      "noType": "タイプなし",
+      "loading": "ピンを読み込み中...",
+      "pinsCount": "{count}ピン",
+      "tabList": "ピンリスト",
+      "tabBulkImport": "一括インポート",
+      "noPins": "ピンが定義されていません。個別にピンを追加するか、一括インポートを使用してください。",
+      "columnPinNumber": "ピン番号",
+      "columnName": "名前",
+      "columnType": "タイプ",
+      "columnFunction": "機能（DE）",
+      "columnActions": "操作",
+      "functionPlaceholder": "例：電源電圧",
+      "deleteTitle": "ピンを削除しますか？",
+      "deleteMessage": "ピン{pinNumber}（{pinName}）を本当に削除しますか？この操作は元に戻せません。",
+      "reorderSuccess": "ピンの順序が更新されました",
+      "reorderFailed": "順序を変更できませんでした",
+      "bulkImport": {
+        "formatLabel": "フォーマット：",
+        "exampleLabel": "例：",
+        "typeHint": "pinTypはオプションです。使用可能なタイプ：POWER、GROUND、INPUT、OUTPUT、BIDIRECTIONAL、NC、ANALOG、DIGITAL、CLOCK、OTHER",
+        "placeholder": "CSV形式でピンを入力...",
+        "importButton": "ピンをインポート",
+        "noPinsFound": "有効なピンデータが見つかりません。",
+        "success": "{count}個のピンがインポートされました。",
+        "failed": "一括インポートに失敗しました。"
+      }
+    },
+    "files": {
+      "uploadImage": "製品画像をアップロード",
+      "uploadDatasheet": "データシートをアップロード",
+      "uploadDocument": "ドキュメントをアップロード",
+      "selectLanguage": "言語を選択",
+      "noFiles": "ファイルがありません",
+      "confirmDelete": "ファイルを削除しますか？",
+      "productImage": "製品画像",
+      "productImageDescription": "このメーカーバリエーションのプレビュー画像",
+      "addImage": "画像",
+      "imageDescription": "JPEG、PNG、またはWebP（最大10 MB）",
+      "noImageUploaded": "まだ画像がアップロードされていません",
+      "datasheets": "データシート",
+      "datasheetsDescription": "このメーカーバリエーションのPDFデータシート",
+      "addDatasheet": "データシート",
+      "languagesRequired": "データシートの言語",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "少なくとも1つの言語を選択する必要があります",
+      "datasheetFileDescription": "メーカーデータシートのPDFファイル",
+      "noDatasheets": "まだデータシートがアップロードされていません",
+      "otherFiles": "その他のファイル",
+      "otherFilesDescription": "追加ドキュメント、アプリケーションノートなど",
+      "addDocument": "ドキュメント",
+      "languagesOptional": "言語（オプション）",
+      "anyFileDescription": "任意のファイル（PDF、TXT、ZIPなど）",
+      "noDocuments": "まだドキュメントがアップロードされていません",
+      "fileName": "ファイル",
+      "fileSize": "サイズ",
+      "languages": "言語",
+      "actions": "操作",
+      "imageCount": "{count}枚の画像",
+      "fileCount": "{count}ファイル{plural}",
+      "datasheetCount": "{count}データシート{plural}",
+      "imageUploaded": "画像がアップロードされました",
+      "imageRemoved": "画像が削除されました"
+    },
+    "model3d": {
+      "title": "3Dモデル",
+      "confirmDelete": "3Dモデルを削除しますか？",
+      "upload": "3Dモデルをアップロード",
+      "noModels": "3Dモデルがありません"
+    },
+    "lists": {
+      "searchPlaceholder": "検索...",
+      "searchByName": "名前またはスラッグで検索...",
+      "searchByNameCage": "名前、スラッグ、またはCAGEコードで検索...",
+      "noResults": "結果が見つかりません",
+      "createFirst": "最初のエントリを作成",
+      "noPackagesFound": "パッケージが見つかりません",
+      "createFirstPackage": "最初のパッケージを作成"
+    },
+    "filters": {
+      "allStatus": "すべてのステータス",
+      "myDrafts": "マイ下書き"
+    },
+    "manufacturer": {
+      "title": "メーカー",
+      "count": "データベース内の{count}メーカー",
+      "create": "新規メーカー",
+      "createFirst": "最初のメーカーを作成",
+      "deleteTitle": "メーカーを削除しますか？",
+      "deleteDescription": "メーカー「{name}」を本当に削除しますか？この操作は元に戻せません。",
+      "status": {
+        "active": "活動中",
+        "acquired": "買収済み",
+        "defunct": "廃業"
+      }
+    },
+    "form": {
+      "package": "パッケージ",
+      "selectPackage": "パッケージを選択",
+      "noPackage": "パッケージなし",
+      "editIn": "編集：",
+      "searchLanguage": "言語を検索...",
+      "noLanguageFound": "言語が見つかりません",
+      "original": "オリジナル",
+      "backToOverview": "概要に戻る",
+      "name": "名前",
+      "nameDescription": "ドイツ語・英語の名前。カテゴリにラベル属性がない場合は必須フィールド",
+      "namePlaceholder": "部品名",
+      "series": "シリーズ",
+      "seriesDescription": "オプションの部品シリーズまたはファミリー",
+      "seriesPlaceholder": "例：74HC、ATmega",
+      "packageDescription": "物理的なパッケージ（例：DIP-8、SOIC-8）",
+      "shortDescription": "短い説明",
+      "shortDescriptionDescription": "部品を説明する短い文",
+      "shortDescriptionPlaceholder": "短い説明",
+      "fullDescription": "詳細な説明",
+      "fullDescriptionPlaceholder": "詳細な説明",
+      "attributesDescription": "選択したカテゴリに基づく技術属性",
+      "selectCategoryFirst": "「基本データ」タブで最初にカテゴリを選択してください",
+      "pinMappingDescription": "この部品のピン配置を定義します。ピン配置はすべてのメーカーバリエーションに適用されます",
+      "partsDescription": "この部品のメーカー固有のバリエーション",
+      "newVariant": "新しいバリエーション",
+      "close": "閉じる",
+      "parentCategory": "親カテゴリ",
+      "parentCategoryPlaceholder": "なし（ルートカテゴリ）",
+      "parentCategoryDescription": "メインカテゴリ（レベル0）の場合は空白のままにします",
+      "categoryName": "カテゴリ名",
+      "categoryDescription": "説明",
+      "categoryDescriptionPlaceholder": "カテゴリの説明",
+      "sortOrder": "並び順",
+      "sortOrderDescription": "値が小さいほど上に表示されます",
+      "status": "ステータス",
+      "active": "アクティブ",
+      "inactive": "非アクティブ",
+      "icon": "アイコン",
+      "iconUploadDescription": "カテゴリアイコンをアップロード。最大5 MB、JPEG/PNG/WebP/SVG。",
+      "iconUploadHint": "クリックまたはファイルをドラッグ。",
+      "iconMaxSize": "アイコンは最大5 MBまでです。",
+      "iconAllowedTypes": "JPEG、PNG、WebP、SVGのみ許可されます。",
+      "iconUploaded": "アイコンがアップロードされました。",
+      "iconUploadFailed": "アイコンのアップロードに失敗しました。",
+      "categoryCreatedIconFailed": "カテゴリは作成されましたが、アイコンのアップロードに失敗しました。",
+      "loading": "読み込み中...",
+      "newAttribute": "新しい属性",
+      "ownAttributes": "独自の属性（{count}）",
+      "noOwnAttributes": "独自の属性が定義されていません。",
+      "inheritedAttributes": "継承された属性（{count}）",
+      "inheritedAttributesDescription": "継承された属性は元のカテゴリでのみ編集できます。",
+      "attributesInherited": "このカテゴリの属性（サブカテゴリに継承されます）",
+      "cageCode": "CAGEコード",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5桁のコード",
+      "country": "国",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "ウェブサイト",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "ロゴ",
+      "logoUploadHint": "メーカーロゴをアップロード。最大5 MB、JPEG/PNG/WebP/SVG。",
+      "logoClickOrDrag": "クリックまたはファイルをドラッグ。",
+      "statusActive": "活動中",
+      "statusAcquired": "買収済み",
+      "statusDefunct": "廃業",
+      "foundedYear": "設立年",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "廃業年",
+      "defunctYearPlaceholder": "2020",
+      "description": "説明",
+      "descriptionPlaceholder": "説明",
+      "logoMaxSize": "ロゴは最大5 MBまでです。",
+      "logoAllowedTypes": "JPEG、PNG、WebP、SVGのみ許可されます。",
+      "createdAsDraft": "メーカーが下書きとして保存されました。",
+      "manufacturerCreatedLogoFailed": "メーカーは作成されましたが、ロゴのアップロードに失敗しました。",
+      "save": "保存"
+    },
+    "audit": {
+      "created": "作成されました",
+      "updated": "更新されました",
+      "deleted": "削除されました",
+      "restored": "復元されました",
+      "approved": "承認されました",
+      "rejected": "却下されました"
+    },
+    "tabs": {
+      "basicInfo": "基本情報",
+      "attributes": "属性",
+      "pinMapping": "ピン配置",
+      "parts": "メーカーバリエーション",
+      "relations": "関連",
+      "files": "ファイル",
+      "details": "基本データ",
+      "pins": "ピン配置",
+      "models": "3Dモデル"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "メーカー",
+      "status": "ステータス",
+      "lifecycle": "ライフサイクル",
+      "actions": "操作",
+      "variantCount": "{count}バリエーション",
+      "variantCountPlural": "{count}バリエーション",
+      "activeCount": "{count}アクティブ",
+      "obsoleteCount": "{count}廃止",
+      "unknown": "不明"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "パッケージの一意の名前",
+      "mountingType": "パッケージタイプ",
+      "mountingTypes": {
+        "SMD": "SMD - 表面実装",
+        "THT": "THT - スルーホール",
+        "RADIAL": "ラジアル - ラジアルリード",
+        "AXIAL": "アキシャル - アキシャルリード",
+        "CHASSIS": "シャーシ - シャーシ実装",
+        "OTHER": "その他"
+      },
+      "pinCount": "ピン数",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "長さ（mm）",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "幅（mm）",
+      "widthPlaceholder": "4.0",
+      "heightMm": "高さ（mm）",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "ピッチ（mm）",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "ピン間の距離",
+      "jedecStandard": "JEDEC規格",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA規格",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "図面URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "技術図面またはデータシートへのリンク",
+      "description": "説明",
+      "descriptionPlaceholder": "パッケージに関する追加情報...",
+      "saveFirstModels": "3Dモデルをアップロードするには、まずパッケージを保存してください。",
+      "modelsDescription": "このパッケージの3Dモデル（STEP、STL、3MF、OBJなど）"
+    },
+    "partForm": {
+      "coreComponent": "汎用部品",
+      "coreComponentDesc": "メーカーに依存しない部品（例：555タイマー）",
+      "manufacturer": "メーカー",
+      "manufacturerDesc": "この具体的なバリエーションのメーカー（例：Texas Instruments）",
+      "manufacturerPlaceholder": "メーカーを選択",
+      "mpn": "MPN（メーカー部品番号）",
+      "mpnPlaceholder": "例：NE555P",
+      "mpnDesc": "一意のメーカー部品番号",
+      "orderingCode": "注文コード",
+      "orderingCodePlaceholder": "オプション",
+      "orderingCodeDesc": "代替注文コード（MPNと異なる場合）",
+      "statusRecord": "レコードステータス",
+      "lifecycleStatus": "ライフサイクルステータス",
+      "introductionYear": "導入年",
+      "introductionYearPlaceholder": "例：1972",
+      "discontinuedYear": "製造中止年",
+      "discontinuedYearPlaceholder": "例：2020",
+      "rohsCompliant": "RoHS準拠",
+      "rohsDesc": "RoHS指令に準拠",
+      "reachCompliant": "REACH準拠",
+      "reachDesc": "REACH規則に準拠",
+      "weight": "重量（グラム）",
+      "weightPlaceholder": "例：0.5",
+      "dateCodeFormat": "日付コード",
+      "dateCodePlaceholder": "例：YYWW",
+      "dateCodeDesc": "部品の日付コード形式",
+      "nsn": "NSN（NATO在庫番号）",
+      "nsnPlaceholder": "例：5962-01-123-4567",
+      "milSpec": "軍事仕様",
+      "milSpecPlaceholder": "例：MIL-PRF-38534",
+      "partAttributesDesc": "部品のカテゴリに基づくメーカー固有の属性。",
+      "partAttributesLabel": "メーカー固有の属性",
+      "filesDesc": "このメーカーバリエーションのデータシート、画像、その他のファイルを管理。",
+      "close": "閉じる",
+      "selectComponent": "部品を選択"
+    }
+  },
+  "errors": {
+    "notFound": "ページが見つかりません",
+    "unauthorized": "未認証",
+    "serverError": "サーバーエラー"
+  },
+  "footer": {
+    "tagline": "コミュニティ運営の電子部品データベース",
+    "navigation": "ナビゲーション",
+    "community": "コミュニティ",
+    "legal": "法的情報",
+    "about": "概要",
+    "help": "ヘルプ",
+    "contact": "お問い合わせ",
+    "contribute": "貢献",
+    "github": "GitHub",
+    "privacy": "プライバシー",
+    "imprint": "サイト情報",
+    "copyright": "MITライセンスでオープンソース"
+  },
+  "about": {
+    "title": "ElectroVaultについて",
+    "subtitle": "コミュニティ運営の電子部品データベース",
+    "mission": {
+      "title": "私たちのミッション",
+      "description": "ElectroVaultは、歴史的な真空管から最新のナノテクノロジーまで、電子部品のための無料でオープンなデータベースです。電子部品に関する知識を保存し、誰もがアクセスできるようにすることが私たちの目標です。"
+    },
+    "features": {
+      "title": "機能",
+      "comprehensive": {
+        "title": "包括的なデータベース",
+        "description": "抵抗器やコンデンサから高集積回路まで、詳細な仕様を持つすべての重要な部品を収録しています。"
+      },
+      "historical": {
+        "title": "歴史的アーカイブ",
+        "description": "ビンテージ機器の修理・復元のための歴史的部品のドキュメント。"
+      },
+      "community": {
+        "title": "コミュニティ主導",
+        "description": "誰でも貢献し、知識を共有できます。一緒に最も包括的な部品データベースを構築しましょう。"
+      },
+      "open": {
+        "title": "オープンソース",
+        "description": "MITライセンスの下、完全に透明で自由に利用可能です。"
+      }
+    },
+    "contribute": {
+      "title": "参加方法",
+      "description": "ElectroVaultはコミュニティによって成り立っています。貢献する方法をいくつかご紹介します：",
+      "dataEntry": "部品の追加・編集",
+      "datasheets": "データシートのアップロード",
+      "code": "GitHubでのコード貢献",
+      "feedback": "フィードバックと改善提案"
+    }
+  },
+  "help": {
+    "title": "ヘルプとFAQ",
+    "subtitle": "よくある質問",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "部品を閲覧",
+        "description": "データベースで部品を検索"
+      },
+      "createAccount": {
+        "title": "アカウント作成",
+        "description": "データベースに貢献"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "ドキュメントとイシュー"
+      }
+    },
+    "contactCta": {
+      "title": "質問に対する回答が見つかりませんでしたか？",
+      "description": "お気軽に直接お問い合わせください。",
+      "button": "お問い合わせ"
+    },
+    "general": {
+      "title": "一般",
+      "what": {
+        "question": "ElectroVaultとは何ですか？",
+        "answer": "ElectroVaultは、電気・電子部品のための無料のコミュニティ運営データベースです。歴史的な真空管から最新のICまで、包括的なメタデータ、データシート、仕様を含む部品をドキュメント化しています。"
+      },
+      "free": {
+        "question": "ElectroVaultは無料ですか？",
+        "answer": "はい、ElectroVaultは完全に無料でオープンソースです。使用もソースコードも自由に利用できます。"
+      }
+    },
+    "search": {
+      "title": "検索",
+      "how": {
+        "question": "特定の部品を見つけるには？",
+        "answer": "右上の検索機能を使用するか、カテゴリをブラウズしてください。型番、メーカー、または特性で検索できます。"
+      },
+      "filters": {
+        "question": "どのようなフィルターが利用できますか？",
+        "answer": "カテゴリ、メーカー、ステータス（製造中/廃止）、パッケージタイプ、その他多くの技術パラメータでフィルタリングできます。"
+      }
+    },
+    "contribute": {
+      "title": "貢献",
+      "account": {
+        "question": "貢献するにはアカウントが必要ですか？",
+        "answer": "はい、部品を追加または編集するには、無料アカウントが必要です。これはデータ品質を確保するのに役立ちます。"
+      },
+      "how": {
+        "question": "部品を追加するには？",
+        "answer": "ログイン後、部品一覧の「新規部品」ボタンから新しい部品を作成できます。モデレーターが公開前に貢献内容を審査します。"
+      },
+      "quality": {
+        "question": "データ品質はどのように確保されていますか？",
+        "answer": "すべての貢献は経験豊富なモデレーターによって審査されます。また、登録ユーザーは修正を提案できます。"
+      }
+    }
+  },
+  "contact": {
+    "title": "お問い合わせ",
+    "subtitle": "ご質問やご提案がありますか？",
+    "form": {
+      "heading": "メッセージを送信",
+      "name": "お名前",
+      "email": "メールアドレス",
+      "subject": "件名",
+      "message": "メッセージ",
+      "namePlaceholder": "山田太郎",
+      "emailPlaceholder": "yamada@example.com",
+      "subjectPlaceholder": "メッセージの件名",
+      "messagePlaceholder": "メッセージ...",
+      "demoNote": "注意：お問い合わせフォームは現在デモです。バックエンド統合は後のフェーズで行われます。重要なお問い合わせには、GitHubまたは記載されたメールアドレスをご利用ください。",
+      "send": "メッセージを送信",
+      "sending": "送信中...",
+      "success": "メッセージが正常に送信されました！",
+      "error": "メッセージの送信中にエラーが発生しました"
+    },
+    "alternatives": {
+      "title": "その他のお問い合わせ方法",
+      "githubTitle": "GitHubイシュー",
+      "github": "GitHubでイシューを作成",
+      "emailTitle": "メール",
+      "email": "メールを送信"
+    },
+    "responseTime": {
+      "title": "応答時間",
+      "description": "ElectroVaultはコミュニティプロジェクトのため、お問い合わせはボランティアによって処理されます。通常48時間以内に返信いたします。"
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "コミュニティサポート",
+        "description": "一般的な質問にはGitHub Discussionsをご利用ください"
+      },
+      "bugReports": {
+        "title": "バグ報告",
+        "description": "技術的な問題はGitHubで直接報告してください"
+      },
+      "partnerships": {
+        "title": "パートナーシップ",
+        "description": "ビジネスに関するお問い合わせはフォームをご利用ください"
+      }
+    }
+  },
+  "imprint": {
+    "title": "サイト情報",
+    "responsible": "コンテンツ責任者",
+    "contact": "連絡先",
+    "disclaimer": {
+      "title": "免責事項",
+      "content": "慎重なコンテンツ管理にもかかわらず、外部リンクのコンテンツについて責任を負いません。リンクされたページの運営者がそのコンテンツに対して責任を負います。",
+      "liability": "これらのページのコンテンツは細心の注意を払って作成されています。ただし、コンテンツの正確性、完全性、適時性を保証することはできません。"
+    },
+    "opensource": {
+      "title": "オープンソース",
+      "description": "ElectroVaultはMITライセンスの下のオープンソースプロジェクトです。ソースコードはGitHubで入手できます。"
+    }
+  },
+  "privacy": {
+    "title": "プライバシーポリシー",
+    "lastUpdated": "最終更新日",
+    "intro": "私たちはお客様の個人データの保護を非常に重視しています。このプライバシーポリシーは、個人データの処理の性質、範囲、目的についてお知らせします。",
+    "responsible": {
+      "title": "データ管理者",
+      "description": "このウェブサイトでのデータ処理の責任者："
+    },
+    "collection": {
+      "title": "個人データの収集と保存",
+      "description": "当ウェブサイトにアクセスすると、ブラウザが送信する情報が自動的に収集されます：",
+      "data": "IPアドレス、アクセス日時、ブラウザの種類とバージョン、使用しているオペレーティングシステム、リファラーURL"
+    },
+    "cookies": {
+      "title": "Cookie",
+      "description": "当ウェブサイトはCookieを使用しています。Cookieはデバイスに保存される小さなテキストファイルです。",
+      "essential": "認証とセッション管理に必要な技術的Cookie",
+      "functional": "ユーザーエクスペリエンス向上のための機能的Cookie"
+    },
+    "auth": {
+      "title": "認証",
+      "description": "登録とログインにはKeycloakを使用しています。以下のデータが保存されます：",
+      "data": "ユーザー名、メールアドレス、プロフィール画像（オプション）、役割と権限"
+    },
+    "rights": {
+      "title": "お客様の権利",
+      "description": "お客様の個人データに関して、以下の権利があります：",
+      "access": "アクセス権",
+      "correction": "訂正権",
+      "deletion": "削除権",
+      "restriction": "処理制限権",
+      "portability": "データポータビリティ権",
+      "objection": "異議申立権"
+    },
+    "contact": {
+      "title": "プライバシーに関するお問い合わせ",
+      "description": "プライバシーに関するご質問がある場合は、いつでもお問い合わせください。"
+    }
+  }
+}

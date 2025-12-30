@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreatePackageSchema, type CreatePackageInput } from '@electrovault/schemas';
+import { useTranslations, useLocale } from 'next-intl';
+import { CreatePackageSchema, type CreatePackageInput, type UILocale } from '@electrovault/schemas';
 import {
   Dialog,
   DialogContent,
@@ -37,10 +38,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { type Package } from '@/lib/api';
+import { type Package, type PackageGroup } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 import { Package3DModels } from '@/components/admin/package-3d-models';
+import { getLocalizedValue } from '@/components/ui/localized-text';
 
 interface PackageDialogProps {
   open: boolean;
@@ -55,16 +57,26 @@ export function PackageDialog({
   package: packageData,
   onSaved,
 }: PackageDialogProps) {
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
   const api = useApi();
   const { toast } = useToast();
+  const locale = useLocale() as UILocale;
   const isEdit = !!packageData;
   const [activeTab, setActiveTab] = useState('details');
+  const [groups, setGroups] = useState<PackageGroup[]>([]);
+
+  // Load package groups
+  useEffect(() => {
+    api.getAllPackageGroups().then((result) => setGroups(result.data)).catch(() => {});
+  }, [api]);
 
   const form = useForm<CreatePackageInput>({
     resolver: zodResolver(CreatePackageSchema) as never,
     defaultValues: {
       name: '',
       mountingType: 'SMD',
+      groupId: null,
     },
   });
 
@@ -73,6 +85,7 @@ export function PackageDialog({
       form.reset({
         name: packageData.name,
         mountingType: packageData.mountingType,
+        groupId: packageData.groupId || null,
         pinCount: packageData.pinCount || undefined,
         lengthMm: packageData.lengthMm ? parseFloat(packageData.lengthMm) : undefined,
         widthMm: packageData.widthMm ? parseFloat(packageData.widthMm) : undefined,
@@ -81,12 +94,12 @@ export function PackageDialog({
         jedecStandard: packageData.jedecStandard || undefined,
         eiaStandard: packageData.eiaStandard || undefined,
         description: packageData.description || undefined,
-        drawingUrl: packageData.drawingUrl || undefined,
       });
     } else {
       form.reset({
         name: '',
         mountingType: 'SMD',
+        groupId: null,
       });
     }
   }, [packageData, form]);
@@ -96,21 +109,21 @@ export function PackageDialog({
       if (isEdit) {
         await api.updatePackage(packageData.id, data);
         toast({
-          title: 'Erfolg',
-          description: 'Bauform wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.package.updated'),
         });
       } else {
         await api.createPackage(data);
         toast({
-          title: 'Erfolg',
-          description: 'Bauform wurde erstellt.',
+          title: t('messages.success'),
+          description: t('messages.package.created'),
         });
       }
       onSaved();
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Bauform konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.package.saveFailed'),
         variant: 'destructive',
       });
     }
@@ -126,17 +139,17 @@ export function PackageDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEdit ? 'Bauform bearbeiten' : 'Neue Bauform'}</DialogTitle>
+          <DialogTitle>{isEdit ? t('dialogs.package.titleEdit') : t('dialogs.package.title')}</DialogTitle>
           <DialogDescription>
-            {isEdit ? 'Bauforminformationen ändern' : 'Neue Bauform erstellen'}
+            {t('dialogs.package.description')}
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="details">Stammdaten</TabsTrigger>
+            <TabsTrigger value="details">{t('tabs.details')}</TabsTrigger>
             <TabsTrigger value="models" disabled={!isEdit}>
-              3D-Modelle
+              {t('tabs.models')}
             </TabsTrigger>
           </TabsList>
 
@@ -149,11 +162,40 @@ export function PackageDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t('form.name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="SOIC-8" {...field} />
+                    <Input placeholder={t('packageForm.namePlaceholder')} {...field} />
                   </FormControl>
-                  <FormDescription>Eindeutiger Name der Bauform</FormDescription>
+                  <FormDescription>{t('packageForm.nameDescription')}</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="groupId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('packageForm.group')}</FormLabel>
+                  <Select
+                    onValueChange={(val) => field.onChange(val === '__none__' ? null : val)}
+                    value={field.value || '__none__'}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('packageForm.selectGroup')} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="__none__">{t('packageForm.noGroup')}</SelectItem>
+                      {groups.map((group) => (
+                        <SelectItem key={group.id} value={group.id}>
+                          {getLocalizedValue(group.name, locale)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -165,7 +207,7 @@ export function PackageDialog({
                 name="mountingType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gehäusetyp</FormLabel>
+                    <FormLabel>{t('packageForm.mountingType')}</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -173,12 +215,12 @@ export function PackageDialog({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="SMD">SMD - Surface Mount Device</SelectItem>
-                        <SelectItem value="THT">THT - Through-Hole Technology</SelectItem>
-                        <SelectItem value="RADIAL">Radial - Radial Bedrahtet</SelectItem>
-                        <SelectItem value="AXIAL">Axial - Axial Bedrahtet</SelectItem>
-                        <SelectItem value="CHASSIS">Chassis - Gehäusemontage</SelectItem>
-                        <SelectItem value="OTHER">Sonstiges</SelectItem>
+                        <SelectItem value="SMD">{t('packageForm.mountingTypes.SMD')}</SelectItem>
+                        <SelectItem value="THT">{t('packageForm.mountingTypes.THT')}</SelectItem>
+                        <SelectItem value="RADIAL">{t('packageForm.mountingTypes.RADIAL')}</SelectItem>
+                        <SelectItem value="AXIAL">{t('packageForm.mountingTypes.AXIAL')}</SelectItem>
+                        <SelectItem value="CHASSIS">{t('packageForm.mountingTypes.CHASSIS')}</SelectItem>
+                        <SelectItem value="OTHER">{t('packageForm.mountingTypes.OTHER')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -191,11 +233,11 @@ export function PackageDialog({
                 name="pinCount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Pin-Anzahl</FormLabel>
+                    <FormLabel>{t('packageForm.pinCount')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="8"
+                        placeholder={t('packageForm.pinCountPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
@@ -213,12 +255,12 @@ export function PackageDialog({
                 name="lengthMm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Länge (mm)</FormLabel>
+                    <FormLabel>{t('packageForm.lengthMm')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.01"
-                        placeholder="5.0"
+                        placeholder={t('packageForm.lengthPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
@@ -234,12 +276,12 @@ export function PackageDialog({
                 name="widthMm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Breite (mm)</FormLabel>
+                    <FormLabel>{t('packageForm.widthMm')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.01"
-                        placeholder="4.0"
+                        placeholder={t('packageForm.widthPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
@@ -255,12 +297,12 @@ export function PackageDialog({
                 name="heightMm"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Höhe (mm)</FormLabel>
+                    <FormLabel>{t('packageForm.heightMm')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.01"
-                        placeholder="1.5"
+                        placeholder={t('packageForm.heightPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
@@ -277,18 +319,18 @@ export function PackageDialog({
               name="pitchMm"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Rastermaß (mm)</FormLabel>
+                  <FormLabel>{t('packageForm.pitchMm')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       step="0.01"
-                      placeholder="1.27"
+                      placeholder={t('packageForm.pitchPlaceholder')}
                       {...field}
                       value={field.value || ''}
                       onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
                     />
                   </FormControl>
-                  <FormDescription>Abstand zwischen den Pins</FormDescription>
+                  <FormDescription>{t('packageForm.pitchDescription')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -300,9 +342,9 @@ export function PackageDialog({
                 name="jedecStandard"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>JEDEC Standard</FormLabel>
+                    <FormLabel>{t('packageForm.jedecStandard')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="MS-012" {...field} value={field.value || ''} />
+                      <Input placeholder={t('packageForm.jedecPlaceholder')} {...field} value={field.value || ''} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -314,9 +356,9 @@ export function PackageDialog({
                 name="eiaStandard"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>EIA Standard</FormLabel>
+                    <FormLabel>{t('packageForm.eiaStandard')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="0805" {...field} value={field.value || ''} />
+                      <Input placeholder={t('packageForm.eiaPlaceholder')} {...field} value={field.value || ''} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -326,33 +368,13 @@ export function PackageDialog({
 
             <FormField
               control={form.control}
-              name="drawingUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Zeichnungs-URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="https://example.com/drawing.pdf"
-                      {...field}
-                      value={field.value || ''}
-                    />
-                  </FormControl>
-                  <FormDescription>Link zu technischer Zeichnung oder Datenblatt</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Beschreibung</FormLabel>
+                  <FormLabel>{t('packageForm.description')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Zusätzliche Informationen zur Bauform..."
+                      placeholder={t('packageForm.descriptionPlaceholder')}
                       rows={3}
                       {...field}
                       value={field.value || ''}
@@ -365,10 +387,10 @@ export function PackageDialog({
 
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                    Abbrechen
+                    {tCommon('cancel')}
                   </Button>
                   <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
+                    {form.formState.isSubmitting ? t('buttons.saving') : isEdit ? t('buttons.update') : tCommon('create')}
                   </Button>
                 </DialogFooter>
               </form>
@@ -379,17 +401,17 @@ export function PackageDialog({
           <TabsContent value="models" className="mt-4">
             {!isEdit ? (
               <div className="text-center py-8 text-muted-foreground">
-                <p>Speichern Sie zuerst die Bauform, um 3D-Modelle hochzuladen.</p>
+                <p>{t('packageForm.saveFirstModels')}</p>
               </div>
             ) : packageData ? (
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  3D-Modelle für diese Bauform (STEP, STL, 3MF, OBJ, etc.)
+                  {t('packageForm.modelsDescription')}
                 </p>
                 <Package3DModels packageId={packageData.id} />
                 <DialogFooter>
                   <Button variant="outline" onClick={() => onOpenChange(false)}>
-                    Schließen
+                    {t('form.close')}
                   </Button>
                 </DialogFooter>
               </div>

@@ -15,90 +15,92 @@ datasource db {
 // ============================================
 
 enum UserRole {
-  ADMIN           // Volle Rechte
-  MODERATOR       // Kann freigeben/ablehnen
-  CONTRIBUTOR     // Kann erstellen/bearbeiten
-  VIEWER          // Nur lesen
+  ADMIN // Volle Rechte
+  MODERATOR // Kann freigeben/ablehnen
+  CONTRIBUTOR // Kann erstellen/bearbeiten
+  VIEWER // Nur lesen
 }
 
 enum ComponentStatus {
-  DRAFT       // In Bearbeitung
-  PENDING     // Wartet auf Freigabe
-  PUBLISHED   // Veröffentlicht
-  ARCHIVED    // Archiviert
+  DRAFT // In Bearbeitung
+  PENDING // Wartet auf Freigabe
+  PUBLISHED // Veröffentlicht
+  ARCHIVED // Archiviert
 }
 
 enum PartStatus {
-  DRAFT       // In Bearbeitung
-  PENDING     // Wartet auf Freigabe
-  PUBLISHED   // Veröffentlicht
-  ARCHIVED    // Archiviert
+  DRAFT // In Bearbeitung
+  PENDING // Wartet auf Freigabe
+  PUBLISHED // Veröffentlicht
+  ARCHIVED // Archiviert
 }
 
 enum LifecycleStatus {
-  ACTIVE      // In Produktion
-  NRND        // Not Recommended for New Designs
-  EOL         // End of Life angekündigt
-  OBSOLETE    // Nicht mehr erhältlich
+  ACTIVE // In Produktion
+  NRND // Not Recommended for New Designs
+  EOL // End of Life angekündigt
+  OBSOLETE // Nicht mehr erhältlich
 }
 
 enum ManufacturerStatus {
-  ACTIVE      // Aktiv
-  ACQUIRED    // Übernommen
-  DEFUNCT     // Nicht mehr existent
+  ACTIVE // Aktiv
+  ACQUIRED // Übernommen
+  DEFUNCT // Nicht mehr existent
 }
 
 enum MountingType {
-  THT         // Through-Hole Technology
-  SMD         // Surface-Mount Device
-  RADIAL      // Radial (z.B. Elkos)
-  AXIAL       // Axial (z.B. Widerstände)
-  CHASSIS     // Gehäusemontage
+  THT // Through-Hole Technology
+  SMD // Surface-Mount Device
+  RADIAL // Radial (z.B. Elkos)
+  AXIAL // Axial (z.B. Widerstände)
+  CHASSIS // Gehäusemontage
   OTHER
 }
 
 enum AttributeDataType {
-  DECIMAL     // Dezimalzahl
-  INTEGER     // Ganzzahl
-  STRING      // Text
-  BOOLEAN     // Ja/Nein
-  RANGE       // Bereich (min-max)
+  DECIMAL // Dezimalzahl
+  INTEGER // Ganzzahl
+  STRING // Text
+  BOOLEAN // Ja/Nein
+  RANGE // Bereich (min-max)
+  SELECT // Einfachauswahl aus vordefinierter Liste
+  MULTISELECT // Mehrfachauswahl aus vordefinierter Liste
 }
 
 enum AttributeScope {
-  COMPONENT   // Nur auf CoreComponent-Ebene
-  PART        // Nur auf ManufacturerPart-Ebene
-  BOTH        // Component = typisch, Part = garantiert
+  COMPONENT // Nur auf CoreComponent-Ebene
+  PART // Nur auf ManufacturerPart-Ebene
+  BOTH // Component = typisch, Part = garantiert
 }
 
 enum RelationshipType {
-  SUCCESSOR           // Neuere Version
-  PREDECESSOR         // Ältere Version
-  ALTERNATIVE         // Anderer Hersteller, kompatibel
-  FUNCTIONAL_EQUIV    // Gleiche Funktion, andere Specs
-  VARIANT             // Gleiche Serie, andere Specs
-  SECOND_SOURCE       // Lizenzierte Kopie
-  COUNTERFEIT_RISK    // Bekanntes Fälschungsrisiko
+  SUCCESSOR // Neuere Version
+  PREDECESSOR // Ältere Version
+  ALTERNATIVE // Anderer Hersteller, kompatibel
+  FUNCTIONAL_EQUIV // Gleiche Funktion, andere Specs
+  VARIANT // Gleiche Serie, andere Specs
+  SECOND_SOURCE // Lizenzierte Kopie
+  COUNTERFEIT_RISK // Bekanntes Fälschungsrisiko
 }
 
 enum ConceptRelationType {
-  DUAL_VERSION        // 556 ist Dual-555
-  QUAD_VERSION        // LM324 ist Quad-LM358
-  LOW_POWER_VERSION   // NE555 → ICM7555 (CMOS)
-  HIGH_SPEED_VERSION  // Standard → High-Speed Variante
-  MILITARY_VERSION    // Commercial → Military Grade
-  AUTOMOTIVE_VERSION  // Standard → AEC-Q qualifiziert
-  FUNCTIONAL_EQUIV    // Gleiche Funktion, anderer Aufbau
+  DUAL_VERSION // 556 ist Dual-555
+  QUAD_VERSION // LM324 ist Quad-LM358
+  LOW_POWER_VERSION // NE555 → ICM7555 (CMOS)
+  HIGH_SPEED_VERSION // Standard → High-Speed Variante
+  MILITARY_VERSION // Commercial → Military Grade
+  AUTOMOTIVE_VERSION // Standard → AEC-Q qualifiziert
+  FUNCTIONAL_EQUIV // Gleiche Funktion, anderer Aufbau
 }
 
 enum HazardousMaterialType {
-  PCB_CAPACITOR   // Polychlorierte Biphenyle
-  ASBESTOS        // Asbest
-  MERCURY         // Quecksilber
-  RADIOACTIVE     // Radioaktiv
-  LEAD            // Blei
-  CADMIUM         // Cadmium
-  BERYLLIUM       // Beryllium
+  PCB_CAPACITOR // Polychlorierte Biphenyle
+  ASBESTOS // Asbest
+  MERCURY // Quecksilber
+  RADIOACTIVE // Radioaktiv
+  LEAD // Blei
+  CADMIUM // Cadmium
+  BERYLLIUM // Beryllium
   OTHER
 }
 
@@ -108,7 +110,7 @@ enum PinType {
   INPUT
   OUTPUT
   BIDIRECTIONAL
-  NC            // No Connect
+  NC // No Connect
   ANALOG
   DIGITAL
   CLOCK
@@ -128,7 +130,7 @@ enum EcadFormat {
   EAGLE
   ALTIUM
   ORCAD
-  STEP       // 3D-Modell
+  STEP // 3D-Modell
   OTHER
 }
 
@@ -142,18 +144,18 @@ enum FileType {
   DATASHEET
   IMAGE
   PINOUT
-  MODEL_3D    // 3D-Modelle (STEP, STL, etc.)
+  MODEL_3D // 3D-Modelle (STEP, STL, etc.)
   OTHER
 }
 
 enum AuditAction {
   CREATE
   UPDATE
-  DELETE      // Soft-Delete
-  RESTORE     // Wiederherstellung
-  MERGE       // Zusammenführung
-  APPROVE     // Freigabe durch Moderator
-  REJECT      // Ablehnung durch Moderator
+  DELETE // Soft-Delete
+  RESTORE // Wiederherstellung
+  MERGE // Zusammenführung
+  APPROVE // Freigabe durch Moderator
+  REJECT // Ablehnung durch Moderator
 }
 
 // ============================================
@@ -161,36 +163,36 @@ enum AuditAction {
 // ============================================
 
 model User {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   // Keycloak Subject ID
-  externalId      String   @unique @db.VarChar(255)
+  externalId String @unique @db.VarChar(255)
 
   // Gecachte Benutzerdaten
-  email           String   @unique @db.VarChar(255)
-  username        String   @unique @db.VarChar(100)
-  displayName     String?  @db.VarChar(255)
-  avatarUrl       String?  @db.VarChar(512)
+  email       String  @unique @db.VarChar(255)
+  username    String  @unique @db.VarChar(100)
+  displayName String? @db.VarChar(255)
+  avatarUrl   String? @db.VarChar(512)
 
-  role            UserRole @default(VIEWER)
+  role UserRole @default(VIEWER)
 
   // Profil
-  bio             String?  @db.Text
-  location        String?  @db.VarChar(255)
-  website         String?  @db.VarChar(512)
+  bio      String? @db.Text
+  location String? @db.VarChar(255)
+  website  String? @db.VarChar(512)
 
-  preferences     Json     @default("{}")
+  preferences Json @default("{}")
 
-  isActive        Boolean  @default(true)
-  lastLoginAt     DateTime?
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
 
   // === Relationen: Stammdaten ===
   createdManufacturers ManufacturerMaster[]
 
   // === Relationen: CoreComponent ===
-  createdComponents    CoreComponent[] @relation("ComponentCreator")
-  editedComponents     CoreComponent[] @relation("ComponentEditor")
-  deletedComponents    CoreComponent[] @relation("ComponentDeleter")
+  createdComponents       CoreComponent[]            @relation("ComponentCreator")
+  editedComponents        CoreComponent[]            @relation("ComponentEditor")
+  deletedComponents       CoreComponent[]            @relation("ComponentDeleter")
   createdConceptRelations ComponentConceptRelation[] @relation("ConceptRelationCreator")
 
   // === Relationen: ManufacturerPart ===
@@ -200,18 +202,23 @@ model User {
   createdRelationships PartRelationship[]
 
   // === Relationen: Dateien ===
-  uploadedDatasheets   PartDatasheet[] @relation("DatasheetUploader")
-  uploadedImages       PartImage[] @relation("ImageUploader")
-  uploadedFootprints   EcadFootprint[] @relation("FootprintUploader")
-  uploadedEcadModels   PartEcadModel[] @relation("EcadModelUploader")
-  uploadedFiles        FileAttachment[] @relation("FileUploader")
+  uploadedDatasheets PartDatasheet[]  @relation("DatasheetUploader")
+  uploadedImages     PartImage[]      @relation("ImageUploader")
+  uploadedFootprints EcadFootprint[]  @relation("FootprintUploader")
+  uploadedEcadModels PartEcadModel[]  @relation("EcadModelUploader")
+  uploadedFiles      FileAttachment[] @relation("FileUploader")
 
   // Audit-Log
-  auditLogs            AuditLog[]
-  moderationLogs       ModerationLog[]
+  auditLogs      AuditLog[]
+  moderationLogs ModerationLog[]
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  // Import-System
+  createdImportSources  ImportSource[]  @relation("ImportSourceCreator")
+  createdImportMappings ImportMapping[] @relation("ImportMappingCreator")
+  createdImportJobs     ImportJob[]     @relation("ImportJobCreator")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([externalId])
   @@index([email])
@@ -224,27 +231,27 @@ model User {
 
 // Kategorie-Hierarchie (Domain → Family → Type → Subtype)
 model CategoryTaxonomy {
-  id              String   @id @default(uuid()) @db.Uuid
-  name            Json     // LocalizedString
-  slug            String   @unique @db.VarChar(255)
-  level           Int      // 1=Domain, 2=Family, 3=Type, 4=Subtype
+  id    String @id @default(uuid()) @db.Uuid
+  name  Json // LocalizedString
+  slug  String @unique @db.VarChar(255)
+  level Int // 1=Domain, 2=Family, 3=Type, 4=Subtype
 
-  parentId        String?  @db.Uuid
-  parent          CategoryTaxonomy?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children        CategoryTaxonomy[] @relation("CategoryHierarchy")
+  parentId String?            @db.Uuid
+  parent   CategoryTaxonomy?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children CategoryTaxonomy[] @relation("CategoryHierarchy")
 
-  description     Json?    // LocalizedString
-  levelLabel      Json?    // LocalizedString - Bezeichnung für Unterkategorien (z.B. "Typ", "Klasse", "Familie")
-  iconUrl         String?  @db.VarChar(512)  // MinIO-URL für hochgeladenes Icon
-  sortOrder       Int      @default(0)
-  isActive        Boolean  @default(true)
+  description Json? // LocalizedString
+  levelLabel  Json? // LocalizedString - Bezeichnung für Unterkategorien (z.B. "Typ", "Klasse", "Familie")
+  iconUrl     String? @db.VarChar(512) // MinIO-URL für hochgeladenes Icon
+  sortOrder   Int     @default(0)
 
   // Relationen
   coreComponents       CoreComponent[]
   attributeDefinitions AttributeDefinition[]
+  importMappings       ImportMapping[]
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([parentId])
   @@index([level])
@@ -253,34 +260,36 @@ model CategoryTaxonomy {
 
 // Hersteller
 model ManufacturerMaster {
-  id              String   @id @default(uuid()) @db.Uuid
-  name            String   @db.VarChar(255)
-  slug            String   @unique @db.VarChar(255)
+  id   String @id @default(uuid()) @db.Uuid
+  name String @db.VarChar(255)
+  slug String @unique @db.VarChar(255)
 
-  cageCode        String?  @db.VarChar(5)    // NATO CAGE Code
-  countryCode     String?  @db.VarChar(2)    // ISO 3166-1 alpha-2
-  website         String?  @db.VarChar(512)
-  logoUrl         String?  @db.VarChar(512)
+  cageCode    String? @db.VarChar(5) // NATO CAGE Code
+  countryCode String? @db.VarChar(2) // ISO 3166-1 alpha-2
+  website     String? @db.VarChar(512)
+  logoUrl     String? @db.VarChar(512)
 
   // Firmenhistorie
-  acquiredById    String?  @db.Uuid
+  acquiredById    String?              @db.Uuid
   acquiredBy      ManufacturerMaster?  @relation("AcquisitionHistory", fields: [acquiredById], references: [id])
   acquisitions    ManufacturerMaster[] @relation("AcquisitionHistory")
   acquisitionDate DateTime?
 
-  status          ManufacturerStatus @default(ACTIVE)
-  foundedYear     Int?
-  defunctYear     Int?
+  status           ManufacturerStatus @default(ACTIVE)
+  moderationStatus ComponentStatus    @default(DRAFT) // Moderations-Workflow (DRAFT/PENDING/PUBLISHED)
+  foundedYear      Int?
+  defunctYear      Int?
 
-  aliases         ManufacturerAlias[]
-  parts           ManufacturerPart[]
+  aliases        ManufacturerAlias[]
+  parts          ManufacturerPart[]
+  importMappings ImportMapping[]
 
-  description     Json?    // LocalizedString
+  description Json? // LocalizedString
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  createdById     String?  @db.Uuid
-  createdBy       User?    @relation(fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation(fields: [createdById], references: [id])
 
   @@index([cageCode])
   @@index([slug])
@@ -288,52 +297,72 @@ model ManufacturerMaster {
 
 // Alternative Namen für Hersteller
 model ManufacturerAlias {
-  id             String   @id @default(uuid()) @db.Uuid
-  manufacturerId String   @db.Uuid
+  id             String             @id @default(uuid()) @db.Uuid
+  manufacturerId String             @db.Uuid
   manufacturer   ManufacturerMaster @relation(fields: [manufacturerId], references: [id], onDelete: Cascade)
 
-  aliasName      String   @db.VarChar(255)
-  aliasType      String?  @db.VarChar(50)  // brand, former_name, trade_name
+  aliasName String  @db.VarChar(255)
+  aliasType String? @db.VarChar(50) // brand, former_name, trade_name
 
   @@unique([manufacturerId, aliasName])
   @@index([aliasName])
 }
 
+// Bauformen-Gruppen (z.B. DIP, SOIC, BGA, TO, etc.)
+model PackageGroup {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        Json // LocalizedString
+  slug        String  @unique @db.VarChar(255)
+  description Json? // LocalizedString
+  sortOrder   Int     @default(0)
+
+  packages PackageMaster[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([sortOrder])
+}
+
 // Bauformen / Gehäuse
 model PackageMaster {
-  id              String   @id @default(uuid()) @db.Uuid
-  name            String   @db.VarChar(255)  // "DIP-14", "TO-220", "0805"
-  slug            String   @unique @db.VarChar(255)
+  id   String @id @default(uuid()) @db.Uuid
+  name String @db.VarChar(255) // "DIP-14", "TO-220", "0805"
+  slug String @unique @db.VarChar(255)
+
+  // Gruppe (optional)
+  groupId String?       @db.Uuid
+  group   PackageGroup? @relation(fields: [groupId], references: [id], onDelete: SetNull)
 
   // Maße in mm
-  lengthMm        Decimal? @db.Decimal(10, 4)
-  widthMm         Decimal? @db.Decimal(10, 4)
-  heightMm        Decimal? @db.Decimal(10, 4)
-  pitchMm         Decimal? @db.Decimal(10, 4)  // Pin-Abstand
+  lengthMm Decimal? @db.Decimal(10, 4)
+  widthMm  Decimal? @db.Decimal(10, 4)
+  heightMm Decimal? @db.Decimal(10, 4)
+  pitchMm  Decimal? @db.Decimal(10, 4) // Pin-Abstand
 
-  mountingType    MountingType
+  mountingType MountingType
 
-  pinCount        Int?
-  pinCountMin     Int?
-  pinCountMax     Int?
+  pinCount    Int?
+  pinCountMin Int?
+  pinCountMax Int?
 
   // Standards
-  jedecStandard   String?  @db.VarChar(100)
-  eiaStandard     String?  @db.VarChar(100)
+  jedecStandard String? @db.VarChar(100)
+  eiaStandard   String? @db.VarChar(100)
 
-  drawingUrl      String?  @db.VarChar(512)
+  components     CoreComponent[]
+  ecadFootprints EcadFootprint[]
+  files          FileAttachment[]
 
-  components      CoreComponent[]
-  ecadFootprints  EcadFootprint[]
-  files           FileAttachment[]
+  description String? @db.Text
 
-  description     String?  @db.Text
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([mountingType])
   @@index([slug])
+  @@index([groupId])
 }
 
 // ============================================
@@ -342,51 +371,52 @@ model PackageMaster {
 
 // === EBENE 1: LOGISCHES BAUTEIL ===
 model CoreComponent {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   // Identifikation (lokalisiert)
-  name            Json     // LocalizedString
-  slug            String   @unique @db.VarChar(255)
-  series          String?  @db.VarChar(255)
+  name   Json // LocalizedString
+  slug   String  @unique @db.VarChar(255)
+  series String? @db.VarChar(255)
 
   // Kategorie
-  categoryId      String   @db.Uuid
-  category        CategoryTaxonomy @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId String           @db.Uuid
+  category   CategoryTaxonomy @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
   // Beschreibungen (lokalisiert)
-  shortDescription Json?   // LocalizedString
-  fullDescription  Json?   // LocalizedString
+  shortDescription Json? // LocalizedString
+  fullDescription  Json? // LocalizedString
 
   // Typische Eigenschaften
-  commonAttributes Json    @default("{}")
+  commonAttributes Json @default("{}")
 
   // Status
-  status          ComponentStatus @default(DRAFT)
+  status ComponentStatus @default(DRAFT)
 
   // Package (Bauform)
-  packageId       String?  @db.Uuid
-  package         PackageMaster? @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  packageId String?        @db.Uuid
+  package   PackageMaster? @relation(fields: [packageId], references: [id], onDelete: SetNull)
 
   // Relationen
-  manufacturerParts ManufacturerPart[]
-  attributeValues   ComponentAttributeValue[]
-  conceptRelations      ComponentConceptRelation[] @relation("SourceConcept")
-  relatedFromConcepts   ComponentConceptRelation[] @relation("TargetConcept")
-  fileAttachments   FileAttachment[]
-  pinMappings       PinMapping[]
+  manufacturerParts   ManufacturerPart[]
+  attributeValues     ComponentAttributeValue[]
+  conceptRelations    ComponentConceptRelation[] @relation("SourceConcept")
+  relatedFromConcepts ComponentConceptRelation[] @relation("TargetConcept")
+  fileAttachments     FileAttachment[]
+  pinMappings         PinMapping[]
+  importJobItems      ImportJobItem[]
 
   // Audit
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  createdById     String?  @db.Uuid
-  createdBy       User?    @relation("ComponentCreator", fields: [createdById], references: [id])
-  lastEditedById  String?  @db.Uuid
-  lastEditedBy    User?    @relation("ComponentEditor", fields: [lastEditedById], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  createdById    String?  @db.Uuid
+  createdBy      User?    @relation("ComponentCreator", fields: [createdById], references: [id])
+  lastEditedById String?  @db.Uuid
+  lastEditedBy   User?    @relation("ComponentEditor", fields: [lastEditedById], references: [id])
 
   // Soft-Delete
-  deletedAt       DateTime?
-  deletedById     String?  @db.Uuid
-  deletedBy       User?    @relation("ComponentDeleter", fields: [deletedById], references: [id])
+  deletedAt   DateTime?
+  deletedById String?   @db.Uuid
+  deletedBy   User?     @relation("ComponentDeleter", fields: [deletedById], references: [id])
 
   @@index([categoryId])
   @@index([status])
@@ -396,21 +426,21 @@ model CoreComponent {
 
 // Konzept-Beziehungen zwischen CoreComponents
 model ComponentConceptRelation {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  sourceId        String   @db.Uuid
-  source          CoreComponent @relation("SourceConcept", fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceId String        @db.Uuid
+  source   CoreComponent @relation("SourceConcept", fields: [sourceId], references: [id], onDelete: Cascade)
 
-  targetId        String   @db.Uuid
-  target          CoreComponent @relation("TargetConcept", fields: [targetId], references: [id], onDelete: Cascade)
+  targetId String        @db.Uuid
+  target   CoreComponent @relation("TargetConcept", fields: [targetId], references: [id], onDelete: Cascade)
 
-  relationType    ConceptRelationType
+  relationType ConceptRelationType
 
-  notes           Json?    // LocalizedString
+  notes Json? // LocalizedString
 
-  createdById     String?  @db.Uuid
-  createdBy       User?    @relation("ConceptRelationCreator", fields: [createdById], references: [id])
-  createdAt       DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("ConceptRelationCreator", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
 
   @@unique([sourceId, targetId, relationType])
   @@index([sourceId])
@@ -419,65 +449,66 @@ model ComponentConceptRelation {
 
 // === EBENE 2: HERSTELLER-PRODUKT ===
 model ManufacturerPart {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   // Zugehöriges logisches Bauteil
-  coreComponentId String   @db.Uuid
+  coreComponentId String        @db.Uuid
   coreComponent   CoreComponent @relation(fields: [coreComponentId], references: [id], onDelete: Restrict)
 
   // Hersteller
-  manufacturerId  String   @db.Uuid
-  manufacturer    ManufacturerMaster @relation(fields: [manufacturerId], references: [id], onDelete: Restrict)
+  manufacturerId String             @db.Uuid
+  manufacturer   ManufacturerMaster @relation(fields: [manufacturerId], references: [id], onDelete: Restrict)
 
   // Identifikation
-  mpn             String   @db.VarChar(255)   // Manufacturer Part Number
-  orderingCode    String?  @db.VarChar(255)
+  mpn          String  @db.VarChar(255) // Manufacturer Part Number
+  orderingCode String? @db.VarChar(255)
 
   // Physische Eigenschaften
-  weightGrams     Decimal? @db.Decimal(10, 4)
+  weightGrams Decimal? @db.Decimal(10, 4)
 
   // Historische Datierung
-  dateCodeFormat  String?  @db.VarChar(50)
+  dateCodeFormat   String? @db.VarChar(50)
   introductionYear Int?
   discontinuedYear Int?
 
   // Compliance
-  rohsCompliant   Boolean?
-  reachCompliant  Boolean?
+  rohsCompliant  Boolean?
+  reachCompliant Boolean?
 
   // Vorschaubild (wie logoUrl bei Manufacturer)
-  imageUrl        String?  @db.VarChar(512)
+  imageUrl String? @db.VarChar(512)
 
   // Militär / Industrie
-  nsn             String?  @db.VarChar(13)    // NATO Stock Number
-  milSpec         String?  @db.VarChar(100)
+  nsn     String? @db.VarChar(13) // NATO Stock Number
+  milSpec String? @db.VarChar(100)
 
   // Status
-  status          PartStatus @default(DRAFT)
+  status          PartStatus      @default(DRAFT)
   lifecycleStatus LifecycleStatus @default(ACTIVE)
 
   // Relationen
   hazardousMaterials HazardousMaterial[]
-  datasheets      PartDatasheet[]
-  images          PartImage[]
-  ecadModels      PartEcadModel[]
-  attributeValues PartAttributeValue[]
-  relationships   PartRelationship[] @relation("SourcePart")
-  relatedTo       PartRelationship[] @relation("TargetPart")
-  fileAttachments FileAttachment[]
+  datasheets         PartDatasheet[]
+  images             PartImage[]
+  ecadModels         PartEcadModel[]
+  attributeValues    PartAttributeValue[]
+  relationships      PartRelationship[]   @relation("SourcePart")
+  relatedTo          PartRelationship[]   @relation("TargetPart")
+  fileAttachments    FileAttachment[]
+  importJobItems     ImportJobItem[]
 
   // Audit
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  createdById     String?  @db.Uuid
-  createdBy       User?    @relation("PartCreator", fields: [createdById], references: [id])
-  lastEditedById  String?  @db.Uuid
-  lastEditedBy    User?    @relation("PartEditor", fields: [lastEditedById], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  createdById    String?  @db.Uuid
+  createdBy      User?    @relation("PartCreator", fields: [createdById], references: [id])
+  lastEditedById String?  @db.Uuid
+  lastEditedBy   User?    @relation("PartEditor", fields: [lastEditedById], references: [id])
 
   // Soft-Delete
-  deletedAt       DateTime?
-  deletedById     String?  @db.Uuid
-  deletedBy       User?    @relation("PartDeleter", fields: [deletedById], references: [id])
+  deletedAt   DateTime?
+  deletedById String?   @db.Uuid
+  deletedBy   User?     @relation("PartDeleter", fields: [deletedById], references: [id])
 
   @@unique([manufacturerId, mpn])
   @@index([mpn])
@@ -495,33 +526,37 @@ model ManufacturerPart {
 // ============================================
 
 model AttributeDefinition {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  categoryId      String   @db.Uuid
-  category        CategoryTaxonomy @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId String           @db.Uuid
+  category   CategoryTaxonomy @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
-  name            String   @db.VarChar(100)
-  displayName     Json     // LocalizedString
-  unit            String?  @db.VarChar(50)   // Basiseinheit z.B. "F", "Ω", "m"
-  dataType        AttributeDataType
+  name        String            @db.VarChar(100)
+  displayName Json // LocalizedString
+  unit        String?           @db.VarChar(50) // Basiseinheit z.B. "F", "Ω", "m"
+  dataType    AttributeDataType
 
-  scope           AttributeScope @default(PART)
+  scope AttributeScope @default(PART)
 
-  isFilterable    Boolean  @default(true)
-  isRequired      Boolean  @default(false)
-  isLabel         Boolean  @default(false)  // Für dynamische Bauteilbezeichnung
+  isFilterable Boolean @default(true)
+  isRequired   Boolean @default(false)
+  isLabel      Boolean @default(false) // Für dynamische Bauteilbezeichnung
 
   // SI-Präfix-System (ersetzt siMultiplier)
-  allowedPrefixes String[] @default([])      // z.B. ["p", "n", "µ", "m", "", "k", "M"]
+  allowedPrefixes String[] @default([]) // z.B. ["p", "n", "µ", "m", "", "k", "M"]
+
+  // Für SELECT/MULTISELECT: vordefinierte Auswahloptionen
+  allowedValues Json? // String[] - z.B. ["NPN", "PNP"] für Transistor-Polarität
 
   // Legacy - wird durch allowedPrefixes ersetzt
-  siUnit          String?  @db.VarChar(20)
-  siMultiplier    Decimal? @db.Decimal(20, 10)
+  siUnit       String?  @db.VarChar(20)
+  siMultiplier Decimal? @db.Decimal(20, 10)
 
-  sortOrder       Int      @default(0)
+  sortOrder Int @default(0)
 
   componentValues ComponentAttributeValue[]
   partValues      PartAttributeValue[]
+  importMappings  ImportMapping[]
 
   @@unique([categoryId, name])
   @@index([categoryId])
@@ -529,24 +564,24 @@ model AttributeDefinition {
 }
 
 model ComponentAttributeValue {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  componentId     String   @db.Uuid
-  component       CoreComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  componentId String        @db.Uuid
+  component   CoreComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
-  definitionId    String   @db.Uuid
-  definition      AttributeDefinition @relation(fields: [definitionId], references: [id])
+  definitionId String              @db.Uuid
+  definition   AttributeDefinition @relation(fields: [definitionId], references: [id])
 
   // Numerischer Wert (immer in SI-Basiseinheit normalisiert)
   normalizedValue Decimal? @db.Decimal(30, 15)
-  normalizedMin   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
-  normalizedMax   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+  normalizedMin   Decimal? @db.Decimal(30, 15) // Für RANGE-Typ
+  normalizedMax   Decimal? @db.Decimal(30, 15) // Für RANGE-Typ
 
   // SI-Präfix der Anzeige (z.B. "µ", "k", "M")
-  prefix          String?  @db.VarChar(5)
+  prefix String? @db.VarChar(5)
 
   // Für STRING-Typ oder komplexe Werte
-  stringValue     String?  @db.VarChar(255)
+  stringValue String? @db.VarChar(255)
 
   @@unique([componentId, definitionId])
   @@index([componentId])
@@ -555,27 +590,27 @@ model ComponentAttributeValue {
 }
 
 model PartAttributeValue {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  partId          String   @db.Uuid
-  part            ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  partId String           @db.Uuid
+  part   ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  definitionId    String   @db.Uuid
-  definition      AttributeDefinition @relation(fields: [definitionId], references: [id])
+  definitionId String              @db.Uuid
+  definition   AttributeDefinition @relation(fields: [definitionId], references: [id])
 
   // Numerischer Wert (immer in SI-Basiseinheit normalisiert)
   normalizedValue Decimal? @db.Decimal(30, 15)
-  normalizedMin   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
-  normalizedMax   Decimal? @db.Decimal(30, 15)  // Für RANGE-Typ
+  normalizedMin   Decimal? @db.Decimal(30, 15) // Für RANGE-Typ
+  normalizedMax   Decimal? @db.Decimal(30, 15) // Für RANGE-Typ
 
   // SI-Präfix der Anzeige (z.B. "µ", "k", "M")
-  prefix          String?  @db.VarChar(5)
+  prefix String? @db.VarChar(5)
 
   // Für STRING-Typ oder komplexe Werte
-  stringValue     String?  @db.VarChar(255)
+  stringValue String? @db.VarChar(255)
 
   // Markiert wenn Part-Wert von Component-Wert abweicht
-  isDeviation     Boolean  @default(false)
+  isDeviation Boolean @default(false)
 
   @@unique([partId, definitionId])
   @@index([partId])
@@ -589,33 +624,33 @@ model PartAttributeValue {
 // ============================================
 
 model HazardousMaterial {
-  id          String   @id @default(uuid()) @db.Uuid
-  partId      String   @db.Uuid
-  part        ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  id     String           @id @default(uuid()) @db.Uuid
+  partId String           @db.Uuid
+  part   ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
 
   materialType HazardousMaterialType
-  details     Json?    // LocalizedString
+  details      Json? // LocalizedString
 
   @@unique([partId, materialType])
 }
 
 model PartRelationship {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  sourceId        String   @db.Uuid
-  source          ManufacturerPart @relation("SourcePart", fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceId String           @db.Uuid
+  source   ManufacturerPart @relation("SourcePart", fields: [sourceId], references: [id], onDelete: Cascade)
 
-  targetId        String   @db.Uuid
-  target          ManufacturerPart @relation("TargetPart", fields: [targetId], references: [id], onDelete: Cascade)
+  targetId String           @db.Uuid
+  target   ManufacturerPart @relation("TargetPart", fields: [targetId], references: [id], onDelete: Cascade)
 
   relationshipType RelationshipType
 
-  confidence      Int      @default(100)
-  notes           Json?    // LocalizedString
+  confidence Int   @default(100)
+  notes      Json? // LocalizedString
 
-  createdById     String?  @db.Uuid
-  createdBy       User?    @relation(fields: [createdById], references: [id])
-  createdAt       DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
 
   @@unique([sourceId, targetId, relationshipType])
   @@index([sourceId])
@@ -623,17 +658,17 @@ model PartRelationship {
 }
 
 model PinMapping {
-  id           String   @id @default(uuid()) @db.Uuid
-  componentId  String   @db.Uuid
-  component    CoreComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  id          String        @id @default(uuid()) @db.Uuid
+  componentId String        @db.Uuid
+  component   CoreComponent @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
-  pinNumber    String   @db.VarChar(20)
-  pinName      String   @db.VarChar(100)
-  pinFunction  Json?    // LocalizedString
-  pinType      PinType?
+  pinNumber   String   @db.VarChar(20)
+  pinName     String   @db.VarChar(100)
+  pinFunction Json? // LocalizedString
+  pinType     PinType?
 
-  maxVoltage   Decimal? @db.Decimal(10, 4)
-  maxCurrent   Decimal? @db.Decimal(10, 4)
+  maxVoltage Decimal? @db.Decimal(10, 4)
+  maxCurrent Decimal? @db.Decimal(10, 4)
 
   @@unique([componentId, pinNumber])
   @@index([componentId])
@@ -645,41 +680,41 @@ model PinMapping {
 
 // Generisches File-Attachment System (neu)
 model FileAttachment {
-  id              String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
   // Metadaten
-  originalName    String   @db.VarChar(255)
-  sanitizedName   String   @db.VarChar(255)
-  mimeType        String   @db.VarChar(100)
-  size            Int      // Bytes
-  fileType        FileType
+  originalName  String   @db.VarChar(255)
+  sanitizedName String   @db.VarChar(255)
+  mimeType      String   @db.VarChar(100)
+  size          Int // Bytes
+  fileType      FileType
 
   // MinIO Storage
-  bucketName      String   @db.VarChar(100)
-  bucketPath      String   @unique @db.VarChar(512)  // Voller Pfad im Bucket
+  bucketName String @db.VarChar(100)
+  bucketPath String @unique @db.VarChar(512) // Voller Pfad im Bucket
 
   // Optional: Zusätzliche Metadaten
-  description     String?  @db.Text
-  languages       String[] @default([])  // Sprachen als Array für Mehrfachauswahl (z.B. ["de", "en"])
+  description String?  @db.Text
+  languages   String[] @default([]) // Sprachen als Array für Mehrfachauswahl (z.B. ["de", "en"])
 
   // Verknüpfungen (optional - ein Attachment kann zu Component, Part oder Package gehören)
-  componentId     String?  @db.Uuid
-  component       CoreComponent? @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  componentId String?        @db.Uuid
+  component   CoreComponent? @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
-  partId          String?  @db.Uuid
-  part            ManufacturerPart? @relation(fields: [partId], references: [id], onDelete: Cascade)
+  partId String?           @db.Uuid
+  part   ManufacturerPart? @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  packageId       String?  @db.Uuid
-  package         PackageMaster? @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  packageId String?        @db.Uuid
+  package   PackageMaster? @relation(fields: [packageId], references: [id], onDelete: Cascade)
 
   // Audit
-  uploadedById    String   @db.Uuid
-  uploadedBy      User     @relation("FileUploader", fields: [uploadedById], references: [id])
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  uploadedById String   @db.Uuid
+  uploadedBy   User     @relation("FileUploader", fields: [uploadedById], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Soft-Delete
-  deletedAt       DateTime?
+  deletedAt DateTime?
 
   @@index([componentId])
   @@index([partId])
@@ -692,79 +727,79 @@ model FileAttachment {
 
 // Bestehende Modelle (Legacy - können später migriert werden)
 model PartDatasheet {
-  id           String   @id @default(uuid()) @db.Uuid
-  partId       String   @db.Uuid
-  part         ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  id     String           @id @default(uuid()) @db.Uuid
+  partId String           @db.Uuid
+  part   ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  url          String   @db.VarChar(512)
-  fileName     String?  @db.VarChar(255)
-  fileSize     Int?
-  mimeType     String?  @db.VarChar(100)
+  url      String  @db.VarChar(512)
+  fileName String? @db.VarChar(255)
+  fileSize Int?
+  mimeType String? @db.VarChar(100)
 
-  version      String?  @db.VarChar(50)
-  language     String?  @db.VarChar(10)
-  publishDate  DateTime?
+  version     String?   @db.VarChar(50)
+  language    String?   @db.VarChar(10)
+  publishDate DateTime?
 
-  isPrimary    Boolean  @default(false)
+  isPrimary Boolean @default(false)
 
-  createdAt    DateTime @default(now())
-  createdById  String?  @db.Uuid
-  createdBy    User?    @relation("DatasheetUploader", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("DatasheetUploader", fields: [createdById], references: [id])
 
   @@index([partId])
 }
 
 model PartImage {
-  id           String   @id @default(uuid()) @db.Uuid
-  partId       String   @db.Uuid
-  part         ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  id     String           @id @default(uuid()) @db.Uuid
+  partId String           @db.Uuid
+  part   ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  url          String   @db.VarChar(512)
-  thumbnailUrl String?  @db.VarChar(512)
-  altText      String?  @db.VarChar(255)
+  url          String  @db.VarChar(512)
+  thumbnailUrl String? @db.VarChar(512)
+  altText      String? @db.VarChar(255)
 
-  imageType    ImageType @default(PHOTO)
-  sortOrder    Int      @default(0)
-  isPrimary    Boolean  @default(false)
+  imageType ImageType @default(PHOTO)
+  sortOrder Int       @default(0)
+  isPrimary Boolean   @default(false)
 
-  createdAt    DateTime @default(now())
-  createdById  String?  @db.Uuid
-  createdBy    User?    @relation("ImageUploader", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("ImageUploader", fields: [createdById], references: [id])
 
   @@index([partId])
 }
 
 model EcadFootprint {
-  id           String   @id @default(uuid()) @db.Uuid
-  packageId    String   @db.Uuid
-  package      PackageMaster @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  id        String        @id @default(uuid()) @db.Uuid
+  packageId String        @db.Uuid
+  package   PackageMaster @relation(fields: [packageId], references: [id], onDelete: Cascade)
 
-  name         String   @db.VarChar(255)
-  ecadFormat   EcadFormat
-  fileUrl      String   @db.VarChar(512)
+  name       String     @db.VarChar(255)
+  ecadFormat EcadFormat
+  fileUrl    String     @db.VarChar(512)
 
-  ipcName      String?  @db.VarChar(255)
+  ipcName String? @db.VarChar(255)
 
-  createdAt    DateTime @default(now())
-  createdById  String?  @db.Uuid
-  createdBy    User?    @relation("FootprintUploader", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("FootprintUploader", fields: [createdById], references: [id])
 
   @@index([packageId])
   @@index([ecadFormat])
 }
 
 model PartEcadModel {
-  id           String   @id @default(uuid()) @db.Uuid
-  partId       String   @db.Uuid
-  part         ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
+  id     String           @id @default(uuid()) @db.Uuid
+  partId String           @db.Uuid
+  part   ManufacturerPart @relation(fields: [partId], references: [id], onDelete: Cascade)
 
-  modelType    EcadModelType
-  ecadFormat   EcadFormat
-  fileUrl      String   @db.VarChar(512)
+  modelType  EcadModelType
+  ecadFormat EcadFormat
+  fileUrl    String        @db.VarChar(512)
 
-  createdAt    DateTime @default(now())
-  createdById  String?  @db.Uuid
-  createdBy    User?    @relation("EcadModelUploader", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("EcadModelUploader", fields: [createdById], references: [id])
 
   @@index([partId])
 }
@@ -775,9 +810,9 @@ model PartEcadModel {
 
 model ModerationLog {
   id             String   @id @default(uuid()) @db.Uuid
-  entityType     String   @db.VarChar(50)   // COMPONENT, PART
+  entityType     String   @db.VarChar(50) // COMPONENT, PART
   entityId       String   @db.Uuid
-  action         String   @db.VarChar(50)   // APPROVED, REJECTED, SUBMITTED
+  action         String   @db.VarChar(50) // APPROVED, REJECTED, SUBMITTED
   previousStatus String?  @db.VarChar(50)
   newStatus      String   @db.VarChar(50)
   comment        String?  @db.Text
@@ -795,23 +830,273 @@ model ModerationLog {
 // ============================================
 
 model AuditLog {
-  id            String   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  userId        String?  @db.Uuid
-  user          User?    @relation(fields: [userId], references: [id])
+  userId String? @db.Uuid
+  user   User?   @relation(fields: [userId], references: [id])
 
-  action        AuditAction
-  entityType    String   @db.VarChar(100)  // "CoreComponent", "ManufacturerPart", etc.
-  entityId      String   @db.Uuid
+  action     AuditAction
+  entityType String      @db.VarChar(100) // "CoreComponent", "ManufacturerPart", etc.
+  entityId   String      @db.Uuid
 
-  changes       Json?    // JSON-Diff der Änderungen
+  changes Json? // JSON-Diff der Änderungen
 
-  ipAddress     String?  @db.VarChar(45)   // IPv4 oder IPv6
-  userAgent     String?  @db.VarChar(512)
+  ipAddress String? @db.VarChar(45) // IPv4 oder IPv6
+  userAgent String? @db.VarChar(512)
 
-  createdAt     DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId])
   @@index([entityType, entityId])
   @@index([createdAt])
+}
+
+// ============================================
+// IMPORT-SYSTEM
+// ============================================
+
+enum ImportSourceType {
+  API_MOUSER // Mouser Electronics API
+  API_DIGIKEY // DigiKey API
+  API_FARNELL // Farnell/Newark API
+  API_LCSC // LCSC Electronics API
+  API_TME // TME API
+  API_REICHELT // Reichelt API
+  API_CUSTOM // Benutzerdefinierte API
+  FILE_CSV // CSV-Datei Upload
+  FILE_XML // XML-Datei Upload
+  FILE_JSON // JSON-Datei Upload
+}
+
+enum ImportJobStatus {
+  PENDING // Erstellt, noch nicht gestartet
+  RUNNING // Läuft gerade
+  PAUSED // Pausiert vom Benutzer
+  COMPLETED // Alle Items verarbeitet
+  FAILED // Schwerwiegender Fehler
+  CANCELLED // Abgebrochen vom Benutzer
+}
+
+enum ImportItemStatus {
+  PENDING // Noch nicht verarbeitet
+  PROCESSING // Wird gerade verarbeitet
+  SUCCESS // Erfolgreich importiert
+  CONFLICT // Konflikt - benötigt Merge-Entscheidung
+  SKIPPED // Übersprungen (Duplikat, etc.)
+  FAILED // Fehlgeschlagen
+}
+
+enum ImportMappingType {
+  ATTRIBUTE // Attribut-Name Mapping
+  CATEGORY // Kategorie Mapping
+  MANUFACTURER // Hersteller-Name Mapping
+  UNIT // Einheiten-Konvertierung
+}
+
+// Import-Quelle (Distributor oder Datei-Typ)
+model ImportSource {
+  id String @id @default(uuid()) @db.Uuid
+
+  name       String           @db.VarChar(255) // "Mouser", "DigiKey", "CSV Import"
+  slug       String           @unique @db.VarChar(255)
+  sourceType ImportSourceType
+
+  // API-Konfiguration (verschlüsselt mit AES-256-GCM)
+  apiBaseUrl         String? @db.VarChar(512)
+  apiKeyEncrypted    String? @db.Text // Verschlüsselter API-Key
+  apiSecretEncrypted String? @db.Text // Verschlüsseltes API-Secret
+
+  // Rate Limiting für API-Aufrufe
+  rateLimitPerSecond   Int? // Max Anfragen pro Sekunde
+  rateLimitPerMinute   Int  @default(60) // Max Anfragen pro Minute
+  rateLimitPerDay      Int? // Max Anfragen pro Tag
+  maxResultsPerRequest Int? @default(100) // Max Ergebnisse pro API-Anfrage
+
+  // Beschreibung
+  description String? @db.Text
+
+  isActive Boolean @default(true)
+
+  // Relationen
+  mappings           ImportMapping[]
+  jobs               ImportJob[]
+  unmappedAttributes ImportUnmappedAttribute[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("ImportSourceCreator", fields: [createdById], references: [id])
+
+  @@index([sourceType])
+  @@index([isActive])
+}
+
+// Mapping-Regeln für Import
+model ImportMapping {
+  id String @id @default(uuid()) @db.Uuid
+
+  // Source (null = globales Mapping für alle Quellen)
+  sourceId String?       @db.Uuid
+  source   ImportSource? @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  mappingType ImportMappingType
+
+  // Quell-Wert vom Distributor
+  sourceKey   String  @db.VarChar(255) // z.B. "Capacitance", "Cap", "Kapazität"
+  sourceValue String? @db.VarChar(255) // Für Kategorie/Einheiten-Mapping
+
+  // Ziel in ElectroVault
+  targetAttributeId String?              @db.Uuid
+  targetAttribute   AttributeDefinition? @relation(fields: [targetAttributeId], references: [id], onDelete: Cascade)
+
+  targetCategoryId String?           @db.Uuid
+  targetCategory   CategoryTaxonomy? @relation(fields: [targetCategoryId], references: [id], onDelete: Cascade)
+
+  targetManufacturerId String?             @db.Uuid
+  targetManufacturer   ManufacturerMaster? @relation(fields: [targetManufacturerId], references: [id], onDelete: Cascade)
+
+  // Einheiten-Konvertierung
+  conversionFactor Decimal? @db.Decimal(20, 10) // Multiplikator
+  conversionOffset Decimal? @db.Decimal(20, 10) // Offset (für Temperatur)
+
+  // Regex für Wert-Extraktion (z.B. "(\d+(?:\.\d+)?)\s*([pnuµmkMG]?)\s*F?" für "100nF")
+  parsePattern String? @db.VarChar(512)
+
+  // Priorität (höher = wird zuerst geprüft)
+  priority Int     @default(0)
+  isActive Boolean @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String?  @db.Uuid
+  createdBy   User?    @relation("ImportMappingCreator", fields: [createdById], references: [id])
+
+  @@unique([sourceId, mappingType, sourceKey, sourceValue])
+  @@index([sourceId, mappingType])
+  @@index([sourceKey])
+  @@index([priority])
+}
+
+// Import-Job (ein kompletter Import-Vorgang)
+model ImportJob {
+  id String @id @default(uuid()) @db.Uuid
+
+  sourceId String       @db.Uuid
+  source   ImportSource @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  name   String          @db.VarChar(255) // Benutzerdefinierter Name
+  status ImportJobStatus @default(PENDING)
+
+  // Fortschritts-Tracking
+  totalItems     Int @default(0)
+  processedItems Int @default(0)
+  successItems   Int @default(0)
+  conflictItems  Int @default(0)
+  failedItems    Int @default(0)
+  skippedItems   Int @default(0)
+  draftItems     Int @default(0) // Unvollständig → als Draft gespeichert
+
+  // Datei-Import spezifisch
+  fileName String? @db.VarChar(255)
+  filePath String? @db.VarChar(512) // MinIO-Pfad
+
+  // API-Import spezifisch
+  searchQuery String? @db.Text
+
+  // Import-Optionen (JSON)
+  options Json @default("{}")
+
+  // Timing
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  // Fehlerbehandlung
+  lastError String? @db.Text
+
+  // Relationen
+  items ImportJobItem[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String   @db.Uuid
+  createdBy   User     @relation("ImportJobCreator", fields: [createdById], references: [id])
+
+  @@index([sourceId])
+  @@index([status])
+  @@index([createdById])
+  @@index([createdAt])
+}
+
+// Einzelnes Import-Element
+model ImportJobItem {
+  id String @id @default(uuid()) @db.Uuid
+
+  jobId String    @db.Uuid
+  job   ImportJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  status ImportItemStatus @default(PENDING)
+
+  // Original-Daten (wie vom Distributor empfangen)
+  rawData Json
+
+  // Geparste Daten
+  parsedMpn          String? @db.VarChar(255)
+  parsedManufacturer String? @db.VarChar(255)
+  parsedCategory     String? @db.VarChar(255)
+  parsedAttributes   Json?
+
+  // Import-Ergebnis
+  createdComponentId String?        @db.Uuid
+  createdComponent   CoreComponent? @relation(fields: [createdComponentId], references: [id], onDelete: SetNull)
+
+  createdPartId String?           @db.Uuid
+  createdPart   ManufacturerPart? @relation(fields: [createdPartId], references: [id], onDelete: SetNull)
+
+  // Ergebnis-Status (DRAFT wenn Pflichtfelder fehlen, sonst PUBLISHED)
+  resultStatus ComponentStatus?
+
+  // Für Konflikte
+  existingPartId     String? @db.Uuid
+  conflictData       Json? // Unterschiedliche Werte
+  conflictResolution Json? // Benutzer-Entscheidung
+
+  // Fehlende Pflichtfelder (für DRAFT-Status)
+  missingRequiredFields String[] @default([])
+
+  // Fehlerbehandlung
+  errorMessage String? @db.Text
+  errorDetails Json?
+
+  // Zeilen-/Positions-Tracking
+  rowNumber Int?
+
+  processedAt DateTime?
+
+  @@index([jobId])
+  @@index([status])
+  @@index([parsedMpn])
+  @@index([resultStatus])
+}
+
+// Unbekannte Attribute aus Importen (Queue für Admin-Review)
+model ImportUnmappedAttribute {
+  id String @id @default(uuid()) @db.Uuid
+
+  sourceId String       @db.Uuid
+  source   ImportSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  sourceKey       String   @db.VarChar(255) // Attribut-Name vom Distributor
+  sampleValues    String[] @default([]) // Beispielwerte
+  occurrenceCount Int      @default(1) // Wie oft gesehen
+
+  // Auflösung
+  isResolved        Boolean @default(false)
+  resolvedMappingId String? @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sourceId, sourceKey])
+  @@index([sourceId])
+  @@index([isResolved])
 }

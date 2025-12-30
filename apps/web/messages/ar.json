@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "إلكتروفولت",
+    "loading": "جارٍ التحميل...",
+    "error": "خطأ",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "noResults": "لم يتم العثور على نتائج",
+    "all": "الكل",
+    "yes": "نعم",
+    "no": "لا",
+    "actions": {
+      "details": "التفاصيل"
+    }
+  },
+  "locale": {
+    "switch": "تغيير اللغة",
+    "current": "اللغة الحالية",
+    "languages": {
+      "en": "الإنجليزية",
+      "de": "الألمانية",
+      "fr": "الفرنسية",
+      "es": "الإسبانية",
+      "zh": "الصينية",
+      "ja": "اليابانية",
+      "ko": "الكورية",
+      "it": "الإيطالية"
+    }
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "components": "المكونات",
+    "categories": "الفئات",
+    "manufacturers": "الشركات المصنعة",
+    "packages": "الحزم",
+    "search": "البحث",
+    "admin": "الإدارة",
+    "moderation": "الإشراف",
+    "myElectroVault": "إلكتروفولت الخاص بي",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "profile": "الملف الشخصي"
+  },
+  "home": {
+    "title": "إلكتروفولت",
+    "subtitle": "قاعدة بيانات مدعومة من المجتمع للمكونات الكهربائية",
+    "searchPlaceholder": "البحث عن مكون...",
+    "featuredCategories": "الفئات المميزة",
+    "recentComponents": "المكونات الحديثة",
+    "stats": {
+      "components": "المكونات",
+      "manufacturers": "الشركات المصنعة",
+      "categories": "الفئات",
+      "users": "المستخدمون"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "إلكتروفولت",
+      "subtitle": "قاعدة بيانات مدعومة من المجتمع للمكونات الكهربائية"
+    },
+    "stats": {
+      "components": "المكونات",
+      "manufacturers": "الشركات المصنعة",
+      "users": "المستخدمون"
+    }
+  },
+  "packages": {
+    "title": "الحزم",
+    "totalCount": "{count} حزمة في قاعدة البيانات",
+    "addNew": "حزمة جديدة",
+    "searchPlaceholder": "البحث بالاسم أو المعرف...",
+    "filterPlaceholder": "نوع الغلاف",
+    "filterAll": "جميع الأنواع",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "شعاعي",
+      "AXIAL": "محوري",
+      "CHASSIS": "هيكلي",
+      "OTHER": "أخرى"
+    },
+    "table": {
+      "name": "الاسم",
+      "type": "النوع",
+      "pinCount": "عدد الدبابيس",
+      "dimensions": "الأبعاد (L x W x H mm)",
+      "pitch": "المسافة",
+      "actions": "الإجراءات"
+    },
+    "loading": "جارٍ التحميل...",
+    "noResults": "لم يتم العثور على حزم",
+    "noPackagesFound": "لم يتم العثور على حزم",
+    "createFirst": "إنشاء أول حزمة",
+    "error": "خطأ",
+    "success": "نجح",
+    "loadError": "تعذر تحميل الحزم.",
+    "deleteSuccess": "تم حذف الحزمة.",
+    "deleteError": "تعذر حذف الحزمة.",
+    "deleteDialog": {
+      "title": "حذف الحزمة؟",
+      "description": "هل تريد حقًا حذف الحزمة \"{name}\"؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "components": {
+    "title": "المكونات",
+    "description": "تصفح قاعدة بياناتنا الشاملة للمكونات الإلكترونية",
+    "filters": {
+      "category": "الفئة",
+      "manufacturer": "الشركة المصنعة",
+      "status": "الحالة",
+      "mountingType": "نوع التركيب"
+    },
+    "detail": {
+      "overview": "نظرة عامة",
+      "specifications": "المواصفات",
+      "datasheets": "أوراق البيانات",
+      "parts": "نسخ الشركات المصنعة",
+      "history": "سجل الإصدارات",
+      "backToOverview": "العودة إلى النظرة العامة",
+      "category": "الفئة",
+      "statistics": "الإحصائيات",
+      "manufacturerVariants": "نسخ الشركات المصنعة",
+      "activeVariants": "النسخ النشطة",
+      "additionalProperties": "خصائص إضافية",
+      "furtherProperties": "خصائص أخرى لهذا المكون",
+      "validForAllVariants": "المواصفات الفنية (صالحة لجميع النسخ)",
+      "variantCount": "{count} نسخة من الشركة المصنعة",
+      "variantCountPlural": "{count} نسخ من الشركات المصنعة",
+      "noVariantsAvailable": "لا توجد نسخ من الشركات المصنعة متاحة",
+      "noVariantsForComponent": "لا توجد نسخ من الشركات المصنعة لهذا المكون.",
+      "noAttributesAvailable": "لا توجد خصائص متاحة.",
+      "manufacturer": "الشركة المصنعة",
+      "orderingCode": "رقم الطلب",
+      "details": "التفاصيل",
+      "allInCategory": "الكل في الفئة",
+      "status": "الحالة",
+      "moreAttributes": "+{count} إضافية"
+    },
+    "status": {
+      "DRAFT": "مسودة",
+      "PENDING": "قيد الانتظار",
+      "PUBLISHED": "منشور",
+      "ARCHIVED": "مؤرشف"
+    },
+    "lifecycle": {
+      "ACTIVE": "نشط",
+      "NRND": "غير موصى به للتصاميم الجديدة",
+      "EOL": "نهاية العمر الافتراضي",
+      "OBSOLETE": "قديم"
+    }
+  },
+  "categories": {
+    "title": "الفئات",
+    "browseAll": "تصفح جميع الفئات",
+    "subcategories": "الفئات الفرعية",
+    "componentsInCategory": "المكونات في هذه الفئة"
+  },
+  "manufacturers": {
+    "title": "الشركات المصنعة",
+    "status": {
+      "ACTIVE": "نشط",
+      "ACQUIRED": "مستحوذ عليه",
+      "DEFUNCT": "غير نشط"
+    }
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "loginWith": "تسجيل الدخول باستخدام {provider}",
+    "welcome": "مرحبًا بك مجددًا",
+    "signInToContinue": "قم بتسجيل الدخول للمتابعة",
+    "signIn": {
+      "title": "تسجيل الدخول",
+      "description": "قم بتسجيل الدخول إلى حسابك",
+      "button": "تسجيل الدخول باستخدام Keycloak",
+      "loading": "جارٍ تسجيل الدخول...",
+      "hint": "سيتم إعادة توجيهك إلى Keycloak"
+    },
+    "signOut": {
+      "title": "تسجيل الخروج",
+      "description": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+      "button": "تسجيل الخروج",
+      "loading": "جارٍ تسجيل الخروج...",
+      "cancel": "إلغاء"
+    },
+    "error": {
+      "title": "خطأ في المصادقة",
+      "description": "حدث خطأ أثناء تسجيل الدخول",
+      "tryAgain": "حاول مرة أخرى",
+      "backHome": "العودة إلى الرئيسية"
+    },
+    "errors": {
+      "configuration": "خطأ في إعدادات الخادم. يرجى الاتصال بالمسؤول.",
+      "accessDenied": "تم رفض الوصول. ليس لديك الإذن اللازم.",
+      "verification": "انتهت صلاحية رابط التحقق أو تم استخدامه بالفعل.",
+      "oauthSignin": "خطأ في بدء تسجيل الدخول عبر OAuth.",
+      "oauthCallback": "خطأ في معالجة رد OAuth.",
+      "oauthCreateAccount": "خطأ في إنشاء حساب المستخدم.",
+      "emailCreateAccount": "خطأ في إنشاء حساب البريد الإلكتروني.",
+      "callback": "خطأ في معالجة الرد.",
+      "oauthAccountNotLinked": "هذا البريد الإلكتروني مرتبط بالفعل بحساب آخر.",
+      "sessionRequired": "يرجى تسجيل الدخول للوصول إلى هذه الصفحة.",
+      "default": "حدث خطأ غير معروف. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "admin": {
+    "dashboard": "لوحة التحكم",
+    "sidebar": {
+      "dashboard": "لوحة التحكم",
+      "moderation": "الإشراف",
+      "moderationDescription": "قائمة انتظار الموافقة",
+      "users": "المستخدمون",
+      "backToHome": "إلى الصفحة الرئيسية",
+      "user": "المستخدم",
+      "logout": "تسجيل الخروج"
+    },
+    "components": {
+      "title": "إدارة المكونات",
+      "new": "مكون جديد",
+      "edit": "تعديل المكون"
+    },
+    "moderation": {
+      "title": "الإشراف",
+      "pendingReviews": "المراجعات المعلقة",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "batchApproval": "موافقة جماعية",
+      "confirmApprove": "تأكيد الموافقة",
+      "confirmApproveDescription": "هل تريد حقًا الموافقة على هذا {type}؟ سيكون مرئيًا للعامة بعد ذلك.",
+      "confirmBatchApproval": "هل تريد الموافقة على {count} عنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+      "rejectWithReason": "رفض مع السبب",
+      "rejectDescription": "يرجى تقديم سبب للرفض. سيتم عرضه للمنشئ.",
+      "rejectReasonLabel": "السبب",
+      "rejectReasonPlaceholder": "لماذا يتم رفض هذا العنصر؟",
+      "rejectReasonHelp": "سبب واضح يساعد المنشئ على فهم الرفض.",
+      "batchApproveButton": "الموافقة على {count}",
+      "typeComponent": "المكون",
+      "typePart": "القطعة",
+      "draft": "مسودة"
+    },
+    "users": {
+      "title": "المستخدمون",
+      "manage": "إدارة المستخدمين"
+    },
+    "myDashboard": {
+      "title": "لوحة التحكم الخاصة بي",
+      "stats": {
+        "componentsTotal": "إجمالي المكونات",
+        "componentsTotalDesc": "المكونات التي أنشأتها",
+        "variants": "النسخ",
+        "variantsDesc": "نسخ الشركات المصنعة",
+        "drafts": "المسودات",
+        "draftsDesc": "لم يتم إرسالها بعد",
+        "pending": "قيد المراجعة",
+        "pendingDesc": "في انتظار الإشراف",
+        "published": "منشور",
+        "archived": "مؤرشف"
+      },
+      "draftsSection": {
+        "title": "مسوداتي",
+        "description": "المسودات هي حافظات خاصة مؤقتة ولم يتم إرسالها للإشراف بعد.",
+        "newComponent": "مكون جديد",
+        "empty": "لا توجد مسودات. أنشئ مكونًا جديدًا واحفظه كمسودة.",
+        "draftBadge": "مسودة",
+        "noName": "[بدون اسم]"
+      },
+      "activitySection": {
+        "title": "سجل النشاط",
+        "description": "أحدث إجراءاتك في إلكتروفولت",
+        "empty": "لا توجد أنشطة بعد."
+      },
+      "entities": {
+        "COMPONENT": "المكون",
+        "PART": "النسخة",
+        "MANUFACTURER": "الشركة المصنعة",
+        "CATEGORY": "الفئة",
+        "PACKAGE": "الحزمة"
+      },
+      "error": "تعذر تحميل لوحة التحكم. يرجى المحاولة مرة أخرى."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "خاصية جديدة",
+        "titleEdit": "تعديل الخاصية",
+        "description": "تعريف الخاصية للمكونات"
+      },
+      "category": {
+        "title": "فئة جديدة",
+        "titleEdit": "تعديل الفئة",
+        "description": "إدارة معلومات الفئة والخصائص",
+        "saveFirst": "احفظ الفئة أولاً لإضافة الخصائص"
+      },
+      "component": {
+        "title": "مكون جديد",
+        "titleEdit": "تعديل المكون",
+        "description": "إنشاء مكون جديد - بعد الحفظ يمكنك إضافة نسخ الشركات المصنعة",
+        "descriptionEdit": "إدارة معلومات المكون ونسخ الشركات المصنعة",
+        "saveFirstPinMapping": "احفظ المكون أولاً لتعديل خريطة الدبابيس",
+        "saveFirstParts": "احفظ المكون أولاً لإضافة نسخ الشركات المصنعة",
+        "saveFirstRelations": "احفظ المكون أولاً لإضافة العلاقات",
+        "createdWithVariants": "تم إنشاء المكون. يمكنك الآن إضافة نسخ الشركات المصنعة",
+        "noPartsWarning": "هذا المكون ليس لديه نسخ من الشركات المصنعة. نسخة واحدة على الأقل مطلوبة"
+      },
+      "manufacturer": {
+        "title": "شركة مصنعة جديدة",
+        "titleEdit": "تعديل الشركة المصنعة",
+        "description": "إدارة معلومات الشركة المصنعة"
+      },
+      "part": {
+        "title": "نسخة جديدة من الشركة المصنعة",
+        "titleEdit": "تعديل نسخة الشركة المصنعة",
+        "description": "إنشاء نسخة جديدة محددة من الشركة المصنعة لمكون",
+        "descriptionEdit": "تغيير معلومات نسخة الشركة المصنعة",
+        "saveFirstFiles": "احفظ النسخة أولاً لرفع الملفات"
+      },
+      "package": {
+        "title": "حزمة جديدة",
+        "titleEdit": "تعديل الحزمة",
+        "description": "معلومات الحزمة/البصمة"
+      },
+      "delete": {
+        "title": "تأكيد الحذف",
+        "message": "هل أنت متأكد من رغبتك في حذف هذا العنصر؟",
+        "messageFile": "هل تريد حقًا حذف هذا الملف؟",
+        "messagePin": "هل تريد حقًا حذف هذا الدبوس؟",
+        "message3dModel": "هل تريد حقًا حذف هذا النموذج ثلاثي الأبعاد؟",
+        "messageRelation": "هل تريد حقًا حذف هذه العلاقة؟"
+      }
+    },
+    "buttons": {
+      "saving": "جارٍ الحفظ...",
+      "saveAsDraft": "حفظ كمسودة",
+      "update": "تحديث",
+      "addPin": "إضافة دبوس",
+      "addRelation": "إضافة علاقة"
+    },
+    "messages": {
+      "success": "نجح",
+      "error": "خطأ",
+      "warning": "تحذير",
+      "attribute": {
+        "created": "تم إنشاء الخاصية",
+        "updated": "تم تحديث الخاصية",
+        "deleted": "تم حذف الخاصية",
+        "loadFailed": "فشل تحميل الخصائص",
+        "saveFailed": "فشل حفظ الخاصية",
+        "deleteFailed": "فشل حذف الخاصية"
+      },
+      "category": {
+        "created": "تم إنشاء الفئة",
+        "updated": "تم تحديث الفئة",
+        "deleted": "تم حذف الفئة",
+        "loadFailed": "فشل تحميل الفئات",
+        "saveFailed": "فشل حفظ الفئة",
+        "deleteFailed": "فشل حذف الفئة"
+      },
+      "component": {
+        "created": "تم إنشاء المكون",
+        "updated": "تم تحديث المكون",
+        "deleted": "تم حذف المكون",
+        "loadFailed": "فشل تحميل المكونات",
+        "saveFailed": "فشل حفظ المكون",
+        "deleteFailed": "فشل حذف المكون"
+      },
+      "manufacturer": {
+        "created": "تم إنشاء الشركة المصنعة",
+        "updated": "تم تحديث الشركة المصنعة",
+        "deleted": "تم حذف الشركة المصنعة",
+        "loadFailed": "فشل تحميل الشركات المصنعة",
+        "saveFailed": "فشل حفظ الشركة المصنعة",
+        "deleteFailed": "فشل حذف الشركة المصنعة",
+        "logoUploaded": "تم رفع الشعار",
+        "logoUploadFailed": "فشل رفع الشعار"
+      },
+      "part": {
+        "created": "تم إنشاء النسخة",
+        "updated": "تم تحديث النسخة",
+        "deleted": "تم حذف النسخة",
+        "loadFailed": "فشل تحميل النسخ",
+        "saveFailed": "فشل حفظ النسخة",
+        "deleteFailed": "فشل حذف النسخة"
+      },
+      "package": {
+        "created": "تم إنشاء الحزمة",
+        "updated": "تم تحديث الحزمة",
+        "deleted": "تم حذف الحزمة",
+        "loadFailed": "فشل تحميل الحزم",
+        "saveFailed": "فشل حفظ الحزمة",
+        "deleteFailed": "فشل حذف الحزمة"
+      },
+      "file": {
+        "uploaded": "تم رفع الملف",
+        "deleted": "تم حذف الملف",
+        "uploadFailed": "فشل رفع الملف",
+        "deleteFailed": "فشل حذف الملف",
+        "loadFailed": "فشل تحميل الملفات",
+        "downloadUrlFailed": "فشل إنشاء رابط التحميل"
+      },
+      "pin": {
+        "created": "تم إضافة الدبوس",
+        "updated": "تم تحديث الدبوس",
+        "deleted": "تم حذف الدبوس",
+        "createFailed": "فشل إنشاء الدبوس",
+        "loadFailed": "فشل تحميل الدبابيس",
+        "updateFailed": "فشل تحديث الدبوس",
+        "deleteFailed": "فشل حذف الدبوس"
+      },
+      "relation": {
+        "created": "تم إضافة العلاقة",
+        "deleted": "تم حذف العلاقة",
+        "createFailed": "فشل إنشاء العلاقة",
+        "deleteFailed": "فشل حذف العلاقة"
+      }
+    },
+    "pinMapping": {
+      "title": "خريطة الدبابيس",
+      "addPin": "إضافة دبوس",
+      "newPin": "إضافة دبوس جديد",
+      "pinNumber": "رقم الدبوس (مثل 1، VCC)",
+      "pinName": "اسم الدبوس",
+      "selectType": "اختر نوع الدبوس",
+      "noDescription": "لا يوجد وصف",
+      "noType": "بدون نوع",
+      "loading": "جارٍ تحميل الدبابيس...",
+      "pinsCount": "{count} دبوس",
+      "tabList": "قائمة الدبابيس",
+      "tabBulkImport": "استيراد جماعي",
+      "noPins": "لم يتم تعريف دبابيس. أضف دبابيس بشكل فردي أو استخدم الاستيراد الجماعي.",
+      "columnPinNumber": "رقم الدبوس",
+      "columnName": "الاسم",
+      "columnType": "النوع",
+      "columnFunction": "الوظيفة (DE)",
+      "columnActions": "الإجراءات",
+      "functionPlaceholder": "مثل: جهد الإمداد",
+      "deleteTitle": "حذف الدبوس؟",
+      "deleteMessage": "هل تريد حقًا حذف الدبوس {pinNumber} ({pinName})؟ لا يمكن التراجع عن هذا الإجراء.",
+      "reorderSuccess": "تم تحديث ترتيب الدبابيس",
+      "reorderFailed": "فشل تغيير الترتيب",
+      "bulkImport": {
+        "formatLabel": "التنسيق:",
+        "exampleLabel": "مثال:",
+        "typeHint": "pinType اختياري. الأنواع المتاحة: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "أدخل الدبابيس بتنسيق CSV...",
+        "importButton": "استيراد الدبابيس",
+        "noPinsFound": "لم يتم العثور على بيانات دبابيس صالحة.",
+        "success": "تم استيراد {count} دبوس.",
+        "failed": "فشل الاستيراد الجماعي."
+      }
+    },
+    "files": {
+      "uploadImage": "رفع صورة المنتج",
+      "uploadDatasheet": "رفع ورقة البيانات",
+      "uploadDocument": "رفع مستند",
+      "selectLanguage": "اختر اللغة",
+      "noFiles": "لا توجد ملفات متاحة",
+      "confirmDelete": "حذف الملف؟",
+      "productImage": "صورة المنتج",
+      "productImageDescription": "صورة معاينة لنسخة الشركة المصنعة هذه",
+      "addImage": "صورة",
+      "imageDescription": "JPEG أو PNG أو WebP (حد أقصى 10 ميجابايت)",
+      "noImageUploaded": "لم يتم رفع صورة بعد",
+      "datasheets": "أوراق البيانات",
+      "datasheetsDescription": "أوراق بيانات PDF لنسخة الشركة المصنعة هذه",
+      "addDatasheet": "ورقة بيانات",
+      "languagesRequired": "لغات ورقة البيانات",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "يجب اختيار لغة واحدة على الأقل",
+      "datasheetFileDescription": "ملف PDF لورقة بيانات الشركة المصنعة",
+      "noDatasheets": "لم يتم رفع أوراق بيانات بعد",
+      "otherFiles": "ملفات أخرى",
+      "otherFilesDescription": "مستندات إضافية، ملاحظات التطبيق، إلخ.",
+      "addDocument": "مستند",
+      "languagesOptional": "اللغات (اختياري)",
+      "anyFileDescription": "أي ملفات (PDF، TXT، ZIP، إلخ.)",
+      "noDocuments": "لم يتم رفع مستندات بعد",
+      "fileName": "الملف",
+      "fileSize": "الحجم",
+      "languages": "اللغات",
+      "actions": "الإجراءات",
+      "imageCount": "{count} صورة",
+      "fileCount": "{count} ملف{plural}",
+      "datasheetCount": "{count} ورقة بيانات{plural}",
+      "imageUploaded": "تم رفع الصورة",
+      "imageRemoved": "تم إزالة الصورة"
+    },
+    "model3d": {
+      "title": "النماذج ثلاثية الأبعاد",
+      "confirmDelete": "حذف النموذج ثلاثي الأبعاد؟",
+      "upload": "رفع نموذج ثلاثي الأبعاد",
+      "noModels": "لا توجد نماذج ثلاثية الأبعاد متاحة"
+    },
+    "lists": {
+      "searchPlaceholder": "بحث...",
+      "searchByName": "البحث بالاسم أو المعرف...",
+      "searchByNameCage": "البحث بالاسم أو المعرف أو رمز CAGE...",
+      "noResults": "لم يتم العثور على نتائج",
+      "createFirst": "إنشاء الإدخال الأول",
+      "noPackagesFound": "لم يتم العثور على حزم",
+      "createFirstPackage": "إنشاء أول حزمة"
+    },
+    "filters": {
+      "allStatus": "جميع الحالات",
+      "myDrafts": "مسوداتي"
+    },
+    "manufacturer": {
+      "title": "الشركات المصنعة",
+      "count": "{count} شركة مصنعة في قاعدة البيانات",
+      "create": "شركة مصنعة جديدة",
+      "createFirst": "إنشاء أول شركة مصنعة",
+      "deleteTitle": "حذف الشركة المصنعة؟",
+      "deleteDescription": "هل تريد حقًا حذف الشركة المصنعة \"{name}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "status": {
+        "active": "نشط",
+        "acquired": "مستحوذ عليه",
+        "defunct": "غير نشط"
+      }
+    },
+    "form": {
+      "package": "الحزمة (Package)",
+      "selectPackage": "اختر الحزمة",
+      "noPackage": "بدون حزمة",
+      "editIn": "التعديل في:",
+      "searchLanguage": "البحث عن لغة...",
+      "noLanguageFound": "لم يتم العثور على لغة",
+      "original": "الأصلي",
+      "backToOverview": "العودة إلى النظرة العامة",
+      "name": "الاسم",
+      "nameDescription": "الاسم بالألمانية و/أو الإنجليزية. حقل إلزامي إذا لم تكن للفئة سمات تسمية",
+      "namePlaceholder": "اسم المكون",
+      "series": "السلسلة",
+      "seriesDescription": "سلسلة أو عائلة اختيارية للمكون",
+      "seriesPlaceholder": "مثل: 74HC، ATmega",
+      "packageDescription": "الشكل الفيزيائي (مثل: DIP-8، SOIC-8)",
+      "shortDescription": "وصف مختصر",
+      "shortDescriptionDescription": "جملة قصيرة لوصف المكون",
+      "shortDescriptionPlaceholder": "وصف قصير",
+      "fullDescription": "وصف مفصل",
+      "fullDescriptionPlaceholder": "وصف مفصل",
+      "attributesDescription": "الخصائص الفنية بناءً على الفئة المحددة",
+      "selectCategoryFirst": "يرجى اختيار فئة أولاً في علامة التبويب \"البيانات الأساسية\"",
+      "pinMappingDescription": "حدد ترتيب الدبابيس لهذا المكون. خريطة الدبابيس صالحة لجميع نسخ الشركات المصنعة",
+      "partsDescription": "نسخ خاصة بالشركات المصنعة لهذا المكون",
+      "newVariant": "نسخة جديدة",
+      "close": "إغلاق",
+      "parentCategory": "الفئة الأم",
+      "parentCategoryPlaceholder": "لا يوجد (فئة جذر)",
+      "parentCategoryDescription": "اتركه فارغًا لفئة رئيسية (المستوى 0)",
+      "categoryName": "اسم الفئة",
+      "categoryDescription": "الوصف",
+      "categoryDescriptionPlaceholder": "وصف الفئة",
+      "sortOrder": "ترتيب الفرز",
+      "sortOrderDescription": "قيم أقل = أعلى",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "icon": "الأيقونة",
+      "iconUploadDescription": "رفع أيقونة الفئة. حد أقصى 5 ميجابايت، JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "انقر أو اسحب الملف هنا.",
+      "iconMaxSize": "يجب ألا يتجاوز حجم الأيقونة 5 ميجابايت.",
+      "iconAllowedTypes": "فقط JPEG، PNG، WebP أو SVG مسموح.",
+      "iconUploaded": "تم رفع الأيقونة.",
+      "iconUploadFailed": "فشل رفع الأيقونة.",
+      "categoryCreatedIconFailed": "تم إنشاء الفئة، لكن رفع الأيقونة فشل.",
+      "loading": "جارٍ التحميل...",
+      "newAttribute": "خاصية جديدة",
+      "ownAttributes": "الخصائص الخاصة ({count})",
+      "noOwnAttributes": "لم يتم تعريف خصائص خاصة.",
+      "inheritedAttributes": "الخصائص الموروثة ({count})",
+      "inheritedAttributesDescription": "الخصائص الموروثة يمكن تعديلها فقط في فئتها الأصلية.",
+      "attributesInherited": "خصائص هذه الفئة (سيتم توريثها للفئات الفرعية)",
+      "cageCode": "رمز CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "رمز من 5 أرقام",
+      "country": "البلد",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "الموقع الإلكتروني",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "الشعار",
+      "logoUploadHint": "رفع شعار الشركة المصنعة. حد أقصى 5 ميجابايت، JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "انقر أو اسحب الملف هنا.",
+      "statusActive": "نشط",
+      "statusAcquired": "مستحوذ عليه",
+      "statusDefunct": "غير نشط",
+      "foundedYear": "سنة التأسيس",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "سنة الإغلاق",
+      "defunctYearPlaceholder": "2020",
+      "description": "الوصف",
+      "descriptionPlaceholder": "الوصف",
+      "logoMaxSize": "يجب ألا يتجاوز حجم الشعار 5 ميجابايت.",
+      "logoAllowedTypes": "فقط JPEG، PNG، WebP أو SVG مسموح.",
+      "createdAsDraft": "تم حفظ الشركة المصنعة كمسودة.",
+      "manufacturerCreatedLogoFailed": "تم إنشاء الشركة المصنعة، لكن رفع الشعار فشل.",
+      "save": "حفظ"
+    },
+    "audit": {
+      "created": "تم الإنشاء",
+      "updated": "تم التحديث",
+      "deleted": "تم الحذف",
+      "restored": "تم الاستعادة",
+      "approved": "تمت الموافقة",
+      "rejected": "تم الرفض"
+    },
+    "tabs": {
+      "basicInfo": "البيانات الأساسية",
+      "attributes": "الخصائص",
+      "pinMapping": "خريطة الدبابيس",
+      "parts": "نسخ الشركات المصنعة",
+      "relations": "العلاقات",
+      "files": "الملفات",
+      "details": "البيانات الأساسية",
+      "pins": "خريطة الدبابيس",
+      "models": "النماذج ثلاثية الأبعاد"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "الشركة المصنعة",
+      "status": "الحالة",
+      "lifecycle": "دورة الحياة",
+      "actions": "الإجراءات",
+      "variantCount": "{count} نسخة",
+      "variantCountPlural": "{count} نسخ",
+      "activeCount": "{count} نشط",
+      "obsoleteCount": "{count} قديم",
+      "unknown": "غير معروف"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "اسم فريد للحزمة",
+      "mountingType": "نوع الغلاف",
+      "mountingTypes": {
+        "SMD": "SMD - جهاز التركيب السطحي",
+        "THT": "THT - تقنية الثقوب النافذة",
+        "RADIAL": "شعاعي - أسلاك شعاعية",
+        "AXIAL": "محوري - أسلاك محورية",
+        "CHASSIS": "هيكلي - تركيب على الهيكل",
+        "OTHER": "أخرى"
+      },
+      "pinCount": "عدد الدبابيس",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "الطول (مم)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "العرض (مم)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "الارتفاع (مم)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "المسافة (مم)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "المسافة بين الدبابيس",
+      "jedecStandard": "معيار JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "معيار EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "رابط الرسم",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "رابط للرسم الفني أو ورقة البيانات",
+      "description": "الوصف",
+      "descriptionPlaceholder": "معلومات إضافية عن الحزمة...",
+      "saveFirstModels": "احفظ الحزمة أولاً لرفع النماذج ثلاثية الأبعاد.",
+      "modelsDescription": "نماذج ثلاثية الأبعاد لهذه الحزمة (STEP، STL، 3MF، OBJ، إلخ.)"
+    },
+    "partForm": {
+      "coreComponent": "المكون العام",
+      "coreComponentDesc": "المكون المستقل عن الشركة المصنعة (مثل: 555 Timer)",
+      "manufacturer": "الشركة المصنعة",
+      "manufacturerDesc": "الشركة المصنعة لهذه النسخة المحددة (مثل: Texas Instruments)",
+      "manufacturerPlaceholder": "اختر الشركة المصنعة",
+      "mpn": "MPN (رقم قطعة الشركة المصنعة)",
+      "mpnPlaceholder": "مثل: NE555P",
+      "mpnDesc": "رقم قطعة الشركة المصنعة الفريد",
+      "orderingCode": "رقم الطلب",
+      "orderingCodePlaceholder": "اختياري",
+      "orderingCodeDesc": "رقم طلب بديل (إذا كان مختلفًا عن MPN)",
+      "statusRecord": "حالة السجل",
+      "lifecycleStatus": "حالة دورة الحياة",
+      "introductionYear": "سنة الإطلاق",
+      "introductionYearPlaceholder": "مثل: 1972",
+      "discontinuedYear": "سنة التوقف",
+      "discontinuedYearPlaceholder": "مثل: 2020",
+      "rohsCompliant": "متوافق مع RoHS",
+      "rohsDesc": "يلبي إرشادات RoHS",
+      "reachCompliant": "متوافق مع REACH",
+      "reachDesc": "يلبي لوائح REACH",
+      "weight": "الوزن (جرام)",
+      "weightPlaceholder": "مثل: 0.5",
+      "dateCodeFormat": "تنسيق رمز التاريخ",
+      "dateCodePlaceholder": "مثل: YYWW",
+      "dateCodeDesc": "تنسيق رمز التاريخ على المكون",
+      "nsn": "NSN (رقم مخزون الناتو)",
+      "nsnPlaceholder": "مثل: 5962-01-123-4567",
+      "milSpec": "مواصفات عسكرية",
+      "milSpecPlaceholder": "مثل: MIL-PRF-38534",
+      "partAttributesDesc": "خصائص خاصة بالشركة المصنعة بناءً على فئة المكون.",
+      "partAttributesLabel": "خصائص خاصة بالشركة المصنعة",
+      "filesDesc": "إدارة أوراق البيانات والصور والملفات الأخرى لنسخة الشركة المصنعة هذه.",
+      "close": "إغلاق",
+      "selectComponent": "اختر المكون"
+    }
+  },
+  "errors": {
+    "notFound": "الصفحة غير موجودة",
+    "unauthorized": "غير مصرح",
+    "serverError": "خطأ في الخادم"
+  },
+  "footer": {
+    "tagline": "قاعدة بيانات للمكونات الإلكترونية يديرها المجتمع",
+    "navigation": "التنقل",
+    "community": "المجتمع",
+    "legal": "القانونية",
+    "about": "عن",
+    "help": "المساعدة",
+    "contact": "اتصل بنا",
+    "contribute": "المساهمة",
+    "github": "GitHub",
+    "privacy": "الخصوصية",
+    "imprint": "بيانات الموقع",
+    "copyright": "مفتوح المصدر تحت ترخيص MIT"
+  },
+  "about": {
+    "title": "عن إلكتروفولت",
+    "subtitle": "قاعدة بيانات مفتوحة المصدر للمكونات الإلكترونية",
+    "mission": {
+      "title": "مهمتنا",
+      "description": "إلكتروفولت هي قاعدة بيانات مفتوحة ومجانية للمكونات الإلكترونية - من الصمامات التاريخية إلى تكنولوجيا النانو الحديثة. هدفنا هو الحفاظ على المعرفة حول المكونات الإلكترونية وجعلها متاحة للجميع."
+    },
+    "features": {
+      "title": "الميزات",
+      "comprehensive": {
+        "title": "قاعدة بيانات شاملة",
+        "description": "من المقاومات إلى المكثفات إلى الدوائر المتكاملة عالية التعقيد - نحن نسجل جميع المكونات المهمة بمواصفات تفصيلية."
+      },
+      "historical": {
+        "title": "أرشيف تاريخي",
+        "description": "توثيق المكونات التاريخية لإصلاح وترميم المعدات القديمة."
+      },
+      "community": {
+        "title": "مدعوم من المجتمع",
+        "description": "يمكن للجميع المساهمة ومشاركة معرفتهم. معًا نبني قاعدة البيانات الأكثر شمولاً للمكونات."
+      },
+      "open": {
+        "title": "مفتوح المصدر",
+        "description": "شفاف بالكامل ومتاح مجانًا بموجب ترخيص MIT."
+      }
+    },
+    "contribute": {
+      "title": "شارك معنا",
+      "description": "يزدهر إلكتروفولت بفضل مجتمعه. فيما يلي بعض الطرق التي يمكنك المساهمة بها:",
+      "dataEntry": "إضافة أو تعديل المكونات",
+      "datasheets": "تحميل أوراق البيانات",
+      "code": "المساهمات البرمجية على GitHub",
+      "feedback": "الملاحظات والاقتراحات للتحسين"
+    }
+  },
+  "help": {
+    "title": "المساعدة والأسئلة الشائعة",
+    "subtitle": "الأسئلة المتكررة",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "تصفح المكونات",
+        "description": "ابحث عن المكونات في قاعدة بياناتنا"
+      },
+      "createAccount": {
+        "title": "إنشاء حساب",
+        "description": "ساهم في قاعدة البيانات"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "الوثائق والمشاكل"
+      }
+    },
+    "contactCta": {
+      "title": "لم تجد إجابة لسؤالك؟",
+      "description": "لا تتردد في الاتصال بنا مباشرة.",
+      "button": "اتصل بنا"
+    },
+    "general": {
+      "title": "عام",
+      "what": {
+        "question": "ما هو إلكتروفولت؟",
+        "answer": "إلكتروفولت هي قاعدة بيانات مجانية مدعومة من المجتمع للمكونات الكهربائية والإلكترونية. نحن نوثق المكونات من الصمامات التاريخية إلى الدوائر المتكاملة الحديثة مع بيانات وصفية شاملة وأوراق البيانات والمواصفات."
+      },
+      "free": {
+        "question": "هل إلكتروفولت مجاني؟",
+        "answer": "نعم، إلكتروفولت مجاني تمامًا ومفتوح المصدر. كل من الاستخدام والكود المصدري متاحان بحرية."
+      }
+    },
+    "search": {
+      "title": "البحث",
+      "how": {
+        "question": "كيف يمكنني العثور على مكون معين؟",
+        "answer": "استخدم وظيفة البحث في الأعلى أو تصفح عبر الفئات. يمكنك البحث برقم القطعة أو الشركة المصنعة أو الخصائص."
+      },
+      "filters": {
+        "question": "ما هي المرشحات المتاحة؟",
+        "answer": "يمكنك التصفية حسب الفئة والشركة المصنعة والحالة (نشط/قديم) ونوع الحزمة والعديد من المعايير التقنية الأخرى."
+      }
+    },
+    "contribute": {
+      "title": "المساهمة",
+      "account": {
+        "question": "هل أحتاج إلى حساب للمساهمة؟",
+        "answer": "نعم، لإضافة أو تعديل المكونات، تحتاج إلى حساب مجاني. هذا يساعدنا على ضمان جودة البيانات."
+      },
+      "how": {
+        "question": "كيف يمكنني إضافة مكون؟",
+        "answer": "بعد تسجيل الدخول، يمكنك إنشاء مكونات جديدة عبر زر 'مكون جديد' في نظرة عامة على المكونات. سيراجع المشرف مساهمتك قبل النشر."
+      },
+      "quality": {
+        "question": "كيف يتم ضمان جودة البيانات؟",
+        "answer": "تتم مراجعة جميع المساهمات من قبل مشرفين ذوي خبرة. بالإضافة إلى ذلك، يمكن للمستخدمين المسجلين اقتراح تصحيحات."
+      }
+    }
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "subtitle": "هل لديك أسئلة أو اقتراحات؟",
+    "form": {
+      "heading": "إرسال رسالة",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "subject": "الموضوع",
+      "message": "الرسالة",
+      "namePlaceholder": "محمد أحمد",
+      "emailPlaceholder": "ahmed@example.com",
+      "subjectPlaceholder": "موضوع رسالتك",
+      "messagePlaceholder": "رسالتك...",
+      "demoNote": "ملاحظة: نموذج الاتصال حاليًا تجريبي. سيتم دمج الخلفية في مرحلة لاحقة. للاستفسارات المهمة، يرجى استخدام GitHub أو عنوان البريد الإلكتروني المحدد.",
+      "send": "إرسال الرسالة",
+      "sending": "جارٍ الإرسال...",
+      "success": "تم إرسال الرسالة بنجاح!",
+      "error": "خطأ في إرسال الرسالة"
+    },
+    "alternatives": {
+      "title": "خيارات الاتصال الأخرى",
+      "githubTitle": "مشكلات GitHub",
+      "github": "إنشاء مشكلة على GitHub",
+      "emailTitle": "البريد الإلكتروني",
+      "email": "أرسل لنا بريدًا إلكترونيًا"
+    },
+    "responseTime": {
+      "title": "أوقات الرد",
+      "description": "نظرًا لأن إلكتروفولت مشروع مجتمعي، يتم معالجة الاستفسارات من قبل متطوعين. يرجى التحلي بالصبر - نرد عادةً في غضون 48 ساعة."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "دعم المجتمع",
+        "description": "استخدم مناقشات GitHub للأسئلة العامة"
+      },
+      "bugReports": {
+        "title": "تقارير الأخطاء",
+        "description": "قم بالإبلاغ عن المشاكل التقنية مباشرة على GitHub"
+      },
+      "partnerships": {
+        "title": "استفسارات الشراكة",
+        "description": "للاستفسارات التجارية، استخدم النموذج"
+      }
+    }
+  },
+  "imprint": {
+    "title": "بيانات الموقع",
+    "responsible": "المسؤول عن المحتوى",
+    "contact": "اتصل بنا",
+    "disclaimer": {
+      "title": "إخلاء المسؤولية",
+      "content": "على الرغم من التحكم الدقيق في المحتوى، فإننا لا نتحمل أي مسؤولية عن محتوى الروابط الخارجية. مشغلو الصفحات المرتبطة هم المسؤولون الوحيدون عن محتواها.",
+      "liability": "تم إنشاء محتويات هذه الصفحات بأقصى قدر من العناية. ومع ذلك، لا يمكننا ضمان دقة واكتمال وتحديث المحتوى."
+    },
+    "opensource": {
+      "title": "مفتوح المصدر",
+      "description": "إلكتروفولت هو مشروع مفتوح المصدر بموجب ترخيص MIT. الكود المصدري متاح على GitHub."
+    }
+  },
+  "privacy": {
+    "title": "سياسة الخصوصية",
+    "lastUpdated": "آخر تحديث",
+    "intro": "نحن نأخذ حماية بياناتك الشخصية على محمل الجد. توضح سياسة الخصوصية هذه طبيعة ونطاق والغرض من معالجة البيانات الشخصية.",
+    "responsible": {
+      "title": "المسؤول عن البيانات",
+      "description": "المسؤول عن معالجة البيانات على هذا الموقع هو:"
+    },
+    "collection": {
+      "title": "جمع وتخزين البيانات الشخصية",
+      "description": "عند زيارة موقعنا، يتم جمع المعلومات تلقائيًا التي ينقلها متصفحك:",
+      "data": "عنوان IP، تاريخ ووقت الوصول، نوع المتصفح والإصدار، نظام التشغيل المستخدم، عنوان URL المُحيل"
+    },
+    "cookies": {
+      "title": "ملفات تعريف الارتباط",
+      "description": "يستخدم موقعنا ملفات تعريف الارتباط. ملفات تعريف الارتباط هي ملفات نصية صغيرة مخزنة على جهازك.",
+      "essential": "ملفات تعريف الارتباط الضرورية تقنيًا للمصادقة وإدارة الجلسات",
+      "functional": "ملفات تعريف الارتباط الوظيفية لتحسين تجربة المستخدم"
+    },
+    "auth": {
+      "title": "المصادقة",
+      "description": "نستخدم Keycloak للتسجيل وتسجيل الدخول. يتم تخزين البيانات التالية:",
+      "data": "اسم المستخدم، عنوان البريد الإلكتروني، صورة الملف الشخصي (اختياري)، الدور والأذونات"
+    },
+    "rights": {
+      "title": "حقوقك",
+      "description": "لديك الحقوق التالية فيما يتعلق ببياناتك الشخصية:",
+      "access": "الحق في الوصول",
+      "correction": "الحق في التصحيح",
+      "deletion": "الحق في المحو",
+      "restriction": "الحق في تقييد المعالجة",
+      "portability": "الحق في نقل البيانات",
+      "objection": "الحق في الاعتراض"
+    },
+    "contact": {
+      "title": "الاتصال بشأن أسئلة الخصوصية",
+      "description": "إذا كان لديك أسئلة حول الخصوصية، يمكنك الاتصال بنا في أي وقت."
+    }
+  }
+}

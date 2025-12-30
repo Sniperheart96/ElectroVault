@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "กำลังโหลด...",
+    "error": "ข้อผิดพลาด",
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "create": "สร้าง",
+    "search": "ค้นหา",
+    "back": "กลับ",
+    "next": "ถัดไป",
+    "previous": "ก่อนหน้า",
+    "noResults": "ไม่พบผลลัพธ์",
+    "all": "ทั้งหมด",
+    "yes": "ใช่",
+    "no": "ไม่ใช่",
+    "actions": {
+      "details": "รายละเอียด"
+    }
+  },
+  "locale": {
+    "switch": "เปลี่ยนภาษา",
+    "current": "ภาษาปัจจุบัน",
+    "languages": {
+      "en": "อังกฤษ",
+      "de": "เยอรมัน",
+      "fr": "ฝรั่งเศส",
+      "es": "สเปน",
+      "zh": "จีน",
+      "ja": "ญี่ปุ่น",
+      "ko": "เกาหลี",
+      "it": "อิตาลี"
+    }
+  },
+  "nav": {
+    "home": "หน้าแรก",
+    "components": "ชิ้นส่วน",
+    "categories": "หมวดหมู่",
+    "manufacturers": "ผู้ผลิต",
+    "packages": "แพ็กเกจ",
+    "search": "ค้นหา",
+    "admin": "ผู้ดูแลระบบ",
+    "moderation": "ตรวจสอบ",
+    "myElectroVault": "ElectroVault ของฉัน",
+    "login": "เข้าสู่ระบบ",
+    "logout": "ออกจากระบบ",
+    "profile": "โปรไฟล์"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "ฐานข้อมูลชิ้นส่วนอิเล็กทรอนิกส์ที่ดูแลโดยชุมชน",
+    "searchPlaceholder": "ค้นหาชิ้นส่วน...",
+    "featuredCategories": "หมวดหมู่แนะนำ",
+    "recentComponents": "ชิ้นส่วนล่าสุด",
+    "stats": {
+      "components": "ชิ้นส่วน",
+      "manufacturers": "ผู้ผลิต",
+      "categories": "หมวดหมู่",
+      "users": "ผู้ใช้"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "ฐานข้อมูลชิ้นส่วนอิเล็กทรอนิกส์ที่ดูแลโดยชุมชน"
+    },
+    "stats": {
+      "components": "ชิ้นส่วน",
+      "manufacturers": "ผู้ผลิต",
+      "users": "ผู้ใช้"
+    }
+  },
+  "packages": {
+    "title": "แพ็กเกจ",
+    "totalCount": "{count} แพ็กเกจในฐานข้อมูล",
+    "addNew": "แพ็กเกจใหม่",
+    "searchPlaceholder": "ค้นหาตามชื่อหรือ slug...",
+    "filterPlaceholder": "ประเภทแพ็กเกจ",
+    "filterAll": "ประเภททั้งหมด",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radial",
+      "AXIAL": "Axial",
+      "CHASSIS": "Chassis",
+      "OTHER": "อื่นๆ"
+    },
+    "table": {
+      "name": "ชื่อ",
+      "type": "ประเภท",
+      "pinCount": "จำนวนพิน",
+      "dimensions": "ขนาด (L x W x H mm)",
+      "pitch": "ระยะพิน",
+      "actions": "การดำเนินการ"
+    },
+    "loading": "กำลังโหลด...",
+    "noResults": "ไม่พบแพ็กเกจ",
+    "noPackagesFound": "ไม่พบแพ็กเกจ",
+    "createFirst": "สร้างแพ็กเกจแรก",
+    "error": "ข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "loadError": "โหลดแพ็กเกจไม่สำเร็จ",
+    "deleteSuccess": "ลบแพ็กเกจแล้ว",
+    "deleteError": "ลบแพ็กเกจไม่สำเร็จ",
+    "deleteDialog": {
+      "title": "ลบแพ็กเกจ?",
+      "description": "คุณต้องการลบแพ็กเกจ \"{name}\" จริงหรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้"
+    }
+  },
+  "components": {
+    "title": "ชิ้นส่วน",
+    "description": "สำรวจฐานข้อมูลชิ้นส่วนอิเล็กทรอนิกส์ที่ครอบคลุมของเรา",
+    "filters": {
+      "category": "หมวดหมู่",
+      "manufacturer": "ผู้ผลิต",
+      "status": "สถานะ",
+      "mountingType": "ประเภทการติดตั้ง"
+    },
+    "detail": {
+      "overview": "ภาพรวม",
+      "specifications": "ข้อมูลจำเพาะ",
+      "datasheets": "เอกสารข้อมูล",
+      "parts": "ชิ้นส่วนจากผู้ผลิต",
+      "history": "ประวัติเวอร์ชัน",
+      "backToOverview": "กลับสู่ภาพรวม",
+      "category": "หมวดหมู่",
+      "statistics": "สถิติ",
+      "manufacturerVariants": "รูปแบบจากผู้ผลิต",
+      "activeVariants": "รูปแบบที่ใช้งาน",
+      "additionalProperties": "คุณสมบัติเพิ่มเติม",
+      "furtherProperties": "คุณสมบัติเพิ่มเติมของชิ้นส่วนนี้",
+      "validForAllVariants": "ข้อมูลจำเพาะทางเทคนิค (ใช้กับทุกรูปแบบ)",
+      "variantCount": "{count} รูปแบบจากผู้ผลิต",
+      "variantCountPlural": "{count} รูปแบบจากผู้ผลิต",
+      "noVariantsAvailable": "ไม่มีรูปแบบจากผู้ผลิต",
+      "noVariantsForComponent": "ไม่มีรูปแบบจากผู้ผลิตสำหรับชิ้นส่วนนี้",
+      "noAttributesAvailable": "ไม่มีแอตทริบิวต์",
+      "manufacturer": "ผู้ผลิต",
+      "orderingCode": "รหัสสั่งซื้อ",
+      "details": "รายละเอียด",
+      "allInCategory": "ทั้งหมดในหมวดหมู่",
+      "status": "สถานะ",
+      "moreAttributes": "+{count} เพิ่มเติม"
+    },
+    "status": {
+      "DRAFT": "ร่าง",
+      "PENDING": "รอดำเนินการ",
+      "PUBLISHED": "เผยแพร่แล้ว",
+      "ARCHIVED": "เก็บถาวร"
+    },
+    "lifecycle": {
+      "ACTIVE": "ใช้งานอยู่",
+      "NRND": "ไม่แนะนำสำหรับการออกแบบใหม่",
+      "EOL": "หยุดผลิต",
+      "OBSOLETE": "ล้าสมัย"
+    }
+  },
+  "categories": {
+    "title": "หมวดหมู่",
+    "browseAll": "เรียกดูหมวดหมู่ทั้งหมด",
+    "subcategories": "หมวดหมู่ย่อย",
+    "componentsInCategory": "ชิ้นส่วนในหมวดหมู่นี้"
+  },
+  "manufacturers": {
+    "title": "ผู้ผลิต",
+    "status": {
+      "ACTIVE": "ใช้งานอยู่",
+      "ACQUIRED": "ถูกซื้อกิจการ",
+      "DEFUNCT": "ปิดกิจการ"
+    }
+  },
+  "auth": {
+    "login": "เข้าสู่ระบบ",
+    "logout": "ออกจากระบบ",
+    "loginWith": "เข้าสู่ระบบด้วย {provider}",
+    "welcome": "ยินดีต้อนรับกลับมา",
+    "signInToContinue": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
+    "signIn": {
+      "title": "เข้าสู่ระบบ",
+      "description": "เข้าสู่ระบบบัญชีของคุณ",
+      "button": "เข้าสู่ระบบด้วย Keycloak",
+      "loading": "กำลังเข้าสู่ระบบ...",
+      "hint": "คุณจะถูกเปลี่ยนเส้นทางไปยัง Keycloak"
+    },
+    "signOut": {
+      "title": "ออกจากระบบ",
+      "description": "คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?",
+      "button": "ออกจากระบบ",
+      "loading": "กำลังออกจากระบบ...",
+      "cancel": "ยกเลิก"
+    },
+    "error": {
+      "title": "ข้อผิดพลาดการยืนยันตัวตน",
+      "description": "เกิดข้อผิดพลาดในระหว่างการเข้าสู่ระบบ",
+      "tryAgain": "ลองอีกครั้ง",
+      "backHome": "กลับสู่หน้าแรก"
+    },
+    "errors": {
+      "configuration": "ข้อผิดพลาดการกำหนดค่าเซิร์ฟเวอร์ กรุณาติดต่อผู้ดูแลระบบ",
+      "accessDenied": "การเข้าถึงถูกปฏิเสธ คุณไม่มีสิทธิ์",
+      "verification": "ลิงก์การยืนยันหมดอายุหรือถูกใช้งานแล้ว",
+      "oauthSignin": "ข้อผิดพลาดในการเริ่มการเข้าสู่ระบบ OAuth",
+      "oauthCallback": "ข้อผิดพลาดในการประมวลผล OAuth callback",
+      "oauthCreateAccount": "ข้อผิดพลาดในการสร้างบัญชีผู้ใช้",
+      "emailCreateAccount": "ข้อผิดพลาดในการสร้างบัญชีอีเมล",
+      "callback": "ข้อผิดพลาดในการประมวลผล callback",
+      "oauthAccountNotLinked": "อีเมลนี้เชื่อมโยงกับบัญชีอื่นแล้ว",
+      "sessionRequired": "กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้านี้",
+      "default": "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ กรุณาลองอีกครั้ง"
+    }
+  },
+  "admin": {
+    "dashboard": "แดชบอร์ด",
+    "sidebar": {
+      "dashboard": "แดชบอร์ด",
+      "moderation": "ตรวจสอบ",
+      "moderationDescription": "คิวรออนุมัติ",
+      "users": "ผู้ใช้",
+      "backToHome": "กลับสู่หน้าหลัก",
+      "user": "ผู้ใช้",
+      "logout": "ออกจากระบบ"
+    },
+    "components": {
+      "title": "จัดการชิ้นส่วน",
+      "new": "ชิ้นส่วนใหม่",
+      "edit": "แก้ไขชิ้นส่วน"
+    },
+    "moderation": {
+      "title": "ตรวจสอบ",
+      "pendingReviews": "รอการตรวจสอบ",
+      "approve": "อนุมัติ",
+      "reject": "ปฏิเสธ",
+      "batchApproval": "อนุมัติเป็นชุด",
+      "confirmApprove": "ยืนยันการอนุมัติ",
+      "confirmApproveDescription": "คุณต้องการอนุมัติ {type} นี้จริงหรือไม่? มันจะปรากฏต่อสาธารณะหลังจากนั้น",
+      "confirmBatchApproval": "คุณต้องการอนุมัติ {count} รายการจริงหรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้",
+      "rejectWithReason": "ปฏิเสธพร้อมเหตุผล",
+      "rejectDescription": "กรุณาระบุเหตุผลในการปฏิเสธ ข้อความนี้จะแสดงต่อผู้สร้าง",
+      "rejectReasonLabel": "เหตุผล",
+      "rejectReasonPlaceholder": "เพราะเหตุใดจึงปฏิเสธรายการนี้?",
+      "rejectReasonHelp": "เหตุผลที่ชัดเจนช่วยให้ผู้สร้างเข้าใจการปฏิเสธ",
+      "batchApproveButton": "อนุมัติ {count} รายการ",
+      "typeComponent": "ชิ้นส่วน",
+      "typePart": "รูปแบบ",
+      "draft": "ร่าง"
+    },
+    "users": {
+      "title": "ผู้ใช้",
+      "manage": "จัดการผู้ใช้"
+    },
+    "myDashboard": {
+      "title": "แดชบอร์ดของฉัน",
+      "stats": {
+        "componentsTotal": "ชิ้นส่วนทั้งหมด",
+        "componentsTotalDesc": "ชิ้นส่วนที่คุณสร้าง",
+        "variants": "รูปแบบ",
+        "variantsDesc": "รูปแบบจากผู้ผลิต",
+        "drafts": "ร่าง",
+        "draftsDesc": "ยังไม่ส่ง",
+        "pending": "กำลังตรวจสอบ",
+        "pendingDesc": "รอการตรวจสอบ",
+        "published": "เผยแพร่แล้ว",
+        "archived": "เก็บถาวร"
+      },
+      "draftsSection": {
+        "title": "ร่างของฉัน",
+        "description": "ร่างเป็นที่จัดเก็บข้อมูลส่วนตัวและยังไม่ได้ส่งเพื่อตรวจสอบ",
+        "newComponent": "ชิ้นส่วนใหม่",
+        "empty": "ไม่มีร่าง สร้างชิ้นส่วนใหม่และบันทึกเป็นร่าง",
+        "draftBadge": "ร่าง",
+        "noName": "[ไม่มีชื่อ]"
+      },
+      "activitySection": {
+        "title": "ประวัติกิจกรรม",
+        "description": "กิจกรรมล่าสุดของคุณใน ElectroVault",
+        "empty": "ยังไม่มีกิจกรรม"
+      },
+      "entities": {
+        "COMPONENT": "ชิ้นส่วน",
+        "PART": "รูปแบบ",
+        "MANUFACTURER": "ผู้ผลิต",
+        "CATEGORY": "หมวดหมู่",
+        "PACKAGE": "แพ็กเกจ"
+      },
+      "error": "โหลดแดชบอร์ดไม่สำเร็จ กรุณาลองอีกครั้ง"
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "แอตทริบิวต์ใหม่",
+        "titleEdit": "แก้ไขแอตทริบิวต์",
+        "description": "คำจำกัดความแอตทริบิวต์สำหรับชิ้นส่วน"
+      },
+      "category": {
+        "title": "หมวดหมู่ใหม่",
+        "titleEdit": "แก้ไขหมวดหมู่",
+        "description": "จัดการข้อมูลหมวดหมู่และแอตทริบิวต์",
+        "saveFirst": "บันทึกหมวดหมู่ก่อนเพื่อเพิ่มแอตทริบิวต์"
+      },
+      "component": {
+        "title": "ชิ้นส่วนใหม่",
+        "titleEdit": "แก้ไขชิ้นส่วน",
+        "description": "สร้างชิ้นส่วนใหม่ - หลังจากบันทึกคุณสามารถเพิ่มรูปแบบจากผู้ผลิต",
+        "descriptionEdit": "จัดการข้อมูลชิ้นส่วนและรูปแบบจากผู้ผลิต",
+        "saveFirstPinMapping": "บันทึกชิ้นส่วนก่อนเพื่อแก้ไขการแมปพิน",
+        "saveFirstParts": "บันทึกชิ้นส่วนก่อนเพื่อเพิ่มรูปแบบจากผู้ผลิต",
+        "saveFirstRelations": "บันทึกชิ้นส่วนก่อนเพื่อเพิ่มความสัมพันธ์",
+        "createdWithVariants": "สร้างชิ้นส่วนแล้ว ตอนนี้คุณสามารถเพิ่มรูปแบบจากผู้ผลิต",
+        "noPartsWarning": "ชิ้นส่วนนี้ไม่มีรูปแบบจากผู้ผลิต ต้องมีรูปแบบอย่างน้อยหนึ่งรายการ"
+      },
+      "manufacturer": {
+        "title": "ผู้ผลิตใหม่",
+        "titleEdit": "แก้ไขผู้ผลิต",
+        "description": "จัดการข้อมูลผู้ผลิต"
+      },
+      "part": {
+        "title": "รูปแบบจากผู้ผลิตใหม่",
+        "titleEdit": "แก้ไขรูปแบบจากผู้ผลิต",
+        "description": "สร้างรูปแบบเฉพาะของผู้ผลิตสำหรับชิ้นส่วน",
+        "descriptionEdit": "แก้ไขข้อมูลรูปแบบจากผู้ผลิต",
+        "saveFirstFiles": "บันทึกรูปแบบก่อนเพื่ออัปโหลดไฟล์"
+      },
+      "package": {
+        "title": "แพ็กเกจใหม่",
+        "titleEdit": "แก้ไขแพ็กเกจ",
+        "description": "ข้อมูลแพ็กเกจ/ฟุตพริ้นท์"
+      },
+      "delete": {
+        "title": "ยืนยันการลบ",
+        "message": "คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?",
+        "messageFile": "คุณต้องการลบไฟล์นี้จริงหรือไม่?",
+        "messagePin": "คุณต้องการลบพินนี้จริงหรือไม่?",
+        "message3dModel": "คุณต้องการลบโมเดล 3D นี้จริงหรือไม่?",
+        "messageRelation": "คุณต้องการลบความสัมพันธ์นี้จริงหรือไม่?"
+      }
+    },
+    "buttons": {
+      "saving": "กำลังบันทึก...",
+      "saveAsDraft": "บันทึกเป็นร่าง",
+      "update": "อัปเดต",
+      "addPin": "เพิ่มพิน",
+      "addRelation": "เพิ่มความสัมพันธ์"
+    },
+    "messages": {
+      "success": "สำเร็จ",
+      "error": "ข้อผิดพลาด",
+      "warning": "คำเตือน",
+      "attribute": {
+        "created": "สร้างแอตทริบิวต์แล้ว",
+        "updated": "อัปเดตแอตทริบิวต์แล้ว",
+        "deleted": "ลบแอตทริบิวต์แล้ว",
+        "loadFailed": "โหลดแอตทริบิวต์ไม่สำเร็จ",
+        "saveFailed": "บันทึกแอตทริบิวต์ไม่สำเร็จ",
+        "deleteFailed": "ลบแอตทริบิวต์ไม่สำเร็จ"
+      },
+      "category": {
+        "created": "สร้างหมวดหมู่แล้ว",
+        "updated": "อัปเดตหมวดหมู่แล้ว",
+        "deleted": "ลบหมวดหมู่แล้ว",
+        "loadFailed": "โหลดหมวดหมู่ไม่สำเร็จ",
+        "saveFailed": "บันทึกหมวดหมู่ไม่สำเร็จ",
+        "deleteFailed": "ลบหมวดหมู่ไม่สำเร็จ"
+      },
+      "component": {
+        "created": "สร้างชิ้นส่วนแล้ว",
+        "updated": "อัปเดตชิ้นส่วนแล้ว",
+        "deleted": "ลบชิ้นส่วนแล้ว",
+        "loadFailed": "โหลดชิ้นส่วนไม่สำเร็จ",
+        "saveFailed": "บันทึกชิ้นส่วนไม่สำเร็จ",
+        "deleteFailed": "ลบชิ้นส่วนไม่สำเร็จ"
+      },
+      "manufacturer": {
+        "created": "สร้างผู้ผลิตแล้ว",
+        "updated": "อัปเดตผู้ผลิตแล้ว",
+        "deleted": "ลบผู้ผลิตแล้ว",
+        "loadFailed": "โหลดผู้ผลิตไม่สำเร็จ",
+        "saveFailed": "บันทึกผู้ผลิตไม่สำเร็จ",
+        "deleteFailed": "ลบผู้ผลิตไม่สำเร็จ",
+        "logoUploaded": "อัปโหลดโลโก้แล้ว",
+        "logoUploadFailed": "อัปโหลดโลโก้ไม่สำเร็จ"
+      },
+      "part": {
+        "created": "สร้างรูปแบบแล้ว",
+        "updated": "อัปเดตรูปแบบแล้ว",
+        "deleted": "ลบรูปแบบแล้ว",
+        "loadFailed": "โหลดรูปแบบไม่สำเร็จ",
+        "saveFailed": "บันทึกรูปแบบไม่สำเร็จ",
+        "deleteFailed": "ลบรูปแบบไม่สำเร็จ"
+      },
+      "package": {
+        "created": "สร้างแพ็กเกจแล้ว",
+        "updated": "อัปเดตแพ็กเกจแล้ว",
+        "deleted": "ลบแพ็กเกจแล้ว",
+        "loadFailed": "โหลดแพ็กเกจไม่สำเร็จ",
+        "saveFailed": "บันทึกแพ็กเกจไม่สำเร็จ",
+        "deleteFailed": "ลบแพ็กเกจไม่สำเร็จ"
+      },
+      "file": {
+        "uploaded": "อัปโหลดไฟล์แล้ว",
+        "deleted": "ลบไฟล์แล้ว",
+        "uploadFailed": "อัปโหลดไฟล์ไม่สำเร็จ",
+        "deleteFailed": "ลบไฟล์ไม่สำเร็จ",
+        "loadFailed": "โหลดไฟล์ไม่สำเร็จ",
+        "downloadUrlFailed": "สร้าง URL ดาวน์โหลดไม่สำเร็จ"
+      },
+      "pin": {
+        "created": "เพิ่มพินแล้ว",
+        "updated": "อัปเดตพินแล้ว",
+        "deleted": "ลบพินแล้ว",
+        "createFailed": "สร้างพินไม่สำเร็จ",
+        "loadFailed": "โหลดพินไม่สำเร็จ",
+        "updateFailed": "อัปเดตพินไม่สำเร็จ",
+        "deleteFailed": "ลบพินไม่สำเร็จ"
+      },
+      "relation": {
+        "created": "เพิ่มความสัมพันธ์แล้ว",
+        "deleted": "ลบความสัมพันธ์แล้ว",
+        "createFailed": "สร้างความสัมพันธ์ไม่สำเร็จ",
+        "deleteFailed": "ลบความสัมพันธ์ไม่สำเร็จ"
+      }
+    },
+    "pinMapping": {
+      "title": "การแมปพิน",
+      "addPin": "เพิ่มพิน",
+      "newPin": "เพิ่มพินใหม่",
+      "pinNumber": "หมายเลขพิน (เช่น 1, VCC)",
+      "pinName": "ชื่อพิน",
+      "selectType": "เลือกประเภทพิน",
+      "noDescription": "ไม่มีคำอธิบาย",
+      "noType": "ไม่มีประเภท",
+      "loading": "กำลังโหลดพิน...",
+      "pinsCount": "{count} พิน",
+      "tabList": "รายการพิน",
+      "tabBulkImport": "นำเข้าจำนวนมาก",
+      "noPins": "ไม่มีพินที่กำหนด เพิ่มพินทีละตัวหรือใช้การนำเข้าจำนวนมาก",
+      "columnPinNumber": "หมายเลขพิน",
+      "columnName": "ชื่อ",
+      "columnType": "ประเภท",
+      "columnFunction": "ฟังก์ชัน (DE)",
+      "columnActions": "การดำเนินการ",
+      "functionPlaceholder": "เช่น แรงดันไฟฟ้า",
+      "deleteTitle": "ลบพิน?",
+      "deleteMessage": "คุณต้องการลบพิน {pinNumber} ({pinName}) จริงหรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้",
+      "reorderSuccess": "อัปเดตลำดับพินแล้ว",
+      "reorderFailed": "เปลี่ยนลำดับไม่สำเร็จ",
+      "bulkImport": {
+        "formatLabel": "รูปแบบ:",
+        "exampleLabel": "ตัวอย่าง:",
+        "typeHint": "pinTyp เป็นทางเลือก ประเภทที่ใช้ได้: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "ป้อนพินในรูปแบบ CSV...",
+        "importButton": "นำเข้าพิน",
+        "noPinsFound": "ไม่พบข้อมูลพินที่ถูกต้อง",
+        "success": "นำเข้า {count} พินแล้ว",
+        "failed": "นำเข้าจำนวนมากไม่สำเร็จ"
+      }
+    },
+    "files": {
+      "uploadImage": "อัปโหลดรูปภาพผลิตภัณฑ์",
+      "uploadDatasheet": "อัปโหลดเอกสารข้อมูล",
+      "uploadDocument": "อัปโหลดเอกสาร",
+      "selectLanguage": "เลือกภาษา",
+      "noFiles": "ไม่มีไฟล์",
+      "confirmDelete": "ลบไฟล์?",
+      "productImage": "รูปภาพผลิตภัณฑ์",
+      "productImageDescription": "รูปภาพตัวอย่างสำหรับรูปแบบจากผู้ผลิตนี้",
+      "addImage": "รูปภาพ",
+      "imageDescription": "JPEG, PNG หรือ WebP (สูงสุด 10 MB)",
+      "noImageUploaded": "ยังไม่ได้อัปโหลดรูปภาพ",
+      "datasheets": "เอกสารข้อมูล",
+      "datasheetsDescription": "เอกสารข้อมูล PDF สำหรับรูปแบบจากผู้ผลิตนี้",
+      "addDatasheet": "เอกสารข้อมูล",
+      "languagesRequired": "ภาษาของเอกสารข้อมูล",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "ต้องเลือกภาษาอย่างน้อยหนึ่งภาษา",
+      "datasheetFileDescription": "ไฟล์ PDF เอกสารข้อมูลจากผู้ผลิต",
+      "noDatasheets": "ยังไม่ได้อัปโหลดเอกสารข้อมูล",
+      "otherFiles": "ไฟล์อื่นๆ",
+      "otherFilesDescription": "เอกสารเพิ่มเติม, หมายเหตุการใช้งาน ฯลฯ",
+      "addDocument": "เอกสาร",
+      "languagesOptional": "ภาษา (ไม่บังคับ)",
+      "anyFileDescription": "ไฟล์ใดก็ได้ (PDF, TXT, ZIP ฯลฯ)",
+      "noDocuments": "ยังไม่ได้อัปโหลดเอกสาร",
+      "fileName": "ไฟล์",
+      "fileSize": "ขนาด",
+      "languages": "ภาษา",
+      "actions": "การดำเนินการ",
+      "imageCount": "{count} รูปภาพ",
+      "fileCount": "{count} ไฟล์",
+      "datasheetCount": "{count} เอกสารข้อมูล",
+      "imageUploaded": "อัปโหลดรูปภาพแล้ว",
+      "imageRemoved": "ลบรูปภาพแล้ว"
+    },
+    "model3d": {
+      "title": "โมเดล 3D",
+      "confirmDelete": "ลบโมเดล 3D?",
+      "upload": "อัปโหลดโมเดล 3D",
+      "noModels": "ไม่มีโมเดล 3D"
+    },
+    "lists": {
+      "searchPlaceholder": "ค้นหา...",
+      "searchByName": "ค้นหาตามชื่อหรือ slug...",
+      "searchByNameCage": "ค้นหาตามชื่อ, slug หรือรหัส CAGE...",
+      "noResults": "ไม่พบผลลัพธ์",
+      "createFirst": "สร้างรายการแรก",
+      "noPackagesFound": "ไม่พบแพ็กเกจ",
+      "createFirstPackage": "สร้างแพ็กเกจแรก"
+    },
+    "filters": {
+      "allStatus": "สถานะทั้งหมด",
+      "myDrafts": "ร่างของฉัน"
+    },
+    "manufacturer": {
+      "title": "ผู้ผลิต",
+      "count": "{count} ผู้ผลิตในฐานข้อมูล",
+      "create": "ผู้ผลิตใหม่",
+      "createFirst": "สร้างผู้ผลิตแรก",
+      "deleteTitle": "ลบผู้ผลิต?",
+      "deleteDescription": "คุณต้องการลบผู้ผลิต \"{name}\" จริงหรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้",
+      "status": {
+        "active": "ใช้งานอยู่",
+        "acquired": "ถูกซื้อกิจการ",
+        "defunct": "ปิดกิจการ"
+      }
+    },
+    "form": {
+      "package": "แพ็กเกจ",
+      "selectPackage": "เลือกแพ็กเกจ",
+      "noPackage": "ไม่มีแพ็กเกจ",
+      "editIn": "แก้ไขใน:",
+      "searchLanguage": "ค้นหาภาษา...",
+      "noLanguageFound": "ไม่พบภาษา",
+      "original": "ต้นฉบับ",
+      "backToOverview": "กลับไปที่ภาพรวม",
+      "name": "ชื่อ",
+      "nameDescription": "ชื่อเป็นภาษาเยอรมันและ/หรืออังกฤษ ต้องระบุหากหมวดหมู่ไม่มีแอตทริบิวต์ป้ายกำกับ",
+      "namePlaceholder": "ชื่อชิ้นส่วน",
+      "series": "ซีรีส์",
+      "seriesDescription": "ซีรีส์หรือกลุ่มชิ้นส่วน (ไม่บังคับ)",
+      "seriesPlaceholder": "เช่น 74HC, ATmega",
+      "packageDescription": "รูปแบบทางกายภาพ (เช่น DIP-8, SOIC-8)",
+      "shortDescription": "คำอธิบายสั้น",
+      "shortDescriptionDescription": "ประโยคสั้นๆ เพื่ออธิบายชิ้นส่วน",
+      "shortDescriptionPlaceholder": "คำอธิบายสั้น",
+      "fullDescription": "คำอธิบายแบบเต็ม",
+      "fullDescriptionPlaceholder": "คำอธิบายแบบเต็ม",
+      "attributesDescription": "แอตทริบิวต์ทางเทคนิคตามหมวดหมู่ที่เลือก",
+      "selectCategoryFirst": "กรุณาเลือกหมวดหมู่ในแท็บ \"Stammdaten\" ก่อน",
+      "pinMappingDescription": "กำหนดการกำหนดพินสำหรับชิ้นส่วนนี้ การแมปพินใช้กับรูปแบบจากผู้ผลิตทั้งหมด",
+      "partsDescription": "รูปแบบเฉพาะของผู้ผลิตสำหรับชิ้นส่วนนี้",
+      "newVariant": "รูปแบบใหม่",
+      "close": "ปิด",
+      "parentCategory": "หมวดหมู่หลัก",
+      "parentCategoryPlaceholder": "ไม่มี (หมวดหมู่ราก)",
+      "parentCategoryDescription": "เว้นว่างไว้สำหรับหมวดหมู่หลัก (ระดับ 0)",
+      "categoryName": "ชื่อหมวดหมู่",
+      "categoryDescription": "คำอธิบาย",
+      "categoryDescriptionPlaceholder": "คำอธิบายของหมวดหมู่",
+      "sortOrder": "ลำดับการจัดเรียง",
+      "sortOrderDescription": "ค่าที่ต่ำกว่า = อยู่ด้านบน",
+      "status": "สถานะ",
+      "active": "ใช้งานอยู่",
+      "inactive": "ไม่ใช้งาน",
+      "icon": "ไอคอน",
+      "iconUploadDescription": "อัปโหลดไอคอนหมวดหมู่ สูงสุด 5 MB, JPEG/PNG/WebP/SVG",
+      "iconUploadHint": "คลิกหรือลากไฟล์มาที่นี่",
+      "iconMaxSize": "ไอคอนต้องมีขนาดไม่เกิน 5 MB",
+      "iconAllowedTypes": "อนุญาตเฉพาะ JPEG, PNG, WebP หรือ SVG",
+      "iconUploaded": "อัปโหลดไอคอนแล้ว",
+      "iconUploadFailed": "อัปโหลดไอคอนไม่สำเร็จ",
+      "categoryCreatedIconFailed": "สร้างหมวดหมู่แล้ว แต่อัปโหลดไอคอนไม่สำเร็จ",
+      "loading": "กำลังโหลด...",
+      "newAttribute": "แอตทริบิวต์ใหม่",
+      "ownAttributes": "แอตทริบิวต์ของตัวเอง ({count})",
+      "noOwnAttributes": "ไม่มีแอตทริบิวต์ของตัวเองที่กำหนดไว้",
+      "inheritedAttributes": "แอตทริบิวต์ที่สืบทอด ({count})",
+      "inheritedAttributesDescription": "แอตทริบิวต์ที่สืบทอดสามารถแก้ไขได้เฉพาะในหมวดหมู่ต้นทางเท่านั้น",
+      "attributesInherited": "แอตทริบิวต์ของหมวดหมู่นี้ (จะสืบทอดไปยังหมวดหมู่ย่อย)",
+      "cageCode": "รหัส CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "รหัส 5 หลัก",
+      "country": "ประเทศ",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "เว็บไซต์",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "โลโก้",
+      "logoUploadHint": "อัปโหลดโลโก้ผู้ผลิต สูงสุด 5 MB, JPEG/PNG/WebP/SVG",
+      "logoClickOrDrag": "คลิกหรือลากไฟล์มาที่นี่",
+      "statusActive": "ใช้งานอยู่",
+      "statusAcquired": "ถูกซื้อกิจการ",
+      "statusDefunct": "ปิดกิจการ",
+      "foundedYear": "ปีที่ก่อตั้ง",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "ปีที่ปิดกิจการ",
+      "defunctYearPlaceholder": "2020",
+      "description": "คำอธิบาย",
+      "descriptionPlaceholder": "คำอธิบาย",
+      "logoMaxSize": "โลโก้ต้องมีขนาดไม่เกิน 5 MB",
+      "logoAllowedTypes": "อนุญาตเฉพาะ JPEG, PNG, WebP หรือ SVG",
+      "createdAsDraft": "บันทึกผู้ผลิตเป็นร่าง",
+      "manufacturerCreatedLogoFailed": "สร้างผู้ผลิตแล้ว แต่อัปโหลดโลโก้ไม่สำเร็จ",
+      "save": "บันทึก"
+    },
+    "audit": {
+      "created": "สร้างแล้ว",
+      "updated": "อัปเดตแล้ว",
+      "deleted": "ลบแล้ว",
+      "restored": "กู้คืนแล้ว",
+      "approved": "อนุมัติแล้ว",
+      "rejected": "ปฏิเสธแล้ว"
+    },
+    "tabs": {
+      "basicInfo": "ข้อมูลพื้นฐาน",
+      "attributes": "แอตทริบิวต์",
+      "pinMapping": "การแมปพิน",
+      "parts": "รูปแบบจากผู้ผลิต",
+      "relations": "ความสัมพันธ์",
+      "files": "ไฟล์",
+      "details": "ข้อมูลหลัก",
+      "pins": "การแมปพิน",
+      "models": "โมเดล 3D"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "ผู้ผลิต",
+      "status": "สถานะ",
+      "lifecycle": "วงจรชีวิต",
+      "actions": "การดำเนินการ",
+      "variantCount": "{count} รูปแบบ",
+      "variantCountPlural": "{count} รูปแบบ",
+      "activeCount": "{count} ใช้งานอยู่",
+      "obsoleteCount": "{count} ล้าสมัย",
+      "unknown": "ไม่ทราบ"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "ชื่อเฉพาะของแพ็กเกจ",
+      "mountingType": "ประเภทแพ็กเกจ",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radial - แบบเรเดียล",
+        "AXIAL": "Axial - แบบแอกเซียล",
+        "CHASSIS": "Chassis - ติดตั้งบนตัวถัง",
+        "OTHER": "อื่นๆ"
+      },
+      "pinCount": "จำนวนพิน",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "ความยาว (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "ความกว้าง (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "ความสูง (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "ระยะพิน (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "ระยะห่างระหว่างพิน",
+      "jedecStandard": "มาตรฐาน JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "มาตรฐาน EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL แบบวาด",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "ลิงก์ไปยังแบบวาดทางเทคนิคหรือเอกสารข้อมูล",
+      "description": "คำอธิบาย",
+      "descriptionPlaceholder": "ข้อมูลเพิ่มเติมเกี่ยวกับแพ็กเกจ...",
+      "saveFirstModels": "บันทึกแพ็กเกจก่อนเพื่ออัปโหลดโมเดล 3D",
+      "modelsDescription": "โมเดล 3D สำหรับแพ็กเกจนี้ (STEP, STL, 3MF, OBJ ฯลฯ)"
+    },
+    "partForm": {
+      "coreComponent": "ชิ้นส่วนทั่วไป",
+      "coreComponentDesc": "ชิ้นส่วนที่ไม่ขึ้นกับผู้ผลิต (เช่น 555 Timer)",
+      "manufacturer": "ผู้ผลิต",
+      "manufacturerDesc": "ผู้ผลิตของรูปแบบเฉพาะนี้ (เช่น Texas Instruments)",
+      "manufacturerPlaceholder": "เลือกผู้ผลิต",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "เช่น NE555P",
+      "mpnDesc": "หมายเลขชิ้นส่วนของผู้ผลิตที่เป็นเอกลักษณ์",
+      "orderingCode": "รหัสสั่งซื้อ",
+      "orderingCodePlaceholder": "ไม่บังคับ",
+      "orderingCodeDesc": "รหัสสั่งซื้อทางเลือก (หากแตกต่างจาก MPN)",
+      "statusRecord": "สถานะบันทึก",
+      "lifecycleStatus": "สถานะวงจรชีวิต",
+      "introductionYear": "ปีที่เปิดตัว",
+      "introductionYearPlaceholder": "เช่น 1972",
+      "discontinuedYear": "ปีที่หยุดผลิต",
+      "discontinuedYearPlaceholder": "เช่น 2020",
+      "rohsCompliant": "สอดคล้องกับ RoHS",
+      "rohsDesc": "เป็นไปตาม RoHS",
+      "reachCompliant": "สอดคล้องกับ REACH",
+      "reachDesc": "เป็นไปตามข้อบังคับ REACH",
+      "weight": "น้ำหนัก (กรัม)",
+      "weightPlaceholder": "เช่น 0.5",
+      "dateCodeFormat": "รูปแบบรหัสวันที่",
+      "dateCodePlaceholder": "เช่น YYWW",
+      "dateCodeDesc": "รูปแบบของรหัสวันที่บนชิ้นส่วน",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "เช่น 5962-01-123-4567",
+      "milSpec": "ข้อกำหนดทางทหาร",
+      "milSpecPlaceholder": "เช่น MIL-PRF-38534",
+      "partAttributesDesc": "แอตทริบิวต์เฉพาะของผู้ผลิตตามหมวดหมู่ของชิ้นส่วน",
+      "partAttributesLabel": "แอตทริบิวต์เฉพาะของผู้ผลิต",
+      "filesDesc": "จัดการเอกสารข้อมูล รูปภาพ และไฟล์อื่นๆ สำหรับรูปแบบจากผู้ผลิตนี้",
+      "close": "ปิด",
+      "selectComponent": "เลือกชิ้นส่วน"
+    }
+  },
+  "errors": {
+    "notFound": "ไม่พบหน้า",
+    "unauthorized": "ไม่ได้รับอนุญาต",
+    "serverError": "ข้อผิดพลาดเซิร์ฟเวอร์"
+  },
+  "footer": {
+    "tagline": "ฐานข้อมูลชิ้นส่วนอิเล็กทรอนิกส์ที่ดูแลโดยชุมชน",
+    "navigation": "นำทาง",
+    "community": "ชุมชน",
+    "legal": "กฎหมาย",
+    "about": "เกี่ยวกับ",
+    "help": "ช่วยเหลือ",
+    "contact": "ติดต่อ",
+    "contribute": "มีส่วนร่วม",
+    "github": "GitHub",
+    "privacy": "ความเป็นส่วนตัว",
+    "imprint": "ข้อมูลสำนักพิมพ์",
+    "copyright": "โอเพนซอร์สภายใต้ MIT License"
+  },
+  "about": {
+    "title": "เกี่ยวกับ ElectroVault",
+    "subtitle": "ฐานข้อมูลชิ้นส่วนอิเล็กทรอนิกส์ที่ดูแลโดยชุมชน",
+    "mission": {
+      "title": "พันธกิจของเรา",
+      "description": "ElectroVault เป็นฐานข้อมูลฟรีและเปิดกว้างสำหรับชิ้นส่วนอิเล็กทรอนิกส์ - ตั้งแต่หลอดเก่าในอดีตจนถึงนาโนเทคโนโลยีสมัยใหม่ เป้าหมายของเราคือการรักษาความรู้เกี่ยวกับชิ้นส่วนอิเล็กทรอนิกส์และทำให้ทุกคนเข้าถึงได้"
+    },
+    "features": {
+      "title": "คุณสมบัติ",
+      "comprehensive": {
+        "title": "ฐานข้อมูลที่ครอบคลุม",
+        "description": "ตั้งแต่ตัวต้านทานไปจนถึงตัวเก็บประจุและวงจรรวมขั้นสูง - เราบันทึกชิ้นส่วนสำคัญทั้งหมดพร้อมข้อมูลจำเพาะโดยละเอียด"
+      },
+      "historical": {
+        "title": "คลังเก็บข้อมูลประวัติศาสตร์",
+        "description": "เอกสารของชิ้นส่วนเก่าสำหรับการซ่อมแซมและการบูรณะอุปกรณ์วินเทจ"
+      },
+      "community": {
+        "title": "ขับเคลื่อนโดยชุมชน",
+        "description": "ทุกคนสามารถมีส่วนร่วมและแบ่งปันความรู้ของตน ร่วมกันเราสร้างฐานข้อมูลชิ้นส่วนที่ครอบคลุมที่สุด"
+      },
+      "open": {
+        "title": "โอเพนซอร์ส",
+        "description": "โปร่งใสอย่างสมบูรณ์และใช้งานได้ฟรีภายใต้ MIT License"
+      }
+    },
+    "contribute": {
+      "title": "มีส่วนร่วม",
+      "description": "ElectroVault เติบโตจากชุมชน นี่คือวิธีที่คุณสามารถมีส่วนร่วม:",
+      "dataEntry": "เพิ่มหรือแก้ไขชิ้นส่วน",
+      "datasheets": "อัปโหลดเอกสารข้อมูล",
+      "code": "มีส่วนร่วมในโค้ดบน GitHub",
+      "feedback": "ข้อเสนอแนะและคำแนะนำเพื่อการปรับปรุง"
+    }
+  },
+  "help": {
+    "title": "ช่วยเหลือและคำถามที่พบบ่อย",
+    "subtitle": "คำถามที่พบบ่อย",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "เรียกดูชิ้นส่วน",
+        "description": "ค้นหาชิ้นส่วนในฐานข้อมูลของเรา"
+      },
+      "createAccount": {
+        "title": "สร้างบัญชี",
+        "description": "มีส่วนร่วมในฐานข้อมูล"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "เอกสารและปัญหา"
+      }
+    },
+    "contactCta": {
+      "title": "ไม่พบคำตอบสำหรับคำถามของคุณ?",
+      "description": "ติดต่อเราโดยตรง",
+      "button": "ติดต่อเรา"
+    },
+    "general": {
+      "title": "ทั่วไป",
+      "what": {
+        "question": "ElectroVault คืออะไร?",
+        "answer": "ElectroVault เป็นฐานข้อมูลฟรีที่ดูแลโดยชุมชนสำหรับชิ้นส่วนไฟฟ้าและอิเล็กทรอนิกส์ เราบันทึกชิ้นส่วนตั้งแต่หลอดเก่าจนถึง IC สมัยใหม่พร้อมข้อมูลเมตา เอกสารข้อมูล และข้อมูลจำเพาะที่ครอบคลุม"
+      },
+      "free": {
+        "question": "ElectroVault ฟรีหรือไม่?",
+        "answer": "ใช่ ElectroVault ฟรีและเป็นโอเพนซอร์สอย่างสมบูรณ์ ทั้งการใช้งานและโค้ดต้นฉบับสามารถใช้ได้ฟรี"
+      }
+    },
+    "search": {
+      "title": "ค้นหา",
+      "how": {
+        "question": "ฉันจะค้นหาชิ้นส่วนที่ต้องการได้อย่างไร?",
+        "answer": "ใช้ฟังก์ชันค้นหาที่มุมบนขวาหรือนำทางผ่านหมวดหมู่ คุณสามารถค้นหาตามหมายเลขชิ้นส่วน ผู้ผลิต หรือคุณสมบัติ"
+      },
+      "filters": {
+        "question": "มีตัวกรองอะไรบ้าง?",
+        "answer": "คุณสามารถกรองตามหมวดหมู่ ผู้ผลิต สถานะ (ใช้งานอยู่/ล้าสมัย) ประเภทแพ็กเกจ และพารามิเตอร์ทางเทคนิคอื่นๆ อีกมากมาย"
+      }
+    },
+    "contribute": {
+      "title": "การมีส่วนร่วม",
+      "account": {
+        "question": "ฉันต้องมีบัญชีเพื่อมีส่วนร่วมหรือไม่?",
+        "answer": "ใช่ เพื่อเพิ่มหรือแก้ไขชิ้นส่วน คุณต้องมีบัญชีฟรี นี่ช่วยให้เราสามารถรับรองคุณภาพข้อมูลได้"
+      },
+      "how": {
+        "question": "ฉันจะเพิ่มชิ้นส่วนได้อย่างไร?",
+        "answer": "หลังจากเข้าสู่ระบบ คุณสามารถสร้างชิ้นส่วนใหม่ผ่านปุ่ม 'ชิ้นส่วนใหม่' ในภาพรวมชิ้นส่วน ผู้ดูแลจะตรวจสอบการมีส่วนร่วมของคุณก่อนเผยแพร่"
+      },
+      "quality": {
+        "question": "คุณภาพข้อมูลได้รับการรับรองอย่างไร?",
+        "answer": "การมีส่วนร่วมทั้งหมดจะได้รับการตรวจสอบโดยผู้ดูแลที่มีประสบการณ์ นอกจากนี้ผู้ใช้ที่ลงทะเบียนสามารถแนะนำการแก้ไขได้"
+      }
+    }
+  },
+  "contact": {
+    "title": "ติดต่อ",
+    "subtitle": "คุณมีคำถามหรือข้อเสนอแนะหรือไม่?",
+    "form": {
+      "heading": "ส่งข้อความ",
+      "name": "ชื่อ",
+      "email": "อีเมล",
+      "subject": "หัวเรื่อง",
+      "message": "ข้อความ",
+      "namePlaceholder": "สมชาย ใจดี",
+      "emailPlaceholder": "somchai@example.com",
+      "subjectPlaceholder": "หัวเรื่องข้อความของคุณ",
+      "messagePlaceholder": "ข้อความของคุณ...",
+      "demoNote": "หมายเหตุ: แบบฟอร์มติดต่อเป็นเดโมในขณะนี้ การรวมเข้ากับแบ็กเอนด์จะเกิดขึ้นในเฟสต่อไป สำหรับคำถามสำคัญ กรุณาใช้ GitHub หรือที่อยู่อีเมลที่ให้ไว้",
+      "send": "ส่งข้อความ",
+      "sending": "กำลังส่ง...",
+      "success": "ส่งข้อความสำเร็จ!",
+      "error": "ข้อผิดพลาดในการส่งข้อความ"
+    },
+    "alternatives": {
+      "title": "ตัวเลือกการติดต่ออื่นๆ",
+      "githubTitle": "GitHub Issues",
+      "github": "สร้าง issue บน GitHub",
+      "emailTitle": "อีเมล",
+      "email": "ส่งอีเมลถึงเรา"
+    },
+    "responseTime": {
+      "title": "เวลาตอบกลับ",
+      "description": "เนื่องจาก ElectroVault เป็นโครงการชุมชน คำถามจะได้รับการจัดการโดยอาสาสมัคร กรุณาอดทน - โดยทั่วไปเราจะตอบกลับภายใน 48 ชั่วโมง"
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "การสนับสนุนชุมชน",
+        "description": "ใช้ GitHub Discussions สำหรับคำถามทั่วไป"
+      },
+      "bugReports": {
+        "title": "รายงานข้อบกพร่อง",
+        "description": "รายงานปัญหาทางเทคนิคโดยตรงบน GitHub"
+      },
+      "partnerships": {
+        "title": "คำขอความร่วมมือ",
+        "description": "สำหรับคำถามเชิงธุรกิจ ใช้แบบฟอร์ม"
+      }
+    }
+  },
+  "imprint": {
+    "title": "ข้อมูลสำนักพิมพ์",
+    "responsible": "ผู้รับผิดชอบเนื้อหา",
+    "contact": "ติดต่อ",
+    "disclaimer": {
+      "title": "ข้อจำกัดความรับผิด",
+      "content": "แม้จะมีการควบคุมเนื้อหาอย่างระมัดระวัง เราไม่รับผิดชอบต่อเนื้อหาของลิงก์ภายนอก ผู้ดำเนินการของหน้าที่ลิงก์เท่านั้นที่รับผิดชอบต่อเนื้อหา",
+      "liability": "เนื้อหาของหน้าเหล่านี้ถูกสร้างขึ้นด้วยความระมัดระวังสูงสุด อย่างไรก็ตาม เราไม่สามารถรับประกันความถูกต้อง ความสมบูรณ์ และความทันสมัยของเนื้อหา"
+    },
+    "opensource": {
+      "title": "โอเพนซอร์ส",
+      "description": "ElectroVault เป็นโครงการโอเพนซอร์สภายใต้ MIT License โค้ดต้นฉบับสามารถดูได้บน GitHub"
+    }
+  },
+  "privacy": {
+    "title": "นโยบายความเป็นส่วนตัว",
+    "lastUpdated": "อัปเดตล่าสุด",
+    "intro": "เราให้ความสำคัญกับการปกป้องข้อมูลส่วนบุคคลของคุณอย่างจริงจัง นโยบายความเป็นส่วนตัวนี้แจ้งให้คุณทราบเกี่ยวกับลักษณะ ขอบเขต และวัตถุประสงค์ของการประมวลผลข้อมูลส่วนบุคคล",
+    "responsible": {
+      "title": "ผู้ควบคุมข้อมูล",
+      "description": "ผู้รับผิดชอบการประมวลผลข้อมูลบนเว็บไซต์นี้คือ:"
+    },
+    "collection": {
+      "title": "การรวบรวมและจัดเก็บข้อมูลส่วนบุคคล",
+      "description": "เมื่อคุณเข้าชมเว็บไซต์ของเรา ข้อมูลจะถูกรวบรวมโดยอัตโนมัติซึ่งเบราว์เซอร์ของคุณส่งมา:",
+      "data": "ที่อยู่ IP วันที่และเวลาเข้าถึง ประเภทและเวอร์ชันเบราว์เซอร์ ระบบปฏิบัติการที่ใช้ URL อ้างอิง"
+    },
+    "cookies": {
+      "title": "คุกกี้",
+      "description": "เว็บไซต์ของเราใช้คุกกี้ คุกกี้เป็นไฟล์ข้อความขนาดเล็กที่จัดเก็บบนอุปกรณ์ของคุณ",
+      "essential": "คุกกี้ที่จำเป็นทางเทคนิคสำหรับการยืนยันตัวตนและการจัดการเซสชัน",
+      "functional": "คุกกี้เชิงฟังก์ชันเพื่อปรับปรุงประสบการณ์ผู้ใช้"
+    },
+    "auth": {
+      "title": "การยืนยันตัวตน",
+      "description": "เราใช้ Keycloak สำหรับการลงทะเบียนและเข้าสู่ระบบ ข้อมูลต่อไปนี้จะถูกจัดเก็บ:",
+      "data": "ชื่อผู้ใช้ ที่อยู่อีเมล รูปโปรไฟล์ (ไม่บังคับ) บทบาทและสิทธิ์"
+    },
+    "rights": {
+      "title": "สิทธิ์ของคุณ",
+      "description": "คุณมีสิทธิ์ต่อไปนี้เกี่ยวกับข้อมูลส่วนบุคคลของคุณ:",
+      "access": "สิทธิ์ในการเข้าถึง",
+      "correction": "สิทธิ์ในการแก้ไข",
+      "deletion": "สิทธิ์ในการลบ",
+      "restriction": "สิทธิ์ในการจำกัดการประมวลผล",
+      "portability": "สิทธิ์ในการโอนย้ายข้อมูล",
+      "objection": "สิทธิ์ในการคัดค้าน"
+    },
+    "contact": {
+      "title": "ติดต่อสำหรับคำถามเกี่ยวกับความเป็นส่วนตัว",
+      "description": "หากคุณมีคำถามเกี่ยวกับความเป็นส่วนตัว คุณสามารถติดต่อเราได้ตลอดเวลา"
+    }
+  }
+}

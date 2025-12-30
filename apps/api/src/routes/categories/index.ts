@@ -11,6 +11,7 @@ import {
   CreateCategorySchema,
   UpdateCategorySchema,
   CategoryAttributesQuerySchema,
+  BulkReorderCategoriesSchema,
 } from '@electrovault/schemas';
 import { minioClient, BUCKET_NAME } from '../../lib/minio';
 import { NotFoundError, getImageContentType } from '../../lib';
@@ -41,6 +42,30 @@ export default async function categoryRoutes(
     const tree = await categoryService.getTree(query);
     return reply.send({ data: tree });
   });
+
+  /**
+   * POST /categories/reorder
+   * Kategorien innerhalb einer Eltern-Kategorie umsortieren (Moderator required)
+   * WICHTIG: Muss vor /:id Routen definiert werden!
+   */
+  app.post(
+    '/reorder',
+    {
+      onRequest: app.requireRole('MODERATOR'),
+    },
+    async (request, reply) => {
+      try {
+        const data = BulkReorderCategoriesSchema.parse(request.body);
+        const userId = request.user?.dbId;
+
+        await categoryService.reorderCategories(data, userId);
+        return reply.send({ success: true });
+      } catch (error) {
+        console.error('[Category Reorder] Error:', error);
+        throw error;
+      }
+    }
+  );
 
   /**
    * GET /categories/:id

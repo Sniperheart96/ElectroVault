@@ -19,7 +19,7 @@ export function Footer() {
               <span className="font-bold">ElectroVault</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Community-gepflegte Datenbank für elektrische Bauteile.
+              {t('tagline')}
             </p>
           </div>
 

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Session } from 'next-auth';
+import { useTranslations } from 'next-intl';
 import {
   LayoutDashboard,
   Package,
@@ -10,6 +11,7 @@ import {
   LogOut,
   CheckCircle,
   Home,
+  Download,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -21,29 +23,36 @@ interface AdminSidebarProps {
 }
 
 interface NavigationItem {
-  name: string;
+  nameKey: string;
   href: string;
   icon: typeof LayoutDashboard;
-  description?: string;
+  descriptionKey?: string;
   adminOnly?: boolean;
   moderatorOnly?: boolean;
 }
 
 const navigation: NavigationItem[] = [
   {
-    name: 'Dashboard',
+    nameKey: 'admin.sidebar.dashboard',
     href: '/admin',
     icon: LayoutDashboard,
   },
   {
-    name: 'Moderation',
+    nameKey: 'admin.sidebar.moderation',
     href: '/admin/moderation',
     icon: CheckCircle,
-    description: 'Freigabe-Queue',
+    descriptionKey: 'admin.sidebar.moderationDescription',
     moderatorOnly: true,
   },
   {
-    name: 'Benutzer',
+    nameKey: 'admin.sidebar.import',
+    href: '/admin/import',
+    icon: Download,
+    descriptionKey: 'admin.sidebar.importDescription',
+    adminOnly: true,
+  },
+  {
+    nameKey: 'admin.sidebar.users',
     href: '/admin/users',
     icon: Users,
     adminOnly: true,
@@ -52,6 +61,7 @@ const navigation: NavigationItem[] = [
 
 export function AdminSidebar({ session }: AdminSidebarProps) {
   const pathname = usePathname();
+  const t = useTranslations();
   const isAdmin = hasRole(session, Roles.ADMIN);
   const isModerator = hasRole(session, Roles.MODERATOR) || isAdmin;
 
@@ -72,7 +82,7 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
         <Link
           href="/"
           className="flex items-center justify-center rounded-md p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
-          title="Zur Hauptseite"
+          title={t('admin.sidebar.backToHome')}
         >
           <Home className="h-5 w-5" />
         </Link>
@@ -84,7 +94,7 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
-              key={item.name}
+              key={item.nameKey}
               href={item.href}
               className={cn(
                 'flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
@@ -94,7 +104,7 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
               )}
             >
               <item.icon className="h-5 w-5" />
-              <span>{item.name}</span>
+              <span>{t(item.nameKey)}</span>
             </Link>
           );
         })}
@@ -113,7 +123,7 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 overflow-hidden">
-            <p className="truncate text-sm font-medium">{session.user?.name || 'Benutzer'}</p>
+            <p className="truncate text-sm font-medium">{session.user?.name || t('admin.sidebar.user')}</p>
             <p className="truncate text-xs text-gray-500 dark:text-gray-400">
               {session.user?.roles?.[0] || 'viewer'}
             </p>
@@ -122,7 +132,7 @@ export function AdminSidebar({ session }: AdminSidebarProps) {
         <Button variant="ghost" size="sm" className="mt-3 w-full justify-start" asChild>
           <Link href="/auth/signout">
             <LogOut className="mr-2 h-4 w-4" />
-            Abmelden
+            {t('admin.sidebar.logout')}
           </Link>
         </Button>
       </div>

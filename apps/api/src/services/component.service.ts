@@ -5,6 +5,7 @@
 import { prisma, Prisma } from '@electrovault/database';
 import type {
   ComponentListQuery,
+  ComponentSearchQuery,
   CreateComponentInput,
   UpdateComponentInput,
   CreateAttributeValueInput,
@@ -14,6 +15,8 @@ import type {
   ComponentFull,
   ComponentListItem,
   LocalizedString,
+  AttributeFilter,
+  MultiSelectMode,
 } from '@electrovault/schemas';
 import { NotFoundError, ConflictError, BadRequestError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
@@ -88,9 +91,30 @@ export class ComponentService {
       }
     }
 
+    // Status-Filter bauen:
+    // - Wenn expliziter Status gesetzt: nur diesen Status zeigen
+    // - Wenn includeDrafts=true und userId gesetzt: eigene Entwuerfe + nicht-Entwuerfe zeigen
+    // - Sonst: keine Entwuerfe zeigen (Standard)
+    let statusCondition: object | undefined;
+    if (query.status) {
+      // Expliziter Status-Filter
+      statusCondition = { status: query.status };
+    } else if (query.includeDrafts && query.userId) {
+      // Zeige: alle nicht-DRAFT Komponenten ODER eigene DRAFTs
+      statusCondition = {
+        OR: [
+          { status: { not: 'DRAFT' } },
+          { status: 'DRAFT', createdById: query.userId },
+        ],
+      };
+    } else {
+      // Standard: keine Entwuerfe anzeigen
+      statusCondition = { status: { not: 'DRAFT' } };
+    }
+
     const where = {
       deletedAt: null, // Soft-Delete beachten
-      ...(query.status && { status: query.status }),
+      ...statusCondition,
       ...(categoryIds && { categoryId: { in: categoryIds } }),
       ...(query.createdById && { createdById: query.createdById }),
       ...(query.search && {
@@ -356,6 +380,10 @@ export class ComponentService {
 
   /**
    * Erstellt ein neues Component
+   *
+   * Status-Logik:
+   * - saveAsDraft=true -> Status = DRAFT (Entwurf, nur fuer Ersteller sichtbar)
+   * - saveAsDraft=false -> Status = PENDING (zur Moderation eingereicht)
    */
   async create(data: CreateComponentInput, userId?: string): Promise<ComponentWithCategory> {
     // Prüfen ob Kategorie existiert
@@ -378,9 +406,13 @@ export class ComponentService {
       }
     }
 
+    // Status wird automatisch gesetzt basierend auf saveAsDraft
+    const status = data.saveAsDraft ? 'DRAFT' : 'PENDING';
+
     // Validierung: name ist Pflicht wenn keine Label-Attribute in der Kategorie
+    // Bei Entwuerfen (DRAFT) ist Name nicht zwingend erforderlich
     const hasLabelAttrs = await this.categoryHasLabelAttributes(data.categoryId);
-    if (!hasLabelAttrs && !hasLocalizedContent(data.name as LocalizedString)) {
+    if (!data.saveAsDraft && !hasLabelAttrs && !hasLocalizedContent(data.name as LocalizedString)) {
       throw new BadRequestError(
         'Name is required with at least one language when category has no label attributes'
       );
@@ -415,7 +447,7 @@ export class ComponentService {
             shortDescription: toJsonValue(data.shortDescription),
             fullDescription: toJsonValue(data.fullDescription),
             commonAttributes: (data.commonAttributes as object) ?? {},
-            status: data.status,
+            status, // Automatisch gesetzt: DRAFT oder PENDING
             createdById: userId,
             lastEditedById: userId,
           },
@@ -445,6 +477,11 @@ export class ComponentService {
 
   /**
    * Aktualisiert ein Component
+   *
+   * Status-Logik:
+   * - saveAsDraft=true -> Status = DRAFT
+   * - saveAsDraft=false -> Status = PENDING (nur wenn aktuell DRAFT)
+   * - Status aendert sich nicht bei bereits PENDING/PUBLISHED/ARCHIVED
    */
   async update(
     id: string,
@@ -460,8 +497,23 @@ export class ComponentService {
       throw new NotFoundError('Component', id);
     }
 
+    // Status-Logik: Nur DRAFT -> PENDING oder zurueck ist erlaubt
+    let newStatus: string | undefined;
+    if (data.saveAsDraft !== undefined) {
+      if (data.saveAsDraft) {
+        // Als Entwurf speichern -> immer DRAFT
+        newStatus = 'DRAFT';
+      } else if (existing.status === 'DRAFT') {
+        // Regulaer speichern und aktuell DRAFT -> PENDING
+        newStatus = 'PENDING';
+      }
+      // Bei PENDING/PUBLISHED/ARCHIVED bleibt der Status unveraendert
+    }
+
     // Validierung: Wenn name explizit auf leer gesetzt wird, muss Kategorie Label-Attribute haben
-    if (data.name !== undefined && !hasLocalizedContent(data.name as LocalizedString)) {
+    // Bei Entwuerfen ist Name nicht zwingend
+    const isOrWillBeDraft = newStatus === 'DRAFT' || (newStatus === undefined && existing.status === 'DRAFT');
+    if (!isOrWillBeDraft && data.name !== undefined && !hasLocalizedContent(data.name as LocalizedString)) {
       const hasLabelAttrs = await this.categoryHasLabelAttributes(existing.categoryId);
       if (!hasLabelAttrs) {
         throw new BadRequestError(
@@ -518,7 +570,7 @@ export class ComponentService {
           shortDescription: toJsonValue(data.shortDescription),
           fullDescription: toJsonValue(data.fullDescription),
           commonAttributes: data.commonAttributes ? (data.commonAttributes as object) : undefined,
-          status: data.status,
+          status: newStatus, // Automatisch gesetzt basierend auf saveAsDraft
           lastEditedById: userId,
         },
         include: {
@@ -811,6 +863,665 @@ export class ComponentService {
       select: { slug: true },
     });
     return components.map((c) => c.slug);
+  }
+
+  // ============================================
+  // USER DASHBOARD METHODS
+  // ============================================
+
+  /**
+   * Gibt Statistiken fuer einen User zurueck
+   */
+  async getUserStats(userId: string) {
+    const [
+      totalComponents,
+      draftComponents,
+      pendingComponents,
+      publishedComponents,
+      archivedComponents,
+      totalParts,
+    ] = await Promise.all([
+      prisma.coreComponent.count({
+        where: { createdById: userId, deletedAt: null },
+      }),
+      prisma.coreComponent.count({
+        where: { createdById: userId, status: 'DRAFT', deletedAt: null },
+      }),
+      prisma.coreComponent.count({
+        where: { createdById: userId, status: 'PENDING', deletedAt: null },
+      }),
+      prisma.coreComponent.count({
+        where: { createdById: userId, status: 'PUBLISHED', deletedAt: null },
+      }),
+      prisma.coreComponent.count({
+        where: { createdById: userId, status: 'ARCHIVED', deletedAt: null },
+      }),
+      prisma.manufacturerPart.count({
+        where: { createdById: userId, deletedAt: null },
+      }),
+    ]);
+
+    return {
+      components: {
+        total: totalComponents,
+        draft: draftComponents,
+        pending: pendingComponents,
+        published: publishedComponents,
+        archived: archivedComponents,
+      },
+      parts: totalParts,
+    };
+  }
+
+  /**
+   * Gibt Components eines Users zurueck (gefiltert nach Status)
+   */
+  async getUserComponents(userId: string, query: { status?: string; limit?: number }) {
+    const components = await prisma.coreComponent.findMany({
+      where: {
+        createdById: userId,
+        deletedAt: null,
+        ...(query.status && { status: query.status }),
+      },
+      take: query.limit || 20,
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+        _count: {
+          select: { manufacturerParts: true },
+        },
+      },
+    });
+
+    return components.map((c) => ({
+      id: c.id,
+      name: c.name as LocalizedString,
+      slug: c.slug,
+      series: c.series,
+      shortDescription: c.shortDescription as LocalizedString | null,
+      status: c.status,
+      category: {
+        id: c.category.id,
+        name: c.category.name as LocalizedString,
+        slug: c.category.slug,
+      },
+      manufacturerPartsCount: c._count.manufacturerParts,
+      createdAt: c.createdAt,
+      updatedAt: c.updatedAt,
+    }));
+  }
+
+  /**
+   * Gibt Entwuerfe (DRAFT) eines Users zurueck
+   */
+  async getUserDrafts(userId: string, limit = 10) {
+    return this.getUserComponents(userId, { status: 'DRAFT', limit });
+  }
+
+  // ============================================
+  // ATTRIBUTE-BASIERTE FILTERUNG
+  // ============================================
+
+  /**
+   * Baut Prisma-Filterbedingungen für ein AttributeFilter
+   * Wird für beide Tabellen verwendet (ComponentAttributeValue und PartAttributeValue)
+   */
+  private buildAttributeValueCondition(
+    filter: AttributeFilter
+  ): Record<string, unknown> | null {
+    console.log('[FilterDebug] Building condition for filter:', JSON.stringify(filter, null, 2));
+
+    const baseCondition = { definitionId: filter.definitionId };
+
+    // Null-Checks für numerische Operatoren
+    const numericOperators = ['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'between', 'withinRange'];
+    if (numericOperators.includes(filter.operator)) {
+      if (filter.value === undefined || filter.value === null) {
+        console.error('[ComponentService] Numeric filter missing value', { filter });
+        return null;
+      }
+      if (filter.operator === 'between' && (filter.valueTo === undefined || filter.valueTo === null)) {
+        console.error('[ComponentService] "between" filter missing valueTo', { filter });
+        return null;
+      }
+    }
+
+    switch (filter.operator) {
+      // Numerische Operatoren
+      case 'eq':
+        return {
+          ...baseCondition,
+          normalizedValue: { equals: filter.value as number },
+        };
+      case 'ne':
+        return {
+          ...baseCondition,
+          normalizedValue: { not: filter.value as number },
+        };
+      case 'gt':
+        return {
+          ...baseCondition,
+          normalizedValue: { gt: filter.value as number },
+        };
+      case 'gte':
+        return {
+          ...baseCondition,
+          normalizedValue: { gte: filter.value as number },
+        };
+      case 'lt':
+        return {
+          ...baseCondition,
+          normalizedValue: { lt: filter.value as number },
+        };
+      case 'lte':
+        return {
+          ...baseCondition,
+          normalizedValue: { lte: filter.value as number },
+        };
+      case 'between':
+        if (filter.valueTo === undefined) return null;
+        return {
+          ...baseCondition,
+          normalizedValue: {
+            gte: filter.value as number,
+            lte: filter.valueTo as number,
+          },
+        };
+
+      // String-Operator
+      case 'contains':
+        return {
+          ...baseCondition,
+          stringValue: {
+            contains: filter.value as string,
+            mode: 'insensitive',
+          },
+        };
+
+      // Boolean-Operatoren (normalizedValue: 1 = true, 0 = false)
+      case 'isTrue':
+        return {
+          ...baseCondition,
+          normalizedValue: { equals: 1 },
+        };
+      case 'isFalse':
+        return {
+          ...baseCondition,
+          normalizedValue: { equals: 0 },
+        };
+
+      // Range-Operator: Benutzer-Wert muss im gespeicherten Bereich liegen
+      case 'withinRange':
+        return {
+          ...baseCondition,
+          normalizedMin: { lte: filter.value as number },
+          normalizedMax: { gte: filter.value as number },
+        };
+
+      // SELECT-Operatoren: stringValue enthält genau einen der Werte
+      case 'in': {
+        if (!Array.isArray(filter.value)) {
+          console.error('[ComponentService] "in" operator requires array', { filter });
+          return null;
+        }
+        return {
+          ...baseCondition,
+          stringValue: { in: filter.value },
+        };
+      }
+      case 'notIn': {
+        if (!Array.isArray(filter.value)) {
+          console.error('[ComponentService] "notIn" operator requires array', { filter });
+          return null;
+        }
+        return {
+          ...baseCondition,
+          stringValue: { notIn: filter.value },
+        };
+      }
+
+      // MULTISELECT-Operatoren: stringValue ist kommasepariert (z.B. "NPN,PNP,BJT")
+      // hasAny: mindestens einer der Werte muss enthalten sein
+      case 'hasAny': {
+        const values = filter.value as string[];
+        if (!Array.isArray(values) || values.length === 0) {
+          console.error('[ComponentService] "hasAny" requires non-empty array', { filter });
+          return null;
+        }
+        // Exakter Match: Wert allein, am Anfang, am Ende oder zwischen Kommas
+        return {
+          ...baseCondition,
+          OR: values.map((v) => ({
+            OR: [
+              { stringValue: { equals: v } },              // Exakt (nur dieser Wert)
+              { stringValue: { startsWith: `${v},` } },    // Am Anfang: "NPN,..."
+              { stringValue: { endsWith: `,${v}` } },      // Am Ende: "...,NPN"
+              { stringValue: { contains: `,${v},` } },     // In der Mitte: "...,NPN,..."
+            ],
+          })),
+        };
+      }
+
+      // hasAll: alle Werte müssen enthalten sein
+      case 'hasAll': {
+        const values = filter.value as string[];
+        if (!Array.isArray(values) || values.length === 0) {
+          console.error('[ComponentService] "hasAll" requires non-empty array', { filter });
+          return null;
+        }
+        // Jeder Wert muss exakt vorhanden sein (nicht als Teilstring)
+        return {
+          ...baseCondition,
+          AND: values.map((v) => ({
+            OR: [
+              { stringValue: { equals: v } },
+              { stringValue: { startsWith: `${v},` } },
+              { stringValue: { endsWith: `,${v}` } },
+              { stringValue: { contains: `,${v},` } },
+            ],
+          })),
+        };
+      }
+
+      default:
+        console.log('[FilterDebug] Unknown operator:', filter.operator);
+        return null;
+    }
+  }
+
+  /**
+   * Gruppiert Filter nach Scope der AttributeDefinition
+   */
+  private async groupFiltersByScope(filters: AttributeFilter[]): Promise<{
+    componentFilters: AttributeFilter[];
+    partFilters: AttributeFilter[];
+    bothFilters: AttributeFilter[];
+  }> {
+    // Alle Definition-IDs sammeln
+    const definitionIds = filters.map(f => f.definitionId);
+
+    // Scope für jede Definition laden
+    const definitions = await prisma.attributeDefinition.findMany({
+      where: { id: { in: definitionIds } },
+      select: { id: true, scope: true, name: true },
+    });
+
+    const scopeMap = new Map(definitions.map(d => [d.id, d.scope]));
+
+    console.log('[FilterDebug] Definition scopes:', definitions.map(d => ({
+      id: d.id,
+      name: d.name,
+      scope: d.scope,
+    })));
+
+    const componentFilters: AttributeFilter[] = [];
+    const partFilters: AttributeFilter[] = [];
+    const bothFilters: AttributeFilter[] = [];
+
+    for (const filter of filters) {
+      const scope = scopeMap.get(filter.definitionId);
+      switch (scope) {
+        case 'COMPONENT':
+          componentFilters.push(filter);
+          break;
+        case 'PART':
+          partFilters.push(filter);
+          break;
+        case 'BOTH':
+          bothFilters.push(filter);
+          break;
+        default:
+          // Unbekannter Scope - als PART behandeln (sicherer Default)
+          console.warn('[FilterDebug] Unknown scope for definition', filter.definitionId);
+          partFilters.push(filter);
+      }
+    }
+
+    console.log('[FilterDebug] Grouped filters:', {
+      componentFilters: componentFilters.length,
+      partFilters: partFilters.length,
+      bothFilters: bothFilters.length,
+    });
+
+    return { componentFilters, partFilters, bothFilters };
+  }
+
+  /**
+   * 2-Ebenen-Filterlogik:
+   *
+   * 1. COMPONENT-Scope: Filtert auf CoreComponent.attributeValues
+   * 2. PART-Scope: Filtert auf ManufacturerPart.attributeValues
+   * 3. BOTH-Scope: Part-Wert überschreibt Component-Wert
+   *    - Wenn Part den Wert hat → Part-Wert wird geprüft
+   *    - Wenn Part den Wert NICHT hat → Component-Wert wird geprüft
+   *
+   * Ein Component wird angezeigt wenn:
+   * - Alle COMPONENT-Filter erfüllt sind UND
+   * - Mindestens 1 Part alle PART-Filter UND alle BOTH-Filter erfüllt
+   *   (wobei BOTH vom Part oder Component kommen kann)
+   */
+  private async findMatchingComponents(
+    filters: AttributeFilter[],
+    categoryIds?: string[]
+  ): Promise<string[]> {
+    console.log('[FilterDebug] findMatchingComponents called with:', {
+      filterCount: filters.length,
+      filters: filters.map(f => ({ definitionId: f.definitionId, operator: f.operator, value: f.value })),
+      categoryIds,
+    });
+
+    if (filters.length === 0) {
+      return [];
+    }
+
+    // Filter nach Scope gruppieren
+    const { componentFilters, partFilters, bothFilters } = await this.groupFiltersByScope(filters);
+
+    // Phase 1: Component-Filter anwenden (COMPONENT scope)
+    let componentCandidates: string[] | null = null;
+
+    if (componentFilters.length > 0) {
+      const componentConditions = componentFilters
+        .map(f => this.buildAttributeValueCondition(f))
+        .filter((c): c is Record<string, unknown> => c !== null);
+
+      if (componentConditions.length > 0) {
+        const matchingComponents = await prisma.coreComponent.findMany({
+          where: {
+            deletedAt: null,
+            ...(categoryIds && { categoryId: { in: categoryIds } }),
+            AND: componentConditions.map(condition => ({
+              attributeValues: {
+                some: condition as Prisma.ComponentAttributeValueWhereInput,
+              },
+            })),
+          },
+          select: { id: true },
+        });
+        componentCandidates = matchingComponents.map(c => c.id);
+
+        console.log('[FilterDebug] Phase 1 - Component filter results:', componentCandidates.length);
+
+        if (componentCandidates.length === 0) {
+          return []; // Keine Components erfüllen die Component-Filter
+        }
+      }
+    }
+
+    // Phase 2: Part-Filter + Both-Filter anwenden
+    if (partFilters.length === 0 && bothFilters.length === 0) {
+      // Nur Component-Filter vorhanden
+      if (componentCandidates) {
+        return componentCandidates;
+      }
+      // Keine Filter überhaupt - sollte nicht passieren, aber sicherheitshalber
+      return [];
+    }
+
+    // Part-Filter Bedingungen bauen
+    const partConditions = partFilters
+      .map(f => this.buildAttributeValueCondition(f))
+      .filter((c): c is Record<string, unknown> => c !== null);
+
+    // BOTH-Filter: Komplex - entweder Part hat Wert, oder Component hat Wert
+    // Für jeden BOTH-Filter erstellen wir eine OR-Bedingung
+    const bothConditionsForPart = bothFilters
+      .map(f => this.buildAttributeValueCondition(f))
+      .filter((c): c is Record<string, unknown> => c !== null);
+
+    // Parts finden die ALLE Part-Filter UND ALLE Both-Filter erfüllen
+    // Bei BOTH: Part muss den Wert haben ODER Component muss ihn haben (Fallback)
+    const partWhereClause: Prisma.ManufacturerPartWhereInput = {
+      deletedAt: null,
+      coreComponent: {
+        deletedAt: null,
+        ...(categoryIds && { categoryId: { in: categoryIds } }),
+        ...(componentCandidates && { id: { in: componentCandidates } }),
+      },
+    };
+
+    // Part-Filter: Part muss alle erfüllen
+    if (partConditions.length > 0) {
+      partWhereClause.AND = partConditions.map(condition => ({
+        attributeValues: {
+          some: condition as Prisma.PartAttributeValueWhereInput,
+        },
+      }));
+    }
+
+    // BOTH-Filter: Komplexe Logik mit Vererbung
+    // Für jeden BOTH-Filter: Part hat Wert ODER (Part hat keinen Wert UND Component hat Wert)
+    if (bothConditionsForPart.length > 0) {
+      const bothAndConditions = bothFilters.map((filter, index) => {
+        const condition = bothConditionsForPart[index];
+        if (!condition) return null;
+
+        // Part hat den Wert direkt
+        // ODER: Component hat den Wert (Fallback wenn Part nicht)
+        return {
+          OR: [
+            // Option 1: Part hat den Attributwert
+            {
+              attributeValues: {
+                some: condition as Prisma.PartAttributeValueWhereInput,
+              },
+            },
+            // Option 2: Part hat KEINEN Wert für dieses Attribut,
+            // aber Component hat passenden Wert
+            {
+              AND: [
+                {
+                  attributeValues: {
+                    none: { definitionId: filter.definitionId },
+                  },
+                },
+                {
+                  coreComponent: {
+                    attributeValues: {
+                      some: condition as Prisma.ComponentAttributeValueWhereInput,
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        };
+      }).filter((c): c is NonNullable<typeof c> => c !== null);
+
+      if (bothAndConditions.length > 0) {
+        partWhereClause.AND = [
+          ...(partWhereClause.AND || []),
+          ...bothAndConditions,
+        ];
+      }
+    }
+
+    console.log('[FilterDebug] Phase 2 - Part WHERE clause:', JSON.stringify(partWhereClause, null, 2));
+
+    // Parts finden und Component-IDs extrahieren
+    const matchingParts = await prisma.manufacturerPart.findMany({
+      where: partWhereClause,
+      select: { coreComponentId: true },
+      distinct: ['coreComponentId'],
+    });
+
+    const resultIds = matchingParts.map(p => p.coreComponentId);
+
+    console.log('[FilterDebug] Phase 2 - Matching parts count:', matchingParts.length);
+    console.log('[FilterDebug] Final result component IDs:', resultIds);
+
+    return resultIds;
+  }
+
+  /**
+   * Erweiterte Suche mit Attribut-Filtern
+   * Filtert auf ManufacturerPart-Ebene, gibt aber CoreComponents zurück
+   */
+  async searchWithFilters(query: ComponentSearchQuery) {
+    console.log('[FilterDebug] searchWithFilters called with query:', {
+      attributeFilters: query.attributeFilters,
+      categoryId: query.categoryId,
+      categorySlug: query.categorySlug,
+      search: query.search,
+      page: query.page,
+      limit: query.limit,
+    });
+
+    // Wenn keine Attribut-Filter, normale list() verwenden
+    if (!query.attributeFilters || query.attributeFilters.length === 0) {
+      console.log('[FilterDebug] No attribute filters - using normal list()');
+      return this.list(query);
+    }
+
+    const { skip, take } = getPrismaOffsets(query);
+
+    // Kategorie-IDs ermitteln (wie in list())
+    let categoryIds: string[] | undefined;
+    if (query.categoryId) {
+      if (query.includeSubcategories) {
+        const descendants = await categoryService.getDescendantIds(query.categoryId);
+        categoryIds = [query.categoryId, ...descendants];
+      } else {
+        categoryIds = [query.categoryId];
+      }
+    }
+
+    if (query.categorySlug && !query.categoryId) {
+      const category = await categoryService.getBySlug(query.categorySlug);
+      if (query.includeSubcategories) {
+        const descendants = await categoryService.getDescendantIds(category.id);
+        categoryIds = [category.id, ...descendants];
+      } else {
+        categoryIds = [category.id];
+      }
+    }
+
+    // Finde Components mit 2-Ebenen-Filterlogik (Component + Part + BOTH mit Vererbung)
+    const matchingComponentIds = await this.findMatchingComponents(
+      query.attributeFilters,
+      categoryIds
+    );
+
+    if (matchingComponentIds.length === 0) {
+      return createPaginatedResponse([], query.page, query.limit, 0);
+    }
+
+    // Status-Filter bauen (wie in list())
+    let statusCondition: object | undefined;
+    if (query.status) {
+      statusCondition = { status: query.status };
+    } else if (query.includeDrafts && query.userId) {
+      statusCondition = {
+        OR: [
+          { status: { not: 'DRAFT' } },
+          { status: 'DRAFT', createdById: query.userId },
+        ],
+      };
+    } else {
+      statusCondition = { status: { not: 'DRAFT' } };
+    }
+
+    const where = {
+      id: { in: matchingComponentIds },
+      deletedAt: null,
+      ...statusCondition,
+      ...(query.search && {
+        OR: [
+          { slug: { contains: query.search.toLowerCase(), mode: 'insensitive' as const } },
+          { series: { contains: query.search, mode: 'insensitive' as const } },
+          {
+            name: {
+              path: ['de'],
+              string_contains: query.search,
+            },
+          },
+          {
+            name: {
+              path: ['en'],
+              string_contains: query.search,
+            },
+          },
+        ],
+      }),
+    };
+
+    const orderBy = query.sortBy
+      ? { [query.sortBy]: query.sortOrder }
+      : { updatedAt: 'desc' as const };
+
+    const [components, total] = await Promise.all([
+      prisma.coreComponent.findMany({
+        where,
+        skip,
+        take,
+        orderBy,
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          attributeValues: {
+            include: {
+              definition: true,
+            },
+            orderBy: {
+              definition: { sortOrder: 'asc' },
+            },
+          },
+          _count: {
+            select: { manufacturerParts: true },
+          },
+        },
+      }),
+      prisma.coreComponent.count({ where }),
+    ]);
+
+    // Transform zu ComponentListItem (wie in list())
+    const items: ComponentListItem[] = components.map((c) => ({
+      id: c.id,
+      name: c.name as LocalizedString,
+      slug: c.slug,
+      series: c.series,
+      shortDescription: c.shortDescription as LocalizedString | null,
+      status: c.status,
+      category: {
+        id: c.category.id,
+        name: c.category.name as LocalizedString,
+        slug: c.category.slug,
+      },
+      attributeValues: c.attributeValues.map((av) => ({
+        id: av.id,
+        definitionId: av.definitionId,
+        normalizedValue: av.normalizedValue ? Number(av.normalizedValue) : null,
+        normalizedMin: av.normalizedMin ? Number(av.normalizedMin) : null,
+        normalizedMax: av.normalizedMax ? Number(av.normalizedMax) : null,
+        prefix: av.prefix,
+        stringValue: av.stringValue,
+        definition: {
+          id: av.definition.id,
+          name: av.definition.name,
+          displayName: av.definition.displayName as LocalizedString,
+          unit: av.definition.unit,
+          dataType: av.definition.dataType,
+          scope: av.definition.scope,
+          isLabel: av.definition.isLabel,
+        },
+      })),
+      manufacturerPartsCount: c._count.manufacturerParts,
+      createdAt: c.createdAt,
+      updatedAt: c.updatedAt,
+    }));
+
+    return createPaginatedResponse(items, query.page, query.limit, total);
   }
 }
 

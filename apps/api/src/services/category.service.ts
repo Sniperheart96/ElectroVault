@@ -13,6 +13,7 @@ import type {
   CategoryPath,
   CreateCategoryInput,
   UpdateCategoryInput,
+  BulkReorderCategoriesInput,
 } from '@electrovault/schemas';
 import { NotFoundError, ConflictError } from '../lib/errors';
 import { getPrismaOffsets, createPaginatedResponse } from '../lib/pagination';
@@ -44,7 +45,6 @@ export class CategoryService {
     const where = {
       ...(query.level !== undefined && { level: query.level }),
       ...(query.parentId !== undefined && { parentId: query.parentId }),
-      ...(query.isActive !== undefined && { isActive: query.isActive }),
       ...(query.search && {
         OR: [
           {
@@ -129,22 +129,15 @@ export class CategoryService {
    * Gibt den Kategorie-Baum zurück
    */
   async getTree(query: CategoryTreeQuery): Promise<CategoryTreeNode[]> {
-    // Alle relevanten Kategorien abrufen
-    const where = {
-      ...(query.rootId && { id: query.rootId }),
-      ...(!query.includeInactive && { isActive: true }),
-    };
-
     // Wenn rootId angegeben, nur ab dieser Kategorie
     if (query.rootId) {
-      return this.buildTreeFromRoot(query.rootId, query.maxDepth, query.includeInactive);
+      return this.buildTreeFromRoot(query.rootId, query.maxDepth);
     }
 
     // Ansonsten alle Root-Kategorien (Level 1)
     const rootCategories = await prisma.categoryTaxonomy.findMany({
       where: {
         parentId: null,
-        ...(!query.includeInactive && { isActive: true }),
       },
       orderBy: { sortOrder: 'asc' },
     });
@@ -152,7 +145,7 @@ export class CategoryService {
     // Rekursiv Kinder laden
     const tree = await Promise.all(
       rootCategories.map((cat) =>
-        this.buildCategoryNode(cat, 1, query.maxDepth, query.includeInactive)
+        this.buildCategoryNode(cat, 1, query.maxDepth)
       )
     );
 
@@ -164,8 +157,7 @@ export class CategoryService {
    */
   private async buildTreeFromRoot(
     rootId: string,
-    maxDepth: number,
-    includeInactive: boolean
+    maxDepth: number
   ): Promise<CategoryTreeNode[]> {
     const root = await prisma.categoryTaxonomy.findUnique({
       where: { id: rootId },
@@ -175,7 +167,7 @@ export class CategoryService {
       throw new NotFoundError('Category', rootId);
     }
 
-    const node = await this.buildCategoryNode(root, 1, maxDepth, includeInactive);
+    const node = await this.buildCategoryNode(root, 1, maxDepth);
     return [node];
   }
 
@@ -185,15 +177,13 @@ export class CategoryService {
   private async buildCategoryNode(
     category: PrismaCategory,
     currentDepth: number,
-    maxDepth: number,
-    includeInactive: boolean
+    maxDepth: number
   ): Promise<CategoryTreeNode> {
     const children: PrismaCategory[] =
       currentDepth < maxDepth
         ? await prisma.categoryTaxonomy.findMany({
             where: {
               parentId: category.id,
-              ...(!includeInactive && { isActive: true }),
             },
             orderBy: { sortOrder: 'asc' },
           })
@@ -201,7 +191,7 @@ export class CategoryService {
 
     const childNodes = await Promise.all(
       children.map((child) =>
-        this.buildCategoryNode(child, currentDepth + 1, maxDepth, includeInactive)
+        this.buildCategoryNode(child, currentDepth + 1, maxDepth)
       )
     );
 
@@ -213,7 +203,6 @@ export class CategoryService {
       description: category.description as CategoryBase['description'],
       iconUrl: category.iconUrl,
       sortOrder: category.sortOrder,
-      isActive: category.isActive,
       parentId: category.parentId,
       createdAt: category.createdAt,
       updatedAt: category.updatedAt,
@@ -285,7 +274,7 @@ export class CategoryService {
 
     const collectDescendants = async (parentId: string) => {
       const children = await prisma.categoryTaxonomy.findMany({
-        where: { parentId, isActive: true },
+        where: { parentId },
         select: { id: true },
       });
 
@@ -334,6 +323,13 @@ export class CategoryService {
 
     while (retryCount < maxRetries) {
       try {
+        // Bestimme nächste sortOrder für Geschwister
+        const maxSortOrder = await prisma.categoryTaxonomy.aggregate({
+          where: { parentId: data.parentId || null },
+          _max: { sortOrder: true },
+        });
+        const nextSortOrder = (maxSortOrder._max.sortOrder ?? -1) + 1;
+
         const category = await prisma.categoryTaxonomy.create({
           data: {
             name: data.name,
@@ -342,8 +338,7 @@ export class CategoryService {
             parentId: data.parentId || null,
             description: toJsonValue(data.description),
             iconUrl: data.iconUrl || null,
-            sortOrder: data.sortOrder ?? 0,
-            isActive: data.isActive ?? true,
+            sortOrder: nextSortOrder,
           },
         });
 
@@ -378,6 +373,7 @@ export class CategoryService {
 
   /**
    * Aktualisiert eine Kategorie
+   * Hinweis: parentId und sortOrder können nach Erstellung nicht mehr geändert werden
    */
   async update(id: string, data: UpdateCategoryInput, userId?: string): Promise<CategoryBase> {
     const existing = await prisma.categoryTaxonomy.findUnique({
@@ -388,36 +384,12 @@ export class CategoryService {
       throw new NotFoundError('Category', id);
     }
 
-    // Prüfe auf zirkuläre Referenzen wenn parentId geändert wird
-    if (data.parentId !== undefined && data.parentId !== existing.parentId) {
-      if (data.parentId) {
-        // Prüfe ob neue Parent eine Unterkategorie dieser Kategorie ist
-        const descendants = await this.getDescendantIds(id);
-        if (descendants.includes(data.parentId)) {
-          throw new ConflictError('Cannot set a descendant category as parent');
-        }
-
-        // Prüfe Level
-        const parent = await prisma.categoryTaxonomy.findUnique({
-          where: { id: data.parentId },
-          select: { level: true },
-        });
-        if (!parent) {
-          throw new NotFoundError('Parent Category', data.parentId);
-        }
-        // Level wird beim Update nicht automatisch angepasst - nur für neue Kategorien
-      }
-    }
-
     const category = await prisma.categoryTaxonomy.update({
       where: { id },
       data: {
         ...(data.name && { name: data.name }),
-        ...(data.parentId !== undefined && { parentId: data.parentId }),
         ...(data.description !== undefined && { description: toJsonValue(data.description) }),
         ...(data.iconUrl !== undefined && { iconUrl: data.iconUrl }),
-        ...(data.sortOrder !== undefined && { sortOrder: data.sortOrder }),
-        ...(data.isActive !== undefined && { isActive: data.isActive }),
       },
     });
 
@@ -474,6 +446,84 @@ export class CategoryService {
         userId
       );
     }
+  }
+
+  /**
+   * Sortiert Kategorien innerhalb einer Eltern-Kategorie neu
+   */
+  async reorderCategories(data: BulkReorderCategoriesInput, userId?: string): Promise<void> {
+    const { parentId, categories } = data;
+
+    console.log('[CategoryService.reorderCategories] Starting with:', {
+      parentId,
+      categoriesCount: categories.length,
+      userId,
+    });
+
+    // Normalisiere parentId: null und undefined werden gleich behandelt
+    const normalizedParentId = parentId ?? null;
+
+    // Prüfe ob alle Kategorien zum gleichen Parent gehören
+    const categoryIds = categories.map((c) => c.id);
+    console.log('[CategoryService.reorderCategories] Looking for categories:', categoryIds);
+
+    const existingCategories = await prisma.categoryTaxonomy.findMany({
+      where: { id: { in: categoryIds } },
+      select: { id: true, parentId: true },
+    });
+
+    console.log('[CategoryService.reorderCategories] Found categories:', existingCategories);
+
+    if (existingCategories.length !== categoryIds.length) {
+      const foundIds = new Set(existingCategories.map((c) => c.id));
+      const missingIds = categoryIds.filter((id) => !foundIds.has(id));
+      console.error('[CategoryService.reorderCategories] Missing categories:', missingIds);
+      throw new NotFoundError('Categories', missingIds.join(', '));
+    }
+
+    // Prüfe ob alle Kategorien den gleichen Parent haben
+    const wrongParentCategories = existingCategories.filter((c) => {
+      const catParentId = c.parentId ?? null;
+      return catParentId !== normalizedParentId;
+    });
+    if (wrongParentCategories.length > 0) {
+      console.error('[CategoryService.reorderCategories] Wrong parent categories:', wrongParentCategories);
+      throw new ConflictError('All categories must belong to the same parent');
+    }
+
+    // Bulk-Update in Transaktion
+    console.log('[CategoryService.reorderCategories] Updating sort orders...');
+    await prisma.$transaction(
+      categories.map((cat) =>
+        prisma.categoryTaxonomy.update({
+          where: { id: cat.id },
+          data: { sortOrder: cat.sortOrder },
+        })
+      )
+    );
+
+    console.log('[CategoryService.reorderCategories] Sort orders updated successfully');
+
+    // Audit Log - nur wenn parentId eine gültige UUID ist
+    // Bei Root-Level (parentId === null) verwenden wir die erste Kategorie-ID als Referenz
+    if (userId) {
+      const auditEntityId = normalizedParentId || categories[0]?.id;
+      if (auditEntityId) {
+        console.log('[CategoryService.reorderCategories] Creating audit log for entityId:', auditEntityId);
+        await auditService.log({
+          action: 'UPDATE',
+          entityType: 'CATEGORY',
+          entityId: auditEntityId,
+          newData: {
+            reorderedCategories: categories,
+            parentId: normalizedParentId,
+          },
+          userId,
+        });
+      }
+    }
+
+    console.log('[CategoryService.reorderCategories] Completed successfully');
   }
 
   /**

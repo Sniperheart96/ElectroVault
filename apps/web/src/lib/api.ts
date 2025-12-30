@@ -73,6 +73,59 @@ export class ApiClient {
   }
 
   // ============================================
+  // Generic HTTP Methods (for new endpoints)
+  // ============================================
+
+  /**
+   * Generic GET request
+   */
+  async get<T = unknown>(endpoint: string, params?: Record<string, unknown>): Promise<ApiResponse<T>> {
+    let url = endpoint;
+    if (params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.set(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url = `${endpoint}?${queryString}`;
+      }
+    }
+    return this.request<ApiResponse<T>>(url);
+  }
+
+  /**
+   * Generic POST request
+   */
+  async post<T = unknown>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
+    return this.request<ApiResponse<T>>(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  /**
+   * Generic PUT request
+   */
+  async put<T = unknown>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
+    return this.request<ApiResponse<T>>(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  /**
+   * Generic DELETE request
+   */
+  async delete<T = void>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'DELETE',
+    });
+  }
+
+  // ============================================
   // Categories
   // ============================================
 
@@ -113,6 +166,7 @@ export class ApiClient {
     limit?: number;
     status?: string;
     includeAcquired?: boolean;
+    includeDrafts?: boolean;
   }): Promise<ApiResponse<Manufacturer[]>> {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set('page', params.page.toString());
@@ -120,6 +174,9 @@ export class ApiClient {
     if (params?.status) searchParams.set('status', params.status);
     if (params?.includeAcquired !== undefined) {
       searchParams.set('includeAcquired', params.includeAcquired.toString());
+    }
+    if (params?.includeDrafts !== undefined) {
+      searchParams.set('includeDrafts', params.includeDrafts.toString());
     }
 
     const query = searchParams.toString();
@@ -180,6 +237,69 @@ export class ApiClient {
     });
   }
 
+  async reorderCategories(
+    parentId: string | null,
+    categories: Array<{ id: string; sortOrder: number }>
+  ): Promise<{ success: boolean }> {
+    return this.request<{ success: boolean }>('/categories/reorder', {
+      method: 'POST',
+      body: JSON.stringify({ parentId, categories }),
+    });
+  }
+
+  // ============================================
+  // Package Groups
+  // ============================================
+
+  async getPackageGroups(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<PackageGroup[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<PackageGroup[]>>(`/package-groups${query ? `?${query}` : ''}`);
+  }
+
+  async getAllPackageGroups(): Promise<ApiResponse<PackageGroup[]>> {
+    return this.request<ApiResponse<PackageGroup[]>>('/package-groups/all');
+  }
+
+  async getPackageGroupById(id: string): Promise<ApiResponse<PackageGroup>> {
+    return this.request<ApiResponse<PackageGroup>>(`/package-groups/${id}`);
+  }
+
+  async createPackageGroup(data: unknown): Promise<ApiResponse<PackageGroup>> {
+    return this.request<ApiResponse<PackageGroup>>('/package-groups', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updatePackageGroup(id: string, data: unknown): Promise<ApiResponse<PackageGroup>> {
+    return this.request<ApiResponse<PackageGroup>>(`/package-groups/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deletePackageGroup(id: string): Promise<void> {
+    await this.request<void>(`/package-groups/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async reorderPackageGroups(
+    groups: Array<{ id: string; sortOrder: number }>
+  ): Promise<{ success: boolean }> {
+    return this.request<{ success: boolean }>('/package-groups/reorder', {
+      method: 'POST',
+      body: JSON.stringify({ groups }),
+    });
+  }
+
   // ============================================
   // Packages
   // ============================================
@@ -187,12 +307,16 @@ export class ApiClient {
   async getPackages(params?: {
     page?: number;
     limit?: number;
+    groupId?: string;
     mountingType?: string;
+    search?: string;
   }): Promise<ApiResponse<Package[]>> {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set('page', params.page.toString());
     if (params?.limit) searchParams.set('limit', params.limit.toString());
+    if (params?.groupId) searchParams.set('groupId', params.groupId);
     if (params?.mountingType) searchParams.set('mountingType', params.mountingType);
+    if (params?.search) searchParams.set('search', params.search);
 
     const query = searchParams.toString();
     return this.request<ApiResponse<Package[]>>(`/packages${query ? `?${query}` : ''}`);
@@ -234,6 +358,13 @@ export class ApiClient {
     categoryId?: string;
     status?: string;
     includeArchived?: boolean;
+    includeDrafts?: boolean;
+    attributeFilters?: Array<{
+      definitionId: string;
+      operator: string;
+      value?: string | number | string[];
+      valueTo?: string | number;
+    }>;
   }): Promise<ApiResponse<Component[]>> {
     const searchParams = new URLSearchParams();
     if (params?.page) searchParams.set('page', params.page.toString());
@@ -242,6 +373,20 @@ export class ApiClient {
     if (params?.status) searchParams.set('status', params.status);
     if (params?.includeArchived !== undefined) {
       searchParams.set('includeArchived', params.includeArchived.toString());
+    }
+    if (params?.includeDrafts !== undefined) {
+      searchParams.set('includeDrafts', params.includeDrafts.toString());
+    }
+    // Attribut-Filter als JSON-String übergeben
+    if (params?.attributeFilters && params.attributeFilters.length > 0) {
+      // Nur die relevanten Felder für das Backend senden (ohne display-Felder)
+      const backendFilters = params.attributeFilters.map(f => ({
+        definitionId: f.definitionId,
+        operator: f.operator,
+        value: f.value,
+        valueTo: f.valueTo,
+      }));
+      searchParams.set('attributeFilters', JSON.stringify(backendFilters));
     }
 
     const query = searchParams.toString();
@@ -388,6 +533,16 @@ export class ApiClient {
   async deleteAttributeDefinition(id: string): Promise<void> {
     await this.request<void>(`/attributes/${id}`, {
       method: 'DELETE',
+    });
+  }
+
+  async reorderAttributes(
+    categoryId: string,
+    attributes: Array<{ id: string; sortOrder: number }>
+  ): Promise<{ success: boolean }> {
+    return this.request<{ success: boolean }>('/attributes/reorder', {
+      method: 'POST',
+      body: JSON.stringify({ categoryId, attributes }),
     });
   }
 
@@ -579,6 +734,48 @@ export class ApiClient {
 
   async getStats(): Promise<ApiResponse<Stats>> {
     return this.request<ApiResponse<Stats>>('/stats');
+  }
+
+  // ============================================
+  // User Dashboard (Mein ElectroVault)
+  // ============================================
+
+  async getMyStats(): Promise<ApiResponse<UserStats>> {
+    return this.request<ApiResponse<UserStats>>('/users/me/stats');
+  }
+
+  async getMyComponents(params?: {
+    status?: string;
+    limit?: number;
+  }): Promise<ApiResponse<Component[]>> {
+    const searchParams = new URLSearchParams();
+    if (params?.status) searchParams.set('status', params.status);
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<Component[]>>(`/users/me/components${query ? `?${query}` : ''}`);
+  }
+
+  async getMyDrafts(limit?: number): Promise<ApiResponse<Component[]>> {
+    const query = limit ? `?limit=${limit}` : '';
+    return this.request<ApiResponse<Component[]>>(`/users/me/drafts${query}`);
+  }
+
+  async getMyActivity(limit?: number): Promise<ApiResponse<AuditLogEntry[]>> {
+    const query = limit ? `?limit=${limit}` : '';
+    return this.request<ApiResponse<AuditLogEntry[]>>(`/users/me/activity${query}`);
+  }
+
+  async getMyDashboard(params?: {
+    draftsLimit?: number;
+    activityLimit?: number;
+  }): Promise<ApiResponse<DashboardData>> {
+    const searchParams = new URLSearchParams();
+    if (params?.draftsLimit) searchParams.set('draftsLimit', params.draftsLimit.toString());
+    if (params?.activityLimit) searchParams.set('activityLimit', params.activityLimit.toString());
+
+    const query = searchParams.toString();
+    return this.request<ApiResponse<DashboardData>>(`/users/me/dashboard${query ? `?${query}` : ''}`);
   }
 
   // ============================================
@@ -785,12 +982,38 @@ export class ApiClient {
 // Type Definitions
 // ============================================
 
+/**
+ * LocalizedString with _original marker
+ * All 26 UI languages are supported
+ */
 export interface LocalizedString {
-  de?: string;
+  _original?: 'en' | 'de' | 'fr' | 'es' | 'it' | 'nl' | 'pt' | 'da' | 'fi' | 'no' | 'sv' | 'pl' | 'ru' | 'tr' | 'cs' | 'uk' | 'el' | 'zh' | 'ja' | 'ko' | 'hi' | 'id' | 'vi' | 'th' | 'ar' | 'he';
   en?: string;
+  de?: string;
   fr?: string;
   es?: string;
+  it?: string;
+  nl?: string;
+  pt?: string;
+  da?: string;
+  fi?: string;
+  no?: string;
+  sv?: string;
+  pl?: string;
+  ru?: string;
+  tr?: string;
+  cs?: string;
+  uk?: string;
+  el?: string;
   zh?: string;
+  ja?: string;
+  ko?: string;
+  hi?: string;
+  id?: string;
+  vi?: string;
+  th?: string;
+  ar?: string;
+  he?: string;
 }
 
 export interface Category {
@@ -827,18 +1050,35 @@ export interface Manufacturer {
   website: string | null;
   logoUrl: string | null;
   status: 'ACTIVE' | 'ACQUIRED' | 'DEFUNCT';
+  moderationStatus: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
   foundedYear: number | null;
   defunctYear: number | null;
   description: LocalizedString | null;
   aliases: string[];
+  createdById?: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PackageGroup {
+  id: string;
+  name: LocalizedString;
+  slug: string;
+  description: LocalizedString | null;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+  _count?: {
+    packages: number;
+  };
 }
 
 export interface Package {
   id: string;
   name: string;
   slug: string;
+  groupId: string | null;
+  group?: PackageGroup;
   mountingType: 'THT' | 'SMD' | 'RADIAL' | 'AXIAL' | 'CHASSIS' | 'OTHER';
   pinCount: number | null;
   lengthMm: string | null;
@@ -848,7 +1088,6 @@ export interface Package {
   jedecStandard: string | null;
   eiaStandard: string | null;
   description: string | null;
-  drawingUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -967,12 +1206,13 @@ export interface AttributeDefinition {
   name: string;
   displayName: LocalizedString;
   unit: string | null;                    // Basiseinheit (z.B. "F", "Ω", "m")
-  dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN';
+  dataType: 'DECIMAL' | 'INTEGER' | 'STRING' | 'BOOLEAN' | 'RANGE' | 'SELECT' | 'MULTISELECT';
   scope: 'COMPONENT' | 'PART' | 'BOTH';
   isFilterable: boolean;
   isRequired: boolean;
   isLabel: boolean;                       // Für dynamische Bauteilbezeichnung
   allowedPrefixes: SIPrefix[];            // Erlaubte SI-Präfixe
+  allowedValues: string[] | null;         // Erlaubte Werte für SELECT/MULTISELECT
   // Legacy-Felder
   siUnit: string | null;
   siMultiplier: number | null;
@@ -1017,6 +1257,35 @@ export interface Stats {
   components: number;
   manufacturers: number;
   users: number;
+}
+
+export interface UserStats {
+  components: {
+    total: number;
+    draft: number;
+    pending: number;
+    published: number;
+    archived: number;
+  };
+  parts: number;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  userId: string;
+  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTORE' | 'MERGE' | 'APPROVE' | 'REJECT';
+  entityType: string;
+  entityId: string;
+  changes: Record<string, unknown>;
+  ipAddress: string | null;
+  userAgent: string | null;
+  createdAt: string;
+}
+
+export interface DashboardData {
+  stats: UserStats;
+  drafts: Component[];
+  activity: AuditLogEntry[];
 }
 
 export interface FileAttachment {

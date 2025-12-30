@@ -286,6 +286,62 @@ export class AttributeService {
   }
 
   /**
+   * Sortiert Attribute einer Kategorie neu
+   */
+  async reorder(
+    categoryId: string,
+    attributes: Array<{ id: string; sortOrder: number }>,
+    userId?: string
+  ): Promise<void> {
+    // Prüfe ob Kategorie existiert
+    const category = await prisma.categoryTaxonomy.findUnique({
+      where: { id: categoryId },
+      select: { id: true },
+    });
+
+    if (!category) {
+      throw new NotFoundError('Category', categoryId);
+    }
+
+    // Prüfe ob alle Attribute zur Kategorie gehören
+    const attributeIds = attributes.map((a) => a.id);
+    const existingAttributes = await prisma.attributeDefinition.findMany({
+      where: {
+        id: { in: attributeIds },
+        categoryId,
+      },
+      select: { id: true },
+    });
+
+    if (existingAttributes.length !== attributeIds.length) {
+      throw new ConflictError(
+        'Some attributes do not belong to this category or do not exist'
+      );
+    }
+
+    // Bulk-Update der sortOrder-Werte
+    await prisma.$transaction(
+      attributes.map((attr) =>
+        prisma.attributeDefinition.update({
+          where: { id: attr.id },
+          data: { sortOrder: attr.sortOrder },
+        })
+      )
+    );
+
+    // Audit Log
+    if (userId) {
+      await auditService.logUpdate(
+        'CATEGORY_TAXONOMY',
+        categoryId,
+        { action: 'reorder_attributes' },
+        { attributeOrder: attributes },
+        userId
+      );
+    }
+  }
+
+  /**
    * Löscht eine Attribut-Definition
    * WICHTIG: Nur wenn keine Werte mehr zugeordnet sind
    */

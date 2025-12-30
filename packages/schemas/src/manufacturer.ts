@@ -10,6 +10,7 @@ import {
   PaginationSchema,
   SortSchema,
   ManufacturerStatusSchema,
+  ComponentStatusSchema,
 } from './common';
 
 // ============================================
@@ -39,6 +40,7 @@ export const ManufacturerBaseSchema = z.object({
   website: z.string().nullable(),
   logoUrl: z.string().nullable(),
   status: ManufacturerStatusSchema,
+  moderationStatus: ComponentStatusSchema, // Moderations-Workflow (DRAFT/PENDING/PUBLISHED)
   foundedYear: z.number().nullable(),
   defunctYear: z.number().nullable(),
   description: LocalizedStringNullableSchema,
@@ -99,6 +101,8 @@ export const CreateManufacturerSchema = z.object({
     { message: 'Ungültige URL oder Data-URL' }
   ).optional(),
   status: ManufacturerStatusSchema.default('ACTIVE'),
+  // moderationStatus wird vom Backend gesetzt, NICHT manuell
+  saveAsDraft: z.boolean().optional(), // NEU: Als Entwurf speichern
   foundedYear: z.number().int().min(1800).max(2100).optional(),
   defunctYear: z.number().int().min(1800).max(2100).optional(),
   description: LocalizedStringNullableOptionalSchema,
@@ -136,6 +140,10 @@ export const ManufacturerListQuerySchema = PaginationSchema.merge(SortSchema).ex
   countryCode: z.string().length(2).optional(),
   search: z.string().max(100).optional(),
   includeAcquired: z.coerce.boolean().default(true),
+  // NEU: Eigene Entwuerfe einbeziehen (nur fuer eingeloggte User)
+  includeDrafts: z.coerce.boolean().optional(),
+  // userId wird vom Backend gesetzt
+  userId: UUIDSchema.optional(),
 });
 
 export type ManufacturerListQuery = z.infer<typeof ManufacturerListQuerySchema>;

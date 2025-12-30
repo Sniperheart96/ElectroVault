@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useLocale } from 'next-intl';
 import {
   Select,
   SelectContent,
@@ -11,6 +12,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type CategoryTreeNode } from '@/lib/api';
+import { getLocalizedValue } from '@/components/ui/localized-text';
+import { type UILocale } from '@electrovault/schemas';
 
 interface CategoryCascadeSelectProps {
   /** The full category tree from API */
@@ -55,6 +58,7 @@ export function CategoryCascadeSelect({
   loading = false,
   error,
 }: CategoryCascadeSelectProps) {
+  const locale = useLocale() as UILocale;
   // Track selections at each level
   const [selections, setSelections] = useState<string[]>([]);
   // Track the last synced value to detect external changes
@@ -192,7 +196,7 @@ export function CategoryCascadeSelect({
   }
 
   const getLocalizedName = (name: { de?: string; en?: string }): string => {
-    return name.de || name.en || 'Unbekannt';
+    return getLocalizedValue(name, locale) || 'Unbekannt';
   };
 
   return (

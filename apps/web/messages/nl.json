@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Laden...",
+    "error": "Fout",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "create": "Aanmaken",
+    "search": "Zoeken",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "noResults": "Geen resultaten gevonden",
+    "all": "Alle",
+    "yes": "Ja",
+    "no": "Nee",
+    "actions": {
+      "details": "Details"
+    }
+  },
+  "locale": {
+    "switch": "Taal wijzigen",
+    "current": "Huidige taal",
+    "languages": {
+      "en": "Engels",
+      "de": "Duits",
+      "fr": "Frans",
+      "es": "Spaans",
+      "zh": "Chinees",
+      "ja": "Japans",
+      "ko": "Koreaans",
+      "it": "Italiaans"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "components": "Componenten",
+    "categories": "Categorieën",
+    "manufacturers": "Fabrikanten",
+    "packages": "Behuizingen",
+    "search": "Zoeken",
+    "admin": "Beheer",
+    "moderation": "Moderatie",
+    "myElectroVault": "Mijn ElectroVault",
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "profile": "Profiel"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Door de community onderhouden database voor elektronische componenten",
+    "searchPlaceholder": "Zoek componenten...",
+    "featuredCategories": "Uitgelichte Categorieën",
+    "recentComponents": "Recente Componenten",
+    "stats": {
+      "components": "Componenten",
+      "manufacturers": "Fabrikanten",
+      "categories": "Categorieën",
+      "users": "Gebruikers"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Door de community onderhouden database voor elektronische componenten"
+    },
+    "stats": {
+      "components": "Componenten",
+      "manufacturers": "Fabrikanten",
+      "users": "Gebruikers"
+    }
+  },
+  "packages": {
+    "title": "Behuizingen",
+    "totalCount": "{count} behuizingen in de database",
+    "addNew": "Nieuwe behuizing",
+    "searchPlaceholder": "Zoeken op naam of slug...",
+    "filterPlaceholder": "Behuizingstype",
+    "filterAll": "Alle types",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radiaal",
+      "AXIAL": "Axiaal",
+      "CHASSIS": "Chassis",
+      "OTHER": "Overig"
+    },
+    "table": {
+      "name": "Naam",
+      "type": "Type",
+      "pinCount": "Aantal pins",
+      "dimensions": "Afmetingen (L x B x H mm)",
+      "pitch": "Rasterafstand",
+      "actions": "Acties"
+    },
+    "loading": "Laden...",
+    "noResults": "Geen behuizingen gevonden",
+    "noPackagesFound": "Geen behuizingen gevonden",
+    "createFirst": "Eerste behuizing aanmaken",
+    "error": "Fout",
+    "success": "Succes",
+    "loadError": "Behuizingen kunnen niet worden geladen.",
+    "deleteSuccess": "Behuizing is verwijderd.",
+    "deleteError": "Behuizing kan niet worden verwijderd.",
+    "deleteDialog": {
+      "title": "Behuizing verwijderen?",
+      "description": "Weet u zeker dat u de behuizing \"{name}\" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
+    }
+  },
+  "components": {
+    "title": "Componenten",
+    "description": "Blader door onze uitgebreide database van elektronische componenten",
+    "filters": {
+      "category": "Categorie",
+      "manufacturer": "Fabrikant",
+      "status": "Status",
+      "mountingType": "Montagetype"
+    },
+    "detail": {
+      "overview": "Overzicht",
+      "specifications": "Specificaties",
+      "datasheets": "Datasheets",
+      "parts": "Fabrikant Onderdelen",
+      "history": "Versiegeschiedenis",
+      "backToOverview": "Terug naar overzicht",
+      "category": "Categorie",
+      "statistics": "Statistieken",
+      "manufacturerVariants": "Fabrikantvarianten",
+      "activeVariants": "Actieve varianten",
+      "additionalProperties": "Aanvullende eigenschappen",
+      "furtherProperties": "Verdere eigenschappen van dit component",
+      "validForAllVariants": "Technische specificaties (geldig voor alle varianten)",
+      "variantCount": "{count} fabrikantvariant",
+      "variantCountPlural": "{count} fabrikantvarianten",
+      "noVariantsAvailable": "Geen fabrikantvarianten beschikbaar",
+      "noVariantsForComponent": "Geen fabrikantvarianten beschikbaar voor dit component.",
+      "noAttributesAvailable": "Geen attributen beschikbaar.",
+      "manufacturer": "Fabrikant",
+      "orderingCode": "Bestelnummer",
+      "details": "Details",
+      "allInCategory": "Alle in categorie",
+      "status": "Status",
+      "moreAttributes": "+{count} meer"
+    },
+    "status": {
+      "DRAFT": "Concept",
+      "PENDING": "In behandeling",
+      "PUBLISHED": "Gepubliceerd",
+      "ARCHIVED": "Gearchiveerd"
+    },
+    "lifecycle": {
+      "ACTIVE": "Actief",
+      "NRND": "Niet Aanbevolen voor Nieuwe Ontwerpen",
+      "EOL": "Einde Levensduur",
+      "OBSOLETE": "Verouderd"
+    }
+  },
+  "categories": {
+    "title": "Categorieën",
+    "browseAll": "Blader door alle categorieën",
+    "subcategories": "Subcategorieën",
+    "componentsInCategory": "Componenten in deze categorie"
+  },
+  "manufacturers": {
+    "title": "Fabrikanten",
+    "status": {
+      "ACTIVE": "Actief",
+      "ACQUIRED": "Overgenomen",
+      "DEFUNCT": "Niet meer actief"
+    }
+  },
+  "auth": {
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "loginWith": "Inloggen met {provider}",
+    "welcome": "Welkom terug",
+    "signInToContinue": "Log in om door te gaan",
+    "signIn": {
+      "title": "Inloggen",
+      "description": "Log in op uw account",
+      "button": "Inloggen met Keycloak",
+      "loading": "Inloggen...",
+      "hint": "U wordt doorgestuurd naar Keycloak"
+    },
+    "signOut": {
+      "title": "Uitloggen",
+      "description": "Weet u zeker dat u wilt uitloggen?",
+      "button": "Uitloggen",
+      "loading": "Uitloggen...",
+      "cancel": "Annuleren"
+    },
+    "error": {
+      "title": "Authenticatiefout",
+      "description": "Er is een fout opgetreden tijdens het inloggen",
+      "tryAgain": "Probeer Opnieuw",
+      "backHome": "Terug naar Home"
+    },
+    "errors": {
+      "configuration": "Serverconfiguratiefout. Neem contact op met de beheerder.",
+      "accessDenied": "Toegang geweigerd. U heeft geen toestemming.",
+      "verification": "De verificatielink is verlopen of is al gebruikt.",
+      "oauthSignin": "Fout bij het starten van OAuth-aanmelding.",
+      "oauthCallback": "Fout bij het verwerken van OAuth-callback.",
+      "oauthCreateAccount": "Fout bij het aanmaken van gebruikersaccount.",
+      "emailCreateAccount": "Fout bij het aanmaken van e-mailaccount.",
+      "callback": "Fout bij het verwerken van callback.",
+      "oauthAccountNotLinked": "Dit e-mailadres is al gekoppeld aan een ander account.",
+      "sessionRequired": "Log in om toegang te krijgen tot deze pagina.",
+      "default": "Er is een onbekende fout opgetreden. Probeer het opnieuw."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "moderation": "Moderatie",
+      "moderationDescription": "Goedkeuringswachtrij",
+      "users": "Gebruikers",
+      "backToHome": "Naar hoofdpagina",
+      "user": "Gebruiker",
+      "logout": "Uitloggen"
+    },
+    "components": {
+      "title": "Componenten Beheren",
+      "new": "Nieuw Component",
+      "edit": "Component Bewerken"
+    },
+    "moderation": {
+      "title": "Moderatie",
+      "pendingReviews": "Openstaande Beoordelingen",
+      "approve": "Goedkeuren",
+      "reject": "Afwijzen",
+      "batchApproval": "Batch Goedkeuring",
+      "confirmApprove": "Goedkeuring bevestigen",
+      "confirmApproveDescription": "Weet u zeker dat u dit {type} wilt goedkeuren? Het zal daarna openbaar zichtbaar zijn.",
+      "confirmBatchApproval": "Wilt u {count} items goedkeuren? Deze actie kan niet ongedaan worden gemaakt.",
+      "rejectWithReason": "Afwijzen met reden",
+      "rejectDescription": "Geef een reden op voor de afwijzing. Deze wordt getoond aan de maker.",
+      "rejectReasonLabel": "Reden",
+      "rejectReasonPlaceholder": "Waarom wordt dit item afgewezen?",
+      "rejectReasonHelp": "Een duidelijke reden helpt de maker de afwijzing te begrijpen.",
+      "batchApproveButton": "{count} goedkeuren",
+      "typeComponent": "Component",
+      "typePart": "Onderdeel",
+      "draft": "Concept"
+    },
+    "users": {
+      "title": "Gebruikers",
+      "manage": "Gebruikers Beheren"
+    },
+    "myDashboard": {
+      "title": "Mijn Dashboard",
+      "stats": {
+        "componentsTotal": "Componenten totaal",
+        "componentsTotalDesc": "Door jou aangemaakte componenten",
+        "variants": "Varianten",
+        "variantsDesc": "Fabrikantvarianten",
+        "drafts": "Concepten",
+        "draftsDesc": "Nog niet ingediend",
+        "pending": "In behandeling",
+        "pendingDesc": "Wachten op moderatie",
+        "published": "Gepubliceerd",
+        "archived": "Gearchiveerd"
+      },
+      "draftsSection": {
+        "title": "Mijn Concepten",
+        "description": "Concepten zijn privé tussenopslagen en nog niet ingediend voor moderatie.",
+        "newComponent": "Nieuw Component",
+        "empty": "Geen concepten aanwezig. Maak een nieuw component aan en bewaar het als concept.",
+        "draftBadge": "Concept",
+        "noName": "[Geen naam]"
+      },
+      "activitySection": {
+        "title": "Activiteitsgeschiedenis",
+        "description": "Je laatste acties in ElectroVault",
+        "empty": "Nog geen activiteiten beschikbaar."
+      },
+      "entities": {
+        "COMPONENT": "Component",
+        "PART": "Variant",
+        "MANUFACTURER": "Fabrikant",
+        "CATEGORY": "Categorie",
+        "PACKAGE": "Behuizing"
+      },
+      "error": "Dashboard kan niet worden geladen. Probeer het opnieuw."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Nieuw Attribuut",
+        "titleEdit": "Attribuut Bewerken",
+        "description": "Attribuutdefinitie voor componenten"
+      },
+      "category": {
+        "title": "Nieuwe Categorie",
+        "titleEdit": "Categorie Bewerken",
+        "description": "Categorie-informatie en attributen beheren",
+        "saveFirst": "Bewaar eerst de categorie om attributen toe te voegen"
+      },
+      "component": {
+        "title": "Nieuw Component",
+        "titleEdit": "Component Bewerken",
+        "description": "Nieuw component aanmaken - na opslaan kunt u fabrikantvarianten toevoegen",
+        "descriptionEdit": "Componentinformatie en fabrikantvarianten beheren",
+        "saveFirstPinMapping": "Bewaar eerst het component om pin-mapping te bewerken",
+        "saveFirstParts": "Bewaar eerst het component om fabrikantvarianten toe te voegen",
+        "saveFirstRelations": "Bewaar eerst het component om relaties toe te voegen",
+        "createdWithVariants": "Component is aangemaakt. U kunt nu fabrikantvarianten toevoegen",
+        "noPartsWarning": "Dit component heeft geen fabrikantvarianten. Minimaal één variant is vereist"
+      },
+      "manufacturer": {
+        "title": "Nieuwe Fabrikant",
+        "titleEdit": "Fabrikant Bewerken",
+        "description": "Fabrikantinformatie beheren"
+      },
+      "part": {
+        "title": "Nieuwe Variant",
+        "titleEdit": "Variant Bewerken",
+        "description": "Nieuwe concrete fabrikantvariant van een component aanmaken",
+        "descriptionEdit": "Informatie over de fabrikantvariant wijzigen",
+        "saveFirstFiles": "Bewaar eerst de variant om bestanden te uploaden"
+      },
+      "package": {
+        "title": "Nieuwe Behuizing",
+        "titleEdit": "Behuizing Bewerken",
+        "description": "Behuizing/footprint informatie"
+      },
+      "delete": {
+        "title": "Verwijdering Bevestigen",
+        "message": "Weet u zeker dat u dit item wilt verwijderen?",
+        "messageFile": "Wilt u dit bestand echt verwijderen?",
+        "messagePin": "Wilt u deze pin echt verwijderen?",
+        "message3dModel": "Wilt u dit 3D-model echt verwijderen?",
+        "messageRelation": "Wilt u deze relatie echt verwijderen?"
+      }
+    },
+    "buttons": {
+      "saving": "Opslaan...",
+      "saveAsDraft": "Opslaan als Concept",
+      "update": "Bijwerken",
+      "addPin": "Pin Toevoegen",
+      "addRelation": "Relatie Toevoegen"
+    },
+    "messages": {
+      "success": "Succes",
+      "error": "Fout",
+      "warning": "Waarschuwing",
+      "attribute": {
+        "created": "Attribuut is aangemaakt",
+        "updated": "Attribuut is bijgewerkt",
+        "deleted": "Attribuut is verwijderd",
+        "loadFailed": "Kan attributen niet laden",
+        "saveFailed": "Kan attribuut niet opslaan",
+        "deleteFailed": "Kan attribuut niet verwijderen"
+      },
+      "category": {
+        "created": "Categorie is aangemaakt",
+        "updated": "Categorie is bijgewerkt",
+        "deleted": "Categorie is verwijderd",
+        "loadFailed": "Kan categorieën niet laden",
+        "saveFailed": "Kan categorie niet opslaan",
+        "deleteFailed": "Kan categorie niet verwijderen"
+      },
+      "component": {
+        "created": "Component is aangemaakt",
+        "updated": "Component is bijgewerkt",
+        "deleted": "Component is verwijderd",
+        "loadFailed": "Kan componenten niet laden",
+        "saveFailed": "Kan component niet opslaan",
+        "deleteFailed": "Kan component niet verwijderen"
+      },
+      "manufacturer": {
+        "created": "Fabrikant is aangemaakt",
+        "updated": "Fabrikant is bijgewerkt",
+        "deleted": "Fabrikant is verwijderd",
+        "loadFailed": "Kan fabrikanten niet laden",
+        "saveFailed": "Kan fabrikant niet opslaan",
+        "deleteFailed": "Kan fabrikant niet verwijderen",
+        "logoUploaded": "Logo is geüpload",
+        "logoUploadFailed": "Kan logo niet uploaden"
+      },
+      "part": {
+        "created": "Variant is aangemaakt",
+        "updated": "Variant is bijgewerkt",
+        "deleted": "Variant is verwijderd",
+        "loadFailed": "Kan varianten niet laden",
+        "saveFailed": "Kan variant niet opslaan",
+        "deleteFailed": "Kan variant niet verwijderen"
+      },
+      "package": {
+        "created": "Behuizing is aangemaakt",
+        "updated": "Behuizing is bijgewerkt",
+        "deleted": "Behuizing is verwijderd",
+        "loadFailed": "Kan behuizingen niet laden",
+        "saveFailed": "Kan behuizing niet opslaan",
+        "deleteFailed": "Kan behuizing niet verwijderen"
+      },
+      "file": {
+        "uploaded": "Bestand is geüpload",
+        "deleted": "Bestand is verwijderd",
+        "uploadFailed": "Kan bestand niet uploaden",
+        "deleteFailed": "Kan bestand niet verwijderen",
+        "loadFailed": "Kan bestanden niet laden",
+        "downloadUrlFailed": "Kan download-URL niet genereren"
+      },
+      "pin": {
+        "created": "Pin is toegevoegd",
+        "updated": "Pin is bijgewerkt",
+        "deleted": "Pin is verwijderd",
+        "createFailed": "Kan pin niet aanmaken",
+        "loadFailed": "Kan pins niet laden",
+        "updateFailed": "Kan pin niet bijwerken",
+        "deleteFailed": "Kan pin niet verwijderen"
+      },
+      "relation": {
+        "created": "Relatie is toegevoegd",
+        "deleted": "Relatie is verwijderd",
+        "createFailed": "Kan relatie niet aanmaken",
+        "deleteFailed": "Kan relatie niet verwijderen"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin-Mapping",
+      "addPin": "Pin Toevoegen",
+      "newPin": "Nieuwe Pin Toevoegen",
+      "pinNumber": "Pinnummer (bijv. 1, VCC)",
+      "pinName": "Pin-Naam",
+      "selectType": "Pin-Type Selecteren",
+      "noDescription": "Geen beschrijving",
+      "noType": "Geen type",
+      "loading": "Pins laden...",
+      "pinsCount": "{count} Pins",
+      "tabList": "Pin-lijst",
+      "tabBulkImport": "Bulk-import",
+      "noPins": "Geen pins gedefinieerd. Voeg pins individueel toe of gebruik de bulk-import.",
+      "columnPinNumber": "Pin-nr.",
+      "columnName": "Naam",
+      "columnType": "Type",
+      "columnFunction": "Functie (NL)",
+      "columnActions": "Acties",
+      "functionPlaceholder": "bijv. Voedingsspanning",
+      "deleteTitle": "Pin verwijderen?",
+      "deleteMessage": "Wilt u pin {pinNumber} ({pinName}) echt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "reorderSuccess": "Pin-volgorde is bijgewerkt",
+      "reorderFailed": "Volgorde kan niet worden gewijzigd",
+      "bulkImport": {
+        "formatLabel": "Formaat:",
+        "exampleLabel": "Voorbeeld:",
+        "typeHint": "pinType is optioneel. Beschikbare types: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Pins invoeren in CSV-formaat...",
+        "importButton": "Pins importeren",
+        "noPinsFound": "Geen geldige pin-data gevonden.",
+        "success": "{count} pins zijn geïmporteerd.",
+        "failed": "Bulk-import mislukt."
+      }
+    },
+    "files": {
+      "uploadImage": "Productafbeelding Uploaden",
+      "uploadDatasheet": "Datasheet Uploaden",
+      "uploadDocument": "Document Uploaden",
+      "selectLanguage": "Taal Selecteren",
+      "noFiles": "Geen bestanden beschikbaar",
+      "confirmDelete": "Bestand verwijderen?",
+      "productImage": "Productafbeelding",
+      "productImageDescription": "Een voorbeeldafbeelding voor deze fabrikantvariant",
+      "addImage": "Afbeelding",
+      "imageDescription": "JPEG, PNG of WebP (max. 10 MB)",
+      "noImageUploaded": "Nog geen afbeelding geüpload",
+      "datasheets": "Datasheets",
+      "datasheetsDescription": "PDF-datasheets voor deze fabrikantvariant",
+      "addDatasheet": "Datasheet",
+      "languagesRequired": "Talen van de datasheet",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Minimaal één taal moet worden geselecteerd",
+      "datasheetFileDescription": "PDF-bestand van de fabrikant-datasheet",
+      "noDatasheets": "Nog geen datasheets geüpload",
+      "otherFiles": "Overige bestanden",
+      "otherFilesDescription": "Aanvullende documenten, applicatienotities, etc.",
+      "addDocument": "Document",
+      "languagesOptional": "Talen (optioneel)",
+      "anyFileDescription": "Willekeurige bestanden (PDF, TXT, ZIP, etc.)",
+      "noDocuments": "Nog geen documenten geüpload",
+      "fileName": "Bestand",
+      "fileSize": "Grootte",
+      "languages": "Talen",
+      "actions": "Acties",
+      "imageCount": "{count} Afbeelding",
+      "fileCount": "{count} Bestand{plural}",
+      "datasheetCount": "{count} Datasheet{plural}",
+      "imageUploaded": "Afbeelding is geüpload",
+      "imageRemoved": "Afbeelding is verwijderd"
+    },
+    "model3d": {
+      "title": "3D-Modellen",
+      "confirmDelete": "3D-model verwijderen?",
+      "upload": "3D-Model Uploaden",
+      "noModels": "Geen 3D-modellen beschikbaar"
+    },
+    "lists": {
+      "searchPlaceholder": "Zoeken...",
+      "searchByName": "Zoeken op naam of slug...",
+      "searchByNameCage": "Zoeken op naam, slug of CAGE-code...",
+      "noResults": "Geen resultaten gevonden",
+      "createFirst": "Eerste invoer aanmaken",
+      "noPackagesFound": "Geen behuizingen gevonden",
+      "createFirstPackage": "Eerste behuizing aanmaken"
+    },
+    "filters": {
+      "allStatus": "Alle statussen",
+      "myDrafts": "Mijn concepten"
+    },
+    "manufacturer": {
+      "title": "Fabrikanten",
+      "count": "{count} fabrikanten in de database",
+      "create": "Nieuwe Fabrikant",
+      "createFirst": "Eerste fabrikant aanmaken",
+      "deleteTitle": "Fabrikant verwijderen?",
+      "deleteDescription": "Wilt u de fabrikant \"{name}\" echt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "status": {
+        "active": "Actief",
+        "acquired": "Overgenomen",
+        "defunct": "Inactief"
+      }
+    },
+    "form": {
+      "package": "Behuizing",
+      "selectPackage": "Behuizing Selecteren",
+      "noPackage": "Geen Behuizing",
+      "editIn": "Bewerken in:",
+      "searchLanguage": "Taal zoeken...",
+      "noLanguageFound": "Geen taal gevonden",
+      "original": "Origineel",
+      "backToOverview": "Terug naar Overzicht",
+      "name": "Naam",
+      "nameDescription": "De naam in het Nederlands en/of Engels. Verplicht veld als de categorie geen label-attributen heeft",
+      "namePlaceholder": "Componentnaam",
+      "series": "Serie",
+      "seriesDescription": "Optionele componentserie of -familie",
+      "seriesPlaceholder": "bijv. 74HC, ATmega",
+      "packageDescription": "De fysieke behuizing (bijv. DIP-8, SOIC-8)",
+      "shortDescription": "Korte beschrijving",
+      "shortDescriptionDescription": "Een korte zin ter beschrijving van het component",
+      "shortDescriptionPlaceholder": "Korte beschrijving",
+      "fullDescription": "Uitgebreide beschrijving",
+      "fullDescriptionPlaceholder": "Uitgebreide beschrijving",
+      "attributesDescription": "Technische attributen gebaseerd op de geselecteerde categorie",
+      "selectCategoryFirst": "Selecteer eerst een categorie in het tabblad \"Stamgegevens\"",
+      "pinMappingDescription": "Definieer de pin-toewijzing voor dit component. De pin-mapping geldt voor alle fabrikantvarianten",
+      "partsDescription": "Fabrikantspecifieke varianten van dit component",
+      "newVariant": "Nieuwe variant",
+      "close": "Sluiten",
+      "parentCategory": "Bovenliggende categorie",
+      "parentCategoryPlaceholder": "Geen (Root-categorie)",
+      "parentCategoryDescription": "Leeg laten voor een hoofdcategorie (Niveau 0)",
+      "categoryName": "Categorienaam",
+      "categoryDescription": "Beschrijving",
+      "categoryDescriptionPlaceholder": "Beschrijving van de categorie",
+      "sortOrder": "Sorteervolgorde",
+      "sortOrderDescription": "Lagere waarden = hoger in de lijst",
+      "status": "Status",
+      "active": "Actief",
+      "inactive": "Inactief",
+      "icon": "Icoon",
+      "iconUploadDescription": "Categorie-icoon uploaden. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klik of sleep bestand hierheen.",
+      "iconMaxSize": "Icoon mag maximaal 5 MB groot zijn.",
+      "iconAllowedTypes": "Alleen JPEG, PNG, WebP of SVG toegestaan.",
+      "iconUploaded": "Icoon is geüpload.",
+      "iconUploadFailed": "Icoon kan niet worden geüpload.",
+      "categoryCreatedIconFailed": "Categorie aangemaakt, maar icoon-upload mislukt.",
+      "loading": "Laden...",
+      "newAttribute": "Nieuw attribuut",
+      "ownAttributes": "Eigen attributen ({count})",
+      "noOwnAttributes": "Geen eigen attributen gedefinieerd.",
+      "inheritedAttributes": "Overgeërfde attributen ({count})",
+      "inheritedAttributesDescription": "Overgeërfde attributen kunnen alleen in hun oorspronkelijke categorie worden bewerkt.",
+      "attributesInherited": "Attributen van deze categorie (worden overgeërfd naar subcategorieën)",
+      "cageCode": "CAGE Code",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-cijferige code",
+      "country": "Land",
+      "countryPlaceholder": "NL",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Website",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Fabrikantlogo uploaden. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klik of sleep bestand hierheen.",
+      "statusActive": "Actief",
+      "statusAcquired": "Overgenomen",
+      "statusDefunct": "Inactief",
+      "foundedYear": "Oprichtingsjaar",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Opheffingsjaar",
+      "defunctYearPlaceholder": "2020",
+      "description": "Beschrijving",
+      "descriptionPlaceholder": "Beschrijving",
+      "logoMaxSize": "Logo mag maximaal 5 MB groot zijn.",
+      "logoAllowedTypes": "Alleen JPEG, PNG, WebP of SVG toegestaan.",
+      "createdAsDraft": "Fabrikant is opgeslagen als concept.",
+      "manufacturerCreatedLogoFailed": "Fabrikant aangemaakt, maar logo-upload mislukt.",
+      "save": "Opslaan"
+    },
+    "audit": {
+      "created": "aangemaakt",
+      "updated": "bijgewerkt",
+      "deleted": "verwijderd",
+      "restored": "hersteld",
+      "approved": "goedgekeurd",
+      "rejected": "afgewezen"
+    },
+    "tabs": {
+      "basicInfo": "Basisinformatie",
+      "attributes": "Attributen",
+      "pinMapping": "Pin-Mapping",
+      "parts": "Fabrikantvarianten",
+      "relations": "Relaties",
+      "files": "Bestanden",
+      "details": "Stamgegevens",
+      "pins": "Pin-Mapping",
+      "models": "3D-Modellen"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Fabrikant",
+      "status": "Status",
+      "lifecycle": "Levenscyclus",
+      "actions": "Acties",
+      "variantCount": "{count} Variant",
+      "variantCountPlural": "{count} Varianten",
+      "activeCount": "{count} actief",
+      "obsoleteCount": "{count} verouderd",
+      "unknown": "Onbekend"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Unieke naam van de behuizing",
+      "mountingType": "Behuizingstype",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radiaal - Radiaal bedraad",
+        "AXIAL": "Axiaal - Axiaal bedraad",
+        "CHASSIS": "Chassis - Chassismontage",
+        "OTHER": "Overig"
+      },
+      "pinCount": "Aantal pins",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Lengte (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Breedte (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Hoogte (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Rasterafstand (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Afstand tussen de pins",
+      "jedecStandard": "JEDEC Standaard",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA Standaard",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "Tekening-URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Link naar technische tekening of datasheet",
+      "description": "Beschrijving",
+      "descriptionPlaceholder": "Aanvullende informatie over de behuizing...",
+      "saveFirstModels": "Bewaar eerst de behuizing om 3D-modellen te uploaden.",
+      "modelsDescription": "3D-modellen voor deze behuizing (STEP, STL, 3MF, OBJ, etc.)"
+    },
+    "partForm": {
+      "coreComponent": "Generiek component",
+      "coreComponentDesc": "Het fabrikant-onafhankelijke component (bijv. 555 Timer)",
+      "manufacturer": "Fabrikant",
+      "manufacturerDesc": "De fabrikant van deze concrete variant (bijv. Texas Instruments)",
+      "manufacturerPlaceholder": "Fabrikant selecteren",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "bijv. NE555P",
+      "mpnDesc": "Het unieke fabrikant onderdeelnummer",
+      "orderingCode": "Bestelnummer",
+      "orderingCodePlaceholder": "Optioneel",
+      "orderingCodeDesc": "Alternatief bestelnummer (indien afwijkend van MPN)",
+      "statusRecord": "Record-status",
+      "lifecycleStatus": "Levenscyclus-status",
+      "introductionYear": "Introductiejaar",
+      "introductionYearPlaceholder": "bijv. 1972",
+      "discontinuedYear": "Stopzettingsjaar",
+      "discontinuedYearPlaceholder": "bijv. 2020",
+      "rohsCompliant": "RoHS-conform",
+      "rohsDesc": "Voldoet aan RoHS-richtlijnen",
+      "reachCompliant": "REACH-conform",
+      "reachDesc": "Voldoet aan REACH-verordening",
+      "weight": "Gewicht (gram)",
+      "weightPlaceholder": "bijv. 0.5",
+      "dateCodeFormat": "Datumcodering",
+      "dateCodePlaceholder": "bijv. YYWW",
+      "dateCodeDesc": "Formaat van de datumcode op het component",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "bijv. 5962-01-123-4567",
+      "milSpec": "Militaire specificatie",
+      "milSpecPlaceholder": "bijv. MIL-PRF-38534",
+      "partAttributesDesc": "Fabrikant-specifieke attributen gebaseerd op de categorie van het component.",
+      "partAttributesLabel": "Fabrikant-specifieke attributen",
+      "filesDesc": "Datasheets, afbeeldingen en andere bestanden voor deze fabrikantvariant beheren.",
+      "close": "Sluiten",
+      "selectComponent": "Component selecteren"
+    }
+  },
+  "errors": {
+    "notFound": "Pagina niet gevonden",
+    "unauthorized": "Ongeautoriseerd",
+    "serverError": "Serverfout"
+  },
+  "footer": {
+    "tagline": "Door de gemeenschap onderhouden database voor elektronische componenten",
+    "navigation": "Navigatie",
+    "community": "Community",
+    "legal": "Juridisch",
+    "about": "Over",
+    "help": "Help",
+    "contact": "Contact",
+    "contribute": "Bijdragen",
+    "github": "GitHub",
+    "privacy": "Privacy",
+    "imprint": "Colofon",
+    "copyright": "Open Source onder MIT Licentie"
+  },
+  "about": {
+    "title": "Over ElectroVault",
+    "subtitle": "Door de community onderhouden database voor elektronische componenten",
+    "mission": {
+      "title": "Onze Missie",
+      "description": "ElectroVault is een gratis en open database voor elektronische componenten - van historische buizen tot moderne nanotechnologie. Ons doel is om kennis over elektronische componenten te bewaren en toegankelijk te maken voor iedereen."
+    },
+    "features": {
+      "title": "Kenmerken",
+      "comprehensive": {
+        "title": "Uitgebreide Database",
+        "description": "Van weerstanden tot condensatoren tot hooggeïntegreerde schakelingen - we leggen alle belangrijke componenten vast met gedetailleerde specificaties."
+      },
+      "historical": {
+        "title": "Historisch Archief",
+        "description": "Documentatie van historische componenten voor reparatie en restauratie van vintage apparatuur."
+      },
+      "community": {
+        "title": "Community-gedreven",
+        "description": "Iedereen kan bijdragen en zijn kennis delen. Samen bouwen we de meest uitgebreide componentendatabase."
+      },
+      "open": {
+        "title": "Open Source",
+        "description": "Volledig transparant en vrij beschikbaar onder MIT Licentie."
+      }
+    },
+    "contribute": {
+      "title": "Doe Mee",
+      "description": "ElectroVault leeft dankzij zijn community. Hier zijn enkele manieren waarop u kunt bijdragen:",
+      "dataEntry": "Componenten toevoegen of bewerken",
+      "datasheets": "Datasheets uploaden",
+      "code": "Code bijdragen op GitHub",
+      "feedback": "Feedback en suggesties voor verbetering"
+    }
+  },
+  "help": {
+    "title": "Help & FAQ",
+    "subtitle": "Veelgestelde Vragen",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Componenten bekijken",
+        "description": "Vind componenten in onze database"
+      },
+      "createAccount": {
+        "title": "Account aanmaken",
+        "description": "Draag bij aan de database"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Documentatie en issues"
+      }
+    },
+    "contactCta": {
+      "title": "Is uw vraag niet beantwoord?",
+      "description": "Neem gerust direct contact met ons op.",
+      "button": "Contact opnemen"
+    },
+    "general": {
+      "title": "Algemeen",
+      "what": {
+        "question": "Wat is ElectroVault?",
+        "answer": "ElectroVault is een gratis, door de community onderhouden database voor elektrische en elektronische componenten. We documenteren componenten van historische buizen tot moderne IC's met uitgebreide metadata, datasheets en specificaties."
+      },
+      "free": {
+        "question": "Is ElectroVault gratis?",
+        "answer": "Ja, ElectroVault is volledig gratis en open source. Zowel het gebruik als de broncode zijn vrij beschikbaar."
+      }
+    },
+    "search": {
+      "title": "Zoeken",
+      "how": {
+        "question": "Hoe vind ik een specifiek component?",
+        "answer": "Gebruik de zoekfunctie rechtsboven of navigeer door de categorieën. U kunt zoeken op onderdeelnummer, fabrikant of eigenschappen."
+      },
+      "filters": {
+        "question": "Welke filters zijn beschikbaar?",
+        "answer": "U kunt filteren op categorie, fabrikant, status (actief/verouderd), behuizingstype en vele andere technische parameters."
+      }
+    },
+    "contribute": {
+      "title": "Bijdragen",
+      "account": {
+        "question": "Heb ik een account nodig om bij te dragen?",
+        "answer": "Ja, om componenten toe te voegen of te bewerken, heeft u een gratis account nodig. Dit helpt ons de datakwaliteit te waarborgen."
+      },
+      "how": {
+        "question": "Hoe kan ik een component toevoegen?",
+        "answer": "Na het inloggen kunt u nieuwe componenten aanmaken via de knop 'Nieuw Component' in het componentenoverzicht. Een moderator zal uw bijdrage beoordelen voordat deze wordt gepubliceerd."
+      },
+      "quality": {
+        "question": "Hoe wordt de datakwaliteit gewaarborgd?",
+        "answer": "Alle bijdragen worden beoordeeld door ervaren moderators. Daarnaast kunnen geregistreerde gebruikers correcties voorstellen."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Heeft u vragen of suggesties?",
+    "form": {
+      "heading": "Bericht versturen",
+      "name": "Naam",
+      "email": "E-mail",
+      "subject": "Onderwerp",
+      "message": "Bericht",
+      "namePlaceholder": "Jan Jansen",
+      "emailPlaceholder": "jan@voorbeeld.nl",
+      "subjectPlaceholder": "Onderwerp van uw bericht",
+      "messagePlaceholder": "Uw bericht...",
+      "demoNote": "Opmerking: Het contactformulier is momenteel een demo. Backend-integratie volgt in een latere fase. Gebruik voor belangrijke vragen alstublieft GitHub of het opgegeven e-mailadres.",
+      "send": "Bericht Versturen",
+      "sending": "Versturen...",
+      "success": "Bericht succesvol verzonden!",
+      "error": "Fout bij het verzenden van bericht"
+    },
+    "alternatives": {
+      "title": "Andere Contactmogelijkheden",
+      "githubTitle": "GitHub Issues",
+      "github": "Maak een issue aan op GitHub",
+      "emailTitle": "E-mail",
+      "email": "Stuur ons een e-mail"
+    },
+    "responseTime": {
+      "title": "Reactietijden",
+      "description": "Aangezien ElectroVault een community-project is, worden vragen door vrijwilligers behandeld. Wees alstublieft geduldig - we reageren meestal binnen 48 uur."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Community Support",
+        "description": "Gebruik GitHub Discussions voor algemene vragen"
+      },
+      "bugReports": {
+        "title": "Bug Reports",
+        "description": "Meld technische problemen direct op GitHub"
+      },
+      "partnerships": {
+        "title": "Partnerschapsaanvragen",
+        "description": "Gebruik het formulier voor zakelijke vragen"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Colofon",
+    "responsible": "Verantwoordelijk voor inhoud",
+    "contact": "Contact",
+    "disclaimer": {
+      "title": "Disclaimer",
+      "content": "Ondanks zorgvuldige inhoudscontrole aanvaarden wij geen aansprakelijkheid voor de inhoud van externe links. De exploitanten van de gelinkte pagina's zijn uitsluitend verantwoordelijk voor hun inhoud.",
+      "liability": "De inhoud van deze pagina's is met de grootste zorg samengesteld. Wij kunnen echter de juistheid, volledigheid en actualiteit van de inhoud niet garanderen."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "ElectroVault is een open source project onder de MIT Licentie. De broncode is beschikbaar op GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Privacybeleid",
+    "lastUpdated": "Laatst bijgewerkt",
+    "intro": "Wij nemen de bescherming van uw persoonlijke gegevens zeer serieus. Dit privacybeleid informeert u over de aard, omvang en doel van de verwerking van persoonlijke gegevens.",
+    "responsible": {
+      "title": "Verwerkingsverantwoordelijke",
+      "description": "Verantwoordelijk voor gegevensverwerking op deze website is:"
+    },
+    "collection": {
+      "title": "Verzameling en Opslag van Persoonlijke Gegevens",
+      "description": "Wanneer u onze website bezoekt, wordt automatisch informatie verzameld die uw browser verzendt:",
+      "data": "IP-adres, datum en tijd van toegang, browsertype en -versie, gebruikt besturingssysteem, referrer-URL"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Onze website gebruikt cookies. Cookies zijn kleine tekstbestanden die op uw apparaat worden opgeslagen.",
+      "essential": "Technisch noodzakelijke cookies voor authenticatie en sessiebeheer",
+      "functional": "Functionele cookies om de gebruikerservaring te verbeteren"
+    },
+    "auth": {
+      "title": "Authenticatie",
+      "description": "Wij gebruiken Keycloak voor registratie en inloggen. De volgende gegevens worden opgeslagen:",
+      "data": "Gebruikersnaam, e-mailadres, profielfoto (optioneel), rol en rechten"
+    },
+    "rights": {
+      "title": "Uw Rechten",
+      "description": "U heeft de volgende rechten met betrekking tot uw persoonlijke gegevens:",
+      "access": "Recht op inzage",
+      "correction": "Recht op correctie",
+      "deletion": "Recht op verwijdering",
+      "restriction": "Recht op beperking van verwerking",
+      "portability": "Recht op gegevensoverdracht",
+      "objection": "Recht van bezwaar"
+    },
+    "contact": {
+      "title": "Contact voor Privacyvragen",
+      "description": "Als u vragen heeft over privacy, kunt u te allen tijde contact met ons opnemen."
+    }
+  }
+}

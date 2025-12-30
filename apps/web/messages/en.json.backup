@@ -1,0 +1,602 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "noResults": "No results found",
+    "all": "All"
+  },
+  "locale": {
+    "switch": "Change language",
+    "current": "Current language",
+    "languages": {
+      "en": "English",
+      "de": "German",
+      "fr": "French",
+      "es": "Spanish",
+      "zh": "Chinese",
+      "ja": "Japanese",
+      "ko": "Korean"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "components": "Components",
+    "categories": "Categories",
+    "manufacturers": "Manufacturers",
+    "packages": "Packages",
+    "search": "Search",
+    "admin": "Admin",
+    "moderation": "Moderation",
+    "myElectroVault": "My ElectroVault",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Community-maintained database for electronic components",
+    "searchPlaceholder": "Search components...",
+    "featuredCategories": "Featured Categories",
+    "recentComponents": "Recent Components",
+    "stats": {
+      "components": "Components",
+      "manufacturers": "Manufacturers",
+      "categories": "Categories",
+      "users": "Users"
+    }
+  },
+  "components": {
+    "title": "Components",
+    "description": "Browse our extensive database of electronic components",
+    "filters": {
+      "category": "Category",
+      "manufacturer": "Manufacturer",
+      "status": "Status",
+      "mountingType": "Mounting Type"
+    },
+    "detail": {
+      "overview": "Overview",
+      "specifications": "Specifications",
+      "datasheets": "Datasheets",
+      "parts": "Manufacturer Parts",
+      "history": "Version History",
+      "backToOverview": "Back to Overview",
+      "category": "Category",
+      "statistics": "Statistics",
+      "manufacturerVariants": "Manufacturer Variants",
+      "activeVariants": "Active Variants",
+      "additionalProperties": "Additional Properties",
+      "furtherProperties": "Further properties of this component",
+      "validForAllVariants": "Technical specifications (valid for all variants)",
+      "variantCount": "{count} Manufacturer Variant",
+      "variantCountPlural": "{count} Manufacturer Variants",
+      "noVariantsAvailable": "No manufacturer variants available",
+      "noVariantsForComponent": "No manufacturer variants available for this component.",
+      "noAttributesAvailable": "No attributes available.",
+      "manufacturer": "Manufacturer",
+      "orderingCode": "Ordering Code",
+      "details": "Details",
+      "allInCategory": "All in Category",
+      "status": "Status",
+      "moreAttributes": "+{count} more"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "PENDING": "Pending",
+      "PUBLISHED": "Published",
+      "ARCHIVED": "Archived"
+    },
+    "lifecycle": {
+      "ACTIVE": "Active",
+      "NRND": "Not Recommended for New Designs",
+      "EOL": "End of Life",
+      "OBSOLETE": "Obsolete"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "browseAll": "Browse all categories",
+    "subcategories": "Subcategories",
+    "componentsInCategory": "Components in this category"
+  },
+  "manufacturers": {
+    "title": "Manufacturers",
+    "status": {
+      "ACTIVE": "Active",
+      "ACQUIRED": "Acquired",
+      "DEFUNCT": "Defunct"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "loginWith": "Login with {provider}",
+    "welcome": "Welcome back",
+    "signInToContinue": "Sign in to continue",
+    "signIn": {
+      "title": "Sign In",
+      "description": "Sign in to your account",
+      "button": "Sign in with Keycloak",
+      "loading": "Signing in...",
+      "hint": "You will be redirected to Keycloak"
+    },
+    "signOut": {
+      "title": "Sign Out",
+      "description": "Are you sure you want to sign out?",
+      "button": "Sign Out",
+      "loading": "Signing out...",
+      "cancel": "Cancel"
+    },
+    "error": {
+      "title": "Authentication Error",
+      "description": "An error occurred during sign in",
+      "tryAgain": "Try Again",
+      "backHome": "Back to Home"
+    },
+    "errors": {
+      "configuration": "Server configuration error. Please contact the administrator.",
+      "accessDenied": "Access denied. You do not have permission.",
+      "verification": "The verification link has expired or has already been used.",
+      "oauthSignin": "Error starting OAuth sign-in.",
+      "oauthCallback": "Error processing OAuth callback.",
+      "oauthCreateAccount": "Error creating user account.",
+      "emailCreateAccount": "Error creating email account.",
+      "callback": "Error processing callback.",
+      "oauthAccountNotLinked": "This email is already linked to another account.",
+      "sessionRequired": "Please sign in to access this page.",
+      "default": "An unknown error occurred. Please try again."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "components": {
+      "title": "Manage Components",
+      "new": "New Component",
+      "edit": "Edit Component"
+    },
+    "moderation": {
+      "title": "Moderation",
+      "pendingReviews": "Pending Reviews",
+      "approve": "Approve",
+      "reject": "Reject",
+      "batchApproval": "Batch Approval"
+    },
+    "users": {
+      "title": "Users",
+      "manage": "Manage Users"
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "New Attribute",
+        "titleEdit": "Edit Attribute",
+        "description": "Attribute definition for components"
+      },
+      "category": {
+        "title": "New Category",
+        "titleEdit": "Edit Category",
+        "description": "Manage category information and attributes",
+        "saveFirst": "Save the category first to add attributes"
+      },
+      "component": {
+        "title": "New Component",
+        "titleEdit": "Edit Component",
+        "description": "Create new component - after saving you can add manufacturer variants",
+        "descriptionEdit": "Manage component information and manufacturer variants",
+        "saveFirstPinMapping": "Save the component first to edit pin mapping",
+        "saveFirstParts": "Save the component first to add manufacturer variants",
+        "saveFirstRelations": "Save the component first to add relationships",
+        "createdWithVariants": "Component was created. You can now add manufacturer variants",
+        "noPartsWarning": "This component has no manufacturer variants. At least one variant is required"
+      },
+      "manufacturer": {
+        "title": "New Manufacturer",
+        "titleEdit": "Edit Manufacturer",
+        "description": "Manage manufacturer information"
+      },
+      "part": {
+        "title": "New Variant",
+        "titleEdit": "Edit Variant",
+        "description": "Manufacturer-specific variant",
+        "descriptionEdit": "Modify manufacturer variant information",
+        "saveFirstFiles": "Save the variant first to upload files"
+      },
+      "package": {
+        "title": "New Package",
+        "titleEdit": "Edit Package",
+        "description": "Package/footprint information"
+      },
+      "delete": {
+        "title": "Confirm Deletion",
+        "message": "Are you sure you want to delete this item?",
+        "messageFile": "Do you really want to delete this file?",
+        "messagePin": "Do you really want to delete this pin?",
+        "message3dModel": "Do you really want to delete this 3D model?",
+        "messageRelation": "Do you really want to delete this relationship?"
+      }
+    },
+    "buttons": {
+      "saving": "Saving...",
+      "saveAsDraft": "Save as Draft",
+      "update": "Update",
+      "addPin": "Add Pin",
+      "addRelation": "Add Relationship"
+    },
+    "messages": {
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "attribute": {
+        "created": "Attribute was created",
+        "updated": "Attribute was updated",
+        "deleted": "Attribute was deleted",
+        "loadFailed": "Failed to load attributes",
+        "saveFailed": "Failed to save attribute",
+        "deleteFailed": "Failed to delete attribute"
+      },
+      "category": {
+        "created": "Category was created",
+        "updated": "Category was updated",
+        "deleted": "Category was deleted",
+        "loadFailed": "Failed to load categories",
+        "saveFailed": "Failed to save category",
+        "deleteFailed": "Failed to delete category"
+      },
+      "component": {
+        "created": "Component was created",
+        "updated": "Component was updated",
+        "deleted": "Component was deleted",
+        "loadFailed": "Failed to load components",
+        "saveFailed": "Failed to save component",
+        "deleteFailed": "Failed to delete component"
+      },
+      "manufacturer": {
+        "created": "Manufacturer was created",
+        "updated": "Manufacturer was updated",
+        "deleted": "Manufacturer was deleted",
+        "loadFailed": "Failed to load manufacturers",
+        "saveFailed": "Failed to save manufacturer",
+        "deleteFailed": "Failed to delete manufacturer",
+        "logoUploaded": "Logo was uploaded",
+        "logoUploadFailed": "Failed to upload logo"
+      },
+      "part": {
+        "created": "Variant was created",
+        "updated": "Variant was updated",
+        "deleted": "Variant was deleted",
+        "loadFailed": "Failed to load variants",
+        "saveFailed": "Failed to save variant",
+        "deleteFailed": "Failed to delete variant"
+      },
+      "package": {
+        "created": "Package was created",
+        "updated": "Package was updated",
+        "deleted": "Package was deleted",
+        "loadFailed": "Failed to load packages",
+        "saveFailed": "Failed to save package",
+        "deleteFailed": "Failed to delete package"
+      },
+      "file": {
+        "uploaded": "File was uploaded",
+        "deleted": "File was deleted",
+        "uploadFailed": "Failed to upload file",
+        "deleteFailed": "Failed to delete file"
+      },
+      "pin": {
+        "created": "Pin was added",
+        "updated": "Pin was updated",
+        "deleted": "Pin was deleted",
+        "createFailed": "Failed to create pin",
+        "loadFailed": "Failed to load pins"
+      },
+      "relation": {
+        "created": "Relationship was added",
+        "deleted": "Relationship was deleted",
+        "createFailed": "Failed to create relationship",
+        "deleteFailed": "Failed to delete relationship"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin Mapping",
+      "addPin": "Add Pin",
+      "newPin": "Add New Pin",
+      "pinNumber": "Pin Number (e.g. 1, VCC)",
+      "pinName": "Pin Name",
+      "selectType": "Select Pin Type",
+      "noDescription": "No description"
+    },
+    "files": {
+      "uploadImage": "Upload Product Image",
+      "uploadDatasheet": "Upload Datasheet",
+      "uploadDocument": "Upload Document",
+      "selectLanguage": "Select Language",
+      "noFiles": "No files available",
+      "confirmDelete": "Delete file?"
+    },
+    "model3d": {
+      "title": "3D Models",
+      "confirmDelete": "Delete 3D model?",
+      "upload": "Upload 3D Model",
+      "noModels": "No 3D models available"
+    },
+    "lists": {
+      "searchPlaceholder": "Search...",
+      "searchByName": "Search by name or slug...",
+      "searchByNameCage": "Search by name, slug or CAGE code...",
+      "noResults": "No results found",
+      "createFirst": "Create the first entry",
+      "noPackagesFound": "No packages found",
+      "createFirstPackage": "Create first package"
+    },
+    "form": {
+      "package": "Package",
+      "selectPackage": "Select Package",
+      "noPackage": "No Package",
+      "editIn": "Edit in:",
+      "searchLanguage": "Search language...",
+      "noLanguageFound": "No language found",
+      "original": "Original",
+      "backToOverview": "Back to Overview",
+      "name": "Name",
+      "nameDescription": "The name in German and/or English. Required field if the category has no label attributes",
+      "namePlaceholder": "Component name",
+      "series": "Series",
+      "seriesDescription": "Optional component series or family",
+      "seriesPlaceholder": "e.g. 74HC, ATmega",
+      "packageDescription": "The physical package (e.g. DIP-8, SOIC-8)",
+      "shortDescription": "Short Description",
+      "shortDescriptionDescription": "A short sentence describing the component",
+      "shortDescriptionPlaceholder": "Short description",
+      "fullDescription": "Full Description",
+      "fullDescriptionPlaceholder": "Full description",
+      "attributesDescription": "Technical attributes based on the selected category",
+      "selectCategoryFirst": "Please select a category first in the \"Basic Info\" tab",
+      "pinMappingDescription": "Define the pin assignment for this component. The pin mapping applies to all manufacturer variants",
+      "partsDescription": "Manufacturer-specific variants of this component",
+      "newVariant": "New Variant",
+      "close": "Close"
+    },
+    "audit": {
+      "created": "created",
+      "updated": "updated",
+      "deleted": "deleted",
+      "restored": "restored",
+      "approved": "approved",
+      "rejected": "rejected"
+    },
+    "tabs": {
+      "basicInfo": "Basic Info",
+      "attributes": "Attributes",
+      "pinMapping": "Pin Mapping",
+      "parts": "Manufacturer Variants",
+      "relations": "Relationships",
+      "files": "Files",
+      "details": "Details",
+      "pins": "Pin Mapping"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Manufacturer",
+      "status": "Status",
+      "lifecycle": "Lifecycle",
+      "actions": "Actions",
+      "variantCount": "{count} Variant",
+      "variantCountPlural": "{count} Variants",
+      "activeCount": "{count} active",
+      "obsoleteCount": "{count} obsolete",
+      "unknown": "Unknown"
+    },
+    "partForm": {
+      "coreComponent": "Generic Component",
+      "coreComponentDesc": "The manufacturer-independent component (e.g. 555 Timer)",
+      "manufacturer": "Manufacturer",
+      "manufacturerDesc": "The manufacturer of this specific variant (e.g. Texas Instruments)",
+      "manufacturerPlaceholder": "Select manufacturer",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "e.g. NE555P",
+      "mpnDesc": "The unique manufacturer part number",
+      "orderingCode": "Ordering Code",
+      "orderingCodePlaceholder": "Optional",
+      "orderingCodeDesc": "Alternative ordering code (if different from MPN)",
+      "statusRecord": "Record Status",
+      "lifecycleStatus": "Lifecycle Status",
+      "introductionYear": "Introduction Year",
+      "introductionYearPlaceholder": "e.g. 1972",
+      "discontinuedYear": "Discontinued Year",
+      "discontinuedYearPlaceholder": "e.g. 2020",
+      "rohsCompliant": "RoHS Compliant",
+      "rohsDesc": "Complies with RoHS directives",
+      "reachCompliant": "REACH Compliant",
+      "reachDesc": "Complies with REACH regulation",
+      "weight": "Weight (Grams)",
+      "weightPlaceholder": "e.g. 0.5",
+      "dateCodeFormat": "Date Code Format",
+      "dateCodePlaceholder": "e.g. YYWW",
+      "dateCodeDesc": "Format of the date code on the component",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "e.g. 5962-01-123-4567",
+      "milSpec": "Military Specification",
+      "milSpecPlaceholder": "e.g. MIL-PRF-38534",
+      "partAttributesDesc": "Manufacturer-specific attributes based on the component category.",
+      "partAttributesLabel": "Manufacturer-specific Attributes",
+      "filesDesc": "Manage datasheets, images and other files for this manufacturer variant.",
+      "close": "Close",
+      "selectComponent": "Select component"
+    }
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized",
+    "serverError": "Server error"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "community": "Community",
+    "legal": "Legal",
+    "about": "About",
+    "help": "Help",
+    "contact": "Contact",
+    "contribute": "Contribute",
+    "github": "GitHub",
+    "privacy": "Privacy",
+    "imprint": "Imprint",
+    "copyright": "Open Source under MIT License"
+  },
+  "about": {
+    "title": "About ElectroVault",
+    "subtitle": "Community-maintained database for electronic components",
+    "mission": {
+      "title": "Our Mission",
+      "description": "ElectroVault is a free and open database for electronic components - from historical tubes to modern nanotechnology. Our goal is to preserve knowledge about electronic components and make it accessible to everyone."
+    },
+    "features": {
+      "title": "Features",
+      "comprehensive": {
+        "title": "Comprehensive Database",
+        "description": "From resistors to capacitors to highly integrated circuits - we capture all important components with detailed specifications."
+      },
+      "historical": {
+        "title": "Historical Archive",
+        "description": "Documentation of historical components for repair and restoration of vintage equipment."
+      },
+      "community": {
+        "title": "Community-driven",
+        "description": "Everyone can contribute and share their knowledge. Together we build the most comprehensive component database."
+      },
+      "open": {
+        "title": "Open Source",
+        "description": "Fully transparent and freely available under MIT License."
+      }
+    },
+    "contribute": {
+      "title": "Get Involved",
+      "description": "ElectroVault thrives on its community. Here are some ways you can contribute:",
+      "dataEntry": "Add or edit components",
+      "datasheets": "Upload datasheets",
+      "code": "Code contributions on GitHub",
+      "feedback": "Feedback and suggestions for improvement"
+    }
+  },
+  "help": {
+    "title": "Help & FAQ",
+    "subtitle": "Frequently Asked Questions",
+    "general": {
+      "title": "General",
+      "what": {
+        "question": "What is ElectroVault?",
+        "answer": "ElectroVault is a free, community-maintained database for electrical and electronic components. We document components from historical tubes to modern ICs with comprehensive metadata, datasheets, and specifications."
+      },
+      "free": {
+        "question": "Is ElectroVault free?",
+        "answer": "Yes, ElectroVault is completely free and open source. Both usage and source code are freely available."
+      }
+    },
+    "search": {
+      "title": "Search",
+      "how": {
+        "question": "How do I find a specific component?",
+        "answer": "Use the search function in the top right or navigate through the categories. You can search by part number, manufacturer, or properties."
+      },
+      "filters": {
+        "question": "What filters are available?",
+        "answer": "You can filter by category, manufacturer, status (active/obsolete), package type, and many other technical parameters."
+      }
+    },
+    "contribute": {
+      "title": "Contributing",
+      "account": {
+        "question": "Do I need an account to contribute?",
+        "answer": "Yes, to add or edit components, you need a free account. This helps us ensure data quality."
+      },
+      "how": {
+        "question": "How can I add a component?",
+        "answer": "After logging in, you can create new components via the 'New Component' button in the component overview. A moderator will review your contribution before publication."
+      },
+      "quality": {
+        "question": "How is data quality ensured?",
+        "answer": "All contributions are reviewed by experienced moderators. Additionally, registered users can suggest corrections."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Do you have questions or suggestions?",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message"
+    },
+    "alternatives": {
+      "title": "Other Contact Options",
+      "github": "Create an issue on GitHub",
+      "email": "Send us an email"
+    }
+  },
+  "imprint": {
+    "title": "Imprint",
+    "responsible": "Responsible for content",
+    "contact": "Contact",
+    "disclaimer": {
+      "title": "Disclaimer",
+      "content": "Despite careful content control, we assume no liability for the content of external links. The operators of the linked pages are solely responsible for their content.",
+      "liability": "The contents of these pages were created with the greatest care. However, we cannot guarantee the accuracy, completeness, and timeliness of the content."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "ElectroVault is an open source project under the MIT License. The source code is available on GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated",
+    "intro": "We take the protection of your personal data very seriously. This privacy policy informs you about the nature, scope, and purpose of the processing of personal data.",
+    "responsible": {
+      "title": "Data Controller",
+      "description": "Responsible for data processing on this website is:"
+    },
+    "collection": {
+      "title": "Collection and Storage of Personal Data",
+      "description": "When you visit our website, information is automatically collected that your browser transmits:",
+      "data": "IP address, date and time of access, browser type and version, operating system used, referrer URL"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Our website uses cookies. Cookies are small text files stored on your device.",
+      "essential": "Technically necessary cookies for authentication and session management",
+      "functional": "Functional cookies to improve user experience"
+    },
+    "auth": {
+      "title": "Authentication",
+      "description": "We use Keycloak for registration and login. The following data is stored:",
+      "data": "Username, email address, profile picture (optional), role and permissions"
+    },
+    "rights": {
+      "title": "Your Rights",
+      "description": "You have the following rights regarding your personal data:",
+      "access": "Right of access",
+      "correction": "Right to rectification",
+      "deletion": "Right to erasure",
+      "restriction": "Right to restriction of processing",
+      "portability": "Right to data portability",
+      "objection": "Right to object"
+    },
+    "contact": {
+      "title": "Contact for Privacy Questions",
+      "description": "If you have questions about privacy, you can contact us at any time."
+    }
+  }
+}

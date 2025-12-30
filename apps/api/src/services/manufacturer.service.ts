@@ -26,7 +26,23 @@ export class ManufacturerService {
   async list(query: ManufacturerListQuery) {
     const { skip, take } = getPrismaOffsets(query);
 
+    // Moderations-Filter: DRAFTs nur fuer eigene User anzeigen
+    let moderationCondition: object | undefined;
+    if (query.includeDrafts && query.userId) {
+      // Zeige: alle nicht-DRAFT Hersteller ODER eigene DRAFTs
+      moderationCondition = {
+        OR: [
+          { moderationStatus: { not: 'DRAFT' } },
+          { moderationStatus: 'DRAFT', createdById: query.userId },
+        ],
+      };
+    } else {
+      // Standard: keine Entwuerfe anzeigen
+      moderationCondition = { moderationStatus: { not: 'DRAFT' } };
+    }
+
     const where = {
+      ...moderationCondition,
       ...(query.status && { status: query.status }),
       ...(query.countryCode && { countryCode: query.countryCode }),
       ...(!query.includeAcquired && { status: { not: 'ACQUIRED' as const } }),
@@ -130,6 +146,9 @@ export class ManufacturerService {
       slug = generateUniqueSlug(baseSlug, existingSlugs);
     }
 
+    // Moderations-Status basierend auf saveAsDraft setzen
+    const moderationStatus = data.saveAsDraft ? 'DRAFT' : 'PENDING';
+
     // Race Condition Fix: Prisma P2002 Error fangen statt Check-Then-Act
     try {
       const manufacturer = await prisma.manufacturerMaster.create({
@@ -144,6 +163,7 @@ export class ManufacturerService {
           foundedYear: data.foundedYear,
           defunctYear: data.defunctYear,
           description: toJsonValue(data.description),
+          moderationStatus,
           createdById: userId,
           aliases: data.aliases
             ? {

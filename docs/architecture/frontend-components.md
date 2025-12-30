@@ -24,7 +24,7 @@ apps/web/src/components/
 ├── components/              # Bauteil-Anzeige-Komponenten
 │   ├── category-sidebar.tsx        # Kategorie-Filter-Sidebar
 │   ├── components-list.tsx         # Liste aller Bauteile
-│   └── components-page-layout.tsx  # Layout für Bauteil-Seiten
+│   └── components-page-layout.tsx  # Layout für Bauteil-Seiten (Legacy)
 ├── forms/                   # Wiederverwendbare Formular-Komponenten
 │   ├── category-cascade-select.tsx # Kaskadierender Kategorie-Selector
 │   ├── file-upload.tsx             # Universeller Datei-Upload
@@ -32,36 +32,18 @@ apps/web/src/components/
 ├── layout/                  # Layout-Komponenten
 │   ├── breadcrumb.tsx              # Breadcrumb-Navigation
 │   ├── footer.tsx                  # Seiten-Footer
-│   └── header.tsx                  # Seiten-Header mit Navigation
+│   ├── header.tsx                  # Seiten-Header mit Navigation
+│   └── user-menu.tsx               # User-Menü (Auth-State, Logout, Admin-Link)
 ├── manufacturers/           # Hersteller-Komponenten
 │   └── manufacturers-list.tsx      # Liste aller Hersteller
 ├── packages/                # Gehäuseform-Komponenten
 │   └── packages-list.tsx           # Liste aller Gehäuseformen
 ├── providers/               # React-Context-Provider
 │   └── session-provider.tsx        # next-auth Session-Provider
+├── skeletons/               # Shell First Skeleton-Komponenten
+│   └── index.tsx                   # Alle Skeleton-Platzhalter
 └── ui/                      # shadcn/ui Basis-Komponenten
-    ├── alert.tsx
-    ├── alert-dialog.tsx
-    ├── avatar.tsx
-    ├── badge.tsx
-    ├── button.tsx
-    ├── card.tsx
-    ├── checkbox.tsx
-    ├── collapsible.tsx
-    ├── dialog.tsx
-    ├── form.tsx
-    ├── input.tsx
-    ├── label.tsx
-    ├── pagination.tsx
-    ├── progress.tsx
-    ├── select.tsx
-    ├── skeleton.tsx
-    ├── table.tsx
-    ├── table-pagination.tsx
-    ├── tabs.tsx
-    ├── textarea.tsx
-    ├── toast.tsx
-    └── toaster.tsx
+    └── ...                         # Standard shadcn/ui Komponenten
 ```
 
 ## Admin-Komponenten
@@ -284,6 +266,115 @@ const FILE_CONFIGS: Record<FileUploadType, {
 };
 ```
 
+## Filter-Komponenten
+
+Komponenten für die attribut-basierte Suche in der Bauteil-Liste.
+
+```
+apps/web/src/components/filters/
+├── attribute-filter-sidebar.tsx    # Haupt-Sidebar mit Filter-Controls
+├── active-filters.tsx              # Badge-Anzeige aktiver Filter
+├── filter-conflict-dialog.tsx      # Dialog bei Kategorie-Wechsel
+└── filter-controls/
+    ├── index.tsx                   # Wrapper mit Collapsible
+    ├── decimal-filter.tsx          # Min/Max mit SI-Präfix
+    ├── integer-filter.tsx          # Ganzzahl-Filter
+    ├── string-filter.tsx           # Text-Contains-Filter
+    ├── boolean-filter.tsx          # Ja/Nein Radio-Buttons
+    ├── range-filter.tsx            # Bereichs-Abfrage
+    ├── select-filter.tsx           # Einfachauswahl (Radio)
+    └── multiselect-filter.tsx      # Mehrfachauswahl (Checkboxen)
+```
+
+### AttributeFilterSidebar
+
+Haupt-Komponente für die Filter-Sidebar, lädt Attribute basierend auf Kategorie.
+
+**Props:**
+```typescript
+interface AttributeFilterSidebarProps {
+  categoryId: string | null;           // Aktuelle Kategorie
+  filters: AttributeFilter[];          // Aktive Filter
+  onFiltersChange: (filters: AttributeFilter[]) => void;
+  isOpen: boolean;                     // Sheet offen/geschlossen
+  onClose: () => void;
+}
+```
+
+**Workflow:**
+1. Lädt filterbare Attribute der ausgewählten Kategorie (inkl. vererbter)
+2. Zeigt Filter-Controls für jeden Attribut-Typ
+3. Lokaler State bis "Anwenden" geklickt wird
+4. "Zurücksetzen" leert alle Filter
+
+### Filter-Controls
+
+Jedes Control verwaltet seinen eigenen State und konvertiert zu `AttributeFilter`.
+
+**DecimalFilter:**
+- Min/Max-Eingaben mit SI-Präfix-Dropdown
+- Normalisierung zu SI-Basiseinheit bei Submit
+- Unterstützt Komma und Punkt als Dezimaltrenner
+- Speichert `displayValue` und `displayPrefix` für UI-Wiederherstellung
+
+**MultiselectFilter:**
+- Checkboxen für erlaubte Werte (`allowedValues`)
+- AND/OR-Toggle für Verknüpfung
+- Operatoren: `hasAll` (UND), `hasAny` (ODER)
+- Werte werden kommasepariert gespeichert
+
+**SelectFilter:**
+- Radio-Buttons inkl. "Alle"-Option
+- Operator: `eq` für exakten Match
+
+### useFilterState Hook
+
+Verwaltet Filter im URL-State für Sharing und Bookmarking.
+
+**Datei:** `apps/web/src/hooks/use-filter-state.ts`
+
+```typescript
+const {
+  filters,        // Aktive Filter (AttributeFilter[])
+  setFilters,     // Alle Filter setzen
+  setFilter,      // Einzelnen Filter setzen/aktualisieren
+  removeFilter,   // Filter entfernen (by definitionId)
+  clearFilters,   // Alle löschen
+  getFilter,      // Filter für definitionId holen
+  hasFilters,     // Boolean: Filter aktiv?
+} = useFilterState();
+```
+
+**URL-Format:**
+```
+/components?categorySlug=capacitors&filters=%5B%7B%22definitionId%22...%7D%5D
+```
+
+**Features:**
+- Filter werden als JSON im `filters` Query-Parameter gespeichert
+- Bei Filteränderung: `page` wird auf 1 zurückgesetzt
+- Zod-Validierung beim Lesen aus URL
+- Fehlerhafte Filter werden geloggt und ignoriert
+
+### ActiveFilters
+
+Badge-Anzeige der aktiven Filter mit Remove-Button.
+
+**Props:**
+```typescript
+interface ActiveFiltersProps {
+  filters: AttributeFilter[];
+  attributes: AttributeDefinition[];  // Für displayName-Lookup
+  onRemove: (definitionId: string) => void;
+  onClearAll: () => void;
+}
+```
+
+**Darstellung:**
+- Badge pro Filter: `Kapazität: 1µF - 100µF`
+- X-Button zum Entfernen einzelner Filter
+- "Alle löschen"-Button am Ende
+
 ## Layout-Komponenten
 
 ### Header
@@ -293,21 +384,52 @@ Haupt-Navigation mit Authentifizierung:
 **Features:**
 - Logo und Hauptnavigation
 - Desktop/Mobile-Navigation
-- Benutzer-Info mit Rollen-Badge (Admin/Moderator)
-- Logout-Button
-- Moderation-Link für Admin/Moderatoren
+- Lazy-Loading der UserMenu-Komponente (Suspense)
+- Moderation-Link für Admin/Moderatoren (Desktop)
 
 **Navigation-Items:**
 - Bauteile (`/components`)
 - Hersteller (`/manufacturers`)
 - Gehäuseformen (`/packages`)
-- Moderation (`/admin`) - Nur für Admin/Moderator
+- Moderation (`/admin`) - Nur für Admin/Moderator (Desktop-Menü via `AdminNavLink`)
 
 **Technische Details:**
 - Nutzt next-intl für Übersetzungen
-- next-auth Session-Handling
-- Rollenbasierte Anzeige von Links
+- Suspense-Wrapper für UserMenu mit UserMenuSkeleton
 - Responsive Design mit Mobile-Menu-Toggle
+- Server Component mit Client Component-Integration
+
+### UserMenu
+
+Client-Komponente für Authentifizierungsstatus:
+
+**Features:**
+- Login-Button wenn nicht eingeloggt
+- Benutzer-Info mit Name/Email
+- Rollen-Badges (Admin/Moderator)
+- Logout-Button mit Callback
+- Admin-Link für Mobile (Shield-Icon)
+
+**Komponenten:**
+- `UserMenu` - Haupt-Komponente mit Session-Handling
+- `AdminNavLink` - Separater Link für Desktop-Navigation
+
+**Technische Details:**
+- Nutzt `useSession()` Hook von next-auth
+- Zeigt `UserMenuSkeleton` während Loading
+- Rollenbasierte Anzeige (Admin/Moderator)
+- Responsive Design (Desktop/Mobile unterschiedlich)
+
+**Verwendung:**
+```typescript
+// Im Header (Server Component)
+<Suspense fallback={<UserMenuSkeleton />}>
+  <UserMenu />
+</Suspense>
+
+// Desktop-Navigation
+<AdminNavLink /> {/* Zeigt Link nur wenn berechtigt */}
+```
 
 ### Footer
 
@@ -640,6 +762,154 @@ try {
 - Nutze Next.js error.tsx für Error-Handling
 
 ### Performance
+
+**Route Groups + Shell First Pattern:**
+
+Die Anwendung nutzt Next.js Route Groups für instant Client-Side Navigation. Das Layout bleibt bei Navigation stehen - nur der Content wechselt.
+
+**App-Struktur:**
+```
+app/
+├── (main)/                    # Route Group für öffentliche Seiten
+│   ├── layout.tsx             # Shared Layout (Header + Footer)
+│   ├── page.tsx               # Homepage
+│   ├── loading.tsx            # FEHLT - Könnte hinzugefügt werden
+│   ├── components/            # Bauteile
+│   │   ├── page.tsx
+│   │   ├── loading.tsx        # Loading-Placeholder
+│   │   ├── [slug]/
+│   │   │   └── page.tsx       # Bauteil-Detail
+│   │   └── _components/       # Private Komponenten
+│   │       └── components-page-content.tsx
+│   ├── manufacturers/         # Hersteller
+│   │   ├── page.tsx
+│   │   ├── loading.tsx
+│   │   ├── [slug]/
+│   │   │   └── page.tsx       # Hersteller-Detail
+│   │   └── _components/
+│   │       └── manufacturers-content.tsx
+│   ├── packages/              # Bauformen
+│   │   ├── page.tsx
+│   │   ├── loading.tsx
+│   │   └── _components/
+│   │       └── packages-content.tsx
+│   ├── about/                 # Statische Seiten
+│   │   └── page.tsx
+│   ├── help/
+│   │   ├── page.tsx
+│   │   └── faq-accordion.tsx  # FAQ-Komponente
+│   ├── contact/
+│   │   ├── page.tsx
+│   │   └── contact-form.tsx   # Kontaktformular
+│   ├── impressum/
+│   │   └── page.tsx
+│   └── datenschutz/
+│       └── page.tsx
+├── admin/                     # Separates Layout (Sidebar)
+│   ├── layout.tsx
+│   └── loading.tsx            # Admin-Loading-Placeholder
+├── auth/                      # Separates Layout (Minimal)
+│   └── layout.tsx
+└── layout.tsx                 # Root Layout (Providers)
+```
+
+**Vorteile Route Groups:**
+- **Instant Navigation** - Header/Footer bleiben gemounted, nur `{children}` wechselt
+- **Keine Server-Roundtrips** für Layout-Teile
+- **Shared State** im Header bleibt erhalten (z.B. User-Session)
+
+**Shared Layout** (`(main)/layout.tsx`):
+```typescript
+export default function MainLayout({ children }) {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">{children}</main>
+      <Footer />
+    </div>
+  );
+}
+```
+
+**Seiten-Struktur** (keine eigenen Header/Footer mehr):
+```typescript
+// (main)/components/page.tsx
+export default async function ComponentsPage({ searchParams }) {
+  const params = await searchParams;
+
+  return (
+    <div className="flex-1 flex">
+      <Suspense fallback={<CategorySidebarSkeleton />}>
+        <ComponentsContent variant="sidebar" {...params} />
+      </Suspense>
+      <Suspense fallback={<ComponentsTableSkeleton />}>
+        <ComponentsContent variant="list" {...params} />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+**Route Naming Conventions:**
+- `(main)/` - Route Group (nicht in URL sichtbar)
+- `_components/` - Private Komponenten-Ordner (nicht routbar)
+- `[slug]/` - Dynamic Route Parameter
+
+**Skeleton-Komponenten** (`components/skeletons/index.tsx`):
+
+Alle Skeleton-Komponenten für Shell First Loading Pattern:
+
+**Layout Skeletons:**
+- `HeaderSkeleton` - Header-Platzhalter (Logo, Navigation, Auth)
+- `UserMenuSkeleton` - User-Menü-Platzhalter (Login/Logout-Button)
+- `CategorySidebarSkeleton` - Kategorie-Sidebar mit Tree-Struktur
+- `AdminSidebarSkeleton` - Admin-Sidebar mit Navigation
+- `BreadcrumbSkeleton` - Breadcrumb-Navigation-Platzhalter
+
+**Tabellen Skeletons:**
+- `TableSkeleton` - Generische Tabelle (konfigurierbar: rows, columns)
+- `ComponentsTableSkeleton` - Bauteile-Tabelle mit Expand-Funktion
+- `ManufacturersTableSkeleton` - Hersteller-Tabelle mit Logo-Platzhalter
+- `PackagesTableSkeleton` - Bauformen-Tabelle mit Typ-Badges
+
+**Card Skeletons:**
+- `StatCardSkeleton` - Einzelne Statistik-Karte
+- `StatsGridSkeleton` - Grid von Statistik-Karten (konfigurierbar: count)
+- `ComponentCardSkeleton` - Bauteil-Karte mit Bild und Details
+
+**Page Skeletons:**
+- `ComponentsPageSkeleton` - Komplette Bauteile-Seite (Sidebar + Tabelle)
+- `ManufacturersPageSkeleton` - Komplette Hersteller-Seite
+- `AdminDashboardSkeleton` - Admin-Dashboard mit Stats + Activity
+- `HomePageSkeleton` - Homepage mit Hero, Stats, Featured
+
+**Utility Skeletons:**
+- `SearchInputSkeleton` - Such-Eingabefeld
+- `ButtonSkeleton` - Button (konfigurierbar: sm, default, lg)
+
+**loading.tsx Dateien:**
+```
+app/
+├── (main)/
+│   ├── components/loading.tsx     → ComponentsPageSkeleton
+│   ├── manufacturers/loading.tsx  → ManufacturersPageSkeleton
+│   └── packages/loading.tsx       → PackagesTableSkeleton (in CardLayout)
+└── admin/loading.tsx              → AdminDashboardSkeleton
+```
+
+**Verwendung:**
+```typescript
+// Inline in Page mit Suspense
+<Suspense fallback={<CategorySidebarSkeleton />}>
+  <CategorySidebar />
+</Suspense>
+
+// Oder als loading.tsx
+// app/(main)/components/loading.tsx
+export default function Loading() {
+  return <ComponentsPageSkeleton />;
+}
+```
 
 **Code-Splitting:**
 - Dialoge werden erst bei Öffnung geladen (lazy import)

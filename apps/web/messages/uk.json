@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Завантаження...",
+    "error": "Помилка",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "delete": "Видалити",
+    "edit": "Редагувати",
+    "create": "Створити",
+    "search": "Пошук",
+    "back": "Назад",
+    "next": "Далі",
+    "previous": "Попередня",
+    "noResults": "Результатів не знайдено",
+    "all": "Всі",
+    "yes": "Так",
+    "no": "Ні",
+    "actions": {
+      "details": "Деталі"
+    }
+  },
+  "locale": {
+    "switch": "Змінити мову",
+    "current": "Поточна мова",
+    "languages": {
+      "en": "Англійська",
+      "de": "Німецька",
+      "fr": "Французька",
+      "es": "Іспанська",
+      "zh": "Китайська",
+      "ja": "Японська",
+      "ko": "Корейська",
+      "it": "Італійська"
+    }
+  },
+  "nav": {
+    "home": "Головна",
+    "components": "Компоненти",
+    "categories": "Категорії",
+    "manufacturers": "Виробники",
+    "packages": "Корпуси",
+    "search": "Пошук",
+    "admin": "Адміністрування",
+    "moderation": "Модерація",
+    "myElectroVault": "Мій ElectroVault",
+    "login": "Увійти",
+    "logout": "Вийти",
+    "profile": "Профіль"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "База даних електронних компонентів, підтримувана спільнотою",
+    "searchPlaceholder": "Пошук компонентів...",
+    "featuredCategories": "Основні категорії",
+    "recentComponents": "Останні компоненти",
+    "stats": {
+      "components": "Компонентів",
+      "manufacturers": "Виробників",
+      "categories": "Категорій",
+      "users": "Користувачів"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "База даних електронних компонентів, підтримувана спільнотою"
+    },
+    "stats": {
+      "components": "Компонентів",
+      "manufacturers": "Виробників",
+      "users": "Користувачів"
+    }
+  },
+  "packages": {
+    "title": "Корпуси",
+    "totalCount": "{count} корпусів у базі даних",
+    "addNew": "Новий корпус",
+    "searchPlaceholder": "Пошук за назвою або slug...",
+    "filterPlaceholder": "Тип корпусу",
+    "filterAll": "Всі типи",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Радіальний",
+      "AXIAL": "Аксіальний",
+      "CHASSIS": "Шасі",
+      "OTHER": "Інше"
+    },
+    "table": {
+      "name": "Назва",
+      "type": "Тип",
+      "pinCount": "Кількість виводів",
+      "dimensions": "Розміри (Д x Ш x В мм)",
+      "pitch": "Крок",
+      "actions": "Дії"
+    },
+    "loading": "Завантаження...",
+    "noResults": "Корпусів не знайдено",
+    "noPackagesFound": "Корпусів не знайдено",
+    "createFirst": "Створити перший корпус",
+    "error": "Помилка",
+    "success": "Успіх",
+    "loadError": "Не вдалося завантажити корпуси.",
+    "deleteSuccess": "Корпус видалено.",
+    "deleteError": "Не вдалося видалити корпус.",
+    "deleteDialog": {
+      "title": "Видалити корпус?",
+      "description": "Ви дійсно хочете видалити корпус \"{name}\"? Цю дію неможливо скасувати."
+    }
+  },
+  "components": {
+    "title": "Компоненти",
+    "description": "Переглянути нашу розширену базу даних електронних компонентів",
+    "filters": {
+      "category": "Категорія",
+      "manufacturer": "Виробник",
+      "status": "Статус",
+      "mountingType": "Тип монтажу"
+    },
+    "detail": {
+      "overview": "Огляд",
+      "specifications": "Технічні характеристики",
+      "datasheets": "Технічні описи",
+      "parts": "Компоненти виробників",
+      "history": "Історія версій",
+      "backToOverview": "Повернутися до огляду",
+      "category": "Категорія",
+      "statistics": "Статистика",
+      "manufacturerVariants": "Варіанти виробників",
+      "activeVariants": "Активні варіанти",
+      "additionalProperties": "Додаткові властивості",
+      "furtherProperties": "Додаткові властивості цього компонента",
+      "validForAllVariants": "Технічні характеристики (дійсні для всіх варіантів)",
+      "variantCount": "{count} варіант виробника",
+      "variantCountPlural": "{count} варіантів виробника",
+      "noVariantsAvailable": "Варіантів виробника немає",
+      "noVariantsForComponent": "Варіантів виробника для цього компонента немає.",
+      "noAttributesAvailable": "Атрибутів немає.",
+      "manufacturer": "Виробник",
+      "orderingCode": "Код замовлення",
+      "details": "Деталі",
+      "allInCategory": "Всі в категорії",
+      "status": "Статус",
+      "moreAttributes": "+{count} більше"
+    },
+    "status": {
+      "DRAFT": "Чернетка",
+      "PENDING": "На розгляді",
+      "PUBLISHED": "Опубліковано",
+      "ARCHIVED": "В архіві"
+    },
+    "lifecycle": {
+      "ACTIVE": "Активний",
+      "NRND": "Не рекомендується для нових розробок",
+      "EOL": "Зняття з виробництва",
+      "OBSOLETE": "Застарілий"
+    }
+  },
+  "categories": {
+    "title": "Категорії",
+    "browseAll": "Переглянути всі категорії",
+    "subcategories": "Підкатегорії",
+    "componentsInCategory": "Компонентів у цій категорії"
+  },
+  "manufacturers": {
+    "title": "Виробники",
+    "status": {
+      "ACTIVE": "Активний",
+      "ACQUIRED": "Поглинений",
+      "DEFUNCT": "Недіючий"
+    }
+  },
+  "auth": {
+    "login": "Увійти",
+    "logout": "Вийти",
+    "loginWith": "Увійти через {provider}",
+    "welcome": "З поверненням",
+    "signInToContinue": "Увійдіть, щоб продовжити",
+    "signIn": {
+      "title": "Вхід",
+      "description": "Увійдіть до свого облікового запису",
+      "button": "Увійти через Keycloak",
+      "loading": "Виконується вхід...",
+      "hint": "Ви будете перенаправлені до Keycloak"
+    },
+    "signOut": {
+      "title": "Вихід",
+      "description": "Ви впевнені, що хочете вийти?",
+      "button": "Вийти",
+      "loading": "Виконується вихід...",
+      "cancel": "Скасувати"
+    },
+    "error": {
+      "title": "Помилка автентифікації",
+      "description": "Сталася помилка під час входу",
+      "tryAgain": "Спробувати знову",
+      "backHome": "Повернутися на головну"
+    },
+    "errors": {
+      "configuration": "Помилка конфігурації сервера. Будь ласка, зверніться до адміністратора.",
+      "accessDenied": "Доступ заборонено. У вас немає дозволу.",
+      "verification": "Посилання для підтвердження застаріло або вже використано.",
+      "oauthSignin": "Помилка запуску входу OAuth.",
+      "oauthCallback": "Помилка обробки зворотного виклику OAuth.",
+      "oauthCreateAccount": "Помилка створення облікового запису користувача.",
+      "emailCreateAccount": "Помилка створення облікового запису електронної пошти.",
+      "callback": "Помилка обробки зворотного виклику.",
+      "oauthAccountNotLinked": "Ця електронна адреса вже пов'язана з іншим обліковим записом.",
+      "sessionRequired": "Будь ласка, увійдіть для доступу до цієї сторінки.",
+      "default": "Сталася невідома помилка. Будь ласка, спробуйте ще раз."
+    }
+  },
+  "admin": {
+    "dashboard": "Панель управління",
+    "sidebar": {
+      "dashboard": "Панель управління",
+      "moderation": "Модерація",
+      "moderationDescription": "Черга затвердження",
+      "users": "Користувачі",
+      "backToHome": "На головну",
+      "user": "Користувач",
+      "logout": "Вийти"
+    },
+    "components": {
+      "title": "Управління компонентами",
+      "new": "Новий компонент",
+      "edit": "Редагувати компонент"
+    },
+    "moderation": {
+      "title": "Модерація",
+      "pendingReviews": "На розгляді",
+      "approve": "Затвердити",
+      "reject": "Відхилити",
+      "batchApproval": "Масове затвердження",
+      "confirmApprove": "Підтвердити затвердження",
+      "confirmApproveDescription": "Ви дійсно хочете затвердити цей {type}? Після цього він буде публічно видимим.",
+      "confirmBatchApproval": "Ви хочете затвердити {count} елементів? Цю дію неможливо скасувати.",
+      "rejectWithReason": "Відхилити з поясненням",
+      "rejectDescription": "Будь ласка, надайте пояснення причини відхилення. Воно буде показано автору.",
+      "rejectReasonLabel": "Пояснення",
+      "rejectReasonPlaceholder": "Чому цей елемент відхиляється?",
+      "rejectReasonHelp": "Зрозуміле пояснення допоможе автору зрозуміти відхилення.",
+      "batchApproveButton": "Затвердити {count}",
+      "typeComponent": "Компонент",
+      "typePart": "Варіант",
+      "draft": "Чернетка"
+    },
+    "users": {
+      "title": "Користувачі",
+      "manage": "Управління користувачами"
+    },
+    "myDashboard": {
+      "title": "Моя панель",
+      "stats": {
+        "componentsTotal": "Всього компонентів",
+        "componentsTotalDesc": "Створені вами компоненти",
+        "variants": "Варіанти",
+        "variantsDesc": "Варіанти виробників",
+        "drafts": "Чернетки",
+        "draftsDesc": "Ще не подані",
+        "pending": "На розгляді",
+        "pendingDesc": "Очікують модерації",
+        "published": "Опубліковано",
+        "archived": "В архіві"
+      },
+      "draftsSection": {
+        "title": "Мої чернетки",
+        "description": "Чернетки — це приватні тимчасові збереження, які ще не подані на модерацію.",
+        "newComponent": "Новий компонент",
+        "empty": "Чернеток немає. Створіть новий компонент і збережіть його як чернетку.",
+        "draftBadge": "Чернетка",
+        "noName": "[Немає назви]"
+      },
+      "activitySection": {
+        "title": "Історія активності",
+        "description": "Ваші останні дії в ElectroVault",
+        "empty": "Активності ще немає."
+      },
+      "entities": {
+        "COMPONENT": "Компонент",
+        "PART": "Варіант",
+        "MANUFACTURER": "Виробник",
+        "CATEGORY": "Категорія",
+        "PACKAGE": "Корпус"
+      },
+      "error": "Не вдалося завантажити панель. Будь ласка, спробуйте ще раз."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Новий атрибут",
+        "titleEdit": "Редагувати атрибут",
+        "description": "Визначення атрибута для компонентів"
+      },
+      "category": {
+        "title": "Нова категорія",
+        "titleEdit": "Редагувати категорію",
+        "description": "Управління інформацією про категорію та атрибутами",
+        "saveFirst": "Спочатку збережіть категорію, щоб додати атрибути"
+      },
+      "component": {
+        "title": "Новий компонент",
+        "titleEdit": "Редагувати компонент",
+        "description": "Створити новий компонент - після збереження ви можете додати варіанти виробників",
+        "descriptionEdit": "Управління інформацією про компонент та варіантами виробників",
+        "saveFirstPinMapping": "Спочатку збережіть компонент, щоб редагувати розпаювання",
+        "saveFirstParts": "Спочатку збережіть компонент, щоб додати варіанти виробників",
+        "saveFirstRelations": "Спочатку збережіть компонент, щоб додати зв'язки",
+        "createdWithVariants": "Компонент створено. Тепер ви можете додати варіанти виробників",
+        "noPartsWarning": "Цей компонент не має варіантів виробників. Потрібен принаймні один варіант"
+      },
+      "manufacturer": {
+        "title": "Новий виробник",
+        "titleEdit": "Редагувати виробника",
+        "description": "Управління інформацією про виробника"
+      },
+      "part": {
+        "title": "Новий варіант",
+        "titleEdit": "Редагувати варіант",
+        "description": "Створити новий варіант компонента від виробника",
+        "descriptionEdit": "Змінити інформацію про варіант виробника",
+        "saveFirstFiles": "Спочатку збережіть варіант, щоб завантажити файли"
+      },
+      "package": {
+        "title": "Новий корпус",
+        "titleEdit": "Редагувати корпус",
+        "description": "Інформація про корпус/посадкове місце"
+      },
+      "delete": {
+        "title": "Підтвердження видалення",
+        "message": "Ви впевнені, що хочете видалити цей елемент?",
+        "messageFile": "Ви дійсно хочете видалити цей файл?",
+        "messagePin": "Ви дійсно хочете видалити цей контакт?",
+        "message3dModel": "Ви дійсно хочете видалити цю 3D-модель?",
+        "messageRelation": "Ви дійсно хочете видалити цей зв'язок?"
+      }
+    },
+    "buttons": {
+      "saving": "Збереження...",
+      "saveAsDraft": "Зберегти як чернетку",
+      "update": "Оновити",
+      "addPin": "Додати контакт",
+      "addRelation": "Додати зв'язок"
+    },
+    "messages": {
+      "success": "Успіх",
+      "error": "Помилка",
+      "warning": "Попередження",
+      "attribute": {
+        "created": "Атрибут створено",
+        "updated": "Атрибут оновлено",
+        "deleted": "Атрибут видалено",
+        "loadFailed": "Не вдалося завантажити атрибути",
+        "saveFailed": "Не вдалося зберегти атрибут",
+        "deleteFailed": "Не вдалося видалити атрибут"
+      },
+      "category": {
+        "created": "Категорію створено",
+        "updated": "Категорію оновлено",
+        "deleted": "Категорію видалено",
+        "loadFailed": "Не вдалося завантажити категорії",
+        "saveFailed": "Не вдалося зберегти категорію",
+        "deleteFailed": "Не вдалося видалити категорію"
+      },
+      "component": {
+        "created": "Компонент створено",
+        "updated": "Компонент оновлено",
+        "deleted": "Компонент видалено",
+        "loadFailed": "Не вдалося завантажити компоненти",
+        "saveFailed": "Не вдалося зберегти компонент",
+        "deleteFailed": "Не вдалося видалити компонент"
+      },
+      "manufacturer": {
+        "created": "Виробника створено",
+        "updated": "Виробника оновлено",
+        "deleted": "Виробника видалено",
+        "loadFailed": "Не вдалося завантажити виробників",
+        "saveFailed": "Не вдалося зберегти виробника",
+        "deleteFailed": "Не вдалося видалити виробника",
+        "logoUploaded": "Логотип завантажено",
+        "logoUploadFailed": "Не вдалося завантажити логотип"
+      },
+      "part": {
+        "created": "Варіант створено",
+        "updated": "Варіант оновлено",
+        "deleted": "Варіант видалено",
+        "loadFailed": "Не вдалося завантажити варіанти",
+        "saveFailed": "Не вдалося зберегти варіант",
+        "deleteFailed": "Не вдалося видалити варіант"
+      },
+      "package": {
+        "created": "Корпус створено",
+        "updated": "Корпус оновлено",
+        "deleted": "Корпус видалено",
+        "loadFailed": "Не вдалося завантажити корпуси",
+        "saveFailed": "Не вдалося зберегти корпус",
+        "deleteFailed": "Не вдалося видалити корпус"
+      },
+      "file": {
+        "uploaded": "Файл завантажено",
+        "deleted": "Файл видалено",
+        "uploadFailed": "Не вдалося завантажити файл",
+        "deleteFailed": "Не вдалося видалити файл",
+        "loadFailed": "Не вдалося завантажити файли",
+        "downloadUrlFailed": "Не вдалося створити URL для завантаження"
+      },
+      "pin": {
+        "created": "Контакт додано",
+        "updated": "Контакт оновлено",
+        "deleted": "Контакт видалено",
+        "createFailed": "Не вдалося створити контакт",
+        "loadFailed": "Не вдалося завантажити контакти",
+        "updateFailed": "Не вдалося оновити контакт",
+        "deleteFailed": "Не вдалося видалити контакт"
+      },
+      "relation": {
+        "created": "Зв'язок додано",
+        "deleted": "Зв'язок видалено",
+        "createFailed": "Не вдалося створити зв'язок",
+        "deleteFailed": "Не вдалося видалити зв'язок"
+      }
+    },
+    "pinMapping": {
+      "title": "Розпаювання",
+      "addPin": "Додати контакт",
+      "newPin": "Додати новий контакт",
+      "pinNumber": "Номер контакту (наприклад, 1, VCC)",
+      "pinName": "Назва контакту",
+      "selectType": "Вибрати тип контакту",
+      "noDescription": "Немає опису",
+      "noType": "Немає типу",
+      "loading": "Завантаження контактів...",
+      "pinsCount": "{count} контактів",
+      "tabList": "Список контактів",
+      "tabBulkImport": "Масовий імпорт",
+      "noPins": "Контактів не визначено. Додайте контакти окремо або використовуйте масовий імпорт.",
+      "columnPinNumber": "№ контакту",
+      "columnName": "Назва",
+      "columnType": "Тип",
+      "columnFunction": "Функція (DE)",
+      "columnActions": "Дії",
+      "functionPlaceholder": "наприклад, напруга живлення",
+      "deleteTitle": "Видалити контакт?",
+      "deleteMessage": "Ви дійсно хочете видалити контакт {pinNumber} ({pinName})? Цю дію неможливо скасувати.",
+      "reorderSuccess": "Порядок контактів оновлено",
+      "reorderFailed": "Не вдалося змінити порядок",
+      "bulkImport": {
+        "formatLabel": "Формат:",
+        "exampleLabel": "Приклад:",
+        "typeHint": "pinType є необов'язковим. Доступні типи: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Введіть контакти у форматі CSV...",
+        "importButton": "Імпортувати контакти",
+        "noPinsFound": "Дійсних даних про контакти не знайдено.",
+        "success": "{count} контактів імпортовано.",
+        "failed": "Масовий імпорт не вдався."
+      }
+    },
+    "files": {
+      "uploadImage": "Завантажити зображення продукту",
+      "uploadDatasheet": "Завантажити технічний опис",
+      "uploadDocument": "Завантажити документ",
+      "selectLanguage": "Вибрати мову",
+      "noFiles": "Немає доступних файлів",
+      "confirmDelete": "Видалити файл?",
+      "productImage": "Зображення продукту",
+      "productImageDescription": "Зображення попереднього перегляду для цього варіанту виробника",
+      "addImage": "Зображення",
+      "imageDescription": "JPEG, PNG або WebP (макс. 10 МБ)",
+      "noImageUploaded": "Ще не завантажено зображення",
+      "datasheets": "Технічні описи",
+      "datasheetsDescription": "PDF технічні описи для цього варіанту виробника",
+      "addDatasheet": "Технічний опис",
+      "languagesRequired": "Мови технічного опису",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Необхідно вибрати хоча б одну мову",
+      "datasheetFileDescription": "PDF-файл технічного опису виробника",
+      "noDatasheets": "Ще не завантажено технічних описів",
+      "otherFiles": "Інші файли",
+      "otherFilesDescription": "Додаткові документи, примітки до застосування тощо",
+      "addDocument": "Документ",
+      "languagesOptional": "Мови (необов'язково)",
+      "anyFileDescription": "Будь-які файли (PDF, TXT, ZIP тощо)",
+      "noDocuments": "Ще не завантажено документів",
+      "fileName": "Файл",
+      "fileSize": "Розмір",
+      "languages": "Мови",
+      "actions": "Дії",
+      "imageCount": "{count} зображення",
+      "fileCount": "{count} файл{plural}",
+      "datasheetCount": "{count} технічний опис{plural}",
+      "imageUploaded": "Зображення завантажено",
+      "imageRemoved": "Зображення видалено"
+    },
+    "model3d": {
+      "title": "3D-моделі",
+      "confirmDelete": "Видалити 3D-модель?",
+      "upload": "Завантажити 3D-модель",
+      "noModels": "Немає доступних 3D-моделей"
+    },
+    "lists": {
+      "searchPlaceholder": "Пошук...",
+      "searchByName": "Пошук за назвою або slug...",
+      "searchByNameCage": "Пошук за назвою, slug або кодом CAGE...",
+      "noResults": "Результатів не знайдено",
+      "createFirst": "Створити перший запис",
+      "noPackagesFound": "Корпусів не знайдено",
+      "createFirstPackage": "Створити перший корпус"
+    },
+    "filters": {
+      "allStatus": "Всі статуси",
+      "myDrafts": "Мої чернетки"
+    },
+    "manufacturer": {
+      "title": "Виробники",
+      "count": "{count} виробників у базі даних",
+      "create": "Новий виробник",
+      "createFirst": "Створити першого виробника",
+      "deleteTitle": "Видалити виробника?",
+      "deleteDescription": "Ви дійсно хочете видалити виробника \"{name}\"? Цю дію неможливо скасувати.",
+      "status": {
+        "active": "Активний",
+        "acquired": "Поглинений",
+        "defunct": "Недіючий"
+      }
+    },
+    "form": {
+      "package": "Корпус",
+      "selectPackage": "Вибрати корпус",
+      "noPackage": "Без корпусу",
+      "editIn": "Редагувати в:",
+      "searchLanguage": "Пошук мови...",
+      "noLanguageFound": "Мову не знайдено",
+      "original": "Оригінал",
+      "backToOverview": "Повернутися до огляду",
+      "name": "Назва",
+      "nameDescription": "Назва німецькою та/або англійською. Обов'язкове поле, якщо категорія не має атрибутів міток",
+      "namePlaceholder": "Назва компонента",
+      "series": "Серія",
+      "seriesDescription": "Додаткова серія або сімейство компонентів",
+      "seriesPlaceholder": "наприклад, 74HC, ATmega",
+      "packageDescription": "Фізичний корпус (наприклад, DIP-8, SOIC-8)",
+      "shortDescription": "Короткий опис",
+      "shortDescriptionDescription": "Коротке речення для опису компонента",
+      "shortDescriptionPlaceholder": "Короткий опис",
+      "fullDescription": "Докладний опис",
+      "fullDescriptionPlaceholder": "Докладний опис",
+      "attributesDescription": "Технічні атрибути на основі обраної категорії",
+      "selectCategoryFirst": "Будь ласка, спочатку виберіть категорію на вкладці \"Основні дані\"",
+      "pinMappingDescription": "Визначте розпаювання для цього компонента. Розпаювання діє для всіх варіантів виробників",
+      "partsDescription": "Варіанти цього компонента від конкретних виробників",
+      "newVariant": "Новий варіант",
+      "close": "Закрити",
+      "parentCategory": "Батьківська категорія",
+      "parentCategoryPlaceholder": "Немає (коренева категорія)",
+      "parentCategoryDescription": "Залишіть порожнім для головної категорії (рівень 0)",
+      "categoryName": "Назва категорії",
+      "categoryDescription": "Опис",
+      "categoryDescriptionPlaceholder": "Опис категорії",
+      "sortOrder": "Порядок сортування",
+      "sortOrderDescription": "Менші значення = вище",
+      "status": "Статус",
+      "active": "Активний",
+      "inactive": "Неактивний",
+      "icon": "Іконка",
+      "iconUploadDescription": "Завантажити іконку категорії. Макс. 5 МБ, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Клацніть або перетягніть файл сюди.",
+      "iconMaxSize": "Іконка може бути не більше 5 МБ.",
+      "iconAllowedTypes": "Дозволено лише JPEG, PNG, WebP або SVG.",
+      "iconUploaded": "Іконку завантажено.",
+      "iconUploadFailed": "Не вдалося завантажити іконку.",
+      "categoryCreatedIconFailed": "Категорію створено, але завантаження іконки не вдалося.",
+      "loading": "Завантаження...",
+      "newAttribute": "Новий атрибут",
+      "ownAttributes": "Власні атрибути ({count})",
+      "noOwnAttributes": "Власних атрибутів не визначено.",
+      "inheritedAttributes": "Успадковані атрибути ({count})",
+      "inheritedAttributesDescription": "Успадковані атрибути можна редагувати лише в їх вихідній категорії.",
+      "attributesInherited": "Атрибути цієї категорії (будуть успадковані підкатегоріями)",
+      "cageCode": "Код CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-значний код",
+      "country": "Країна",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Веб-сайт",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Логотип",
+      "logoUploadHint": "Завантажити логотип виробника. Макс. 5 МБ, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Клацніть або перетягніть файл сюди.",
+      "statusActive": "Активний",
+      "statusAcquired": "Поглинений",
+      "statusDefunct": "Недіючий",
+      "foundedYear": "Рік заснування",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Рік припинення діяльності",
+      "defunctYearPlaceholder": "2020",
+      "description": "Опис",
+      "descriptionPlaceholder": "Опис",
+      "logoMaxSize": "Логотип може бути не більше 5 МБ.",
+      "logoAllowedTypes": "Дозволено лише JPEG, PNG, WebP або SVG.",
+      "createdAsDraft": "Виробника збережено як чернетку.",
+      "manufacturerCreatedLogoFailed": "Виробника створено, але завантаження логотипу не вдалося.",
+      "save": "Зберегти"
+    },
+    "audit": {
+      "created": "створено",
+      "updated": "оновлено",
+      "deleted": "видалено",
+      "restored": "відновлено",
+      "approved": "затверджено",
+      "rejected": "відхилено"
+    },
+    "tabs": {
+      "basicInfo": "Основна інформація",
+      "attributes": "Атрибути",
+      "pinMapping": "Розпаювання",
+      "parts": "Варіанти виробників",
+      "relations": "Зв'язки",
+      "files": "Файли",
+      "details": "Основні дані",
+      "pins": "Розпаювання",
+      "models": "3D-моделі"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Виробник",
+      "status": "Статус",
+      "lifecycle": "Життєвий цикл",
+      "actions": "Дії",
+      "variantCount": "{count} варіант",
+      "variantCountPlural": "{count} варіантів",
+      "activeCount": "{count} активних",
+      "obsoleteCount": "{count} застарілих",
+      "unknown": "Невідомо"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Унікальна назва корпусу",
+      "mountingType": "Тип корпусу",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Радіальний - Радіальне виведення",
+        "AXIAL": "Аксіальний - Аксіальне виведення",
+        "CHASSIS": "Шасі - Монтаж на шасі",
+        "OTHER": "Інше"
+      },
+      "pinCount": "Кількість виводів",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Довжина (мм)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Ширина (мм)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Висота (мм)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Крок (мм)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Відстань між виводами",
+      "jedecStandard": "Стандарт JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "Стандарт EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL креслення",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Посилання на технічне креслення або технічний опис",
+      "description": "Опис",
+      "descriptionPlaceholder": "Додаткова інформація про корпус...",
+      "saveFirstModels": "Спочатку збережіть корпус, щоб завантажити 3D-моделі.",
+      "modelsDescription": "3D-моделі для цього корпусу (STEP, STL, 3MF, OBJ тощо)"
+    },
+    "partForm": {
+      "coreComponent": "Загальний компонент",
+      "coreComponentDesc": "Компонент, не прив'язаний до виробника (наприклад, 555 Timer)",
+      "manufacturer": "Виробник",
+      "manufacturerDesc": "Виробник цього конкретного варіанту (наприклад, Texas Instruments)",
+      "manufacturerPlaceholder": "Вибрати виробника",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "наприклад, NE555P",
+      "mpnDesc": "Унікальний номер деталі виробника",
+      "orderingCode": "Код замовлення",
+      "orderingCodePlaceholder": "Необов'язково",
+      "orderingCodeDesc": "Альтернативний код замовлення (якщо відрізняється від MPN)",
+      "statusRecord": "Статус запису",
+      "lifecycleStatus": "Статус життєвого циклу",
+      "introductionYear": "Рік випуску",
+      "introductionYearPlaceholder": "наприклад, 1972",
+      "discontinuedYear": "Рік припинення",
+      "discontinuedYearPlaceholder": "наприклад, 2020",
+      "rohsCompliant": "Відповідає RoHS",
+      "rohsDesc": "Відповідає директивам RoHS",
+      "reachCompliant": "Відповідає REACH",
+      "reachDesc": "Відповідає регламенту REACH",
+      "weight": "Вага (грами)",
+      "weightPlaceholder": "наприклад, 0.5",
+      "dateCodeFormat": "Формат коду дати",
+      "dateCodePlaceholder": "наприклад, YYWW",
+      "dateCodeDesc": "Формат коду дати на компоненті",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "наприклад, 5962-01-123-4567",
+      "milSpec": "Військова специфікація",
+      "milSpecPlaceholder": "наприклад, MIL-PRF-38534",
+      "partAttributesDesc": "Атрибути, специфічні для виробника, на основі категорії компонента.",
+      "partAttributesLabel": "Атрибути, специфічні для виробника",
+      "filesDesc": "Управління технічними описами, зображеннями та іншими файлами для цього варіанту виробника.",
+      "close": "Закрити",
+      "selectComponent": "Вибрати компонент"
+    }
+  },
+  "errors": {
+    "notFound": "Сторінку не знайдено",
+    "unauthorized": "Несанкціонований доступ",
+    "serverError": "Помилка сервера"
+  },
+  "footer": {
+    "tagline": "База даних електронних компонентів, що підтримується спільнотою",
+    "navigation": "Навігація",
+    "community": "Спільнота",
+    "legal": "Правова інформація",
+    "about": "Про проект",
+    "help": "Допомога",
+    "contact": "Контакти",
+    "contribute": "Долучитися",
+    "github": "GitHub",
+    "privacy": "Конфіденційність",
+    "imprint": "Вихідні дані",
+    "copyright": "Відкритий код під MIT License"
+  },
+  "about": {
+    "title": "Про ElectroVault",
+    "subtitle": "База даних електронних компонентів, підтримувана спільнотою",
+    "mission": {
+      "title": "Наша місія",
+      "description": "ElectroVault — це безкоштовна та відкрита база даних електронних компонентів — від історичних радіоламп до сучасних нанотехнологій. Наша мета — зберегти знання про електронні компоненти та зробити їх доступними для всіх."
+    },
+    "features": {
+      "title": "Можливості",
+      "comprehensive": {
+        "title": "Комплексна база даних",
+        "description": "Від резисторів до конденсаторів та високоінтегрованих схем — ми фіксуємо всі важливі компоненти з детальними специфікаціями."
+      },
+      "historical": {
+        "title": "Історичний архів",
+        "description": "Документація історичних компонентів для ремонту та реставрації вінтажного обладнання."
+      },
+      "community": {
+        "title": "Керована спільнотою",
+        "description": "Кожен може долучитися та поділитися своїми знаннями. Разом ми створюємо найповнішу базу даних компонентів."
+      },
+      "open": {
+        "title": "Відкритий код",
+        "description": "Повністю прозоро та вільно доступно під MIT License."
+      }
+    },
+    "contribute": {
+      "title": "Долучайтесь",
+      "description": "ElectroVault процвітає завдяки своїй спільноті. Ось кілька способів, як ви можете долучитися:",
+      "dataEntry": "Додавати або редагувати компоненти",
+      "datasheets": "Завантажувати технічні описи",
+      "code": "Робити внески в код на GitHub",
+      "feedback": "Відгуки та пропозиції щодо покращення"
+    }
+  },
+  "help": {
+    "title": "Допомога та питання, що часто задаються",
+    "subtitle": "Питання, що часто задаються",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Переглянути компоненти",
+        "description": "Знайдіть компоненти в нашій базі даних"
+      },
+      "createAccount": {
+        "title": "Створити обліковий запис",
+        "description": "Внесіть свій вклад у базу даних"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Документація та питання"
+      }
+    },
+    "contactCta": {
+      "title": "На ваше питання не відповіли?",
+      "description": "Зв'яжіться з нами напряму.",
+      "button": "Зв'язатися"
+    },
+    "general": {
+      "title": "Загальні",
+      "what": {
+        "question": "Що таке ElectroVault?",
+        "answer": "ElectroVault — це безкоштовна база даних електричних та електронних компонентів, підтримувана спільнотою. Ми документуємо компоненти від історичних радіоламп до сучасних мікросхем з вичерпними метаданими, технічними описами та специфікаціями."
+      },
+      "free": {
+        "question": "Чи є ElectroVault безкоштовним?",
+        "answer": "Так, ElectroVault є повністю безкоштовним та відкритим. Як використання, так і вихідний код є вільно доступними."
+      }
+    },
+    "search": {
+      "title": "Пошук",
+      "how": {
+        "question": "Як знайти конкретний компонент?",
+        "answer": "Використовуйте функцію пошуку у верхньому правому куті або переходьте через категорії. Ви можете шукати за номером деталі, виробником або властивостями."
+      },
+      "filters": {
+        "question": "Які фільтри доступні?",
+        "answer": "Ви можете фільтрувати за категорією, виробником, статусом (активний/застарілий), типом корпусу та багатьма іншими технічними параметрами."
+      }
+    },
+    "contribute": {
+      "title": "Внесок",
+      "account": {
+        "question": "Чи потрібен мені обліковий запис для внеску?",
+        "answer": "Так, щоб додавати або редагувати компоненти, вам потрібен безкоштовний обліковий запис. Це допомагає нам забезпечити якість даних."
+      },
+      "how": {
+        "question": "Як додати компонент?",
+        "answer": "Після входу ви можете створювати нові компоненти через кнопку 'Новий компонент' в огляді компонентів. Модератор перегляне ваш внесок перед публікацією."
+      },
+      "quality": {
+        "question": "Як забезпечується якість даних?",
+        "answer": "Всі внески перевіряються досвідченими модераторами. Крім того, зареєстровані користувачі можуть пропонувати виправлення."
+      }
+    }
+  },
+  "contact": {
+    "title": "Контакти",
+    "subtitle": "У вас є питання або пропозиції?",
+    "form": {
+      "heading": "Надіслати повідомлення",
+      "name": "Ім'я",
+      "email": "Електронна пошта",
+      "subject": "Тема",
+      "message": "Повідомлення",
+      "namePlaceholder": "Іван Іванов",
+      "emailPlaceholder": "ivan@example.com",
+      "subjectPlaceholder": "Тема вашого повідомлення",
+      "messagePlaceholder": "Ваше повідомлення...",
+      "demoNote": "Примітка: Контактна форма наразі є демонстраційною. Інтеграція з backend буде виконана на наступному етапі. Для важливих запитів використовуйте GitHub або вказану електронну адресу.",
+      "send": "Надіслати повідомлення",
+      "sending": "Надсилання...",
+      "success": "Повідомлення успішно надіслано!",
+      "error": "Помилка надсилання повідомлення"
+    },
+    "alternatives": {
+      "title": "Інші способи зв'язку",
+      "githubTitle": "GitHub Issues",
+      "github": "Створити питання на GitHub",
+      "emailTitle": "Електронна пошта",
+      "email": "Надіслати нам електронного листа"
+    },
+    "responseTime": {
+      "title": "Час відповіді",
+      "description": "Оскільки ElectroVault є проектом спільноти, запити обробляються волонтерами. Будь ласка, будьте терплячими - зазвичай ми відповідаємо протягом 48 годин."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Підтримка спільноти",
+        "description": "Використовуйте GitHub Discussions для загальних питань"
+      },
+      "bugReports": {
+        "title": "Звіти про помилки",
+        "description": "Повідомляйте про технічні проблеми безпосередньо на GitHub"
+      },
+      "partnerships": {
+        "title": "Партнерські запити",
+        "description": "Для ділових запитів використовуйте форму"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Вихідні дані",
+    "responsible": "Відповідальний за вміст",
+    "contact": "Контакти",
+    "disclaimer": {
+      "title": "Відмова від відповідальності",
+      "content": "Незважаючи на ретельний контроль вмісту, ми не несемо відповідальності за вміст зовнішніх посилань. Оператори пов'язаних сторінок несуть виключну відповідальність за їх вміст.",
+      "liability": "Вміст цих сторінок було створено з найбільшою обережністю. Однак ми не можемо гарантувати точність, повноту та актуальність вмісту."
+    },
+    "opensource": {
+      "title": "Відкритий код",
+      "description": "ElectroVault — це проект з відкритим кодом під MIT License. Вихідний код доступний на GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Політика конфіденційності",
+    "lastUpdated": "Останнє оновлення",
+    "intro": "Ми дуже серйозно ставимося до захисту ваших персональних даних. Ця політика конфіденційності інформує вас про характер, обсяг та мету обробки персональних даних.",
+    "responsible": {
+      "title": "Контролер даних",
+      "description": "Відповідальним за обробку даних на цьому веб-сайті є:"
+    },
+    "collection": {
+      "title": "Збір та зберігання персональних даних",
+      "description": "Коли ви відвідуєте наш веб-сайт, автоматично збирається інформація, яку передає ваш браузер:",
+      "data": "IP-адреса, дата та час доступу, тип та версія браузера, використовувана операційна система, URL переходу"
+    },
+    "cookies": {
+      "title": "Файли cookie",
+      "description": "Наш веб-сайт використовує файли cookie. Файли cookie — це невеликі текстові файли, що зберігаються на вашому пристрої.",
+      "essential": "Технічно необхідні файли cookie для автентифікації та управління сеансами",
+      "functional": "Функціональні файли cookie для покращення користувацького досвіду"
+    },
+    "auth": {
+      "title": "Автентифікація",
+      "description": "Ми використовуємо Keycloak для реєстрації та входу. Зберігаються такі дані:",
+      "data": "Ім'я користувача, електронна адреса, зображення профілю (необов'язково), роль та дозволи"
+    },
+    "rights": {
+      "title": "Ваші права",
+      "description": "Ви маєте наступні права щодо ваших персональних даних:",
+      "access": "Право на доступ",
+      "correction": "Право на виправлення",
+      "deletion": "Право на видалення",
+      "restriction": "Право на обмеження обробки",
+      "portability": "Право на переносимість даних",
+      "objection": "Право на заперечення"
+    },
+    "contact": {
+      "title": "Контакти з питань конфіденційності",
+      "description": "Якщо у вас виникли питання щодо конфіденційності, ви можете зв'язатися з нами в будь-який час."
+    }
+  }
+}

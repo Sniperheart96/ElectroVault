@@ -1,0 +1,962 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "create": "Oluştur",
+    "search": "Ara",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "noResults": "Sonuç bulunamadı",
+    "all": "Tümü",
+    "yes": "Evet",
+    "no": "Hayır",
+    "actions": {
+      "details": "Detaylar"
+    }
+  },
+  "locale": {
+    "switch": "Dil değiştir",
+    "current": "Mevcut dil",
+    "languages": {
+      "en": "İngilizce",
+      "de": "Almanca",
+      "fr": "Fransızca",
+      "es": "İspanyolca",
+      "zh": "Çince",
+      "ja": "Japonca",
+      "ko": "Korece",
+      "it": "İtalyanca"
+    }
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "components": "Bileşenler",
+    "categories": "Kategoriler",
+    "manufacturers": "Üreticiler",
+    "packages": "Paketler",
+    "search": "Ara",
+    "admin": "Yönetici",
+    "moderation": "Moderasyon",
+    "myElectroVault": "Benim ElectroVault",
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Elektronik bileşenler için topluluk tarafından yönetilen veritabanı",
+    "searchPlaceholder": "Bileşen ara...",
+    "featuredCategories": "Öne Çıkan Kategoriler",
+    "recentComponents": "Son Bileşenler",
+    "stats": {
+      "components": "Bileşenler",
+      "manufacturers": "Üreticiler",
+      "categories": "Kategoriler",
+      "users": "Kullanıcılar"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Elektronik bileşenler için topluluk tarafından yönetilen veritabanı"
+    },
+    "stats": {
+      "components": "Bileşenler",
+      "manufacturers": "Üreticiler",
+      "users": "Kullanıcılar"
+    }
+  },
+  "packages": {
+    "title": "Paketler",
+    "totalCount": "Veritabanında {count} paket",
+    "addNew": "Yeni Paket",
+    "searchPlaceholder": "İsim veya slug ile ara...",
+    "filterPlaceholder": "Paket Türü",
+    "filterAll": "Tüm Türler",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radial",
+      "AXIAL": "Axial",
+      "CHASSIS": "Gövde",
+      "OTHER": "Diğer"
+    },
+    "table": {
+      "name": "İsim",
+      "type": "Tür",
+      "pinCount": "Pin Sayısı",
+      "dimensions": "Boyutlar (U x G x Y mm)",
+      "pitch": "Aralık",
+      "actions": "İşlemler"
+    },
+    "loading": "Yükleniyor...",
+    "noResults": "Paket bulunamadı",
+    "noPackagesFound": "Paket bulunamadı",
+    "createFirst": "İlk paketi oluştur",
+    "error": "Hata",
+    "success": "Başarılı",
+    "loadError": "Paketler yüklenemedi.",
+    "deleteSuccess": "Paket silindi.",
+    "deleteError": "Paket silinemedi.",
+    "deleteDialog": {
+      "title": "Paketi sil?",
+      "description": "\"{name}\" paketini gerçekten silmek istiyor musunuz? Bu işlem geri alınamaz."
+    }
+  },
+  "components": {
+    "title": "Bileşenler",
+    "description": "Kapsamlı elektronik bileşenler veritabanımıza göz atın",
+    "filters": {
+      "category": "Kategori",
+      "manufacturer": "Üretici",
+      "status": "Durum",
+      "mountingType": "Montaj Türü"
+    },
+    "detail": {
+      "overview": "Genel Bakış",
+      "specifications": "Teknik Özellikler",
+      "datasheets": "Veri Sayfaları",
+      "parts": "Üretici Varyantları",
+      "history": "Versiyon Geçmişi",
+      "backToOverview": "Genel Bakışa Dön",
+      "category": "Kategori",
+      "statistics": "İstatistikler",
+      "manufacturerVariants": "Üretici Varyantları",
+      "activeVariants": "Aktif Varyantlar",
+      "additionalProperties": "Ek Özellikler",
+      "furtherProperties": "Bu bileşenin diğer özellikleri",
+      "validForAllVariants": "Teknik Özellikler (tüm varyantlar için geçerli)",
+      "variantCount": "{count} üretici varyantı",
+      "variantCountPlural": "{count} üretici varyantı",
+      "noVariantsAvailable": "Üretici varyantı mevcut değil",
+      "noVariantsForComponent": "Bu bileşen için üretici varyantı mevcut değil.",
+      "noAttributesAvailable": "Öznitelik mevcut değil.",
+      "manufacturer": "Üretici",
+      "orderingCode": "Sipariş Kodu",
+      "details": "Detaylar",
+      "allInCategory": "Kategorideki tümü",
+      "status": "Durum",
+      "moreAttributes": "+{count} daha fazla"
+    },
+    "status": {
+      "DRAFT": "Taslak",
+      "PENDING": "Beklemede",
+      "PUBLISHED": "Yayınlandı",
+      "ARCHIVED": "Arşivlendi"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktif",
+      "NRND": "Yeni Tasarımlar İçin Önerilmez",
+      "EOL": "Ürün Ömrü Sonu",
+      "OBSOLETE": "Eski"
+    }
+  },
+  "categories": {
+    "title": "Kategoriler",
+    "browseAll": "Tüm kategorilere göz at",
+    "subcategories": "Alt Kategoriler",
+    "componentsInCategory": "Bu kategorideki bileşenler"
+  },
+  "manufacturers": {
+    "title": "Üreticiler",
+    "status": {
+      "ACTIVE": "Aktif",
+      "ACQUIRED": "Satın Alındı",
+      "DEFUNCT": "Feshedildi"
+    }
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "logout": "Çıkış Yap",
+    "loginWith": "{provider} ile giriş yap",
+    "welcome": "Tekrar hoş geldiniz",
+    "signInToContinue": "Devam etmek için giriş yapın",
+    "signIn": {
+      "title": "Giriş Yap",
+      "description": "Hesabınıza giriş yapın",
+      "button": "Keycloak ile giriş yap",
+      "loading": "Giriş yapılıyor...",
+      "hint": "Keycloak'a yönlendirileceksiniz"
+    },
+    "signOut": {
+      "title": "Çıkış Yap",
+      "description": "Çıkış yapmak istediğinizden emin misiniz?",
+      "button": "Çıkış Yap",
+      "loading": "Çıkış yapılıyor...",
+      "cancel": "İptal"
+    },
+    "error": {
+      "title": "Kimlik Doğrulama Hatası",
+      "description": "Giriş sırasında bir hata oluştu",
+      "tryAgain": "Tekrar Dene",
+      "backHome": "Ana Sayfaya Dön"
+    },
+    "errors": {
+      "configuration": "Sunucu yapılandırma hatası. Lütfen yönetici ile iletişime geçin.",
+      "accessDenied": "Erişim reddedildi. İzniniz yok.",
+      "verification": "Doğrulama bağlantısının süresi doldu veya zaten kullanıldı.",
+      "oauthSignin": "OAuth girişi başlatılırken hata oluştu.",
+      "oauthCallback": "OAuth geri çağrısı işlenirken hata oluştu.",
+      "oauthCreateAccount": "Kullanıcı hesabı oluşturulurken hata oluştu.",
+      "emailCreateAccount": "E-posta hesabı oluşturulurken hata oluştu.",
+      "callback": "Geri çağrı işlenirken hata oluştu.",
+      "oauthAccountNotLinked": "Bu e-posta zaten başka bir hesaba bağlı.",
+      "sessionRequired": "Bu sayfaya erişmek için lütfen giriş yapın.",
+      "default": "Bilinmeyen bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "admin": {
+    "dashboard": "Kontrol Paneli",
+    "sidebar": {
+      "dashboard": "Kontrol Paneli",
+      "moderation": "Moderasyon",
+      "moderationDescription": "Onay Kuyruğu",
+      "users": "Kullanıcılar",
+      "backToHome": "Ana Sayfaya",
+      "user": "Kullanıcı",
+      "logout": "Çıkış Yap"
+    },
+    "components": {
+      "title": "Bileşenleri Yönet",
+      "new": "Yeni Bileşen",
+      "edit": "Bileşeni Düzenle"
+    },
+    "moderation": {
+      "title": "Moderasyon",
+      "pendingReviews": "Bekleyen İncelemeler",
+      "approve": "Onayla",
+      "reject": "Reddet",
+      "batchApproval": "Toplu Onay",
+      "confirmApprove": "Onayı Doğrula",
+      "confirmApproveDescription": "Bu {type} öğesini gerçekten onaylamak istiyor musunuz? Ardından herkese açık olacaktır.",
+      "confirmBatchApproval": "{count} öğeyi onaylamak istiyor musunuz? Bu işlem geri alınamaz.",
+      "rejectWithReason": "Sebep Belirterek Reddet",
+      "rejectDescription": "Lütfen reddedilme sebebini belirtin. Bu, oluşturana gösterilecektir.",
+      "rejectReasonLabel": "Sebep",
+      "rejectReasonPlaceholder": "Bu öğe neden reddediliyor?",
+      "rejectReasonHelp": "Anlamlı bir sebep, oluşturanın reddi anlamasına yardımcı olur.",
+      "batchApproveButton": "{count} onayla",
+      "typeComponent": "Bileşen",
+      "typePart": "Parça",
+      "draft": "Taslak"
+    },
+    "users": {
+      "title": "Kullanıcılar",
+      "manage": "Kullanıcıları Yönet"
+    },
+    "myDashboard": {
+      "title": "Panom",
+      "stats": {
+        "componentsTotal": "Toplam Bileşenler",
+        "componentsTotalDesc": "Tarafınızdan oluşturulan bileşenler",
+        "variants": "Varyantlar",
+        "variantsDesc": "Üretici Varyantları",
+        "drafts": "Taslaklar",
+        "draftsDesc": "Henüz gönderilmedi",
+        "pending": "İnceleniyor",
+        "pendingDesc": "Moderasyon bekliyor",
+        "published": "Yayınlandı",
+        "archived": "Arşivlendi"
+      },
+      "draftsSection": {
+        "title": "Taslaklar",
+        "description": "Taslaklar özel geçici kayıtlardır ve henüz moderasyon için gönderilmemiştir.",
+        "newComponent": "Yeni Bileşen",
+        "empty": "Taslak yok. Yeni bir bileşen oluşturun ve taslak olarak kaydedin.",
+        "draftBadge": "Taslak",
+        "noName": "[İsimsiz]"
+      },
+      "activitySection": {
+        "title": "Aktivite Geçmişi",
+        "description": "ElectroVault'taki son aktiviteleriniz",
+        "empty": "Henüz aktivite yok."
+      },
+      "entities": {
+        "COMPONENT": "Bileşen",
+        "PART": "Varyant",
+        "MANUFACTURER": "Üretici",
+        "CATEGORY": "Kategori",
+        "PACKAGE": "Paket"
+      },
+      "error": "Panel yüklenemedi. Lütfen tekrar deneyin."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Yeni Öznitelik",
+        "titleEdit": "Özniteliği Düzenle",
+        "description": "Bileşenler için öznitelik tanımı"
+      },
+      "category": {
+        "title": "Yeni Kategori",
+        "titleEdit": "Kategoriyi Düzenle",
+        "description": "Kategori bilgilerini ve özniteliklerini yönet",
+        "saveFirst": "Öznitelik eklemek için önce kategoriyi kaydedin"
+      },
+      "component": {
+        "title": "Yeni Bileşen",
+        "titleEdit": "Bileşeni Düzenle",
+        "description": "Yeni bileşen oluştur - kaydettikten sonra üretici varyantları ekleyebilirsiniz",
+        "descriptionEdit": "Bileşen bilgilerini ve üretici varyantlarını yönetin",
+        "saveFirstPinMapping": "Pin eşlemesini düzenlemek için önce bileşeni kaydedin",
+        "saveFirstParts": "Üretici varyantları eklemek için önce bileşeni kaydedin",
+        "saveFirstRelations": "İlişki eklemek için önce bileşeni kaydedin",
+        "createdWithVariants": "Bileşen oluşturuldu. Artık üretici varyantları ekleyebilirsiniz",
+        "noPartsWarning": "Bu bileşenin üretici varyantı yok. En az bir varyant gereklidir"
+      },
+      "manufacturer": {
+        "title": "Yeni Üretici",
+        "titleEdit": "Üreticiyi Düzenle",
+        "description": "Üretici bilgilerini yönet"
+      },
+      "part": {
+        "title": "Yeni Üretici Varyantı",
+        "titleEdit": "Üretici Varyantını Düzenle",
+        "description": "Bir bileşenin yeni somut üretici varyantını oluştur",
+        "descriptionEdit": "Üretici varyantı bilgilerini değiştir",
+        "saveFirstFiles": "Dosya yüklemek için önce varyantı kaydedin"
+      },
+      "package": {
+        "title": "Yeni Paket",
+        "titleEdit": "Paketi Düzenle",
+        "description": "Paket/ayak izi bilgisi"
+      },
+      "delete": {
+        "title": "Silmeyi Onayla",
+        "message": "Bu öğeyi silmek istediğinizden emin misiniz?",
+        "messageFile": "Bu dosyayı gerçekten silmek istiyor musunuz?",
+        "messagePin": "Bu pini gerçekten silmek istiyor musunuz?",
+        "message3dModel": "Bu 3D modeli gerçekten silmek istiyor musunuz?",
+        "messageRelation": "Bu ilişkiyi gerçekten silmek istiyor musunuz?"
+      }
+    },
+    "buttons": {
+      "saving": "Kaydediliyor...",
+      "saveAsDraft": "Taslak Olarak Kaydet",
+      "update": "Güncelle",
+      "addPin": "Pin Ekle",
+      "addRelation": "İlişki Ekle"
+    },
+    "messages": {
+      "success": "Başarılı",
+      "error": "Hata",
+      "warning": "Uyarı",
+      "attribute": {
+        "created": "Öznitelik oluşturuldu",
+        "updated": "Öznitelik güncellendi",
+        "deleted": "Öznitelik silindi",
+        "loadFailed": "Öznitelikler yüklenemedi",
+        "saveFailed": "Öznitelik kaydedilemedi",
+        "deleteFailed": "Öznitelik silinemedi"
+      },
+      "category": {
+        "created": "Kategori oluşturuldu",
+        "updated": "Kategori güncellendi",
+        "deleted": "Kategori silindi",
+        "loadFailed": "Kategoriler yüklenemedi",
+        "saveFailed": "Kategori kaydedilemedi",
+        "deleteFailed": "Kategori silinemedi"
+      },
+      "component": {
+        "created": "Bileşen oluşturuldu",
+        "updated": "Bileşen güncellendi",
+        "deleted": "Bileşen silindi",
+        "loadFailed": "Bileşenler yüklenemedi",
+        "saveFailed": "Bileşen kaydedilemedi",
+        "deleteFailed": "Bileşen silinemedi"
+      },
+      "manufacturer": {
+        "created": "Üretici oluşturuldu",
+        "updated": "Üretici güncellendi",
+        "deleted": "Üretici silindi",
+        "loadFailed": "Üreticiler yüklenemedi",
+        "saveFailed": "Üretici kaydedilemedi",
+        "deleteFailed": "Üretici silinemedi",
+        "logoUploaded": "Logo yüklendi",
+        "logoUploadFailed": "Logo yüklenemedi"
+      },
+      "part": {
+        "created": "Varyant oluşturuldu",
+        "updated": "Varyant güncellendi",
+        "deleted": "Varyant silindi",
+        "loadFailed": "Varyantlar yüklenemedi",
+        "saveFailed": "Varyant kaydedilemedi",
+        "deleteFailed": "Varyant silinemedi"
+      },
+      "package": {
+        "created": "Paket oluşturuldu",
+        "updated": "Paket güncellendi",
+        "deleted": "Paket silindi",
+        "loadFailed": "Paketler yüklenemedi",
+        "saveFailed": "Paket kaydedilemedi",
+        "deleteFailed": "Paket silinemedi"
+      },
+      "file": {
+        "uploaded": "Dosya yüklendi",
+        "deleted": "Dosya silindi",
+        "uploadFailed": "Dosya yüklenemedi",
+        "deleteFailed": "Dosya silinemedi",
+        "loadFailed": "Dosyalar yüklenemedi",
+        "downloadUrlFailed": "İndirme URL'si oluşturulamadı"
+      },
+      "pin": {
+        "created": "Pin eklendi",
+        "updated": "Pin güncellendi",
+        "deleted": "Pin silindi",
+        "createFailed": "Pin oluşturulamadı",
+        "loadFailed": "Pinler yüklenemedi",
+        "updateFailed": "Pin güncellenemedi",
+        "deleteFailed": "Pin silinemedi"
+      },
+      "relation": {
+        "created": "İlişki eklendi",
+        "deleted": "İlişki silindi",
+        "createFailed": "İlişki oluşturulamadı",
+        "deleteFailed": "İlişki silinemedi"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin Eşlemesi",
+      "addPin": "Pin Ekle",
+      "newPin": "Yeni Pin Ekle",
+      "pinNumber": "Pin Numarası (örn. 1, VCC)",
+      "pinName": "Pin Adı",
+      "selectType": "Pin Türünü Seç",
+      "noDescription": "Açıklama yok",
+      "noType": "Tür yok",
+      "loading": "Pinler yükleniyor...",
+      "pinsCount": "{count} Pin",
+      "tabList": "Pin Listesi",
+      "tabBulkImport": "Toplu İçe Aktarma",
+      "noPins": "Pin tanımlanmadı. Tek tek pin ekleyin veya toplu içe aktarmayı kullanın.",
+      "columnPinNumber": "Pin No.",
+      "columnName": "İsim",
+      "columnType": "Tür",
+      "columnFunction": "Fonksiyon (TR)",
+      "columnActions": "İşlemler",
+      "functionPlaceholder": "örn. Besleme gerilimi",
+      "deleteTitle": "Pin silinsin mi?",
+      "deleteMessage": "Pin {pinNumber} ({pinName}) gerçekten silinsin mi? Bu işlem geri alınamaz.",
+      "reorderSuccess": "Pin sırası güncellendi",
+      "reorderFailed": "Sıra değiştirilemedi",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Örnek:",
+        "typeHint": "pinType isteğe bağlıdır. Kullanılabilir türler: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "CSV formatında pinleri girin...",
+        "importButton": "Pinleri İçe Aktar",
+        "noPinsFound": "Geçerli pin verisi bulunamadı.",
+        "success": "{count} pin içe aktarıldı.",
+        "failed": "Toplu içe aktarma başarısız oldu."
+      }
+    },
+    "files": {
+      "uploadImage": "Ürün Görseli Yükle",
+      "uploadDatasheet": "Veri Sayfası Yükle",
+      "uploadDocument": "Belge Yükle",
+      "selectLanguage": "Dil Seç",
+      "noFiles": "Dosya mevcut değil",
+      "confirmDelete": "Dosyayı sil?",
+      "productImage": "Ürün Görseli",
+      "productImageDescription": "Bu üretici varyantı için bir önizleme görseli",
+      "addImage": "Görsel",
+      "imageDescription": "JPEG, PNG veya WebP (maks. 10 MB)",
+      "noImageUploaded": "Henüz görsel yüklenmedi",
+      "datasheets": "Veri Sayfaları",
+      "datasheetsDescription": "Bu üretici varyantı için PDF veri sayfaları",
+      "addDatasheet": "Veri Sayfası",
+      "languagesRequired": "Veri sayfasının dilleri",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "En az bir dil seçilmelidir",
+      "datasheetFileDescription": "Üreticinin PDF veri sayfası",
+      "noDatasheets": "Henüz veri sayfası yüklenmedi",
+      "otherFiles": "Diğer Dosyalar",
+      "otherFilesDescription": "Ek belgeler, uygulama notları, vb.",
+      "addDocument": "Belge",
+      "languagesOptional": "Diller (isteğe bağlı)",
+      "anyFileDescription": "Herhangi bir dosya (PDF, TXT, ZIP, vb.)",
+      "noDocuments": "Henüz belge yüklenmedi",
+      "fileName": "Dosya",
+      "fileSize": "Boyut",
+      "languages": "Diller",
+      "actions": "İşlemler",
+      "imageCount": "{count} Görsel",
+      "fileCount": "{count} Dosya{plural}",
+      "datasheetCount": "{count} Veri Sayfası{plural}",
+      "imageUploaded": "Görsel yüklendi",
+      "imageRemoved": "Görsel kaldırıldı"
+    },
+    "model3d": {
+      "title": "3D Modeller",
+      "confirmDelete": "3D modeli sil?",
+      "upload": "3D Model Yükle",
+      "noModels": "3D model mevcut değil"
+    },
+    "lists": {
+      "searchPlaceholder": "Ara...",
+      "searchByName": "İsim veya slug ile ara...",
+      "searchByNameCage": "İsim, slug veya CAGE kodu ile ara...",
+      "noResults": "Sonuç bulunamadı",
+      "createFirst": "İlk girdiyi oluştur",
+      "noPackagesFound": "Paket bulunamadı",
+      "createFirstPackage": "İlk paketi oluştur"
+    },
+    "filters": {
+      "allStatus": "Tüm Durumlar",
+      "myDrafts": "Taslaklar"
+    },
+    "manufacturer": {
+      "title": "Üreticiler",
+      "count": "Veritabanında {count} üretici",
+      "create": "Yeni Üretici",
+      "createFirst": "İlk üreticiyi oluştur",
+      "deleteTitle": "Üretici silinsin mi?",
+      "deleteDescription": "\"{name}\" üreticisini gerçekten silmek istiyor musunuz? Bu işlem geri alınamaz.",
+      "status": {
+        "active": "Aktif",
+        "acquired": "Satın Alındı",
+        "defunct": "Kapalı"
+      }
+    },
+    "form": {
+      "package": "Paket (Package)",
+      "selectPackage": "Paket Seç",
+      "noPackage": "Paket Yok",
+      "editIn": "Düzenle:",
+      "searchLanguage": "Dil ara...",
+      "noLanguageFound": "Dil bulunamadı",
+      "original": "Orijinal",
+      "backToOverview": "Genel Bakışa Dön",
+      "name": "İsim",
+      "nameDescription": "Almanca ve/veya İngilizce isim. Kategori etiket özniteliği yoksa zorunlu alan",
+      "namePlaceholder": "Bileşen adı",
+      "series": "Seri",
+      "seriesDescription": "İsteğe bağlı bileşen serisi veya ailesi",
+      "seriesPlaceholder": "örn. 74HC, ATmega",
+      "packageDescription": "Fiziksel paket formu (örn. DIP-8, SOIC-8)",
+      "shortDescription": "Kısa Açıklama",
+      "shortDescriptionDescription": "Bileşeni açıklayan kısa bir cümle",
+      "shortDescriptionPlaceholder": "Kısa açıklama",
+      "fullDescription": "Detaylı Açıklama",
+      "fullDescriptionPlaceholder": "Detaylı açıklama",
+      "attributesDescription": "Seçilen kategoriye dayalı teknik öznitelikler",
+      "selectCategoryFirst": "Lütfen önce \"Temel Bilgi\" sekmesinde bir kategori seçin",
+      "pinMappingDescription": "Bu bileşen için pin atamasını tanımlayın. Pin ataması tüm üretici varyantları için geçerlidir",
+      "partsDescription": "Bu bileşenin üreticiye özgü varyantları",
+      "newVariant": "Yeni Varyant",
+      "close": "Kapat",
+      "parentCategory": "Üst Kategori",
+      "parentCategoryPlaceholder": "Yok (Kök Kategori)",
+      "parentCategoryDescription": "Ana kategori için boş bırakın (Seviye 0)",
+      "categoryName": "Kategori Adı",
+      "categoryDescription": "Açıklama",
+      "categoryDescriptionPlaceholder": "Kategori açıklaması",
+      "sortOrder": "Sıralama",
+      "sortOrderDescription": "Düşük değerler = üstte",
+      "status": "Durum",
+      "active": "Aktif",
+      "inactive": "Pasif",
+      "icon": "İkon",
+      "iconUploadDescription": "Kategori ikonu yükle. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Tıklayın veya dosyayı buraya sürükleyin.",
+      "iconMaxSize": "İkon en fazla 5 MB olabilir.",
+      "iconAllowedTypes": "Yalnızca JPEG, PNG, WebP veya SVG izinlidir.",
+      "iconUploaded": "İkon yüklendi.",
+      "iconUploadFailed": "İkon yüklenemedi.",
+      "categoryCreatedIconFailed": "Kategori oluşturuldu, ancak ikon yüklemesi başarısız oldu.",
+      "loading": "Yükleniyor...",
+      "newAttribute": "Yeni Öznitelik",
+      "ownAttributes": "Kendi Öznitelikleri ({count})",
+      "noOwnAttributes": "Kendi özniteliği tanımlanmadı.",
+      "inheritedAttributes": "Miras Alınan Öznitelikler ({count})",
+      "inheritedAttributesDescription": "Miras alınan öznitelikler yalnızca kaynak kategorilerinde düzenlenebilir.",
+      "attributesInherited": "Bu kategorinin öznitelikleri (alt kategorilere miras kalır)",
+      "cageCode": "CAGE Kodu",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5 haneli kod",
+      "country": "Ülke",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Web Sitesi",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Üretici logosu yükle. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Tıklayın veya dosyayı buraya sürükleyin.",
+      "statusActive": "Aktif",
+      "statusAcquired": "Satın Alındı",
+      "statusDefunct": "Kapalı",
+      "foundedYear": "Kuruluş Yılı",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Kapanış Yılı",
+      "defunctYearPlaceholder": "2020",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Açıklama",
+      "logoMaxSize": "Logo en fazla 5 MB olabilir.",
+      "logoAllowedTypes": "Yalnızca JPEG, PNG, WebP veya SVG izinlidir.",
+      "createdAsDraft": "Üretici taslak olarak kaydedildi.",
+      "manufacturerCreatedLogoFailed": "Üretici oluşturuldu, ancak logo yüklemesi başarısız oldu.",
+      "save": "Kaydet"
+    },
+    "audit": {
+      "created": "oluşturuldu",
+      "updated": "güncellendi",
+      "deleted": "silindi",
+      "restored": "geri yüklendi",
+      "approved": "onaylandı",
+      "rejected": "reddedildi"
+    },
+    "tabs": {
+      "basicInfo": "Temel Bilgi",
+      "attributes": "Öznitelikler",
+      "pinMapping": "Pin Eşlemesi",
+      "parts": "Üretici Varyantları",
+      "relations": "İlişkiler",
+      "files": "Dosyalar",
+      "details": "Ana Veriler",
+      "pins": "Pin Eşlemesi",
+      "models": "3D Modeller"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Üretici",
+      "status": "Durum",
+      "lifecycle": "Yaşam Döngüsü",
+      "actions": "İşlemler",
+      "variantCount": "{count} Varyant",
+      "variantCountPlural": "{count} Varyant",
+      "activeCount": "{count} aktif",
+      "obsoleteCount": "{count} eski",
+      "unknown": "Bilinmeyen"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Paketin benzersiz adı",
+      "mountingType": "Gövde Türü",
+      "mountingTypes": {
+        "SMD": "SMD - Yüzey Montaj Cihazı",
+        "THT": "THT - Delikli Montaj Teknolojisi",
+        "RADIAL": "Radial - Radial Kablolu",
+        "AXIAL": "Axial - Eksenel Kablolu",
+        "CHASSIS": "Chassis - Gövde Montajı",
+        "OTHER": "Diğer"
+      },
+      "pinCount": "Pin Sayısı",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Uzunluk (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Genişlik (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Yükseklik (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Aralık (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Pinler arası mesafe",
+      "jedecStandard": "JEDEC Standardı",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA Standardı",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "Çizim URL'si",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Teknik çizim veya veri sayfası linki",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Paket hakkında ek bilgiler...",
+      "saveFirstModels": "3D modelleri yüklemek için önce paketi kaydedin.",
+      "modelsDescription": "Bu paket için 3D modeller (STEP, STL, 3MF, OBJ, vb.)"
+    },
+    "partForm": {
+      "coreComponent": "Genel Bileşen",
+      "coreComponentDesc": "Üreticiden bağımsız bileşen (örn. 555 Timer)",
+      "manufacturer": "Üretici",
+      "manufacturerDesc": "Bu somut varyantın üreticisi (örn. Texas Instruments)",
+      "manufacturerPlaceholder": "Üretici seç",
+      "mpn": "MPN (Üretici Parça Numarası)",
+      "mpnPlaceholder": "örn. NE555P",
+      "mpnDesc": "Benzersiz üretici parça numarası",
+      "orderingCode": "Sipariş Numarası",
+      "orderingCodePlaceholder": "İsteğe bağlı",
+      "orderingCodeDesc": "Alternatif sipariş numarası (MPN'den farklıysa)",
+      "statusRecord": "Kayıt Durumu",
+      "lifecycleStatus": "Yaşam Döngüsü Durumu",
+      "introductionYear": "Tanıtım Yılı",
+      "introductionYearPlaceholder": "örn. 1972",
+      "discontinuedYear": "Üretim Durdurma Yılı",
+      "discontinuedYearPlaceholder": "örn. 2020",
+      "rohsCompliant": "RoHS Uyumlu",
+      "rohsDesc": "RoHS direktiflerine uygun",
+      "reachCompliant": "REACH Uyumlu",
+      "reachDesc": "REACH düzenlemesine uygun",
+      "weight": "Ağırlık (gram)",
+      "weightPlaceholder": "örn. 0.5",
+      "dateCodeFormat": "Tarih Kodlaması",
+      "dateCodePlaceholder": "örn. YYWW",
+      "dateCodeDesc": "Bileşen üzerindeki tarih kodu formatı",
+      "nsn": "NSN (NATO Stok Numarası)",
+      "nsnPlaceholder": "örn. 5962-01-123-4567",
+      "milSpec": "Askeri Spesifikasyon",
+      "milSpecPlaceholder": "örn. MIL-PRF-38534",
+      "partAttributesDesc": "Bileşenin kategorisine dayalı üreticiye özgü öznitelikler.",
+      "partAttributesLabel": "Üreticiye Özgü Öznitelikler",
+      "filesDesc": "Bu üretici varyantı için veri sayfalarını, görselleri ve diğer dosyaları yönetin.",
+      "close": "Kapat",
+      "selectComponent": "Bileşen seç"
+    }
+  },
+  "errors": {
+    "notFound": "Sayfa bulunamadı",
+    "unauthorized": "Yetkisiz",
+    "serverError": "Sunucu hatası"
+  },
+  "footer": {
+    "tagline": "Topluluk tarafından yönetilen elektronik bileşen veritabanı",
+    "navigation": "Navigasyon",
+    "community": "Topluluk",
+    "legal": "Yasal",
+    "about": "Hakkında",
+    "help": "Yardım",
+    "contact": "İletişim",
+    "contribute": "Katkıda Bulun",
+    "github": "GitHub",
+    "privacy": "Gizlilik",
+    "imprint": "Künye",
+    "copyright": "MIT Lisansı altında Açık Kaynak"
+  },
+  "about": {
+    "title": "ElectroVault Hakkında",
+    "subtitle": "Elektronik bileşenler için topluluk tarafından yönetilen veritabanı",
+    "mission": {
+      "title": "Misyonumuz",
+      "description": "ElectroVault, tarihsel tüplerden modern nanoteknolojiye kadar elektronik bileşenler için ücretsiz ve açık bir veritabanıdır. Amacımız, elektronik bileşenler hakkındaki bilgiyi korumak ve herkese erişilebilir kılmaktır."
+    },
+    "features": {
+      "title": "Özellikler",
+      "comprehensive": {
+        "title": "Kapsamlı Veritabanı",
+        "description": "Dirençlerden kapasitörlere, yüksek entegre devrelere kadar - tüm önemli bileşenleri detaylı özelliklerle birlikte kaydediyoruz."
+      },
+      "historical": {
+        "title": "Tarihi Arşiv",
+        "description": "Eski ekipmanların onarımı ve restorasyonu için tarihsel bileşenlerin belgelenmesi."
+      },
+      "community": {
+        "title": "Topluluk Odaklı",
+        "description": "Herkes katkıda bulunabilir ve bilgisini paylaşabilir. Birlikte en kapsamlı bileşen veritabanını oluşturuyoruz."
+      },
+      "open": {
+        "title": "Açık Kaynak",
+        "description": "MIT Lisansı altında tamamen şeffaf ve ücretsiz olarak kullanılabilir."
+      }
+    },
+    "contribute": {
+      "title": "Katılın",
+      "description": "ElectroVault topluluğu ile büyür. Katkıda bulunabileceğiniz bazı yollar:",
+      "dataEntry": "Bileşen ekleyin veya düzenleyin",
+      "datasheets": "Veri sayfaları yükleyin",
+      "code": "GitHub'da kod katkıları",
+      "feedback": "Geri bildirim ve iyileştirme önerileri"
+    }
+  },
+  "help": {
+    "title": "Yardım & SSS",
+    "subtitle": "Sıkça Sorulan Sorular",
+    "general": {
+      "title": "Genel",
+      "what": {
+        "question": "ElectroVault nedir?",
+        "answer": "ElectroVault, elektrik ve elektronik bileşenler için ücretsiz, topluluk tarafından yönetilen bir veritabanıdır. Tarihsel tüplerden modern entegre devrelere kadar bileşenleri kapsamlı meta veriler, veri sayfaları ve özelliklerle belgeliyoruz."
+      },
+      "free": {
+        "question": "ElectroVault ücretsiz mi?",
+        "answer": "Evet, ElectroVault tamamen ücretsiz ve açık kaynaktır. Hem kullanım hem de kaynak kodu serbestçe kullanılabilir."
+      }
+    },
+    "search": {
+      "title": "Arama",
+      "how": {
+        "question": "Belirli bir bileşeni nasıl bulurum?",
+        "answer": "Sağ üstteki arama işlevini kullanın veya kategoriler arasında gezinin. Parça numarasına, üreticiye veya özelliklere göre arama yapabilirsiniz."
+      },
+      "filters": {
+        "question": "Hangi filtreler mevcut?",
+        "answer": "Kategori, üretici, durum (aktif/eski), paket türü ve diğer birçok teknik parametreye göre filtreleyebilirsiniz."
+      }
+    },
+    "contribute": {
+      "title": "Katkıda Bulunma",
+      "account": {
+        "question": "Katkıda bulunmak için bir hesaba ihtiyacım var mı?",
+        "answer": "Evet, bileşen eklemek veya düzenlemek için ücretsiz bir hesaba ihtiyacınız var. Bu, veri kalitesini sağlamamıza yardımcı olur."
+      },
+      "how": {
+        "question": "Nasıl bileşen ekleyebilirim?",
+        "answer": "Giriş yaptıktan sonra, bileşen genel görünümündeki 'Yeni Bileşen' düğmesi aracılığıyla yeni bileşenler oluşturabilirsiniz. Katkınız yayınlanmadan önce bir moderatör tarafından incelenecektir."
+      },
+      "quality": {
+        "question": "Veri kalitesi nasıl sağlanır?",
+        "answer": "Tüm katkılar deneyimli moderatörler tarafından incelenir. Ayrıca, kayıtlı kullanıcılar düzeltmeler önerebilir."
+      }
+    }
+  },
+  "help": {
+    "title": "Yardım & SSS",
+    "subtitle": "Sıkça Sorulan Sorular",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Bileşenlere Göz At",
+        "description": "Veritabanımızda bileşenler bulun"
+      },
+      "createAccount": {
+        "title": "Hesap Oluştur",
+        "description": "Veritabanına katkıda bulunun"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokümantasyon ve sorunlar"
+      }
+    },
+    "contactCta": {
+      "title": "Sorunuz yanıtlanmadı mı?",
+      "description": "Bizimle doğrudan iletişime geçebilirsiniz.",
+      "button": "İletişime Geç"
+    },
+    "general": {
+      "title": "Genel",
+      "what": {
+        "question": "ElectroVault nedir?",
+        "answer": "ElectroVault, elektrik ve elektronik bileşenler için ücretsiz, topluluk tarafından yönetilen bir veritabanıdır. Tarihsel tüplerden modern entegre devrelere kadar bileşenleri kapsamlı meta veriler, veri sayfaları ve özelliklerle belgeliyoruz."
+      },
+      "free": {
+        "question": "ElectroVault ücretsiz mi?",
+        "answer": "Evet, ElectroVault tamamen ücretsiz ve açık kaynaktır. Hem kullanım hem de kaynak kodu serbestçe kullanılabilir."
+      }
+    },
+    "search": {
+      "title": "Arama",
+      "how": {
+        "question": "Belirli bir bileşeni nasıl bulurum?",
+        "answer": "Sağ üstteki arama işlevini kullanın veya kategoriler arasında gezinin. Parça numarasına, üreticiye veya özelliklere göre arama yapabilirsiniz."
+      },
+      "filters": {
+        "question": "Hangi filtreler mevcut?",
+        "answer": "Kategori, üretici, durum (aktif/eski), paket türü ve diğer birçok teknik parametreye göre filtreleyebilirsiniz."
+      }
+    },
+    "contribute": {
+      "title": "Katkıda Bulunma",
+      "account": {
+        "question": "Katkıda bulunmak için bir hesaba ihtiyacım var mı?",
+        "answer": "Evet, bileşen eklemek veya düzenlemek için ücretsiz bir hesaba ihtiyacınız var. Bu, veri kalitesini sağlamamıza yardımcı olur."
+      },
+      "how": {
+        "question": "Nasıl bileşen ekleyebilirim?",
+        "answer": "Giriş yaptıktan sonra, bileşen genel görünümündeki 'Yeni Bileşen' düğmesi aracılığıyla yeni bileşenler oluşturabilirsiniz. Katkınız yayınlanmadan önce bir moderatör tarafından incelenecektir."
+      },
+      "quality": {
+        "question": "Veri kalitesi nasıl sağlanır?",
+        "answer": "Tüm katkılar deneyimli moderatörler tarafından incelenir. Ayrıca, kayıtlı kullanıcılar düzeltmeler önerebilir."
+      }
+    }
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Sorularınız veya önerileriniz mi var?",
+    "form": {
+      "heading": "Mesaj Gönder",
+      "name": "İsim",
+      "email": "E-posta",
+      "subject": "Konu",
+      "message": "Mesaj",
+      "namePlaceholder": "Ahmet Yılmaz",
+      "emailPlaceholder": "ahmet@ornek.com",
+      "subjectPlaceholder": "Mesajınızın konusu",
+      "messagePlaceholder": "Mesajınız...",
+      "demoNote": "Not: İletişim formu şu anda bir demo. Backend entegrasyonu daha sonraki bir aşamada yapılacaktır. Önemli sorularınız için lütfen GitHub veya belirtilen e-posta adresini kullanın.",
+      "send": "Mesaj Gönder",
+      "sending": "Gönderiliyor...",
+      "success": "Mesaj başarıyla gönderildi!",
+      "error": "Mesaj gönderilirken hata oluştu"
+    },
+    "alternatives": {
+      "title": "Diğer İletişim Seçenekleri",
+      "githubTitle": "GitHub Sorunları",
+      "github": "GitHub'da bir konu oluşturun",
+      "emailTitle": "E-posta",
+      "email": "Bize e-posta gönderin"
+    },
+    "responseTime": {
+      "title": "Yanıt Süreleri",
+      "description": "ElectroVault bir topluluk projesi olduğu için, sorular gönüllüler tarafından işlenir. Lütfen sabırlı olun - genellikle 48 saat içinde yanıt veririz."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Topluluk Desteği",
+        "description": "Genel sorular için GitHub Discussions kullanın"
+      },
+      "bugReports": {
+        "title": "Hata Raporları",
+        "description": "Teknik sorunları doğrudan GitHub'da bildirin"
+      },
+      "partnerships": {
+        "title": "Ortaklık Soruları",
+        "description": "İş sorguları için formu kullanın"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Künye",
+    "responsible": "İçerikten sorumlu",
+    "contact": "İletişim",
+    "disclaimer": {
+      "title": "Sorumluluk Reddi",
+      "content": "Dikkatli içerik kontrolüne rağmen, harici bağlantıların içeriğinden sorumluluk kabul etmiyoruz. Bağlantılı sayfaların operatörleri içeriklerinden yalnızca kendileri sorumludur.",
+      "liability": "Bu sayfaların içeriği büyük özenle oluşturulmuştur. Ancak, içeriğin doğruluğunu, eksiksizliğini ve güncelliğini garanti edemeyiz."
+    },
+    "opensource": {
+      "title": "Açık Kaynak",
+      "description": "ElectroVault, MIT Lisansı altında bir açık kaynak projesidir. Kaynak kodu GitHub'da mevcuttur."
+    }
+  },
+  "privacy": {
+    "title": "Gizlilik Politikası",
+    "lastUpdated": "Son güncelleme",
+    "intro": "Kişisel verilerinizin korunmasını çok ciddiye alıyoruz. Bu gizlilik politikası, kişisel verilerin işlenmesinin niteliği, kapsamı ve amacı hakkında sizi bilgilendirir.",
+    "responsible": {
+      "title": "Veri Sorumlusu",
+      "description": "Bu web sitesindeki veri işlemeden sorumlu:"
+    },
+    "collection": {
+      "title": "Kişisel Verilerin Toplanması ve Saklanması",
+      "description": "Web sitemizi ziyaret ettiğinizde, tarayıcınızın ilettiği bilgiler otomatik olarak toplanır:",
+      "data": "IP adresi, erişim tarihi ve saati, tarayıcı türü ve sürümü, kullanılan işletim sistemi, yönlendiren URL"
+    },
+    "cookies": {
+      "title": "Çerezler",
+      "description": "Web sitemiz çerezler kullanır. Çerezler, cihazınızda saklanan küçük metin dosyalarıdır.",
+      "essential": "Kimlik doğrulama ve oturum yönetimi için teknik olarak gerekli çerezler",
+      "functional": "Kullanıcı deneyimini geliştirmek için işlevsel çerezler"
+    },
+    "auth": {
+      "title": "Kimlik Doğrulama",
+      "description": "Kayıt ve giriş için Keycloak kullanıyoruz. Aşağıdaki veriler saklanır:",
+      "data": "Kullanıcı adı, e-posta adresi, profil resmi (isteğe bağlı), rol ve izinler"
+    },
+    "rights": {
+      "title": "Haklarınız",
+      "description": "Kişisel verilerinizle ilgili aşağıdaki haklara sahipsiniz:",
+      "access": "Erişim hakkı",
+      "correction": "Düzeltme hakkı",
+      "deletion": "Silme hakkı",
+      "restriction": "İşlemenin kısıtlanması hakkı",
+      "portability": "Veri taşınabilirliği hakkı",
+      "objection": "İtiraz hakkı"
+    },
+    "contact": {
+      "title": "Gizlilik Soruları İçin İletişim",
+      "description": "Gizlilikle ilgili sorularınız varsa, her zaman bizimle iletişime geçebilirsiniz."
+    }
+  }
+}

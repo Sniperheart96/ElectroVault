@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "इलेक्ट्रोवॉल्ट",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "create": "बनाएं",
+    "search": "खोजें",
+    "back": "पीछे",
+    "next": "आगे",
+    "previous": "पिछला",
+    "noResults": "कोई परिणाम नहीं मिला",
+    "all": "सभी",
+    "yes": "हां",
+    "no": "नहीं",
+    "actions": {
+      "details": "विवरण"
+    }
+  },
+  "locale": {
+    "switch": "भाषा बदलें",
+    "current": "वर्तमान भाषा",
+    "languages": {
+      "en": "अंग्रेज़ी",
+      "de": "जर्मन",
+      "fr": "फ़्रांसीसी",
+      "es": "स्पेनिश",
+      "zh": "चीनी",
+      "ja": "जापानी",
+      "ko": "कोरियाई",
+      "it": "इतालवी"
+    }
+  },
+  "nav": {
+    "home": "होम",
+    "components": "घटक",
+    "categories": "श्रेणियां",
+    "manufacturers": "निर्माता",
+    "packages": "पैकेज",
+    "search": "खोज",
+    "admin": "व्यवस्थापक",
+    "moderation": "मॉडरेशन",
+    "myElectroVault": "मेरा इलेक्ट्रोवॉल्ट",
+    "login": "लॉगिन",
+    "logout": "लॉगआउट",
+    "profile": "प्रोफ़ाइल"
+  },
+  "home": {
+    "title": "इलेक्ट्रोवॉल्ट",
+    "subtitle": "इलेक्ट्रॉनिक घटकों के लिए समुदाय-रखरखाव डेटाबेस",
+    "searchPlaceholder": "घटक खोजें...",
+    "featuredCategories": "विशेष श्रेणियां",
+    "recentComponents": "हाल के घटक",
+    "stats": {
+      "components": "घटक",
+      "manufacturers": "निर्माता",
+      "categories": "श्रेणियां",
+      "users": "उपयोगकर्ता"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "इलेक्ट्रोवॉल्ट",
+      "subtitle": "इलेक्ट्रॉनिक घटकों के लिए समुदाय-रखरखाव डेटाबेस"
+    },
+    "stats": {
+      "components": "घटक",
+      "manufacturers": "निर्माता",
+      "users": "उपयोगकर्ता"
+    }
+  },
+  "packages": {
+    "title": "पैकेज",
+    "totalCount": "डेटाबेस में {count} पैकेज",
+    "addNew": "नया पैकेज",
+    "searchPlaceholder": "नाम या स्लग द्वारा खोजें...",
+    "filterPlaceholder": "पैकेज प्रकार",
+    "filterAll": "सभी प्रकार",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "रेडियल",
+      "AXIAL": "एक्सियल",
+      "CHASSIS": "चेसिस",
+      "OTHER": "अन्य"
+    },
+    "table": {
+      "name": "नाम",
+      "type": "प्रकार",
+      "pinCount": "पिन संख्या",
+      "dimensions": "आयाम (L x W x H mm)",
+      "pitch": "पिच",
+      "actions": "कार्य"
+    },
+    "loading": "लोड हो रहा है...",
+    "noResults": "कोई पैकेज नहीं मिला",
+    "noPackagesFound": "कोई पैकेज नहीं मिला",
+    "createFirst": "पहला पैकेज बनाएं",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "loadError": "पैकेज लोड नहीं किए जा सके।",
+    "deleteSuccess": "पैकेज हटाया गया।",
+    "deleteError": "पैकेज हटाया नहीं जा सका।",
+    "deleteDialog": {
+      "title": "पैकेज हटाएं?",
+      "description": "क्या आप वाकई पैकेज \"{name}\" को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।"
+    }
+  },
+  "components": {
+    "title": "घटक",
+    "description": "इलेक्ट्रॉनिक घटकों के हमारे व्यापक डेटाबेस को ब्राउज़ करें",
+    "filters": {
+      "category": "श्रेणी",
+      "manufacturer": "निर्माता",
+      "status": "स्थिति",
+      "mountingType": "माउंटिंग प्रकार"
+    },
+    "detail": {
+      "overview": "अवलोकन",
+      "specifications": "विनिर्देश",
+      "datasheets": "डेटाशीट",
+      "parts": "निर्माता पार्ट्स",
+      "history": "संस्करण इतिहास",
+      "backToOverview": "अवलोकन पर वापस जाएं",
+      "category": "श्रेणी",
+      "statistics": "सांख्यिकी",
+      "manufacturerVariants": "निर्माता वेरिएंट",
+      "activeVariants": "सक्रिय वेरिएंट",
+      "additionalProperties": "अतिरिक्त गुण",
+      "furtherProperties": "इस घटक के अतिरिक्त गुण",
+      "validForAllVariants": "तकनीकी विनिर्देश (सभी वेरिएंट के लिए मान्य)",
+      "variantCount": "{count} निर्माता वेरिएंट",
+      "variantCountPlural": "{count} निर्माता वेरिएंट",
+      "noVariantsAvailable": "कोई निर्माता वेरिएंट उपलब्ध नहीं",
+      "noVariantsForComponent": "इस घटक के लिए कोई निर्माता वेरिएंट उपलब्ध नहीं।",
+      "noAttributesAvailable": "कोई विशेषता उपलब्ध नहीं।",
+      "manufacturer": "निर्माता",
+      "orderingCode": "ऑर्डर नंबर",
+      "details": "विवरण",
+      "allInCategory": "श्रेणी में सभी",
+      "status": "स्थिति",
+      "moreAttributes": "+{count} और"
+    },
+    "status": {
+      "DRAFT": "मसौदा",
+      "PENDING": "लंबित",
+      "PUBLISHED": "प्रकाशित",
+      "ARCHIVED": "संग्रहीत"
+    },
+    "lifecycle": {
+      "ACTIVE": "सक्रिय",
+      "NRND": "नए डिज़ाइन के लिए अनुशंसित नहीं",
+      "EOL": "जीवन का अंत",
+      "OBSOLETE": "अप्रचलित"
+    }
+  },
+  "categories": {
+    "title": "श्रेणियां",
+    "browseAll": "सभी श्रेणियां ब्राउज़ करें",
+    "subcategories": "उपश्रेणियां",
+    "componentsInCategory": "इस श्रेणी में घटक"
+  },
+  "manufacturers": {
+    "title": "निर्माता",
+    "status": {
+      "ACTIVE": "सक्रिय",
+      "ACQUIRED": "अधिग्रहीत",
+      "DEFUNCT": "निष्क्रिय"
+    }
+  },
+  "auth": {
+    "login": "लॉगिन",
+    "logout": "लॉगआउट",
+    "loginWith": "{provider} के साथ लॉगिन करें",
+    "welcome": "वापसी पर स्वागत है",
+    "signInToContinue": "जारी रखने के लिए साइन इन करें",
+    "signIn": {
+      "title": "साइन इन",
+      "description": "अपने खाते में साइन इन करें",
+      "button": "Keycloak के साथ साइन इन करें",
+      "loading": "साइन इन हो रहा है...",
+      "hint": "आपको Keycloak पर पुनर्निर्देशित किया जाएगा"
+    },
+    "signOut": {
+      "title": "साइन आउट",
+      "description": "क्या आप वाकई साइन आउट करना चाहते हैं?",
+      "button": "साइन आउट",
+      "loading": "साइन आउट हो रहा है...",
+      "cancel": "रद्द करें"
+    },
+    "error": {
+      "title": "प्रमाणीकरण त्रुटि",
+      "description": "साइन इन के दौरान एक त्रुटि हुई",
+      "tryAgain": "पुनः प्रयास करें",
+      "backHome": "होम पर वापस जाएं"
+    },
+    "errors": {
+      "configuration": "सर्वर कॉन्फ़िगरेशन त्रुटि। कृपया व्यवस्थापक से संपर्क करें।",
+      "accessDenied": "पहुंच अस्वीकृत। आपके पास अनुमति नहीं है।",
+      "verification": "सत्यापन लिंक समाप्त हो गया है या पहले ही उपयोग किया जा चुका है।",
+      "oauthSignin": "OAuth साइन-इन शुरू करने में त्रुटि।",
+      "oauthCallback": "OAuth कॉलबैक प्रोसेस करने में त्रुटि।",
+      "oauthCreateAccount": "उपयोगकर्ता खाता बनाने में त्रुटि।",
+      "emailCreateAccount": "ईमेल खाता बनाने में त्रुटि।",
+      "callback": "कॉलबैक प्रोसेस करने में त्रुटि।",
+      "oauthAccountNotLinked": "यह ईमेल पहले से ही किसी अन्य खाते से जुड़ा हुआ है।",
+      "sessionRequired": "कृपया इस पृष्ठ तक पहुंचने के लिए साइन इन करें।",
+      "default": "एक अज्ञात त्रुटि हुई। कृपया पुनः प्रयास करें।"
+    }
+  },
+  "admin": {
+    "dashboard": "डैशबोर्ड",
+    "sidebar": {
+      "dashboard": "डैशबोर्ड",
+      "moderation": "मॉडरेशन",
+      "moderationDescription": "अनुमोदन कतार",
+      "users": "उपयोगकर्ता",
+      "backToHome": "मुख्य पृष्ठ पर वापस जाएं",
+      "user": "उपयोगकर्ता",
+      "logout": "लॉगआउट"
+    },
+    "components": {
+      "title": "घटक प्रबंधित करें",
+      "new": "नया घटक",
+      "edit": "घटक संपादित करें"
+    },
+    "moderation": {
+      "title": "मॉडरेशन",
+      "pendingReviews": "लंबित समीक्षाएं",
+      "approve": "स्वीकृत करें",
+      "reject": "अस्वीकार करें",
+      "batchApproval": "बैच स्वीकृति",
+      "confirmApprove": "अनुमोदन की पुष्टि करें",
+      "confirmApproveDescription": "क्या आप वाकई इस {type} को अनुमोदित करना चाहते हैं? यह बाद में सार्वजनिक रूप से दिखाई देगा।",
+      "confirmBatchApproval": "क्या आप {count} आइटम अनुमोदित करना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+      "rejectWithReason": "कारण के साथ अस्वीकार करें",
+      "rejectDescription": "कृपया अस्वीकरण का कारण प्रदान करें। यह निर्माता को दिखाया जाएगा।",
+      "rejectReasonLabel": "कारण",
+      "rejectReasonPlaceholder": "यह आइटम क्यों अस्वीकार किया जा रहा है?",
+      "rejectReasonHelp": "एक सार्थक कारण निर्माता को अस्वीकरण को समझने में मदद करता है।",
+      "batchApproveButton": "{count} अनुमोदित करें",
+      "typeComponent": "घटक",
+      "typePart": "पार्ट",
+      "draft": "मसौदा"
+    },
+    "users": {
+      "title": "उपयोगकर्ता",
+      "manage": "उपयोगकर्ता प्रबंधित करें"
+    },
+    "myDashboard": {
+      "title": "मेरा डैशबोर्ड",
+      "stats": {
+        "componentsTotal": "कुल घटक",
+        "componentsTotalDesc": "आपके द्वारा बनाए गए घटक",
+        "variants": "वेरिएंट",
+        "variantsDesc": "निर्माता वेरिएंट",
+        "drafts": "मसौदे",
+        "draftsDesc": "अभी तक सबमिट नहीं किए गए",
+        "pending": "समीक्षाधीन",
+        "pendingDesc": "मॉडरेशन की प्रतीक्षा में",
+        "published": "प्रकाशित",
+        "archived": "संग्रहीत"
+      },
+      "draftsSection": {
+        "title": "मेरे मसौदे",
+        "description": "मसौदे निजी अस्थायी संग्रह हैं और अभी तक मॉडरेशन के लिए सबमिट नहीं किए गए हैं।",
+        "newComponent": "नया घटक",
+        "empty": "कोई मसौदा उपलब्ध नहीं। एक नया घटक बनाएं और इसे मसौदे के रूप में सहेजें।",
+        "draftBadge": "मसौदा",
+        "noName": "[कोई नाम नहीं]"
+      },
+      "activitySection": {
+        "title": "गतिविधि इतिहास",
+        "description": "इलेक्ट्रोवॉल्ट में आपकी हाल की गतिविधियां",
+        "empty": "अभी तक कोई गतिविधि नहीं।"
+      },
+      "entities": {
+        "COMPONENT": "घटक",
+        "PART": "वेरिएंट",
+        "MANUFACTURER": "निर्माता",
+        "CATEGORY": "श्रेणी",
+        "PACKAGE": "पैकेज"
+      },
+      "error": "डैशबोर्ड लोड नहीं किया जा सका। कृपया पुनः प्रयास करें।"
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "नया विशेषता",
+        "titleEdit": "विशेषता संपादित करें",
+        "description": "घटकों के लिए विशेषता परिभाषा"
+      },
+      "category": {
+        "title": "नई श्रेणी",
+        "titleEdit": "श्रेणी संपादित करें",
+        "description": "श्रेणी जानकारी और विशेषताओं को प्रबंधित करें",
+        "saveFirst": "विशेषताएं जोड़ने के लिए पहले श्रेणी सहेजें"
+      },
+      "component": {
+        "title": "नया घटक",
+        "titleEdit": "घटक संपादित करें",
+        "description": "नया घटक बनाएं - सहेजने के बाद आप निर्माता वेरिएंट जोड़ सकते हैं",
+        "descriptionEdit": "घटक जानकारी और निर्माता वेरिएंट प्रबंधित करें",
+        "saveFirstPinMapping": "पिन मैपिंग संपादित करने के लिए पहले घटक सहेजें",
+        "saveFirstParts": "निर्माता वेरिएंट जोड़ने के लिए पहले घटक सहेजें",
+        "saveFirstRelations": "संबंध जोड़ने के लिए पहले घटक सहेजें",
+        "createdWithVariants": "घटक बनाया गया। अब आप निर्माता वेरिएंट जोड़ सकते हैं",
+        "noPartsWarning": "इस घटक में कोई निर्माता वेरिएंट नहीं है। कम से कम एक वेरिएंट आवश्यक है"
+      },
+      "manufacturer": {
+        "title": "नया निर्माता",
+        "titleEdit": "निर्माता संपादित करें",
+        "description": "निर्माता जानकारी प्रबंधित करें"
+      },
+      "part": {
+        "title": "नया वेरिएंट",
+        "titleEdit": "वेरिएंट संपादित करें",
+        "description": "निर्माता-विशिष्ट वेरिएंट",
+        "descriptionEdit": "निर्माता वेरिएंट जानकारी संपादित करें",
+        "saveFirstFiles": "फ़ाइलें अपलोड करने के लिए पहले वेरिएंट सहेजें"
+      },
+      "package": {
+        "title": "नया पैकेज",
+        "titleEdit": "पैकेज संपादित करें",
+        "description": "पैकेज/फुटप्रिंट जानकारी"
+      },
+      "delete": {
+        "title": "हटाने की पुष्टि करें",
+        "message": "क्या आप वाकई इस आइटम को हटाना चाहते हैं?",
+        "messageFile": "क्या आप वाकई इस फ़ाइल को हटाना चाहते हैं?",
+        "messagePin": "क्या आप वाकई इस पिन को हटाना चाहते हैं?",
+        "message3dModel": "क्या आप वाकई इस 3D मॉडल को हटाना चाहते हैं?",
+        "messageRelation": "क्या आप वाकई इस संबंध को हटाना चाहते हैं?"
+      }
+    },
+    "buttons": {
+      "saving": "सहेजा जा रहा है...",
+      "saveAsDraft": "मसौदे के रूप में सहेजें",
+      "update": "अपडेट करें",
+      "addPin": "पिन जोड़ें",
+      "addRelation": "संबंध जोड़ें"
+    },
+    "messages": {
+      "success": "सफलता",
+      "error": "त्रुटि",
+      "warning": "चेतावनी",
+      "attribute": {
+        "created": "विशेषता बनाई गई",
+        "updated": "विशेषता अपडेट की गई",
+        "deleted": "विशेषता हटाई गई",
+        "loadFailed": "विशेषताएं लोड करने में विफल",
+        "saveFailed": "विशेषता सहेजने में विफल",
+        "deleteFailed": "विशेषता हटाने में विफल"
+      },
+      "category": {
+        "created": "श्रेणी बनाई गई",
+        "updated": "श्रेणी अपडेट की गई",
+        "deleted": "श्रेणी हटाई गई",
+        "loadFailed": "श्रेणियां लोड करने में विफल",
+        "saveFailed": "श्रेणी सहेजने में विफल",
+        "deleteFailed": "श्रेणी हटाने में विफल"
+      },
+      "component": {
+        "created": "घटक बनाया गया",
+        "updated": "घटक अपडेट किया गया",
+        "deleted": "घटक हटाया गया",
+        "loadFailed": "घटक लोड करने में विफल",
+        "saveFailed": "घटक सहेजने में विफल",
+        "deleteFailed": "घटक हटाने में विफल"
+      },
+      "manufacturer": {
+        "created": "निर्माता बनाया गया",
+        "updated": "निर्माता अपडेट किया गया",
+        "deleted": "निर्माता हटाया गया",
+        "loadFailed": "निर्माता लोड करने में विफल",
+        "saveFailed": "निर्माता सहेजने में विफल",
+        "deleteFailed": "निर्माता हटाने में विफल",
+        "logoUploaded": "लोगो अपलोड किया गया",
+        "logoUploadFailed": "लोगो अपलोड करने में विफल"
+      },
+      "part": {
+        "created": "वेरिएंट बनाया गया",
+        "updated": "वेरिएंट अपडेट किया गया",
+        "deleted": "वेरिएंट हटाया गया",
+        "loadFailed": "वेरिएंट लोड करने में विफल",
+        "saveFailed": "वेरिएंट सहेजने में विफल",
+        "deleteFailed": "वेरिएंट हटाने में विफल"
+      },
+      "package": {
+        "created": "पैकेज बनाया गया",
+        "updated": "पैकेज अपडेट किया गया",
+        "deleted": "पैकेज हटाया गया",
+        "loadFailed": "पैकेज लोड करने में विफल",
+        "saveFailed": "पैकेज सहेजने में विफल",
+        "deleteFailed": "पैकेज हटाने में विफल"
+      },
+      "file": {
+        "uploaded": "फ़ाइल अपलोड की गई",
+        "deleted": "फ़ाइल हटाई गई",
+        "uploadFailed": "फ़ाइल अपलोड करने में विफल",
+        "deleteFailed": "फ़ाइल हटाने में विफल",
+        "loadFailed": "फ़ाइलें लोड करने में विफल",
+        "downloadUrlFailed": "डाउनलोड URL जनरेट नहीं किया जा सका"
+      },
+      "pin": {
+        "created": "पिन जोड़ा गया",
+        "updated": "पिन अपडेट किया गया",
+        "deleted": "पिन हटाया गया",
+        "createFailed": "पिन बनाने में विफल",
+        "loadFailed": "पिन लोड करने में विफल",
+        "updateFailed": "पिन अपडेट करने में विफल",
+        "deleteFailed": "पिन हटाने में विफल"
+      },
+      "relation": {
+        "created": "संबंध जोड़ा गया",
+        "deleted": "संबंध हटाया गया",
+        "createFailed": "संबंध बनाने में विफल",
+        "deleteFailed": "संबंध हटाने में विफल"
+      }
+    },
+    "pinMapping": {
+      "title": "पिन मैपिंग",
+      "addPin": "पिन जोड़ें",
+      "newPin": "नया पिन जोड़ें",
+      "pinNumber": "पिन नंबर (जैसे 1, VCC)",
+      "pinName": "पिन का नाम",
+      "selectType": "पिन प्रकार चुनें",
+      "noDescription": "कोई विवरण नहीं",
+      "noType": "कोई प्रकार नहीं",
+      "loading": "पिन लोड हो रहे हैं...",
+      "pinsCount": "{count} पिन",
+      "tabList": "पिन सूची",
+      "tabBulkImport": "बल्क आयात",
+      "noPins": "कोई पिन परिभाषित नहीं। पिन अलग-अलग जोड़ें या बल्क आयात का उपयोग करें।",
+      "columnPinNumber": "पिन नं.",
+      "columnName": "नाम",
+      "columnType": "प्रकार",
+      "columnFunction": "कार्य (DE)",
+      "columnActions": "कार्य",
+      "functionPlaceholder": "उदा. आपूर्ति वोल्टेज",
+      "deleteTitle": "पिन हटाएं?",
+      "deleteMessage": "क्या आप वाकई पिन {pinNumber} ({pinName}) को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+      "reorderSuccess": "पिन क्रम अपडेट किया गया",
+      "reorderFailed": "क्रम बदला नहीं जा सका",
+      "bulkImport": {
+        "formatLabel": "प्रारूप:",
+        "exampleLabel": "उदाहरण:",
+        "typeHint": "pinType वैकल्पिक है। उपलब्ध प्रकार: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "CSV प्रारूप में पिन दर्ज करें...",
+        "importButton": "पिन आयात करें",
+        "noPinsFound": "कोई मान्य पिन डेटा नहीं मिला।",
+        "success": "{count} पिन आयातित किए गए।",
+        "failed": "बल्क आयात विफल रहा।"
+      }
+    },
+    "files": {
+      "uploadImage": "उत्पाद छवि अपलोड करें",
+      "uploadDatasheet": "डेटाशीट अपलोड करें",
+      "uploadDocument": "दस्तावेज़ अपलोड करें",
+      "selectLanguage": "भाषा चुनें",
+      "noFiles": "कोई फ़ाइल उपलब्ध नहीं",
+      "confirmDelete": "फ़ाइल हटाएं?",
+      "productImage": "उत्पाद छवि",
+      "productImageDescription": "इस निर्माता वेरिएंट के लिए एक पूर्वावलोकन छवि",
+      "addImage": "छवि",
+      "imageDescription": "JPEG, PNG या WebP (अधिकतम 10 MB)",
+      "noImageUploaded": "अभी तक कोई छवि अपलोड नहीं की गई",
+      "datasheets": "डेटाशीट",
+      "datasheetsDescription": "इस निर्माता वेरिएंट के लिए PDF डेटाशीट",
+      "addDatasheet": "डेटाशीट",
+      "languagesRequired": "डेटाशीट की भाषाएं",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "कम से कम एक भाषा चुननी होगी",
+      "datasheetFileDescription": "निर्माता डेटाशीट की PDF फ़ाइल",
+      "noDatasheets": "अभी तक कोई डेटाशीट अपलोड नहीं की गई",
+      "otherFiles": "अन्य फ़ाइलें",
+      "otherFilesDescription": "अतिरिक्त दस्तावेज़, एप्लिकेशन नोट्स, आदि।",
+      "addDocument": "दस्तावेज़",
+      "languagesOptional": "भाषाएं (वैकल्पिक)",
+      "anyFileDescription": "कोई भी फ़ाइल (PDF, TXT, ZIP, आदि।)",
+      "noDocuments": "अभी तक कोई दस्तावेज़ अपलोड नहीं किए गए",
+      "fileName": "फ़ाइल",
+      "fileSize": "आकार",
+      "languages": "भाषाएं",
+      "actions": "कार्य",
+      "imageCount": "{count} छवि",
+      "fileCount": "{count} फ़ाइल{plural}",
+      "datasheetCount": "{count} डेटाशीट{plural}",
+      "imageUploaded": "छवि अपलोड की गई",
+      "imageRemoved": "छवि हटाई गई"
+    },
+    "model3d": {
+      "title": "3D मॉडल",
+      "confirmDelete": "3D मॉडल हटाएं?",
+      "upload": "3D मॉडल अपलोड करें",
+      "noModels": "कोई 3D मॉडल उपलब्ध नहीं"
+    },
+    "lists": {
+      "searchPlaceholder": "खोजें...",
+      "searchByName": "नाम या स्लग द्वारा खोजें...",
+      "searchByNameCage": "नाम, स्लग या CAGE कोड द्वारा खोजें...",
+      "noResults": "कोई परिणाम नहीं मिला",
+      "createFirst": "पहली प्रविष्टि बनाएं",
+      "noPackagesFound": "कोई पैकेज नहीं मिला",
+      "createFirstPackage": "पहला पैकेज बनाएं"
+    },
+    "filters": {
+      "allStatus": "सभी स्थितियां",
+      "myDrafts": "मेरे मसौदे"
+    },
+    "manufacturer": {
+      "title": "निर्माता",
+      "count": "डेटाबेस में {count} निर्माता",
+      "create": "नया निर्माता",
+      "createFirst": "पहला निर्माता बनाएं",
+      "deleteTitle": "निर्माता हटाएं?",
+      "deleteDescription": "क्या आप वाकई निर्माता \"{name}\" को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+      "status": {
+        "active": "सक्रिय",
+        "acquired": "अधिग्रहीत",
+        "defunct": "निष्क्रिय"
+      }
+    },
+    "form": {
+      "package": "पैकेज",
+      "selectPackage": "पैकेज चुनें",
+      "noPackage": "कोई पैकेज नहीं",
+      "editIn": "में संपादित करें:",
+      "searchLanguage": "भाषा खोजें...",
+      "noLanguageFound": "कोई भाषा नहीं मिली",
+      "original": "मूल",
+      "backToOverview": "अवलोकन पर वापस जाएं",
+      "name": "नाम",
+      "nameDescription": "जर्मन और/या अंग्रेजी में नाम। अनिवार्य यदि श्रेणी में कोई लेबल विशेषता नहीं है",
+      "namePlaceholder": "घटक का नाम",
+      "series": "श्रृंखला",
+      "seriesDescription": "वैकल्पिक घटक श्रृंखला या परिवार",
+      "seriesPlaceholder": "जैसे 74HC, ATmega",
+      "packageDescription": "भौतिक पैकेज (जैसे DIP-8, SOIC-8)",
+      "shortDescription": "संक्षिप्त विवरण",
+      "shortDescriptionDescription": "घटक का संक्षिप्त वर्णन",
+      "shortDescriptionPlaceholder": "संक्षिप्त विवरण",
+      "fullDescription": "विस्तृत विवरण",
+      "fullDescriptionPlaceholder": "विस्तृत विवरण",
+      "attributesDescription": "चयनित श्रेणी के आधार पर तकनीकी विशेषताएं",
+      "selectCategoryFirst": "कृपया पहले \"मूल डेटा\" टैब में एक श्रेणी चुनें",
+      "pinMappingDescription": "इस घटक के लिए पिन असाइनमेंट परिभाषित करें। पिन मैपिंग सभी निर्माता वेरिएंट के लिए मान्य है",
+      "partsDescription": "इस घटक के निर्माता-विशिष्ट वेरिएंट",
+      "newVariant": "नया वेरिएंट",
+      "close": "बंद करें",
+      "parentCategory": "मूल श्रेणी",
+      "parentCategoryPlaceholder": "कोई नहीं (रूट श्रेणी)",
+      "parentCategoryDescription": "मुख्य श्रेणी (स्तर 0) के लिए खाली छोड़ें",
+      "categoryName": "श्रेणी का नाम",
+      "categoryDescription": "विवरण",
+      "categoryDescriptionPlaceholder": "श्रेणी का विवरण",
+      "sortOrder": "क्रमबद्ध क्रम",
+      "sortOrderDescription": "निम्न मान = ऊपर",
+      "status": "स्थिति",
+      "active": "सक्रिय",
+      "inactive": "निष्क्रिय",
+      "icon": "आइकन",
+      "iconUploadDescription": "श्रेणी आइकन अपलोड करें। अधिकतम 5 MB, JPEG/PNG/WebP/SVG।",
+      "iconUploadHint": "क्लिक करें या फ़ाइल यहां खींचें।",
+      "iconMaxSize": "आइकन अधिकतम 5 MB हो सकता है।",
+      "iconAllowedTypes": "केवल JPEG, PNG, WebP या SVG की अनुमति है।",
+      "iconUploaded": "आइकन अपलोड किया गया।",
+      "iconUploadFailed": "आइकन अपलोड नहीं किया जा सका।",
+      "categoryCreatedIconFailed": "श्रेणी बनाई गई, लेकिन आइकन अपलोड विफल रहा।",
+      "loading": "लोड हो रहा है...",
+      "newAttribute": "नई विशेषता",
+      "ownAttributes": "अपनी विशेषताएं ({count})",
+      "noOwnAttributes": "कोई अपनी विशेषता परिभाषित नहीं।",
+      "inheritedAttributes": "विरासत में मिली विशेषताएं ({count})",
+      "inheritedAttributesDescription": "विरासत में मिली विशेषताओं को केवल उनकी मूल श्रेणी में संपादित किया जा सकता है।",
+      "attributesInherited": "इस श्रेणी की विशेषताएं (उपश्रेणियों में विरासत में मिलीं)",
+      "cageCode": "CAGE कोड",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-अंकीय कोड",
+      "country": "देश",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "वेबसाइट",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "लोगो",
+      "logoUploadHint": "निर्माता लोगो अपलोड करें। अधिकतम 5 MB, JPEG/PNG/WebP/SVG।",
+      "logoClickOrDrag": "क्लिक करें या फ़ाइल यहां खींचें।",
+      "statusActive": "सक्रिय",
+      "statusAcquired": "अधिग्रहीत",
+      "statusDefunct": "निष्क्रिय",
+      "foundedYear": "स्थापना वर्ष",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "विघटन वर्ष",
+      "defunctYearPlaceholder": "2020",
+      "description": "विवरण",
+      "descriptionPlaceholder": "विवरण",
+      "logoMaxSize": "लोगो अधिकतम 5 MB हो सकता है।",
+      "logoAllowedTypes": "केवल JPEG, PNG, WebP या SVG की अनुमति है।",
+      "createdAsDraft": "निर्माता को मसौदे के रूप में सहेजा गया।",
+      "manufacturerCreatedLogoFailed": "निर्माता बनाया गया, लेकिन लोगो अपलोड विफल रहा।",
+      "save": "सहेजें"
+    },
+    "audit": {
+      "created": "बनाया गया",
+      "updated": "अपडेट किया गया",
+      "deleted": "हटाया गया",
+      "restored": "पुनर्स्थापित किया गया",
+      "approved": "स्वीकृत किया गया",
+      "rejected": "अस्वीकृत किया गया"
+    },
+    "tabs": {
+      "basicInfo": "मूल जानकारी",
+      "attributes": "विशेषताएं",
+      "pinMapping": "पिन मैपिंग",
+      "parts": "निर्माता वेरिएंट",
+      "relations": "संबंध",
+      "files": "फ़ाइलें",
+      "details": "मूल डेटा",
+      "pins": "पिन मैपिंग",
+      "models": "3D मॉडल"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "निर्माता",
+      "status": "स्थिति",
+      "lifecycle": "जीवनचक्र",
+      "actions": "कार्य",
+      "variantCount": "{count} वेरिएंट",
+      "variantCountPlural": "{count} वेरिएंट",
+      "activeCount": "{count} सक्रिय",
+      "obsoleteCount": "{count} अप्रचलित",
+      "unknown": "अज्ञात"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "पैकेज का अद्वितीय नाम",
+      "mountingType": "पैकेज प्रकार",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "रेडियल - रेडियल लीड",
+        "AXIAL": "एक्सियल - एक्सियल लीड",
+        "CHASSIS": "चेसिस - चेसिस माउंट",
+        "OTHER": "अन्य"
+      },
+      "pinCount": "पिन संख्या",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "लंबाई (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "चौड़ाई (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "ऊंचाई (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "पिच (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "पिनों के बीच की दूरी",
+      "jedecStandard": "JEDEC मानक",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA मानक",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "चित्र URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "तकनीकी चित्र या डेटाशीट का लिंक",
+      "description": "विवरण",
+      "descriptionPlaceholder": "पैकेज के बारे में अतिरिक्त जानकारी...",
+      "saveFirstModels": "3D मॉडल अपलोड करने के लिए पहले पैकेज सहेजें।",
+      "modelsDescription": "इस पैकेज के लिए 3D मॉडल (STEP, STL, 3MF, OBJ, आदि।)"
+    },
+    "partForm": {
+      "coreComponent": "सामान्य घटक",
+      "coreComponentDesc": "निर्माता-स्वतंत्र घटक (जैसे 555 Timer)",
+      "manufacturer": "निर्माता",
+      "manufacturerDesc": "इस विशिष्ट वेरिएंट का निर्माता (जैसे Texas Instruments)",
+      "manufacturerPlaceholder": "निर्माता चुनें",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "जैसे NE555P",
+      "mpnDesc": "अद्वितीय निर्माता पार्ट नंबर",
+      "orderingCode": "ऑर्डर नंबर",
+      "orderingCodePlaceholder": "वैकल्पिक",
+      "orderingCodeDesc": "वैकल्पिक ऑर्डर नंबर (यदि MPN से अलग हो)",
+      "statusRecord": "रिकॉर्ड स्थिति",
+      "lifecycleStatus": "जीवनचक्र स्थिति",
+      "introductionYear": "परिचय वर्ष",
+      "introductionYearPlaceholder": "जैसे 1972",
+      "discontinuedYear": "बंद करने का वर्ष",
+      "discontinuedYearPlaceholder": "जैसे 2020",
+      "rohsCompliant": "RoHS अनुरूप",
+      "rohsDesc": "RoHS दिशानिर्देशों को पूरा करता है",
+      "reachCompliant": "REACH अनुरूप",
+      "reachDesc": "REACH विनियमन को पूरा करता है",
+      "weight": "वजन (ग्राम)",
+      "weightPlaceholder": "जैसे 0.5",
+      "dateCodeFormat": "दिनांक कोड",
+      "dateCodePlaceholder": "जैसे YYWW",
+      "dateCodeDesc": "घटक पर दिनांक कोड का प्रारूप",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "जैसे 5962-01-123-4567",
+      "milSpec": "सैन्य विनिर्देश",
+      "milSpecPlaceholder": "जैसे MIL-PRF-38534",
+      "partAttributesDesc": "घटक की श्रेणी के आधार पर निर्माता-विशिष्ट विशेषताएं।",
+      "partAttributesLabel": "निर्माता-विशिष्ट विशेषताएं",
+      "filesDesc": "इस निर्माता वेरिएंट के लिए डेटाशीट, छवियां और अन्य फ़ाइलें प्रबंधित करें।",
+      "close": "बंद करें",
+      "selectComponent": "घटक चुनें"
+    }
+  },
+  "errors": {
+    "notFound": "पृष्ठ नहीं मिला",
+    "unauthorized": "अनधिकृत",
+    "serverError": "सर्वर त्रुटि"
+  },
+  "footer": {
+    "tagline": "समुदाय द्वारा प्रबंधित इलेक्ट्रॉनिक घटक डेटाबेस",
+    "navigation": "नेविगेशन",
+    "community": "समुदाय",
+    "legal": "कानूनी",
+    "about": "हमारे बारे में",
+    "help": "सहायता",
+    "contact": "संपर्क",
+    "contribute": "योगदान करें",
+    "github": "GitHub",
+    "privacy": "गोपनीयता",
+    "imprint": "छाप",
+    "copyright": "MIT लाइसेंस के तहत ओपन सोर्स"
+  },
+  "about": {
+    "title": "इलेक्ट्रोवॉल्ट के बारे में",
+    "subtitle": "इलेक्ट्रॉनिक घटकों के लिए समुदाय-रखरखाव डेटाबेस",
+    "mission": {
+      "title": "हमारा मिशन",
+      "description": "इलेक्ट्रोवॉल्ट इलेक्ट्रॉनिक घटकों के लिए एक मुफ्त और खुला डेटाबेस है - ऐतिहासिक ट्यूबों से लेकर आधुनिक नैनोटेक्नोलॉजी तक। हमारा लक्ष्य इलेक्ट्रॉनिक घटकों के बारे में ज्ञान को संरक्षित करना और इसे सभी के लिए सुलभ बनाना है।"
+    },
+    "features": {
+      "title": "विशेषताएं",
+      "comprehensive": {
+        "title": "व्यापक डेटाबेस",
+        "description": "रेसिस्टर्स से लेकर कैपेसिटर्स से लेकर उच्च एकीकृत सर्किट तक - हम विस्तृत विनिर्देशों के साथ सभी महत्वपूर्ण घटकों को कैप्चर करते हैं।"
+      },
+      "historical": {
+        "title": "ऐतिहासिक संग्रह",
+        "description": "विंटेज उपकरणों की मरम्मत और पुनर्स्थापना के लिए ऐतिहासिक घटकों का दस्तावेज़ीकरण।"
+      },
+      "community": {
+        "title": "समुदाय-संचालित",
+        "description": "हर कोई योगदान दे सकता है और अपने ज्ञान को साझा कर सकता है। साथ में हम सबसे व्यापक घटक डेटाबेस बनाते हैं।"
+      },
+      "open": {
+        "title": "ओपन सोर्स",
+        "description": "MIT लाइसेंस के तहत पूरी तरह से पारदर्शी और स्वतंत्र रूप से उपलब्ध।"
+      }
+    },
+    "contribute": {
+      "title": "शामिल हों",
+      "description": "इलेक्ट्रोवॉल्ट अपने समुदाय पर निर्भर है। यहां कुछ तरीके हैं जिनसे आप योगदान कर सकते हैं:",
+      "dataEntry": "घटक जोड़ें या संपादित करें",
+      "datasheets": "डेटाशीट अपलोड करें",
+      "code": "GitHub पर कोड योगदान",
+      "feedback": "सुधार के लिए प्रतिक्रिया और सुझाव"
+    }
+  },
+  "help": {
+    "title": "सहायता और FAQ",
+    "subtitle": "अक्सर पूछे जाने वाले प्रश्न",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "घटक ब्राउज़ करें",
+        "description": "हमारे डेटाबेस में घटक खोजें"
+      },
+      "createAccount": {
+        "title": "खाता बनाएं",
+        "description": "डेटाबेस में योगदान दें"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "दस्तावेज़ीकरण और समस्याएं"
+      }
+    },
+    "contactCta": {
+      "title": "आपका प्रश्न उत्तर नहीं मिला?",
+      "description": "कृपया सीधे हमसे संपर्क करें।",
+      "button": "संपर्क करें"
+    },
+    "general": {
+      "title": "सामान्य",
+      "what": {
+        "question": "इलेक्ट्रोवॉल्ट क्या है?",
+        "answer": "इलेक्ट्रोवॉल्ट विद्युत और इलेक्ट्रॉनिक घटकों के लिए एक मुफ्त, समुदाय-रखरखाव डेटाबेस है। हम व्यापक मेटाडेटा, डेटाशीट और विनिर्देशों के साथ ऐतिहासिक ट्यूबों से लेकर आधुनिक ICs तक घटकों का दस्तावेज़ीकरण करते हैं।"
+      },
+      "free": {
+        "question": "क्या इलेक्ट्रोवॉल्ट मुफ्त है?",
+        "answer": "हां, इलेक्ट्रोवॉल्ट पूरी तरह से मुफ्त और ओपन सोर्स है। उपयोग और स्रोत कोड दोनों स्वतंत्र रूप से उपलब्ध हैं।"
+      }
+    },
+    "search": {
+      "title": "खोज",
+      "how": {
+        "question": "मैं एक विशिष्ट घटक कैसे खोजूं?",
+        "answer": "शीर्ष दाएं में खोज फ़ंक्शन का उपयोग करें या श्रेणियों के माध्यम से नेविगेट करें। आप पार्ट नंबर, निर्माता या गुणों द्वारा खोज सकते हैं।"
+      },
+      "filters": {
+        "question": "कौन से फ़िल्टर उपलब्ध हैं?",
+        "answer": "आप श्रेणी, निर्माता, स्थिति (सक्रिय/अप्रचलित), पैकेज प्रकार और कई अन्य तकनीकी मापदंडों द्वारा फ़िल्टर कर सकते हैं।"
+      }
+    },
+    "contribute": {
+      "title": "योगदान",
+      "account": {
+        "question": "क्या मुझे योगदान करने के लिए खाते की आवश्यकता है?",
+        "answer": "हां, घटक जोड़ने या संपादित करने के लिए, आपको एक मुफ्त खाते की आवश्यकता है। यह हमें डेटा गुणवत्ता सुनिश्चित करने में मदद करता है।"
+      },
+      "how": {
+        "question": "मैं एक घटक कैसे जोड़ सकता हूं?",
+        "answer": "लॉगिन करने के बाद, आप घटक अवलोकन में 'नया घटक' बटन के माध्यम से नए घटक बना सकते हैं। प्रकाशन से पहले एक मॉडरेटर आपके योगदान की समीक्षा करेगा।"
+      },
+      "quality": {
+        "question": "डेटा गुणवत्ता कैसे सुनिश्चित की जाती है?",
+        "answer": "सभी योगदानों की अनुभवी मॉडरेटरों द्वारा समीक्षा की जाती है। इसके अतिरिक्त, पंजीकृत उपयोगकर्ता सुधार सुझाव दे सकते हैं।"
+      }
+    }
+  },
+  "contact": {
+    "title": "संपर्क",
+    "subtitle": "क्या आपके पास प्रश्न या सुझाव हैं?",
+    "form": {
+      "heading": "संदेश भेजें",
+      "name": "नाम",
+      "email": "ईमेल",
+      "subject": "विषय",
+      "message": "संदेश",
+      "namePlaceholder": "आपका नाम",
+      "emailPlaceholder": "your@email.com",
+      "subjectPlaceholder": "आपके संदेश का विषय",
+      "messagePlaceholder": "आपका संदेश...",
+      "demoNote": "नोट: संपर्क फ़ॉर्म वर्तमान में एक डेमो है। बैकएंड एकीकरण बाद के चरण में किया जाएगा। महत्वपूर्ण पूछताछ के लिए कृपया GitHub या दिए गए ईमेल पते का उपयोग करें।",
+      "send": "संदेश भेजें",
+      "sending": "भेजा जा रहा है...",
+      "success": "संदेश सफलतापूर्वक भेजा गया!",
+      "error": "संदेश भेजने में त्रुटि"
+    },
+    "alternatives": {
+      "title": "अन्य संपर्क विकल्प",
+      "githubTitle": "GitHub समस्याएं",
+      "github": "GitHub पर एक मुद्दा बनाएं",
+      "emailTitle": "ईमेल",
+      "email": "हमें एक ईमेल भेजें"
+    },
+    "responseTime": {
+      "title": "प्रतिक्रिया समय",
+      "description": "चूंकि इलेक्ट्रोवॉल्ट एक समुदाय परियोजना है, पूछताछ स्वयंसेवकों द्वारा संसाधित की जाती है। कृपया धैर्य रखें - हम आमतौर पर 48 घंटों के भीतर जवाब देते हैं।"
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "समुदाय सहायता",
+        "description": "सामान्य प्रश्नों के लिए GitHub Discussions का उपयोग करें"
+      },
+      "bugReports": {
+        "title": "बग रिपोर्ट",
+        "description": "सीधे GitHub पर तकनीकी समस्याओं की रिपोर्ट करें"
+      },
+      "partnerships": {
+        "title": "साझेदारी पूछताछ",
+        "description": "व्यावसायिक पूछताछ के लिए फ़ॉर्म का उपयोग करें"
+      }
+    }
+  },
+  "imprint": {
+    "title": "छाप",
+    "responsible": "सामग्री के लिए जिम्मेदार",
+    "contact": "संपर्क",
+    "disclaimer": {
+      "title": "अस्वीकरण",
+      "content": "सावधानीपूर्वक सामग्री नियंत्रण के बावजूद, हम बाहरी लिंक की सामग्री के लिए कोई दायित्व नहीं लेते हैं। लिंक किए गए पृष्ठों के संचालक अपनी सामग्री के लिए पूरी तरह से जिम्मेदार हैं।",
+      "liability": "इन पृष्ठों की सामग्री अत्यधिक सावधानी के साथ बनाई गई थी। हालांकि, हम सामग्री की सटीकता, पूर्णता और समयबद्धता की गारंटी नहीं दे सकते।"
+    },
+    "opensource": {
+      "title": "ओपन सोर्स",
+      "description": "इलेक्ट्रोवॉल्ट MIT लाइसेंस के तहत एक ओपन सोर्स प्रोजेक्ट है। स्रोत कोड GitHub पर उपलब्ध है।"
+    }
+  },
+  "privacy": {
+    "title": "गोपनीयता नीति",
+    "lastUpdated": "अंतिम अद्यतन",
+    "intro": "हम आपके व्यक्तिगत डेटा की सुरक्षा को बहुत गंभीरता से लेते हैं। यह गोपनीयता नीति आपको व्यक्तिगत डेटा के प्रसंस्करण की प्रकृति, दायरे और उद्देश्य के बारे में सूचित करती है।",
+    "responsible": {
+      "title": "डेटा नियंत्रक",
+      "description": "इस वेबसाइट पर डेटा प्रसंस्करण के लिए जिम्मेदार है:"
+    },
+    "collection": {
+      "title": "व्यक्तिगत डेटा का संग्रह और भंडारण",
+      "description": "जब आप हमारी वेबसाइट पर जाते हैं, तो जानकारी स्वचालित रूप से एकत्र की जाती है जो आपका ब्राउज़र प्रसारित करता है:",
+      "data": "IP पता, एक्सेस की तारीख और समय, ब्राउज़र प्रकार और संस्करण, उपयोग की गई ऑपरेटिंग सिस्टम, रेफरर URL"
+    },
+    "cookies": {
+      "title": "कुकीज़",
+      "description": "हमारी वेबसाइट कुकीज़ का उपयोग करती है। कुकीज़ आपके डिवाइस पर संग्रहीत छोटी टेक्स्ट फ़ाइलें हैं।",
+      "essential": "प्रमाणीकरण और सत्र प्रबंधन के लिए तकनीकी रूप से आवश्यक कुकीज़",
+      "functional": "उपयोगकर्ता अनुभव को बेहतर बनाने के लिए कार्यात्मक कुकीज़"
+    },
+    "auth": {
+      "title": "प्रमाणीकरण",
+      "description": "हम पंजीकरण और लॉगिन के लिए Keycloak का उपयोग करते हैं। निम्नलिखित डेटा संग्रहीत किया जाता है:",
+      "data": "उपयोगकर्ता नाम, ईमेल पता, प्रोफ़ाइल चित्र (वैकल्पिक), भूमिका और अनुमतियां"
+    },
+    "rights": {
+      "title": "आपके अधिकार",
+      "description": "आपके व्यक्तिगत डेटा के संबंध में आपके पास निम्नलिखित अधिकार हैं:",
+      "access": "पहुंच का अधिकार",
+      "correction": "सुधार का अधिकार",
+      "deletion": "मिटाने का अधिकार",
+      "restriction": "प्रसंस्करण पर प्रतिबंध का अधिकार",
+      "portability": "डेटा पोर्टेबिलिटी का अधिकार",
+      "objection": "आपत्ति का अधिकार"
+    },
+    "contact": {
+      "title": "गोपनीयता प्रश्नों के लिए संपर्क",
+      "description": "यदि आपके पास गोपनीयता के बारे में प्रश्न हैं, तो आप किसी भी समय हमसे संपर्क कर सकते हैं।"
+    }
+  }
+}

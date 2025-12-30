@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { CreateManufacturerSchema, type CreateManufacturerInput } from '@electrovault/schemas';
 import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react';
 import {
@@ -32,6 +33,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LocalizedInput } from '@/components/forms/localized-input';
+import { DialogEditLocaleSelector } from '@/components/forms/dialog-edit-locale-selector';
+import { EditLocaleProvider } from '@/contexts/edit-locale-context';
 import { type Manufacturer } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
@@ -55,6 +58,9 @@ export function ManufacturerDialog({
 }: ManufacturerDialogProps) {
   const api = useApi();
   const { toast } = useToast();
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
+  const tForm = useTranslations('admin.form');
   const isEdit = !!manufacturer;
 
   // Logo upload state
@@ -110,8 +116,8 @@ export function ManufacturerDialog({
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
       toast({
-        title: 'Fehler',
-        description: 'Logo darf maximal 5 MB groß sein.',
+        title: t('messages.error'),
+        description: tForm('logoMaxSize'),
         variant: 'destructive',
       });
       return;
@@ -120,8 +126,8 @@ export function ManufacturerDialog({
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
       toast({
-        title: 'Fehler',
-        description: 'Nur JPEG, PNG, WebP oder SVG erlaubt.',
+        title: t('messages.error'),
+        description: tForm('logoAllowedTypes'),
         variant: 'destructive',
       });
       return;
@@ -140,13 +146,13 @@ export function ManufacturerDialog({
         form.setValue('logoUrl', uploadedUrl);
 
         toast({
-          title: 'Erfolg',
-          description: 'Logo wurde hochgeladen.',
+          title: t('messages.success'),
+          description: t('messages.manufacturer.logoUploaded'),
         });
       } catch (error) {
         toast({
-          title: 'Fehler',
-          description: 'Logo konnte nicht hochgeladen werden.',
+          title: t('messages.error'),
+          description: t('messages.manufacturer.logoUploadFailed'),
           variant: 'destructive',
         });
       } finally {
@@ -160,17 +166,25 @@ export function ManufacturerDialog({
     }
   };
 
-  const onSubmit = async (data: CreateManufacturerInput) => {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSubmit = async (saveAsDraft: boolean = false) => {
+    const isValid = await form.trigger();
+    if (!isValid) return;
+
+    const data = form.getValues();
+    setIsSaving(true);
+
     try {
       if (isEdit) {
         await api.updateManufacturer(manufacturer.id, data);
         toast({
-          title: 'Erfolg',
-          description: 'Hersteller wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.manufacturer.updated'),
         });
       } else {
         // Neuer Hersteller: Erst erstellen, dann Logo hochladen falls vorhanden
-        const result = await api.createManufacturer(data);
+        const result = await api.createManufacturer({ ...data, saveAsDraft });
         const newManufacturerId = result.data.id;
 
         // Logo hochladen falls ausgewählt
@@ -186,46 +200,56 @@ export function ManufacturerDialog({
             });
           } catch (uploadError) {
             toast({
-              title: 'Warnung',
-              description: 'Hersteller erstellt, aber Logo-Upload fehlgeschlagen.',
+              title: t('messages.warning'),
+              description: tForm('manufacturerCreatedLogoFailed'),
               variant: 'destructive',
             });
           }
         }
 
         toast({
-          title: 'Erfolg',
-          description: 'Hersteller wurde erstellt.',
+          title: t('messages.success'),
+          description: saveAsDraft ? tForm('createdAsDraft') : t('messages.manufacturer.created'),
         });
       }
       onSaved();
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Hersteller konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.manufacturer.saveFailed'),
         variant: 'destructive',
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isEdit ? 'Hersteller bearbeiten' : 'Neuer Hersteller'}</DialogTitle>
-          <DialogDescription>
-            {isEdit ? 'Herstellerinformationen ändern' : 'Neuen Hersteller erstellen'}
-          </DialogDescription>
-        </DialogHeader>
+        <EditLocaleProvider>
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle>
+                  {isEdit ? t('dialogs.manufacturer.titleEdit') : t('dialogs.manufacturer.title')}
+                </DialogTitle>
+                <DialogDescription>
+                  {t('dialogs.manufacturer.description')}
+                </DialogDescription>
+              </div>
+              <DialogEditLocaleSelector />
+            </div>
+          </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <Form {...form}>
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{tForm('name')}</FormLabel>
                   <FormControl>
                     <Input placeholder="Texas Instruments" {...field} />
                   </FormControl>
@@ -240,11 +264,11 @@ export function ManufacturerDialog({
                 name="cageCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>CAGE Code</FormLabel>
+                    <FormLabel>{tForm('cageCode')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="01295" {...field} value={field.value || ''} />
+                      <Input placeholder={tForm('cageCodePlaceholder')} {...field} value={field.value || ''} />
                     </FormControl>
-                    <FormDescription>5-stelliger Code</FormDescription>
+                    <FormDescription>{tForm('cageCodeHint')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -255,11 +279,11 @@ export function ManufacturerDialog({
                 name="countryCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Land</FormLabel>
+                    <FormLabel>{tForm('country')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="US" {...field} value={field.value || ''} maxLength={2} />
+                      <Input placeholder={tForm('countryPlaceholder')} {...field} value={field.value || ''} maxLength={2} />
                     </FormControl>
-                    <FormDescription>ISO 3166-1 alpha-2</FormDescription>
+                    <FormDescription>{tForm('countryHint')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -271,9 +295,9 @@ export function ManufacturerDialog({
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Website</FormLabel>
+                  <FormLabel>{tForm('website')}</FormLabel>
                   <FormControl>
-                    <Input type="url" placeholder="https://www.ti.com" {...field} value={field.value || ''} />
+                    <Input type="url" placeholder={tForm('websitePlaceholder')} {...field} value={field.value || ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -282,7 +306,7 @@ export function ManufacturerDialog({
 
             {/* Logo Upload */}
             <div className="space-y-2">
-              <FormLabel>Logo</FormLabel>
+              <FormLabel>{tForm('logo')}</FormLabel>
               <div className="flex items-start gap-4">
                 {/* Logo Preview */}
                 <div
@@ -350,16 +374,16 @@ export function ManufacturerDialog({
                   ) : (
                     <div className="text-center">
                       <ImageIcon className="h-6 w-6 text-muted-foreground mx-auto" />
-                      <span className="text-xs text-muted-foreground">Logo</span>
+                      <span className="text-xs text-muted-foreground">{tForm('logo')}</span>
                     </div>
                   )}
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground">
-                    Hersteller-Logo hochladen. Max. 5 MB, JPEG/PNG/WebP/SVG.
+                    {tForm('logoUploadHint')}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Klicken oder Datei hierher ziehen.
+                    {tForm('logoClickOrDrag')}
                   </p>
                 </div>
               </div>
@@ -370,7 +394,7 @@ export function ManufacturerDialog({
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>{tForm('status')}</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -378,9 +402,9 @@ export function ManufacturerDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="ACTIVE">Aktiv</SelectItem>
-                      <SelectItem value="ACQUIRED">Übernommen</SelectItem>
-                      <SelectItem value="DEFUNCT">Inaktiv</SelectItem>
+                      <SelectItem value="ACTIVE">{tForm('statusActive')}</SelectItem>
+                      <SelectItem value="ACQUIRED">{tForm('statusAcquired')}</SelectItem>
+                      <SelectItem value="DEFUNCT">{tForm('statusDefunct')}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -394,11 +418,11 @@ export function ManufacturerDialog({
                 name="foundedYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gründungsjahr</FormLabel>
+                    <FormLabel>{tForm('foundedYear')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="1930"
+                        placeholder={tForm('foundedYearPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
@@ -414,11 +438,11 @@ export function ManufacturerDialog({
                 name="defunctYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Auflösungsjahr</FormLabel>
+                    <FormLabel>{tForm('defunctYear')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        placeholder="2020"
+                        placeholder={tForm('defunctYearPlaceholder')}
                         {...field}
                         value={field.value || ''}
                         onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
@@ -435,13 +459,13 @@ export function ManufacturerDialog({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Beschreibung</FormLabel>
+                  <FormLabel>{tForm('description')}</FormLabel>
                   <FormControl>
                     <LocalizedInput
                       value={field.value || { de: '', en: '' }}
                       onChange={field.onChange}
                       multiline
-                      placeholder="Beschreibung"
+                      placeholder={tForm('descriptionPlaceholder')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -449,16 +473,27 @@ export function ManufacturerDialog({
               )}
             />
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Abbrechen
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSaving}>
+                {tCommon('cancel')}
               </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
+              {!isEdit && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => handleSubmit(true)}
+                  disabled={isSaving}
+                >
+                  {isSaving ? t('buttons.saving') : t('buttons.saveAsDraft')}
+                </Button>
+              )}
+              <Button type="button" onClick={() => handleSubmit(false)} disabled={isSaving}>
+                {isSaving ? t('buttons.saving') : isEdit ? t('buttons.update') : tForm('save')}
               </Button>
             </DialogFooter>
           </form>
         </Form>
+        </EditLocaleProvider>
       </DialogContent>
     </Dialog>
   );

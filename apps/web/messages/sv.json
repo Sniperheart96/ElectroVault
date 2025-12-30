@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Laddar...",
+    "error": "Fel",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "create": "Skapa",
+    "search": "Sök",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "previous": "Föregående",
+    "noResults": "Inga resultat hittades",
+    "all": "Alla",
+    "yes": "Ja",
+    "no": "Nej",
+    "actions": {
+      "details": "Detaljer"
+    }
+  },
+  "locale": {
+    "switch": "Byt språk",
+    "current": "Nuvarande språk",
+    "languages": {
+      "en": "Engelska",
+      "de": "Tyska",
+      "fr": "Franska",
+      "es": "Spanska",
+      "zh": "Kinesiska",
+      "ja": "Japanska",
+      "ko": "Koreanska",
+      "it": "Italienska"
+    }
+  },
+  "nav": {
+    "home": "Hem",
+    "components": "Komponenter",
+    "categories": "Kategorier",
+    "manufacturers": "Tillverkare",
+    "packages": "Höljen",
+    "search": "Sök",
+    "admin": "Admin",
+    "moderation": "Moderering",
+    "myElectroVault": "Mitt ElectroVault",
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Community-driven databas för elektroniska komponenter",
+    "searchPlaceholder": "Sök komponenter...",
+    "featuredCategories": "Utvalda kategorier",
+    "recentComponents": "Senaste komponenter",
+    "stats": {
+      "components": "Komponenter",
+      "manufacturers": "Tillverkare",
+      "categories": "Kategorier",
+      "users": "Användare"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Community-driven databas för elektroniska komponenter"
+    },
+    "stats": {
+      "components": "Komponenter",
+      "manufacturers": "Tillverkare",
+      "users": "Användare"
+    }
+  },
+  "packages": {
+    "title": "Höljen",
+    "totalCount": "{count} höljen i databasen",
+    "addNew": "Nytt hölje",
+    "searchPlaceholder": "Sök efter namn eller slug...",
+    "filterPlaceholder": "Höljestyp",
+    "filterAll": "Alla typer",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radiell",
+      "AXIAL": "Axiell",
+      "CHASSIS": "Chassi",
+      "OTHER": "Övrigt"
+    },
+    "table": {
+      "name": "Namn",
+      "type": "Typ",
+      "pinCount": "Antal pins",
+      "dimensions": "Mått (L x B x H mm)",
+      "pitch": "Pitch",
+      "actions": "Åtgärder"
+    },
+    "loading": "Laddar...",
+    "noResults": "Inga höljen hittades",
+    "noPackagesFound": "Inga höljen hittades",
+    "createFirst": "Skapa första höljet",
+    "error": "Fel",
+    "success": "Lyckades",
+    "loadError": "Kunde inte ladda höljen.",
+    "deleteSuccess": "Höljet togs bort.",
+    "deleteError": "Kunde inte ta bort hölje.",
+    "deleteDialog": {
+      "title": "Ta bort hölje?",
+      "description": "Vill du verkligen ta bort höljet \"{name}\"? Denna åtgärd kan inte ångras."
+    }
+  },
+  "components": {
+    "title": "Komponenter",
+    "description": "Bläddra i vår omfattande databas av elektroniska komponenter",
+    "filters": {
+      "category": "Kategori",
+      "manufacturer": "Tillverkare",
+      "status": "Status",
+      "mountingType": "Monteringstyp"
+    },
+    "detail": {
+      "overview": "Översikt",
+      "specifications": "Specifikationer",
+      "datasheets": "Datablad",
+      "parts": "Tillverkardelar",
+      "history": "Versionshistorik",
+      "backToOverview": "Tillbaka till översikten",
+      "category": "Kategori",
+      "statistics": "Statistik",
+      "manufacturerVariants": "Tillverkarvarianter",
+      "activeVariants": "Aktiva varianter",
+      "additionalProperties": "Ytterligare egenskaper",
+      "furtherProperties": "Ytterligare egenskaper för denna komponent",
+      "validForAllVariants": "Tekniska specifikationer (giltiga för alla varianter)",
+      "variantCount": "{count} tillverkarvariant",
+      "variantCountPlural": "{count} tillverkarvarianter",
+      "noVariantsAvailable": "Inga tillverkarvarianter tillgängliga",
+      "noVariantsForComponent": "Inga tillverkarvarianter tillgängliga för denna komponent.",
+      "noAttributesAvailable": "Inga attribut tillgängliga.",
+      "manufacturer": "Tillverkare",
+      "orderingCode": "Beställningsnummer",
+      "details": "Detaljer",
+      "allInCategory": "Alla i kategori",
+      "status": "Status",
+      "moreAttributes": "+{count} fler"
+    },
+    "status": {
+      "DRAFT": "Utkast",
+      "PENDING": "Väntar",
+      "PUBLISHED": "Publicerad",
+      "ARCHIVED": "Arkiverad"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktiv",
+      "NRND": "Rekommenderas ej för ny design",
+      "EOL": "Slutet av livscykeln",
+      "OBSOLETE": "Föråldrad"
+    }
+  },
+  "categories": {
+    "title": "Kategorier",
+    "browseAll": "Bläddra bland alla kategorier",
+    "subcategories": "Underkategorier",
+    "componentsInCategory": "Komponenter i denna kategori"
+  },
+  "manufacturers": {
+    "title": "Tillverkare",
+    "status": {
+      "ACTIVE": "Aktiv",
+      "ACQUIRED": "Förvärvad",
+      "DEFUNCT": "Nedlagd"
+    }
+  },
+  "auth": {
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "loginWith": "Logga in med {provider}",
+    "welcome": "Välkommen tillbaka",
+    "signInToContinue": "Logga in för att fortsätta",
+    "signIn": {
+      "title": "Logga in",
+      "description": "Logga in på ditt konto",
+      "button": "Logga in med Keycloak",
+      "loading": "Loggar in...",
+      "hint": "Du kommer att omdirigeras till Keycloak"
+    },
+    "signOut": {
+      "title": "Logga ut",
+      "description": "Är du säker på att du vill logga ut?",
+      "button": "Logga ut",
+      "loading": "Loggar ut...",
+      "cancel": "Avbryt"
+    },
+    "error": {
+      "title": "Autentiseringsfel",
+      "description": "Ett fel uppstod vid inloggningen",
+      "tryAgain": "Försök igen",
+      "backHome": "Tillbaka till start"
+    },
+    "errors": {
+      "configuration": "Serverkonfigurationsfel. Vänligen kontakta administratören.",
+      "accessDenied": "Åtkomst nekad. Du har inte behörighet.",
+      "verification": "Verifieringslänken har upphört att gälla eller har redan använts.",
+      "oauthSignin": "Fel vid start av OAuth-inloggning.",
+      "oauthCallback": "Fel vid bearbetning av OAuth-callback.",
+      "oauthCreateAccount": "Fel vid skapande av användarkonto.",
+      "emailCreateAccount": "Fel vid skapande av e-postkonto.",
+      "callback": "Fel vid bearbetning av callback.",
+      "oauthAccountNotLinked": "Denna e-postadress är redan kopplad till ett annat konto.",
+      "sessionRequired": "Vänligen logga in för att komma åt denna sida.",
+      "default": "Ett okänt fel uppstod. Vänligen försök igen."
+    }
+  },
+  "admin": {
+    "dashboard": "Instrumentpanel",
+    "sidebar": {
+      "dashboard": "Instrumentpanel",
+      "moderation": "Moderering",
+      "moderationDescription": "Godkännandekö",
+      "users": "Användare",
+      "backToHome": "Till startsidan",
+      "user": "Användare",
+      "logout": "Logga ut"
+    },
+    "components": {
+      "title": "Hantera komponenter",
+      "new": "Ny komponent",
+      "edit": "Redigera komponent"
+    },
+    "moderation": {
+      "title": "Moderering",
+      "pendingReviews": "Väntande granskningar",
+      "approve": "Godkänn",
+      "reject": "Avvisa",
+      "batchApproval": "Massagodkännande",
+      "confirmApprove": "Bekräfta godkännande",
+      "confirmApproveDescription": "Vill du verkligen godkänna denna {type}? Den kommer att vara synlig för alla efteråt.",
+      "confirmBatchApproval": "Vill du godkänna {count} objekt? Denna åtgärd kan inte ångras.",
+      "rejectWithReason": "Avvisa med orsak",
+      "rejectDescription": "Ange en orsak för avvisningen. Detta kommer att visas för skaparen.",
+      "rejectReasonLabel": "Orsak",
+      "rejectReasonPlaceholder": "Varför avvisas detta objekt?",
+      "rejectReasonHelp": "En tydlig orsak hjälper skaparen att förstå avvisningen.",
+      "batchApproveButton": "Godkänn {count}",
+      "typeComponent": "Komponent",
+      "typePart": "Del",
+      "draft": "Utkast"
+    },
+    "users": {
+      "title": "Användare",
+      "manage": "Hantera användare"
+    },
+    "myDashboard": {
+      "title": "Min instrumentpanel",
+      "stats": {
+        "componentsTotal": "Komponenter totalt",
+        "componentsTotalDesc": "Komponenter skapade av dig",
+        "variants": "Varianter",
+        "variantsDesc": "Tillverkarvarianter",
+        "drafts": "Utkast",
+        "draftsDesc": "Inte inlämnat ännu",
+        "pending": "Under granskning",
+        "pendingDesc": "Väntar på moderering",
+        "published": "Publicerad",
+        "archived": "Arkiverad"
+      },
+      "draftsSection": {
+        "title": "Mina utkast",
+        "description": "Utkast är privata temporära sparningar och har inte lämnats in för moderering än.",
+        "newComponent": "Ny komponent",
+        "empty": "Inga utkast tillgängliga. Skapa en ny komponent och spara den som utkast.",
+        "draftBadge": "Utkast",
+        "noName": "[Inget namn]"
+      },
+      "activitySection": {
+        "title": "Aktivitetslogg",
+        "description": "Dina senaste åtgärder i ElectroVault",
+        "empty": "Inga aktiviteter tillgängliga ännu."
+      },
+      "entities": {
+        "COMPONENT": "Komponent",
+        "PART": "Variant",
+        "MANUFACTURER": "Tillverkare",
+        "CATEGORY": "Kategori",
+        "PACKAGE": "Hölje"
+      },
+      "error": "Kunde inte ladda instrumentpanel. Försök igen."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Nytt attribut",
+        "titleEdit": "Redigera attribut",
+        "description": "Attributdefinition för komponenter"
+      },
+      "category": {
+        "title": "Ny kategori",
+        "titleEdit": "Redigera kategori",
+        "description": "Hantera kategoriinformation och attribut",
+        "saveFirst": "Spara kategorin först för att lägga till attribut"
+      },
+      "component": {
+        "title": "Ny komponent",
+        "titleEdit": "Redigera komponent",
+        "description": "Skapa ny komponent - efter att ha sparat kan du lägga till tillverkarvarianter",
+        "descriptionEdit": "Hantera komponentinformation och tillverkarvarianter",
+        "saveFirstPinMapping": "Spara komponenten först för att redigera pinmappning",
+        "saveFirstParts": "Spara komponenten först för att lägga till tillverkarvarianter",
+        "saveFirstRelations": "Spara komponenten först för att lägga till relationer",
+        "createdWithVariants": "Komponenten skapades. Du kan nu lägga till tillverkarvarianter",
+        "noPartsWarning": "Denna komponent har inga tillverkarvarianter. Minst en variant krävs"
+      },
+      "manufacturer": {
+        "title": "Ny tillverkare",
+        "titleEdit": "Redigera tillverkare",
+        "description": "Hantera tillverkarinformation"
+      },
+      "part": {
+        "title": "Ny variant",
+        "titleEdit": "Redigera variant",
+        "description": "Skapa ny konkret tillverkarvariant av en komponent",
+        "descriptionEdit": "Ändra information om tillverkarvarianten",
+        "saveFirstFiles": "Spara varianten först för att ladda upp filer"
+      },
+      "package": {
+        "title": "Nytt hölje",
+        "titleEdit": "Redigera hölje",
+        "description": "Hölje-/fotavtrycksinformation"
+      },
+      "delete": {
+        "title": "Bekräfta borttagning",
+        "message": "Är du säker på att du vill ta bort detta objekt?",
+        "messageFile": "Vill du verkligen ta bort denna fil?",
+        "messagePin": "Vill du verkligen ta bort denna pin?",
+        "message3dModel": "Vill du verkligen ta bort denna 3D-modell?",
+        "messageRelation": "Vill du verkligen ta bort denna relation?"
+      }
+    },
+    "buttons": {
+      "saving": "Sparar...",
+      "saveAsDraft": "Spara som utkast",
+      "update": "Uppdatera",
+      "addPin": "Lägg till pin",
+      "addRelation": "Lägg till relation"
+    },
+    "messages": {
+      "success": "Lyckades",
+      "error": "Fel",
+      "warning": "Varning",
+      "attribute": {
+        "created": "Attributet skapades",
+        "updated": "Attributet uppdaterades",
+        "deleted": "Attributet togs bort",
+        "loadFailed": "Kunde inte ladda attribut",
+        "saveFailed": "Kunde inte spara attribut",
+        "deleteFailed": "Kunde inte ta bort attribut"
+      },
+      "category": {
+        "created": "Kategorin skapades",
+        "updated": "Kategorin uppdaterades",
+        "deleted": "Kategorin togs bort",
+        "loadFailed": "Kunde inte ladda kategorier",
+        "saveFailed": "Kunde inte spara kategori",
+        "deleteFailed": "Kunde inte ta bort kategori"
+      },
+      "component": {
+        "created": "Komponenten skapades",
+        "updated": "Komponenten uppdaterades",
+        "deleted": "Komponenten togs bort",
+        "loadFailed": "Kunde inte ladda komponenter",
+        "saveFailed": "Kunde inte spara komponent",
+        "deleteFailed": "Kunde inte ta bort komponent"
+      },
+      "manufacturer": {
+        "created": "Tillverkaren skapades",
+        "updated": "Tillverkaren uppdaterades",
+        "deleted": "Tillverkaren togs bort",
+        "loadFailed": "Kunde inte ladda tillverkare",
+        "saveFailed": "Kunde inte spara tillverkare",
+        "deleteFailed": "Kunde inte ta bort tillverkare",
+        "logoUploaded": "Logotypen laddades upp",
+        "logoUploadFailed": "Kunde inte ladda upp logotyp"
+      },
+      "part": {
+        "created": "Varianten skapades",
+        "updated": "Varianten uppdaterades",
+        "deleted": "Varianten togs bort",
+        "loadFailed": "Kunde inte ladda varianter",
+        "saveFailed": "Kunde inte spara variant",
+        "deleteFailed": "Kunde inte ta bort variant"
+      },
+      "package": {
+        "created": "Höljet skapades",
+        "updated": "Höljet uppdaterades",
+        "deleted": "Höljet togs bort",
+        "loadFailed": "Kunde inte ladda höljen",
+        "saveFailed": "Kunde inte spara hölje",
+        "deleteFailed": "Kunde inte ta bort hölje"
+      },
+      "file": {
+        "uploaded": "Filen laddades upp",
+        "deleted": "Filen togs bort",
+        "uploadFailed": "Kunde inte ladda upp fil",
+        "deleteFailed": "Kunde inte ta bort fil",
+        "loadFailed": "Kunde inte ladda filer",
+        "downloadUrlFailed": "Kunde inte generera nedladdnings-URL"
+      },
+      "pin": {
+        "created": "Pin lades till",
+        "updated": "Pin uppdaterades",
+        "deleted": "Pin togs bort",
+        "createFailed": "Kunde inte skapa pin",
+        "loadFailed": "Kunde inte ladda pins",
+        "updateFailed": "Kunde inte uppdatera pin",
+        "deleteFailed": "Kunde inte ta bort pin"
+      },
+      "relation": {
+        "created": "Relationen lades till",
+        "deleted": "Relationen togs bort",
+        "createFailed": "Kunde inte skapa relation",
+        "deleteFailed": "Kunde inte ta bort relation"
+      }
+    },
+    "pinMapping": {
+      "title": "Pinmappning",
+      "addPin": "Lägg till pin",
+      "newPin": "Lägg till ny pin",
+      "pinNumber": "Pin-nummer (t.ex. 1, VCC)",
+      "pinName": "Pin-namn",
+      "selectType": "Välj pin-typ",
+      "noDescription": "Ingen beskrivning",
+      "noType": "Ingen typ",
+      "loading": "Laddar pins...",
+      "pinsCount": "{count} pins",
+      "tabList": "Pin-lista",
+      "tabBulkImport": "Massimport",
+      "noPins": "Inga pins definierade. Lägg till pins individuellt eller använd massimport.",
+      "columnPinNumber": "Pin-nr.",
+      "columnName": "Namn",
+      "columnType": "Typ",
+      "columnFunction": "Funktion (SV)",
+      "columnActions": "Åtgärder",
+      "functionPlaceholder": "t.ex. Matningsspänning",
+      "deleteTitle": "Ta bort pin?",
+      "deleteMessage": "Vill du verkligen ta bort pin {pinNumber} ({pinName})? Denna åtgärd kan inte ångras.",
+      "reorderSuccess": "Pin-ordningen uppdaterades",
+      "reorderFailed": "Kunde inte ändra ordning",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Exempel:",
+        "typeHint": "pinTyp är valfritt. Tillgängliga typer: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Ange pins i CSV-format...",
+        "importButton": "Importera pins",
+        "noPinsFound": "Inga giltiga pin-data hittades.",
+        "success": "{count} pins importerades.",
+        "failed": "Massimport misslyckades."
+      }
+    },
+    "files": {
+      "uploadImage": "Ladda upp produktbild",
+      "uploadDatasheet": "Ladda upp datablad",
+      "uploadDocument": "Ladda upp dokument",
+      "selectLanguage": "Välj språk",
+      "noFiles": "Inga filer tillgängliga",
+      "confirmDelete": "Ta bort fil?",
+      "productImage": "Produktbild",
+      "productImageDescription": "En förhandsvisningsbild för denna tillverkarvariant",
+      "addImage": "Bild",
+      "imageDescription": "JPEG, PNG eller WebP (max. 10 MB)",
+      "noImageUploaded": "Ingen bild uppladdad än",
+      "datasheets": "Datablad",
+      "datasheetsDescription": "PDF-datablad för denna tillverkarvariant",
+      "addDatasheet": "Datablad",
+      "languagesRequired": "Språk för databladet",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Minst ett språk måste väljas",
+      "datasheetFileDescription": "PDF-fil av tillverkarens datablad",
+      "noDatasheets": "Inga datablad uppladdade än",
+      "otherFiles": "Övriga filer",
+      "otherFilesDescription": "Ytterligare dokument, applikationsnoteringar, etc.",
+      "addDocument": "Dokument",
+      "languagesOptional": "Språk (valfritt)",
+      "anyFileDescription": "Vilka filer som helst (PDF, TXT, ZIP, etc.)",
+      "noDocuments": "Inga dokument uppladdade än",
+      "fileName": "Fil",
+      "fileSize": "Storlek",
+      "languages": "Språk",
+      "actions": "Åtgärder",
+      "imageCount": "{count} bild",
+      "fileCount": "{count} fil{plural}",
+      "datasheetCount": "{count} datablad{plural}",
+      "imageUploaded": "Bilden laddades upp",
+      "imageRemoved": "Bilden togs bort"
+    },
+    "model3d": {
+      "title": "3D-modeller",
+      "confirmDelete": "Ta bort 3D-modell?",
+      "upload": "Ladda upp 3D-modell",
+      "noModels": "Inga 3D-modeller tillgängliga"
+    },
+    "lists": {
+      "searchPlaceholder": "Sök...",
+      "searchByName": "Sök efter namn eller slug...",
+      "searchByNameCage": "Sök efter namn, slug eller CAGE-kod...",
+      "noResults": "Inga resultat hittades",
+      "createFirst": "Skapa första posten",
+      "noPackagesFound": "Inga höljen hittades",
+      "createFirstPackage": "Skapa första höljet"
+    },
+    "filters": {
+      "allStatus": "Alla statusar",
+      "myDrafts": "Mina utkast"
+    },
+    "manufacturer": {
+      "title": "Tillverkare",
+      "count": "{count} tillverkare i databasen",
+      "create": "Ny tillverkare",
+      "createFirst": "Skapa första tillverkaren",
+      "deleteTitle": "Ta bort tillverkare?",
+      "deleteDescription": "Vill du verkligen ta bort tillverkaren \"{name}\"? Denna åtgärd kan inte ångras.",
+      "status": {
+        "active": "Aktiv",
+        "acquired": "Förvärvad",
+        "defunct": "Nedlagd"
+      }
+    },
+    "form": {
+      "package": "Hölje",
+      "selectPackage": "Välj hölje",
+      "noPackage": "Inget hölje",
+      "editIn": "Redigera i:",
+      "searchLanguage": "Sök språk...",
+      "noLanguageFound": "Inget språk hittades",
+      "original": "Original",
+      "backToOverview": "Tillbaka till översikten",
+      "name": "Namn",
+      "nameDescription": "Namnet på tyska och/eller engelska. Obligatoriskt fält om kategorin inte har etikett-attribut",
+      "namePlaceholder": "Komponentnamn",
+      "series": "Serie",
+      "seriesDescription": "Valfri komponentserie eller -familj",
+      "seriesPlaceholder": "t.ex. 74HC, ATmega",
+      "packageDescription": "Den fysiska höljformen (t.ex. DIP-8, SOIC-8)",
+      "shortDescription": "Kort beskrivning",
+      "shortDescriptionDescription": "En kort mening som beskriver komponenten",
+      "shortDescriptionPlaceholder": "Kort beskrivning",
+      "fullDescription": "Fullständig beskrivning",
+      "fullDescriptionPlaceholder": "Fullständig beskrivning",
+      "attributesDescription": "Tekniska attribut baserade på den valda kategorin",
+      "selectCategoryFirst": "Välj först en kategori i fliken \"Stamdata\"",
+      "pinMappingDescription": "Definiera pin-mappningen för denna komponent. Pin-mappningen gäller för alla tillverkarvarianter",
+      "partsDescription": "Tillverkarspecifika varianter av denna komponent",
+      "newVariant": "Ny variant",
+      "close": "Stäng",
+      "parentCategory": "Överordnad kategori",
+      "parentCategoryPlaceholder": "Ingen (rotkategori)",
+      "parentCategoryDescription": "Lämna tomt för en huvudkategori (nivå 0)",
+      "categoryName": "Kategorinamn",
+      "categoryDescription": "Beskrivning",
+      "categoryDescriptionPlaceholder": "Beskrivning av kategorin",
+      "sortOrder": "Sorteringsordning",
+      "sortOrderDescription": "Lägre värden = högre upp",
+      "status": "Status",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "icon": "Ikon",
+      "iconUploadDescription": "Ladda upp kategoriikon. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klicka eller dra fil hit.",
+      "iconMaxSize": "Ikonen får vara max 5 MB stor.",
+      "iconAllowedTypes": "Endast JPEG, PNG, WebP eller SVG tillåtet.",
+      "iconUploaded": "Ikonen laddades upp.",
+      "iconUploadFailed": "Kunde inte ladda upp ikon.",
+      "categoryCreatedIconFailed": "Kategori skapad, men ikonuppladdning misslyckades.",
+      "loading": "Laddar...",
+      "newAttribute": "Nytt attribut",
+      "ownAttributes": "Egna attribut ({count})",
+      "noOwnAttributes": "Inga egna attribut definierade.",
+      "inheritedAttributes": "Ärvda attribut ({count})",
+      "inheritedAttributesDescription": "Ärvda attribut kan endast redigeras i deras ursprungskategori.",
+      "attributesInherited": "Attribut för denna kategori (ärvs till underkategorier)",
+      "cageCode": "CAGE-kod",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-siffrig kod",
+      "country": "Land",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Webbplats",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logotyp",
+      "logoUploadHint": "Ladda upp tillverkarlogotyp. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klicka eller dra fil hit.",
+      "statusActive": "Aktiv",
+      "statusAcquired": "Förvärvad",
+      "statusDefunct": "Nedlagd",
+      "foundedYear": "Grundningsår",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Nedläggningsår",
+      "defunctYearPlaceholder": "2020",
+      "description": "Beskrivning",
+      "descriptionPlaceholder": "Beskrivning",
+      "logoMaxSize": "Logotypen får vara max 5 MB stor.",
+      "logoAllowedTypes": "Endast JPEG, PNG, WebP eller SVG tillåtet.",
+      "createdAsDraft": "Tillverkaren sparades som utkast.",
+      "manufacturerCreatedLogoFailed": "Tillverkare skapad, men logotypuppladdning misslyckades.",
+      "save": "Spara"
+    },
+    "audit": {
+      "created": "skapad",
+      "updated": "uppdaterad",
+      "deleted": "borttagen",
+      "restored": "återställd",
+      "approved": "godkänd",
+      "rejected": "avvisad"
+    },
+    "tabs": {
+      "basicInfo": "Grundläggande information",
+      "attributes": "Attribut",
+      "pinMapping": "Pinmappning",
+      "parts": "Tillverkarvarianter",
+      "relations": "Relationer",
+      "files": "Filer",
+      "details": "Stamdata",
+      "pins": "Pin-mappning",
+      "models": "3D-modeller"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Tillverkare",
+      "status": "Status",
+      "lifecycle": "Livscykel",
+      "actions": "Åtgärder",
+      "variantCount": "{count} variant",
+      "variantCountPlural": "{count} varianter",
+      "activeCount": "{count} aktiv",
+      "obsoleteCount": "{count} föråldrad",
+      "unknown": "Okänd"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Unikt namn för höljet",
+      "mountingType": "Höljestyp",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radiell - Radiellt trådad",
+        "AXIAL": "Axiell - Axiellt trådad",
+        "CHASSIS": "Chassi - Chassimontering",
+        "OTHER": "Övrigt"
+      },
+      "pinCount": "Antal pins",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Längd (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Bredd (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Höjd (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Pitch (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Avstånd mellan pins",
+      "jedecStandard": "JEDEC-standard",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA-standard",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "Ritnings-URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Länk till teknisk ritning eller datablad",
+      "description": "Beskrivning",
+      "descriptionPlaceholder": "Ytterligare information om höljet...",
+      "saveFirstModels": "Spara höljet först för att ladda upp 3D-modeller.",
+      "modelsDescription": "3D-modeller för detta hölje (STEP, STL, 3MF, OBJ, etc.)"
+    },
+    "partForm": {
+      "coreComponent": "Generisk komponent",
+      "coreComponentDesc": "Den tillverkaroberoende komponenten (t.ex. 555 Timer)",
+      "manufacturer": "Tillverkare",
+      "manufacturerDesc": "Tillverkaren av denna konkreta variant (t.ex. Texas Instruments)",
+      "manufacturerPlaceholder": "Välj tillverkare",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "t.ex. NE555P",
+      "mpnDesc": "Den unika tillverkardelnumret",
+      "orderingCode": "Beställningsnummer",
+      "orderingCodePlaceholder": "Valfritt",
+      "orderingCodeDesc": "Alternativt beställningsnummer (om det skiljer sig från MPN)",
+      "statusRecord": "Postens status",
+      "lifecycleStatus": "Livscykelstatus",
+      "introductionYear": "Introduktionsår",
+      "introductionYearPlaceholder": "t.ex. 1972",
+      "discontinuedYear": "Avvecklingsår",
+      "discontinuedYearPlaceholder": "t.ex. 2020",
+      "rohsCompliant": "RoHS-kompatibel",
+      "rohsDesc": "Uppfyller RoHS-direktiv",
+      "reachCompliant": "REACH-kompatibel",
+      "reachDesc": "Uppfyller REACH-förordning",
+      "weight": "Vikt (gram)",
+      "weightPlaceholder": "t.ex. 0.5",
+      "dateCodeFormat": "Datumkodning",
+      "dateCodePlaceholder": "t.ex. YYWW",
+      "dateCodeDesc": "Format för datumkoden på komponenten",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "t.ex. 5962-01-123-4567",
+      "milSpec": "Militärspecifikation",
+      "milSpecPlaceholder": "t.ex. MIL-PRF-38534",
+      "partAttributesDesc": "Tillverkarspecifika attribut baserade på komponentens kategori.",
+      "partAttributesLabel": "Tillverkarspecifika attribut",
+      "filesDesc": "Hantera datablad, bilder och andra filer för denna tillverkarvariant.",
+      "close": "Stäng",
+      "selectComponent": "Välj komponent"
+    }
+  },
+  "errors": {
+    "notFound": "Sidan hittades inte",
+    "unauthorized": "Obehörig",
+    "serverError": "Serverfel"
+  },
+  "footer": {
+    "tagline": "Gemenskapsunderhållen databas för elektroniska komponenter",
+    "navigation": "Navigering",
+    "community": "Gemenskap",
+    "legal": "Juridiskt",
+    "about": "Om",
+    "help": "Hjälp",
+    "contact": "Kontakt",
+    "contribute": "Bidra",
+    "github": "GitHub",
+    "privacy": "Integritet",
+    "imprint": "Kontaktuppgifter",
+    "copyright": "Öppen källkod under MIT-licens"
+  },
+  "about": {
+    "title": "Om ElectroVault",
+    "subtitle": "Community-driven databas för elektroniska komponenter",
+    "mission": {
+      "title": "Vårt uppdrag",
+      "description": "ElectroVault är en gratis och öppen databas för elektroniska komponenter - från historiska rör till modern nanoteknik. Vårt mål är att bevara kunskap om elektroniska komponenter och göra den tillgänglig för alla."
+    },
+    "features": {
+      "title": "Funktioner",
+      "comprehensive": {
+        "title": "Omfattande databas",
+        "description": "Från motstånd till kondensatorer till högintegrerade kretsar - vi dokumenterar alla viktiga komponenter med detaljerade specifikationer."
+      },
+      "historical": {
+        "title": "Historiskt arkiv",
+        "description": "Dokumentation av historiska komponenter för reparation och restaurering av vintage-utrustning."
+      },
+      "community": {
+        "title": "Community-driven",
+        "description": "Alla kan bidra och dela med sig av sin kunskap. Tillsammans bygger vi den mest omfattande komponentdatabasen."
+      },
+      "open": {
+        "title": "Öppen källkod",
+        "description": "Helt transparent och fritt tillgänglig under MIT-licens."
+      }
+    },
+    "contribute": {
+      "title": "Engagera dig",
+      "description": "ElectroVault lever av sin gemenskap. Här är några sätt du kan bidra:",
+      "dataEntry": "Lägg till eller redigera komponenter",
+      "datasheets": "Ladda upp datablad",
+      "code": "Kodbidrag på GitHub",
+      "feedback": "Feedback och förbättringsförslag"
+    }
+  },
+  "help": {
+    "title": "Hjälp & FAQ",
+    "subtitle": "Vanliga frågor",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Bläddra komponenter",
+        "description": "Hitta komponenter i vår databas"
+      },
+      "createAccount": {
+        "title": "Skapa konto",
+        "description": "Bidra till databasen"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentation och ärenden"
+      }
+    },
+    "contactCta": {
+      "title": "Din fråga besvarades inte?",
+      "description": "Kontakta oss gärna direkt.",
+      "button": "Ta kontakt"
+    },
+    "general": {
+      "title": "Allmänt",
+      "what": {
+        "question": "Vad är ElectroVault?",
+        "answer": "ElectroVault är en gratis, community-driven databas för elektriska och elektroniska komponenter. Vi dokumenterar komponenter från historiska rör till moderna IC:er med omfattande metadata, datablad och specifikationer."
+      },
+      "free": {
+        "question": "Är ElectroVault gratis?",
+        "answer": "Ja, ElectroVault är helt gratis och öppen källkod. Både användning och källkod är fritt tillgängliga."
+      }
+    },
+    "search": {
+      "title": "Sökning",
+      "how": {
+        "question": "Hur hittar jag en specifik komponent?",
+        "answer": "Använd sökfunktionen längst upp till höger eller navigera genom kategorierna. Du kan söka efter artikelnummer, tillverkare eller egenskaper."
+      },
+      "filters": {
+        "question": "Vilka filter finns tillgängliga?",
+        "answer": "Du kan filtrera efter kategori, tillverkare, status (aktiv/föråldrad), höljestyp och många andra tekniska parametrar."
+      }
+    },
+    "contribute": {
+      "title": "Bidra",
+      "account": {
+        "question": "Behöver jag ett konto för att bidra?",
+        "answer": "Ja, för att lägga till eller redigera komponenter behöver du ett gratis konto. Detta hjälper oss att säkerställa datakvalitet."
+      },
+      "how": {
+        "question": "Hur kan jag lägga till en komponent?",
+        "answer": "Efter inloggning kan du skapa nya komponenter via knappen 'Ny komponent' i komponentöversikten. En moderator kommer att granska ditt bidrag innan publicering."
+      },
+      "quality": {
+        "question": "Hur säkerställs datakvalitet?",
+        "answer": "Alla bidrag granskas av erfarna moderatorer. Dessutom kan registrerade användare föreslå korrigeringar."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Har du frågor eller förslag?",
+    "form": {
+      "heading": "Skicka meddelande",
+      "name": "Namn",
+      "email": "E-post",
+      "subject": "Ämne",
+      "message": "Meddelande",
+      "namePlaceholder": "Max Mustermann",
+      "emailPlaceholder": "max@exempel.se",
+      "subjectPlaceholder": "Ämne för ditt meddelande",
+      "messagePlaceholder": "Ditt meddelande...",
+      "demoNote": "OBS: Kontaktformuläret är för närvarande en demo. Backend-integrationen kommer i en senare fas. För viktiga förfrågningar, använd GitHub eller den angivna e-postadressen.",
+      "send": "Skicka meddelande",
+      "sending": "Skickar...",
+      "success": "Meddelandet skickades!",
+      "error": "Fel vid skickande av meddelande"
+    },
+    "alternatives": {
+      "title": "Andra kontaktalternativ",
+      "githubTitle": "GitHub Issues",
+      "github": "Skapa ett ärende på GitHub",
+      "emailTitle": "E-post",
+      "email": "Skicka oss ett e-postmeddelande"
+    },
+    "responseTime": {
+      "title": "Svarstider",
+      "description": "Eftersom ElectroVault är ett community-projekt hanteras förfrågningar av volontärer. Vänligen ha tålamod - vi svarar vanligtvis inom 48 timmar."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Community Support",
+        "description": "Använd GitHub Discussions för allmänna frågor"
+      },
+      "bugReports": {
+        "title": "Buggrapporter",
+        "description": "Rapportera tekniska problem direkt på GitHub"
+      },
+      "partnerships": {
+        "title": "Partnerförfrågningar",
+        "description": "För affärsförfrågningar, använd formuläret"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Kontaktuppgifter",
+    "responsible": "Ansvarig för innehållet",
+    "contact": "Kontakt",
+    "disclaimer": {
+      "title": "Ansvarsfriskrivning",
+      "content": "Trots noggrann innehållskontroll tar vi inget ansvar för innehållet i externa länkar. Operatörerna av de länkade sidorna är ensamt ansvariga för deras innehåll.",
+      "liability": "Innehållet på dessa sidor har skapats med största omsorg. Vi kan dock inte garantera noggrannheten, fullständigheten och aktualiteten av innehållet."
+    },
+    "opensource": {
+      "title": "Öppen källkod",
+      "description": "ElectroVault är ett open source-projekt under MIT-licens. Källkoden finns tillgänglig på GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Integritetspolicy",
+    "lastUpdated": "Senast uppdaterad",
+    "intro": "Vi tar skyddet av dina personuppgifter på största allvar. Denna integritetspolicy informerar dig om arten, omfattningen och syftet med behandlingen av personuppgifter.",
+    "responsible": {
+      "title": "Personuppgiftsansvarig",
+      "description": "Ansvarig för databehandling på denna webbplats är:"
+    },
+    "collection": {
+      "title": "Insamling och lagring av personuppgifter",
+      "description": "När du besöker vår webbplats samlas information automatiskt in som din webbläsare överför:",
+      "data": "IP-adress, datum och tid för åtkomst, webbläsartyp och version, använt operativsystem, hänvisnings-URL"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Vår webbplats använder cookies. Cookies är små textfiler som lagras på din enhet.",
+      "essential": "Tekniskt nödvändiga cookies för autentisering och sessionshantering",
+      "functional": "Funktionella cookies för att förbättra användarupplevelsen"
+    },
+    "auth": {
+      "title": "Autentisering",
+      "description": "Vi använder Keycloak för registrering och inloggning. Följande data lagras:",
+      "data": "Användarnamn, e-postadress, profilbild (valfritt), roll och behörigheter"
+    },
+    "rights": {
+      "title": "Dina rättigheter",
+      "description": "Du har följande rättigheter angående dina personuppgifter:",
+      "access": "Rätt till tillgång",
+      "correction": "Rätt till rättelse",
+      "deletion": "Rätt till radering",
+      "restriction": "Rätt till begränsning av behandling",
+      "portability": "Rätt till dataportabilitet",
+      "objection": "Rätt att invända"
+    },
+    "contact": {
+      "title": "Kontakt för integritetsfrågor",
+      "description": "Om du har frågor om integritet kan du kontakta oss när som helst."
+    }
+  }
+}

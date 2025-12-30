@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "로딩 중...",
+    "error": "오류",
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "edit": "편집",
+    "create": "만들기",
+    "search": "검색",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "noResults": "결과를 찾을 수 없습니다",
+    "all": "전체",
+    "yes": "예",
+    "no": "아니요",
+    "actions": {
+      "details": "상세 정보"
+    }
+  },
+  "locale": {
+    "switch": "언어 변경",
+    "current": "현재 언어",
+    "languages": {
+      "en": "영어",
+      "de": "독일어",
+      "fr": "프랑스어",
+      "es": "스페인어",
+      "zh": "중국어",
+      "ja": "일본어",
+      "ko": "한국어",
+      "it": "이탈리아어"
+    }
+  },
+  "nav": {
+    "home": "홈",
+    "components": "부품",
+    "categories": "카테고리",
+    "manufacturers": "제조사",
+    "packages": "패키지",
+    "search": "검색",
+    "admin": "관리",
+    "moderation": "검토",
+    "myElectroVault": "내 ElectroVault",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "profile": "프로필"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "커뮤니티가 관리하는 전자 부품 데이터베이스",
+    "searchPlaceholder": "부품 검색...",
+    "featuredCategories": "인기 카테고리",
+    "recentComponents": "최신 부품",
+    "stats": {
+      "components": "부품",
+      "manufacturers": "제조사",
+      "categories": "카테고리",
+      "users": "사용자"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "커뮤니티가 관리하는 전자 부품 데이터베이스"
+    },
+    "stats": {
+      "components": "부품",
+      "manufacturers": "제조사",
+      "users": "사용자"
+    }
+  },
+  "packages": {
+    "title": "패키지",
+    "totalCount": "데이터베이스에 {count}개의 패키지",
+    "addNew": "새 패키지",
+    "searchPlaceholder": "이름 또는 슬러그로 검색...",
+    "filterPlaceholder": "패키지 유형",
+    "filterAll": "모든 유형",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "래디얼",
+      "AXIAL": "축 방향",
+      "CHASSIS": "섀시",
+      "OTHER": "기타"
+    },
+    "table": {
+      "name": "이름",
+      "type": "유형",
+      "pinCount": "핀 수",
+      "dimensions": "크기 (길이 x 너비 x 높이 mm)",
+      "pitch": "피치",
+      "actions": "작업"
+    },
+    "loading": "로딩 중...",
+    "noResults": "패키지를 찾을 수 없습니다",
+    "noPackagesFound": "패키지를 찾을 수 없습니다",
+    "createFirst": "첫 번째 패키지 생성",
+    "error": "오류",
+    "success": "성공",
+    "loadError": "패키지를 불러올 수 없습니다.",
+    "deleteSuccess": "패키지가 삭제되었습니다.",
+    "deleteError": "패키지를 삭제할 수 없습니다.",
+    "deleteDialog": {
+      "title": "패키지를 삭제하시겠습니까?",
+      "description": "패키지 \"{name}\"을(를) 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+    }
+  },
+  "components": {
+    "title": "부품",
+    "description": "광범위한 전자 부품 데이터베이스 탐색",
+    "filters": {
+      "category": "카테고리",
+      "manufacturer": "제조사",
+      "status": "상태",
+      "mountingType": "실장 유형"
+    },
+    "detail": {
+      "overview": "개요",
+      "specifications": "사양",
+      "datasheets": "데이터시트",
+      "parts": "제조사 버전",
+      "history": "버전 기록",
+      "backToOverview": "개요로 돌아가기",
+      "category": "카테고리",
+      "statistics": "통계",
+      "manufacturerVariants": "제조사 버전",
+      "activeVariants": "활성 버전",
+      "additionalProperties": "추가 속성",
+      "furtherProperties": "이 부품의 추가 속성",
+      "validForAllVariants": "기술 사양 (모든 버전에 유효)",
+      "variantCount": "{count}개 제조사 버전",
+      "variantCountPlural": "{count}개 제조사 버전",
+      "noVariantsAvailable": "사용 가능한 제조사 버전이 없습니다",
+      "noVariantsForComponent": "이 부품에 사용 가능한 제조사 버전이 없습니다.",
+      "noAttributesAvailable": "사용 가능한 속성이 없습니다.",
+      "manufacturer": "제조사",
+      "orderingCode": "주문 번호",
+      "details": "상세 정보",
+      "allInCategory": "카테고리의 모든 항목",
+      "status": "상태",
+      "moreAttributes": "+{count}개 더보기"
+    },
+    "status": {
+      "DRAFT": "초안",
+      "PENDING": "검토 대기",
+      "PUBLISHED": "게시됨",
+      "ARCHIVED": "보관됨"
+    },
+    "lifecycle": {
+      "ACTIVE": "생산 중",
+      "NRND": "신규 설계 비권장",
+      "EOL": "단종 예정",
+      "OBSOLETE": "단종"
+    }
+  },
+  "categories": {
+    "title": "카테고리",
+    "browseAll": "모든 카테고리 탐색",
+    "subcategories": "하위 카테고리",
+    "componentsInCategory": "이 카테고리의 부품"
+  },
+  "manufacturers": {
+    "title": "제조사",
+    "status": {
+      "ACTIVE": "활성",
+      "ACQUIRED": "인수됨",
+      "DEFUNCT": "폐업"
+    }
+  },
+  "auth": {
+    "login": "로그인",
+    "logout": "로그아웃",
+    "loginWith": "{provider}로 로그인",
+    "welcome": "돌아오신 것을 환영합니다",
+    "signInToContinue": "계속하려면 로그인하세요",
+    "signIn": {
+      "title": "로그인",
+      "description": "계정에 로그인하세요",
+      "button": "Keycloak으로 로그인",
+      "loading": "로그인 중...",
+      "hint": "Keycloak으로 리디렉션됩니다"
+    },
+    "signOut": {
+      "title": "로그아웃",
+      "description": "정말 로그아웃하시겠습니까?",
+      "button": "로그아웃",
+      "loading": "로그아웃 중...",
+      "cancel": "취소"
+    },
+    "error": {
+      "title": "인증 오류",
+      "description": "로그인 중 오류가 발생했습니다",
+      "tryAgain": "다시 시도",
+      "backHome": "홈으로 돌아가기"
+    },
+    "errors": {
+      "configuration": "서버 설정 오류입니다. 관리자에게 문의하세요.",
+      "accessDenied": "접근이 거부되었습니다. 권한이 없습니다.",
+      "verification": "인증 링크가 만료되었거나 이미 사용되었습니다.",
+      "oauthSignin": "OAuth 로그인을 시작하는 중 오류가 발생했습니다.",
+      "oauthCallback": "OAuth 콜백을 처리하는 중 오류가 발생했습니다.",
+      "oauthCreateAccount": "사용자 계정을 생성하는 중 오류가 발생했습니다.",
+      "emailCreateAccount": "이메일 계정을 생성하는 중 오류가 발생했습니다.",
+      "callback": "콜백을 처리하는 중 오류가 발생했습니다.",
+      "oauthAccountNotLinked": "이 이메일은 이미 다른 계정에 연결되어 있습니다.",
+      "sessionRequired": "이 페이지에 접근하려면 로그인하세요.",
+      "default": "알 수 없는 오류가 발생했습니다. 다시 시도해 주세요."
+    }
+  },
+  "admin": {
+    "dashboard": "대시보드",
+    "sidebar": {
+      "dashboard": "대시보드",
+      "moderation": "검토",
+      "moderationDescription": "승인 대기열",
+      "users": "사용자",
+      "backToHome": "메인 페이지로",
+      "user": "사용자",
+      "logout": "로그아웃"
+    },
+    "components": {
+      "title": "부품 관리",
+      "new": "새 부품",
+      "edit": "부품 편집"
+    },
+    "moderation": {
+      "title": "검토",
+      "pendingReviews": "검토 대기 중",
+      "approve": "승인",
+      "reject": "거부",
+      "batchApproval": "일괄 승인",
+      "confirmApprove": "승인 확인",
+      "confirmApproveDescription": "이 {type}을(를) 정말 승인하시겠습니까? 이후 공개적으로 표시됩니다.",
+      "confirmBatchApproval": "{count}개 항목을 승인하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "rejectWithReason": "사유와 함께 거부",
+      "rejectDescription": "거부 사유를 입력해주세요. 이 내용은 작성자에게 표시됩니다.",
+      "rejectReasonLabel": "사유",
+      "rejectReasonPlaceholder": "이 항목이 왜 거부되나요?",
+      "rejectReasonHelp": "명확한 사유는 작성자가 거부를 이해하는 데 도움이 됩니다.",
+      "batchApproveButton": "{count}개 승인",
+      "typeComponent": "부품",
+      "typePart": "파트",
+      "draft": "초안"
+    },
+    "users": {
+      "title": "사용자",
+      "manage": "사용자 관리"
+    },
+    "myDashboard": {
+      "title": "내 대시보드",
+      "stats": {
+        "componentsTotal": "총 부품 수",
+        "componentsTotalDesc": "내가 만든 부품",
+        "variants": "버전",
+        "variantsDesc": "제조사 버전",
+        "drafts": "초안",
+        "draftsDesc": "아직 제출되지 않음",
+        "pending": "검토 중",
+        "pendingDesc": "검토 대기",
+        "published": "게시됨",
+        "archived": "보관됨"
+      },
+      "draftsSection": {
+        "title": "내 초안",
+        "description": "초안은 비공개 임시 저장소이며 아직 검토에 제출되지 않았습니다.",
+        "newComponent": "새 부품",
+        "empty": "초안이 없습니다. 새 부품을 만들고 초안으로 저장하세요.",
+        "draftBadge": "초안",
+        "noName": "[이름 없음]"
+      },
+      "activitySection": {
+        "title": "활동 기록",
+        "description": "ElectroVault에서의 최근 활동",
+        "empty": "아직 활동이 없습니다."
+      },
+      "entities": {
+        "COMPONENT": "부품",
+        "PART": "버전",
+        "MANUFACTURER": "제조사",
+        "CATEGORY": "카테고리",
+        "PACKAGE": "패키지"
+      },
+      "error": "대시보드를 불러올 수 없습니다. 다시 시도해 주세요."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "새 속성",
+        "titleEdit": "속성 편집",
+        "description": "부품의 속성 정의"
+      },
+      "category": {
+        "title": "새 카테고리",
+        "titleEdit": "카테고리 편집",
+        "description": "카테고리 정보 및 속성 관리",
+        "saveFirst": "먼저 카테고리를 저장한 후 속성을 추가하세요"
+      },
+      "component": {
+        "title": "새 부품",
+        "titleEdit": "부품 편집",
+        "description": "새 부품 생성 - 저장 후 제조사 버전을 추가할 수 있습니다",
+        "descriptionEdit": "부품 정보 및 제조사 버전 관리",
+        "saveFirstPinMapping": "먼저 부품을 저장한 후 핀 매핑을 편집하세요",
+        "saveFirstParts": "먼저 부품을 저장한 후 제조사 버전을 추가하세요",
+        "saveFirstRelations": "먼저 부품을 저장한 후 관계를 추가하세요",
+        "createdWithVariants": "부품이 생성되었습니다. 이제 제조사 버전을 추가할 수 있습니다",
+        "noPartsWarning": "이 부품에는 제조사 버전이 없습니다. 최소 하나의 버전이 필요합니다"
+      },
+      "manufacturer": {
+        "title": "새 제조사",
+        "titleEdit": "제조사 편집",
+        "description": "제조사 정보 관리"
+      },
+      "part": {
+        "title": "새 제조사 버전",
+        "titleEdit": "제조사 버전 편집",
+        "description": "부품의 새로운 구체적인 제조사 버전 생성",
+        "descriptionEdit": "제조사 버전 정보 변경",
+        "saveFirstFiles": "먼저 버전을 저장한 후 파일을 업로드하세요"
+      },
+      "package": {
+        "title": "새 패키지",
+        "titleEdit": "패키지 편집",
+        "description": "패키지/풋프린트 정보"
+      },
+      "delete": {
+        "title": "삭제 확인",
+        "message": "정말로 이 항목을 삭제하시겠습니까?",
+        "messageFile": "정말로 이 파일을 삭제하시겠습니까?",
+        "messagePin": "정말로 이 핀을 삭제하시겠습니까?",
+        "message3dModel": "정말로 이 3D 모델을 삭제하시겠습니까?",
+        "messageRelation": "정말로 이 관계를 삭제하시겠습니까?"
+      }
+    },
+    "buttons": {
+      "saving": "저장 중...",
+      "saveAsDraft": "초안으로 저장",
+      "update": "업데이트",
+      "addPin": "핀 추가",
+      "addRelation": "관계 추가"
+    },
+    "messages": {
+      "success": "성공",
+      "error": "오류",
+      "warning": "경고",
+      "attribute": {
+        "created": "속성이 생성되었습니다",
+        "updated": "속성이 업데이트되었습니다",
+        "deleted": "속성이 삭제되었습니다",
+        "loadFailed": "속성을 불러오는데 실패했습니다",
+        "saveFailed": "속성을 저장하는데 실패했습니다",
+        "deleteFailed": "속성을 삭제하는데 실패했습니다"
+      },
+      "category": {
+        "created": "카테고리가 생성되었습니다",
+        "updated": "카테고리가 업데이트되었습니다",
+        "deleted": "카테고리가 삭제되었습니다",
+        "loadFailed": "카테고리를 불러오는데 실패했습니다",
+        "saveFailed": "카테고리를 저장하는데 실패했습니다",
+        "deleteFailed": "카테고리를 삭제하는데 실패했습니다"
+      },
+      "component": {
+        "created": "부품이 생성되었습니다",
+        "updated": "부품이 업데이트되었습니다",
+        "deleted": "부품이 삭제되었습니다",
+        "loadFailed": "부품을 불러오는데 실패했습니다",
+        "saveFailed": "부품을 저장하는데 실패했습니다",
+        "deleteFailed": "부품을 삭제하는데 실패했습니다"
+      },
+      "manufacturer": {
+        "created": "제조사가 생성되었습니다",
+        "updated": "제조사가 업데이트되었습니다",
+        "deleted": "제조사가 삭제되었습니다",
+        "loadFailed": "제조사를 불러오는데 실패했습니다",
+        "saveFailed": "제조사를 저장하는데 실패했습니다",
+        "deleteFailed": "제조사를 삭제하는데 실패했습니다",
+        "logoUploaded": "로고가 업로드되었습니다",
+        "logoUploadFailed": "로고 업로드에 실패했습니다"
+      },
+      "part": {
+        "created": "버전이 생성되었습니다",
+        "updated": "버전이 업데이트되었습니다",
+        "deleted": "버전이 삭제되었습니다",
+        "loadFailed": "버전을 불러오는데 실패했습니다",
+        "saveFailed": "버전을 저장하는데 실패했습니다",
+        "deleteFailed": "버전을 삭제하는데 실패했습니다"
+      },
+      "package": {
+        "created": "패키지가 생성되었습니다",
+        "updated": "패키지가 업데이트되었습니다",
+        "deleted": "패키지가 삭제되었습니다",
+        "loadFailed": "패키지를 불러오는데 실패했습니다",
+        "saveFailed": "패키지를 저장하는데 실패했습니다",
+        "deleteFailed": "패키지를 삭제하는데 실패했습니다"
+      },
+      "file": {
+        "uploaded": "파일이 업로드되었습니다",
+        "deleted": "파일이 삭제되었습니다",
+        "uploadFailed": "파일 업로드에 실패했습니다",
+        "deleteFailed": "파일 삭제에 실패했습니다",
+        "loadFailed": "파일을 불러오는데 실패했습니다",
+        "downloadUrlFailed": "다운로드 URL을 생성할 수 없습니다"
+      },
+      "pin": {
+        "created": "핀이 추가되었습니다",
+        "updated": "핀이 업데이트되었습니다",
+        "deleted": "핀이 삭제되었습니다",
+        "createFailed": "핀 생성에 실패했습니다",
+        "loadFailed": "핀을 불러오는데 실패했습니다",
+        "updateFailed": "핀을 업데이트할 수 없습니다",
+        "deleteFailed": "핀을 삭제할 수 없습니다"
+      },
+      "relation": {
+        "created": "관계가 추가되었습니다",
+        "deleted": "관계가 삭제되었습니다",
+        "createFailed": "관계 생성에 실패했습니다",
+        "deleteFailed": "관계 삭제에 실패했습니다"
+      }
+    },
+    "pinMapping": {
+      "title": "핀 매핑",
+      "addPin": "핀 추가",
+      "newPin": "새 핀 추가",
+      "pinNumber": "핀 번호 (예: 1, VCC)",
+      "pinName": "핀 이름",
+      "selectType": "핀 유형 선택",
+      "noDescription": "설명 없음",
+      "noType": "유형 없음",
+      "loading": "핀 로딩 중...",
+      "pinsCount": "{count}개 핀",
+      "tabList": "핀 목록",
+      "tabBulkImport": "대량 가져오기",
+      "noPins": "정의된 핀이 없습니다. 개별적으로 핀을 추가하거나 대량 가져오기를 사용하세요.",
+      "columnPinNumber": "핀 번호",
+      "columnName": "이름",
+      "columnType": "유형",
+      "columnFunction": "기능 (DE)",
+      "columnActions": "작업",
+      "functionPlaceholder": "예: 전원 공급",
+      "deleteTitle": "핀을 삭제하시겠습니까?",
+      "deleteMessage": "핀 {pinNumber} ({pinName})을(를) 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "reorderSuccess": "핀 순서가 업데이트되었습니다",
+      "reorderFailed": "순서를 변경할 수 없습니다",
+      "bulkImport": {
+        "formatLabel": "형식:",
+        "exampleLabel": "예시:",
+        "typeHint": "pinTyp은 선택사항입니다. 사용 가능한 유형: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "CSV 형식으로 핀 입력...",
+        "importButton": "핀 가져오기",
+        "noPinsFound": "유효한 핀 데이터를 찾을 수 없습니다.",
+        "success": "{count}개 핀을 가져왔습니다.",
+        "failed": "대량 가져오기에 실패했습니다."
+      }
+    },
+    "files": {
+      "uploadImage": "제품 이미지 업로드",
+      "uploadDatasheet": "데이터시트 업로드",
+      "uploadDocument": "문서 업로드",
+      "selectLanguage": "언어 선택",
+      "noFiles": "사용 가능한 파일이 없습니다",
+      "confirmDelete": "파일을 삭제하시겠습니까?",
+      "productImage": "제품 이미지",
+      "productImageDescription": "이 제조사 버전의 미리보기 이미지",
+      "addImage": "이미지",
+      "imageDescription": "JPEG, PNG 또는 WebP (최대 10 MB)",
+      "noImageUploaded": "아직 이미지가 업로드되지 않았습니다",
+      "datasheets": "데이터시트",
+      "datasheetsDescription": "이 제조사 버전의 PDF 데이터시트",
+      "addDatasheet": "데이터시트",
+      "languagesRequired": "데이터시트 언어",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "최소 하나의 언어를 선택해야 합니다",
+      "datasheetFileDescription": "제조사 데이터시트의 PDF 파일",
+      "noDatasheets": "아직 데이터시트가 업로드되지 않았습니다",
+      "otherFiles": "기타 파일",
+      "otherFilesDescription": "추가 문서, 애플리케이션 노트 등",
+      "addDocument": "문서",
+      "languagesOptional": "언어 (선택사항)",
+      "anyFileDescription": "모든 파일 형식 (PDF, TXT, ZIP 등)",
+      "noDocuments": "아직 문서가 업로드되지 않았습니다",
+      "fileName": "파일",
+      "fileSize": "크기",
+      "languages": "언어",
+      "actions": "작업",
+      "imageCount": "{count}개 이미지",
+      "fileCount": "{count}개 파일{plural}",
+      "datasheetCount": "{count}개 데이터시트{plural}",
+      "imageUploaded": "이미지가 업로드되었습니다",
+      "imageRemoved": "이미지가 제거되었습니다"
+    },
+    "model3d": {
+      "title": "3D 모델",
+      "confirmDelete": "3D 모델을 삭제하시겠습니까?",
+      "upload": "3D 모델 업로드",
+      "noModels": "사용 가능한 3D 모델이 없습니다"
+    },
+    "lists": {
+      "searchPlaceholder": "검색...",
+      "searchByName": "이름 또는 슬러그로 검색...",
+      "searchByNameCage": "이름, 슬러그 또는 CAGE 코드로 검색...",
+      "noResults": "결과를 찾을 수 없습니다",
+      "createFirst": "첫 번째 항목 생성",
+      "noPackagesFound": "패키지를 찾을 수 없습니다",
+      "createFirstPackage": "첫 번째 패키지 생성"
+    },
+    "filters": {
+      "allStatus": "모든 상태",
+      "myDrafts": "내 초안"
+    },
+    "manufacturer": {
+      "title": "제조사",
+      "count": "데이터베이스에 {count}개 제조사",
+      "create": "새 제조사",
+      "createFirst": "첫 번째 제조사 생성",
+      "deleteTitle": "제조사를 삭제하시겠습니까?",
+      "deleteDescription": "제조사 \"{name}\"을(를) 정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "status": {
+        "active": "활성",
+        "acquired": "인수됨",
+        "defunct": "비활성"
+      }
+    },
+    "form": {
+      "package": "패키지",
+      "selectPackage": "패키지 선택",
+      "noPackage": "패키지 없음",
+      "editIn": "편집 언어:",
+      "searchLanguage": "언어 검색...",
+      "noLanguageFound": "언어를 찾을 수 없습니다",
+      "original": "원본",
+      "backToOverview": "개요로 돌아가기",
+      "name": "이름",
+      "nameDescription": "독일어 및/또는 영어 이름. 카테고리에 레이블 속성이 없는 경우 필수 필드",
+      "namePlaceholder": "부품 이름",
+      "series": "시리즈",
+      "seriesDescription": "선택적 부품 시리즈 또는 패밀리",
+      "seriesPlaceholder": "예: 74HC, ATmega",
+      "packageDescription": "물리적 패키지 (예: DIP-8, SOIC-8)",
+      "shortDescription": "간단한 설명",
+      "shortDescriptionDescription": "부품을 설명하는 짧은 문장",
+      "shortDescriptionPlaceholder": "간단한 설명",
+      "fullDescription": "전체 설명",
+      "fullDescriptionPlaceholder": "전체 설명",
+      "attributesDescription": "선택한 카테고리를 기반으로 한 기술 속성",
+      "selectCategoryFirst": "먼저 \"기본 데이터\" 탭에서 카테고리를 선택하세요",
+      "pinMappingDescription": "이 부품의 핀 배치를 정의합니다. 핀 매핑은 모든 제조사 버전에 적용됩니다",
+      "partsDescription": "이 부품의 제조사별 버전",
+      "newVariant": "새 버전",
+      "close": "닫기",
+      "parentCategory": "상위 카테고리",
+      "parentCategoryPlaceholder": "없음 (루트 카테고리)",
+      "parentCategoryDescription": "메인 카테고리 (레벨 0)는 비워둡니다",
+      "categoryName": "카테고리 이름",
+      "categoryDescription": "설명",
+      "categoryDescriptionPlaceholder": "카테고리 설명",
+      "sortOrder": "정렬 순서",
+      "sortOrderDescription": "낮은 값 = 위쪽에 표시",
+      "status": "상태",
+      "active": "활성",
+      "inactive": "비활성",
+      "icon": "아이콘",
+      "iconUploadDescription": "카테고리 아이콘 업로드. 최대 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "클릭하거나 파일을 여기로 드래그하세요.",
+      "iconMaxSize": "아이콘은 최대 5 MB까지 가능합니다.",
+      "iconAllowedTypes": "JPEG, PNG, WebP 또는 SVG만 허용됩니다.",
+      "iconUploaded": "아이콘이 업로드되었습니다.",
+      "iconUploadFailed": "아이콘을 업로드할 수 없습니다.",
+      "categoryCreatedIconFailed": "카테고리가 생성되었지만 아이콘 업로드에 실패했습니다.",
+      "loading": "로딩 중...",
+      "newAttribute": "새 속성",
+      "ownAttributes": "자체 속성 ({count})",
+      "noOwnAttributes": "정의된 자체 속성이 없습니다.",
+      "inheritedAttributes": "상속된 속성 ({count})",
+      "inheritedAttributesDescription": "상속된 속성은 원본 카테고리에서만 편집할 수 있습니다.",
+      "attributesInherited": "이 카테고리의 속성 (하위 카테고리로 상속됨)",
+      "cageCode": "CAGE 코드",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5자리 코드",
+      "country": "국가",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "웹사이트",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "로고",
+      "logoUploadHint": "제조사 로고 업로드. 최대 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "클릭하거나 파일을 여기로 드래그하세요.",
+      "statusActive": "활성",
+      "statusAcquired": "인수됨",
+      "statusDefunct": "비활성",
+      "foundedYear": "설립 연도",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "해산 연도",
+      "defunctYearPlaceholder": "2020",
+      "description": "설명",
+      "descriptionPlaceholder": "설명",
+      "logoMaxSize": "로고는 최대 5 MB까지 가능합니다.",
+      "logoAllowedTypes": "JPEG, PNG, WebP 또는 SVG만 허용됩니다.",
+      "createdAsDraft": "제조사가 초안으로 저장되었습니다.",
+      "manufacturerCreatedLogoFailed": "제조사가 생성되었지만 로고 업로드에 실패했습니다.",
+      "save": "저장"
+    },
+    "audit": {
+      "created": "생성됨",
+      "updated": "업데이트됨",
+      "deleted": "삭제됨",
+      "restored": "복원됨",
+      "approved": "승인됨",
+      "rejected": "거부됨"
+    },
+    "tabs": {
+      "basicInfo": "기본 정보",
+      "attributes": "속성",
+      "pinMapping": "핀 매핑",
+      "parts": "제조사 버전",
+      "relations": "관계",
+      "files": "파일",
+      "details": "기본 데이터",
+      "pins": "핀 매핑",
+      "models": "3D 모델"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "제조사",
+      "status": "상태",
+      "lifecycle": "수명 주기",
+      "actions": "작업",
+      "variantCount": "{count}개 버전",
+      "variantCountPlural": "{count}개 버전",
+      "activeCount": "{count}개 활성",
+      "obsoleteCount": "{count}개 단종",
+      "unknown": "알 수 없음"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "패키지의 고유 이름",
+      "mountingType": "패키지 유형",
+      "mountingTypes": {
+        "SMD": "SMD - 표면 실장 장치",
+        "THT": "THT - 스루홀 기술",
+        "RADIAL": "래디얼 - 방사형 리드선",
+        "AXIAL": "축 방향 - 축 방향 리드선",
+        "CHASSIS": "섀시 - 섀시 마운트",
+        "OTHER": "기타"
+      },
+      "pinCount": "핀 수",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "길이 (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "너비 (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "높이 (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "피치 (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "핀 간 거리",
+      "jedecStandard": "JEDEC 표준",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA 표준",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "도면 URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "기술 도면 또는 데이터시트 링크",
+      "description": "설명",
+      "descriptionPlaceholder": "패키지에 대한 추가 정보...",
+      "saveFirstModels": "먼저 패키지를 저장한 후 3D 모델을 업로드하세요.",
+      "modelsDescription": "이 패키지의 3D 모델 (STEP, STL, 3MF, OBJ 등)"
+    },
+    "partForm": {
+      "coreComponent": "일반 부품",
+      "coreComponentDesc": "제조사 독립적 부품 (예: 555 타이머)",
+      "manufacturer": "제조사",
+      "manufacturerDesc": "이 구체적 버전의 제조사 (예: Texas Instruments)",
+      "manufacturerPlaceholder": "제조사 선택",
+      "mpn": "MPN (제조사 부품 번호)",
+      "mpnPlaceholder": "예: NE555P",
+      "mpnDesc": "고유 제조사 부품 번호",
+      "orderingCode": "주문 번호",
+      "orderingCodePlaceholder": "선택사항",
+      "orderingCodeDesc": "대체 주문 번호 (MPN과 다른 경우)",
+      "statusRecord": "레코드 상태",
+      "lifecycleStatus": "수명 주기 상태",
+      "introductionYear": "출시 연도",
+      "introductionYearPlaceholder": "예: 1972",
+      "discontinuedYear": "단종 연도",
+      "discontinuedYearPlaceholder": "예: 2020",
+      "rohsCompliant": "RoHS 준수",
+      "rohsDesc": "RoHS 지침 충족",
+      "reachCompliant": "REACH 준수",
+      "reachDesc": "REACH 규정 충족",
+      "weight": "무게 (그램)",
+      "weightPlaceholder": "예: 0.5",
+      "dateCodeFormat": "날짜 코드 형식",
+      "dateCodePlaceholder": "예: YYWW",
+      "dateCodeDesc": "부품의 날짜 코드 형식",
+      "nsn": "NSN (NATO 재고 번호)",
+      "nsnPlaceholder": "예: 5962-01-123-4567",
+      "milSpec": "군사 사양",
+      "milSpecPlaceholder": "예: MIL-PRF-38534",
+      "partAttributesDesc": "부품 카테고리를 기반으로 한 제조사별 속성.",
+      "partAttributesLabel": "제조사별 속성",
+      "filesDesc": "이 제조사 버전의 데이터시트, 이미지 및 기타 파일을 관리합니다.",
+      "close": "닫기",
+      "selectComponent": "부품 선택"
+    }
+  },
+  "errors": {
+    "notFound": "페이지를 찾을 수 없습니다",
+    "unauthorized": "인증되지 않음",
+    "serverError": "서버 오류"
+  },
+  "footer": {
+    "tagline": "커뮤니티가 관리하는 전자 부품 데이터베이스",
+    "navigation": "내비게이션",
+    "community": "커뮤니티",
+    "legal": "법적 정보",
+    "about": "소개",
+    "help": "도움말",
+    "contact": "문의",
+    "contribute": "기여",
+    "github": "GitHub",
+    "privacy": "개인정보",
+    "imprint": "사이트 정보",
+    "copyright": "MIT 라이선스 오픈소스"
+  },
+  "about": {
+    "title": "ElectroVault 소개",
+    "subtitle": "커뮤니티가 관리하는 전자 부품 데이터베이스",
+    "mission": {
+      "title": "우리의 미션",
+      "description": "ElectroVault는 역사적인 진공관부터 현대 나노기술까지 전자 부품을 위한 무료 오픈 데이터베이스입니다. 전자 부품에 대한 지식을 보존하고 모든 사람이 접근할 수 있도록 하는 것이 우리의 목표입니다."
+    },
+    "features": {
+      "title": "기능",
+      "comprehensive": {
+        "title": "종합적인 데이터베이스",
+        "description": "저항기, 커패시터부터 고집적 회로까지 - 상세한 사양을 포함한 모든 중요한 부품을 수록합니다."
+      },
+      "historical": {
+        "title": "역사적 아카이브",
+        "description": "빈티지 장비의 수리 및 복원을 위한 역사적 부품 문서."
+      },
+      "community": {
+        "title": "커뮤니티 중심",
+        "description": "누구나 기여하고 지식을 공유할 수 있습니다. 함께 가장 포괄적인 부품 데이터베이스를 구축합니다."
+      },
+      "open": {
+        "title": "오픈소스",
+        "description": "MIT 라이선스로 완전히 투명하고 자유롭게 사용 가능합니다."
+      }
+    },
+    "contribute": {
+      "title": "참여 방법",
+      "description": "ElectroVault는 커뮤니티로 운영됩니다. 기여할 수 있는 방법을 소개합니다:",
+      "dataEntry": "부품 추가 또는 편집",
+      "datasheets": "데이터시트 업로드",
+      "code": "GitHub에서 코드 기여",
+      "feedback": "피드백 및 개선 제안"
+    }
+  },
+  "help": {
+    "title": "도움말 및 FAQ",
+    "subtitle": "자주 묻는 질문",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "부품 탐색",
+        "description": "데이터베이스에서 부품 찾기"
+      },
+      "createAccount": {
+        "title": "계정 생성",
+        "description": "데이터베이스에 기여하기"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "문서 및 이슈"
+      }
+    },
+    "contactCta": {
+      "title": "질문에 대한 답변을 찾지 못하셨나요?",
+      "description": "언제든지 직접 문의해 주세요.",
+      "button": "문의하기"
+    },
+    "general": {
+      "title": "일반",
+      "what": {
+        "question": "ElectroVault란 무엇인가요?",
+        "answer": "ElectroVault는 전기 및 전자 부품을 위한 무료 커뮤니티 운영 데이터베이스입니다. 역사적인 진공관부터 최신 IC까지 포괄적인 메타데이터, 데이터시트 및 사양을 포함하여 문서화합니다."
+      },
+      "free": {
+        "question": "ElectroVault는 무료인가요?",
+        "answer": "네, ElectroVault는 완전히 무료이며 오픈소스입니다. 사용과 소스 코드 모두 자유롭게 이용할 수 있습니다."
+      }
+    },
+    "search": {
+      "title": "검색",
+      "how": {
+        "question": "특정 부품을 어떻게 찾나요?",
+        "answer": "오른쪽 상단의 검색 기능을 사용하거나 카테고리를 탐색하세요. 부품 번호, 제조사 또는 속성으로 검색할 수 있습니다."
+      },
+      "filters": {
+        "question": "어떤 필터를 사용할 수 있나요?",
+        "answer": "카테고리, 제조사, 상태(생산 중/단종), 패키지 유형 및 기타 여러 기술 매개변수로 필터링할 수 있습니다."
+      }
+    },
+    "contribute": {
+      "title": "기여",
+      "account": {
+        "question": "기여하려면 계정이 필요한가요?",
+        "answer": "네, 부품을 추가하거나 편집하려면 무료 계정이 필요합니다. 이는 데이터 품질을 보장하는 데 도움이 됩니다."
+      },
+      "how": {
+        "question": "부품을 어떻게 추가하나요?",
+        "answer": "로그인 후 부품 개요에서 '새 부품' 버튼을 통해 새 부품을 만들 수 있습니다. 검토자가 게시 전에 기여 내용을 검토합니다."
+      },
+      "quality": {
+        "question": "데이터 품질은 어떻게 보장되나요?",
+        "answer": "모든 기여는 경험 많은 검토자에 의해 검토됩니다. 또한 등록된 사용자는 수정을 제안할 수 있습니다."
+      }
+    }
+  },
+  "contact": {
+    "title": "문의",
+    "subtitle": "질문이나 제안이 있으신가요?",
+    "form": {
+      "heading": "메시지 보내기",
+      "name": "이름",
+      "email": "이메일",
+      "subject": "제목",
+      "message": "메시지",
+      "namePlaceholder": "홍길동",
+      "emailPlaceholder": "hong@example.com",
+      "subjectPlaceholder": "메시지 제목",
+      "messagePlaceholder": "메시지 내용...",
+      "demoNote": "참고: 문의 양식은 현재 데모입니다. 백엔드 통합은 향후 단계에서 이루어집니다. 중요한 문의는 GitHub 또는 제공된 이메일 주소를 사용해 주세요.",
+      "send": "메시지 보내기",
+      "sending": "보내는 중...",
+      "success": "메시지가 성공적으로 전송되었습니다!",
+      "error": "메시지 전송 중 오류가 발생했습니다"
+    },
+    "alternatives": {
+      "title": "다른 연락 방법",
+      "githubTitle": "GitHub 이슈",
+      "github": "GitHub에서 이슈 생성",
+      "emailTitle": "이메일",
+      "email": "이메일 보내기"
+    },
+    "responseTime": {
+      "title": "응답 시간",
+      "description": "ElectroVault는 커뮤니티 프로젝트이므로 문의는 자원봉사자가 처리합니다. 인내심을 가져주세요 - 일반적으로 48시간 내에 답변합니다."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "커뮤니티 지원",
+        "description": "일반적인 질문은 GitHub Discussions를 이용하세요"
+      },
+      "bugReports": {
+        "title": "버그 리포트",
+        "description": "기술적 문제는 GitHub에서 직접 보고하세요"
+      },
+      "partnerships": {
+        "title": "파트너십 문의",
+        "description": "비즈니스 문의는 양식을 사용하세요"
+      }
+    }
+  },
+  "imprint": {
+    "title": "사이트 정보",
+    "responsible": "콘텐츠 책임자",
+    "contact": "연락처",
+    "disclaimer": {
+      "title": "면책 조항",
+      "content": "신중한 콘텐츠 관리에도 불구하고 외부 링크의 콘텐츠에 대해 책임을 지지 않습니다. 링크된 페이지의 운영자가 해당 콘텐츠에 대한 책임을 집니다.",
+      "liability": "이 페이지의 콘텐츠는 세심한 주의를 기울여 작성되었습니다. 그러나 콘텐츠의 정확성, 완전성 및 적시성을 보장할 수 없습니다."
+    },
+    "opensource": {
+      "title": "오픈소스",
+      "description": "ElectroVault는 MIT 라이선스의 오픈소스 프로젝트입니다. 소스 코드는 GitHub에서 확인할 수 있습니다."
+    }
+  },
+  "privacy": {
+    "title": "개인정보 처리방침",
+    "lastUpdated": "최종 업데이트",
+    "intro": "당사는 귀하의 개인정보 보호를 매우 중요하게 생각합니다. 이 개인정보 처리방침은 개인정보 처리의 성격, 범위 및 목적에 대해 알려드립니다.",
+    "responsible": {
+      "title": "데이터 관리자",
+      "description": "이 웹사이트에서 데이터 처리를 담당하는 자:"
+    },
+    "collection": {
+      "title": "개인정보의 수집 및 저장",
+      "description": "웹사이트를 방문하면 브라우저가 전송하는 정보가 자동으로 수집됩니다:",
+      "data": "IP 주소, 접속 일시, 브라우저 유형 및 버전, 사용 중인 운영체제, 참조 URL"
+    },
+    "cookies": {
+      "title": "쿠키",
+      "description": "당사 웹사이트는 쿠키를 사용합니다. 쿠키는 귀하의 기기에 저장되는 작은 텍스트 파일입니다.",
+      "essential": "인증 및 세션 관리를 위한 기술적으로 필요한 쿠키",
+      "functional": "사용자 경험 향상을 위한 기능적 쿠키"
+    },
+    "auth": {
+      "title": "인증",
+      "description": "등록 및 로그인에 Keycloak을 사용합니다. 다음 데이터가 저장됩니다:",
+      "data": "사용자 이름, 이메일 주소, 프로필 사진(선택사항), 역할 및 권한"
+    },
+    "rights": {
+      "title": "귀하의 권리",
+      "description": "귀하의 개인정보에 관하여 다음과 같은 권리가 있습니다:",
+      "access": "접근권",
+      "correction": "정정권",
+      "deletion": "삭제권",
+      "restriction": "처리 제한권",
+      "portability": "데이터 이동권",
+      "objection": "이의제기권"
+    },
+    "contact": {
+      "title": "개인정보 관련 문의",
+      "description": "개인정보에 관한 질문이 있으시면 언제든지 연락해 주세요."
+    }
+  }
+}

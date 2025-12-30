@@ -44,9 +44,20 @@ const keycloakConfig = {
 
 /**
  * Refresh the access token using the refresh token
+ * Bei Fehler wird ein klarer Error-Status gesetzt, damit das Frontend reagieren kann
  */
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
+    // Kein Refresh Token vorhanden
+    if (!token.refreshToken) {
+      console.error('No refresh token available');
+      return {
+        ...token,
+        accessToken: undefined,
+        error: 'NoRefreshTokenError',
+      };
+    }
+
     const tokenUrl = `${keycloakConfig.issuer}/protocol/openid-connect/token`;
 
     const response = await fetch(tokenUrl, {
@@ -58,26 +69,37 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         client_id: keycloakConfig.clientId,
         client_secret: keycloakConfig.clientSecret,
         grant_type: 'refresh_token',
-        refresh_token: token.refreshToken!,
+        refresh_token: token.refreshToken,
       }),
     });
 
     const refreshedTokens = await response.json();
 
     if (!response.ok) {
-      throw refreshedTokens;
+      // Keycloak Refresh Token ist abgelaufen oder ungültig
+      console.error('Token refresh failed:', refreshedTokens);
+      return {
+        ...token,
+        accessToken: undefined,
+        refreshToken: undefined,
+        error: 'RefreshAccessTokenError',
+      };
     }
 
+    console.log('Token successfully refreshed');
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
       expiresAt: Math.floor(Date.now() / 1000) + refreshedTokens.expires_in,
+      error: undefined, // Clear any previous error
     };
   } catch (error) {
     console.error('Error refreshing access token:', error);
     return {
       ...token,
+      accessToken: undefined,
+      refreshToken: undefined,
       error: 'RefreshAccessTokenError',
     };
   }
@@ -172,8 +194,10 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: 'jwt',
-    // Production: 7 Tage für erhöhte Sicherheit, Development: 30 Tage für Komfort
-    maxAge: process.env.NODE_ENV === 'production' ? 7 * 24 * 60 * 60 : 30 * 24 * 60 * 60,
+    // 30 Tage Session - wird bei jeder Aktivität verlängert (Rolling Session)
+    maxAge: 30 * 24 * 60 * 60, // 30 Tage
+    // Rolling Session: Bei jeder Anfrage wird die Session verlängert
+    updateAge: 24 * 60 * 60, // Session wird mindestens alle 24h aktualisiert
   },
 
   events: {

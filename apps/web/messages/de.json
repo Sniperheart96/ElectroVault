@@ -13,7 +13,26 @@
     "next": "Weiter",
     "previous": "Zurück",
     "noResults": "Keine Ergebnisse gefunden",
-    "all": "Alle"
+    "all": "Alle",
+    "yes": "Ja",
+    "no": "Nein",
+    "actions": {
+      "details": "Details"
+    }
+  },
+  "locale": {
+    "switch": "Sprache wechseln",
+    "current": "Aktuelle Sprache",
+    "languages": {
+      "en": "Englisch",
+      "de": "Deutsch",
+      "fr": "Französisch",
+      "es": "Spanisch",
+      "zh": "Chinesisch",
+      "ja": "Japanisch",
+      "ko": "Koreanisch",
+      "it": "Italienisch"
+    }
   },
   "nav": {
     "home": "Startseite",
@@ -24,6 +43,7 @@
     "search": "Suche",
     "admin": "Admin",
     "moderation": "Moderation",
+    "myElectroVault": "Mein ElectroVault",
     "login": "Anmelden",
     "logout": "Abmelden",
     "profile": "Profil"
@@ -41,6 +61,73 @@
       "users": "Nutzer"
     }
   },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Community-gepflegte Datenbank für elektrische Bauteile"
+    },
+    "stats": {
+      "components": "Bauteile",
+      "manufacturers": "Hersteller",
+      "users": "Nutzer"
+    }
+  },
+  "packages": {
+    "title": "Bauformen",
+    "totalCount": "{count} Bauformen in der Datenbank",
+    "addNew": "Neue Bauform",
+    "searchPlaceholder": "Suchen nach Name oder Slug...",
+    "filterPlaceholder": "Gehäusetyp",
+    "filterAll": "Alle Typen",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radial",
+      "AXIAL": "Axial",
+      "CHASSIS": "Chassis",
+      "OTHER": "Sonstiges"
+    },
+    "table": {
+      "name": "Name",
+      "type": "Typ",
+      "pinCount": "Pin-Anzahl",
+      "dimensions": "Abmessungen (L x B x H mm)",
+      "pitch": "Rastermaß",
+      "actions": "Aktionen"
+    },
+    "loading": "Laden...",
+    "noResults": "Keine Bauformen gefunden",
+    "noPackagesFound": "Keine Bauformen gefunden",
+    "createFirst": "Erste Bauform erstellen",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "loadError": "Bauformen konnten nicht geladen werden.",
+    "deleteSuccess": "Bauform wurde gelöscht.",
+    "deleteError": "Bauform konnte nicht gelöscht werden.",
+    "deleteDialog": {
+      "title": "Bauform löschen?",
+      "description": "Möchten Sie die Bauform \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "groups": {
+      "title": "Gruppen",
+      "all": "Alle Bauformen",
+      "loading": "Laden...",
+      "noGroups": "Keine Gruppen vorhanden",
+      "create": "Neue Gruppe erstellen",
+      "reorder": "Reihenfolge ändern",
+      "success": "Erfolg",
+      "error": "Fehler",
+      "loadError": "Gruppen konnten nicht geladen werden.",
+      "sortSaved": "Reihenfolge wurde gespeichert.",
+      "sortFailed": "Reihenfolge konnte nicht gespeichert werden.",
+      "deleteSuccess": "Gruppe wurde gelöscht.",
+      "deleteError": "Gruppe konnte nicht gelöscht werden.",
+      "deleteDialog": {
+        "title": "Gruppe löschen?",
+        "description": "Möchten Sie die Gruppe \"{name}\" wirklich löschen? Die zugeordneten Bauformen werden nicht gelöscht, sondern nur die Gruppenzuordnung entfernt."
+      }
+    }
+  },
   "components": {
     "title": "Bauteile",
     "description": "Durchsuchen Sie unsere umfangreiche Datenbank elektronischer Bauteile",
@@ -55,7 +142,26 @@
       "specifications": "Spezifikationen",
       "datasheets": "Datenblätter",
       "parts": "Herstellervarianten",
-      "history": "Versionshistorie"
+      "history": "Versionshistorie",
+      "backToOverview": "Zurück zur Übersicht",
+      "category": "Kategorie",
+      "statistics": "Statistiken",
+      "manufacturerVariants": "Hersteller-Varianten",
+      "activeVariants": "Aktive Varianten",
+      "additionalProperties": "Zusätzliche Eigenschaften",
+      "furtherProperties": "Weitere Eigenschaften dieses Bauteils",
+      "validForAllVariants": "Technische Spezifikationen (gültig für alle Varianten)",
+      "variantCount": "{count} Hersteller-Variante",
+      "variantCountPlural": "{count} Hersteller-Varianten",
+      "noVariantsAvailable": "Keine Hersteller-Varianten verfügbar",
+      "noVariantsForComponent": "Keine Hersteller-Varianten für dieses Bauteil verfügbar.",
+      "noAttributesAvailable": "Keine Attribute verfügbar.",
+      "manufacturer": "Hersteller",
+      "orderingCode": "Bestellnummer",
+      "details": "Details",
+      "allInCategory": "Alle in Kategorie",
+      "status": "Status",
+      "moreAttributes": "+{count} weitere"
     },
     "status": {
       "DRAFT": "Entwurf",
@@ -124,8 +230,201 @@
       "default": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     }
   },
+  "filters": {
+    "title": "Filter",
+    "apply": "Anwenden",
+    "reset": "Zurücksetzen",
+    "clearAll": "Alle Filter löschen",
+    "activeFilters": "Aktive Filter",
+    "noFiltersAvailable": "Keine Filter für diese Kategorie verfügbar",
+    "loadingAttributes": "Lade Attribute...",
+    "close": "Schließen",
+    "boolean": {
+      "all": "Alle",
+      "yes": "Ja",
+      "no": "Nein"
+    },
+    "multiselect": {
+      "and": "UND",
+      "or": "ODER",
+      "andDescription": "Alle ausgewählten Werte müssen zutreffen",
+      "orDescription": "Mindestens einer der Werte muss zutreffen"
+    },
+    "range": {
+      "min": "Min",
+      "max": "Max",
+      "from": "Von",
+      "to": "Bis",
+      "myValue": "Mein Wert",
+      "myValueDescription": "Wert muss im definierten Bereich liegen"
+    },
+    "select": {
+      "all": "Alle",
+      "noOptions": "Keine Auswahloptionen definiert"
+    },
+    "string": {
+      "placeholder": "Suchbegriff eingeben...",
+      "contains": "Enthält"
+    },
+    "decimal": {
+      "siPrefix": "SI-Präfix"
+    },
+    "operators": {
+      "eq": "Gleich",
+      "ne": "Ungleich",
+      "gt": "Größer als",
+      "gte": "Größer oder gleich",
+      "lt": "Kleiner als",
+      "lte": "Kleiner oder gleich",
+      "between": "Zwischen",
+      "contains": "Enthält",
+      "isTrue": "Ja",
+      "isFalse": "Nein",
+      "withinRange": "Im Bereich",
+      "in": "Einer von",
+      "notIn": "Keiner von",
+      "hasAll": "Alle enthalten",
+      "hasAny": "Mindestens einer"
+    },
+    "conflictTitle": "Filter nicht verfügbar",
+    "conflictDescription": "Die folgenden aktiven Filter sind in der neuen Kategorie nicht verfügbar und werden entfernt:",
+    "conflictQuestion": "Möchten Sie trotzdem zur neuen Kategorie wechseln?",
+    "conflictConfirm": "Wechseln und Filter entfernen",
+    "conflictCancel": "Abbrechen"
+  },
   "admin": {
     "dashboard": "Dashboard",
+    "categories": {
+      "sortMode": "Sortieren",
+      "saveSortOrder": "Speichern",
+      "cancelSort": "Abbrechen",
+      "sortHint": "Kategorien per Drag-and-Drop sortieren",
+      "sortSaved": "Reihenfolge gespeichert",
+      "sortFailed": "Fehler beim Speichern der Reihenfolge"
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "moderation": "Moderation",
+      "moderationDescription": "Freigabe-Queue",
+      "import": "Import",
+      "importDescription": "Daten importieren",
+      "users": "Benutzer",
+      "backToHome": "Zur Hauptseite",
+      "user": "Benutzer",
+      "logout": "Abmelden"
+    },
+    "import": {
+      "title": "Daten-Import",
+      "description": "Importieren Sie Bauteil-Daten aus verschiedenen Quellen",
+      "sources": {
+        "title": "Import-Quellen",
+        "description": "Verwalten Sie Ihre Import-Quellen (APIs und Dateien)",
+        "addNew": "Neue Quelle",
+        "empty": "Keine Import-Quellen konfiguriert",
+        "emptyHint": "Fügen Sie eine neue Quelle hinzu, um Daten zu importieren",
+        "testConnection": "Verbindung testen",
+        "testSuccess": "Verbindung erfolgreich",
+        "testFailed": "Verbindung fehlgeschlagen",
+        "status": {
+          "active": "Aktiv",
+          "inactive": "Inaktiv"
+        },
+        "types": {
+          "API_MOUSER": "Mouser API",
+          "API_DIGIKEY": "DigiKey API",
+          "API_FARNELL": "Farnell API",
+          "API_LCSC": "LCSC API",
+          "API_TME": "TME API",
+          "API_REICHELT": "Reichelt API",
+          "API_CUSTOM": "Benutzerdefinierte API",
+          "FILE_CSV": "CSV-Datei",
+          "FILE_XML": "XML-Datei",
+          "FILE_JSON": "JSON-Datei"
+        },
+        "form": {
+          "name": "Name",
+          "namePlaceholder": "z.B. Mouser Electronics",
+          "slug": "Slug",
+          "slugPlaceholder": "z.B. mouser",
+          "type": "Typ",
+          "apiUrl": "API-URL",
+          "apiUrlPlaceholder": "https://api.example.com",
+          "apiKey": "API-Key",
+          "apiKeyPlaceholder": "Ihr API-Key",
+          "apiSecret": "API-Secret",
+          "apiSecretPlaceholder": "Ihr API-Secret (optional)",
+          "rateLimit": "Rate Limit (pro Minute)",
+          "description": "Beschreibung",
+          "descriptionPlaceholder": "Optionale Beschreibung der Quelle",
+          "active": "Aktiv"
+        },
+        "dialog": {
+          "createTitle": "Neue Import-Quelle",
+          "editTitle": "Import-Quelle bearbeiten",
+          "deleteTitle": "Import-Quelle löschen",
+          "deleteDescription": "Möchten Sie die Quelle \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        }
+      },
+      "mappings": {
+        "title": "Attribut-Mappings",
+        "description": "Definieren Sie, wie importierte Attribute auf ElectroVault-Attribute übersetzt werden",
+        "addNew": "Neues Mapping",
+        "empty": "Keine Mappings konfiguriert",
+        "emptyHint": "Fügen Sie Mappings hinzu, um Attribute automatisch zu übersetzen",
+        "global": "Globale Mappings",
+        "sourceSpecific": "Quellen-spezifisch",
+        "types": {
+          "ATTRIBUTE": "Attribut",
+          "CATEGORY": "Kategorie",
+          "MANUFACTURER": "Hersteller",
+          "UNIT": "Einheit"
+        },
+        "form": {
+          "source": "Import-Quelle",
+          "sourceGlobal": "Global (für alle Quellen)",
+          "type": "Mapping-Typ",
+          "sourceKey": "Quell-Schlüssel",
+          "sourceKeyPlaceholder": "z.B. Capacitance",
+          "sourceValue": "Quell-Wert (optional)",
+          "sourceValuePlaceholder": "Für wertbasiertes Mapping",
+          "targetAttribute": "Ziel-Attribut",
+          "targetCategory": "Ziel-Kategorie",
+          "targetManufacturer": "Ziel-Hersteller",
+          "conversionFactor": "Umrechnungsfaktor",
+          "conversionOffset": "Umrechnungs-Offset",
+          "parsePattern": "Parse-Pattern (Regex)",
+          "parsePatternPlaceholder": "z.B. (\\d+)\\s*([a-zA-Z]+)",
+          "priority": "Priorität",
+          "active": "Aktiv"
+        },
+        "dialog": {
+          "createTitle": "Neues Mapping",
+          "editTitle": "Mapping bearbeiten",
+          "deleteTitle": "Mapping löschen",
+          "deleteDescription": "Möchten Sie dieses Mapping wirklich löschen?"
+        }
+      },
+      "jobs": {
+        "title": "Import-Jobs",
+        "description": "Übersicht über laufende und abgeschlossene Imports",
+        "startNew": "Neuer Import",
+        "empty": "Keine Import-Jobs vorhanden",
+        "status": {
+          "PENDING": "Wartend",
+          "RUNNING": "Läuft",
+          "PAUSED": "Pausiert",
+          "COMPLETED": "Abgeschlossen",
+          "FAILED": "Fehlgeschlagen",
+          "CANCELLED": "Abgebrochen"
+        }
+      },
+      "stats": {
+        "sources": "Quellen",
+        "mappings": "Mappings",
+        "jobs": "Jobs",
+        "unmapped": "Unmapped"
+      }
+    },
     "components": {
       "title": "Bauteile verwalten",
       "new": "Neues Bauteil",
@@ -133,11 +432,491 @@
     },
     "moderation": {
       "title": "Moderation",
-      "pendingReviews": "Ausstehende Prüfungen"
+      "pendingReviews": "Ausstehende Prüfungen",
+      "approve": "Freigeben",
+      "reject": "Ablehnen",
+      "batchApproval": "Batch-Freigabe",
+      "confirmApprove": "Freigeben bestätigen",
+      "confirmApproveDescription": "Möchten Sie dieses {type} wirklich freigeben? Es wird anschließend öffentlich sichtbar sein.",
+      "confirmBatchApproval": "Möchten Sie {count} Elemente freigeben? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "rejectWithReason": "Ablehnen mit Begründung",
+      "rejectDescription": "Bitte geben Sie eine Begründung für die Ablehnung an. Diese wird dem Ersteller angezeigt.",
+      "rejectReasonLabel": "Begründung",
+      "rejectReasonPlaceholder": "Warum wird dieses Element abgelehnt?",
+      "rejectReasonHelp": "Eine aussagekräftige Begründung hilft dem Ersteller, die Ablehnung zu verstehen.",
+      "batchApproveButton": "{count} freigeben",
+      "typeComponent": "Bauteil",
+      "typePart": "Part",
+      "draft": "Entwurf"
     },
     "users": {
       "title": "Benutzer",
       "manage": "Benutzer verwalten"
+    },
+    "myDashboard": {
+      "title": "Mein Dashboard",
+      "stats": {
+        "componentsTotal": "Bauteile gesamt",
+        "componentsTotalDesc": "Von dir erstellte Bauteile",
+        "variants": "Varianten",
+        "variantsDesc": "Hersteller-Varianten",
+        "drafts": "Entwürfe",
+        "draftsDesc": "Noch nicht eingereicht",
+        "pending": "In Prüfung",
+        "pendingDesc": "Warten auf Moderation",
+        "published": "Veröffentlicht",
+        "archived": "Archiviert"
+      },
+      "draftsSection": {
+        "title": "Meine Entwürfe",
+        "description": "Entwürfe sind private Zwischenspeicher und noch nicht zur Moderation eingereicht.",
+        "newComponent": "Neues Bauteil",
+        "empty": "Keine Entwürfe vorhanden. Erstelle ein neues Bauteil und speichere es als Entwurf.",
+        "draftBadge": "Entwurf",
+        "noName": "[Kein Name]"
+      },
+      "activitySection": {
+        "title": "Aktivitätsverlauf",
+        "description": "Deine letzten Aktionen in ElectroVault",
+        "empty": "Noch keine Aktivitäten vorhanden."
+      },
+      "entities": {
+        "COMPONENT": "Bauteil",
+        "PART": "Variante",
+        "MANUFACTURER": "Hersteller",
+        "CATEGORY": "Kategorie",
+        "PACKAGE": "Bauform"
+      },
+      "error": "Dashboard konnte nicht geladen werden. Bitte versuche es erneut."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Neues Attribut",
+        "titleEdit": "Attribut bearbeiten",
+        "description": "Attribut-Definition für Bauteile"
+      },
+      "category": {
+        "title": "Neue Kategorie",
+        "titleEdit": "Kategorie bearbeiten",
+        "description": "Kategorie-Informationen und Attribute verwalten",
+        "saveFirst": "Speichern Sie zuerst die Kategorie, um Attribute hinzuzufügen"
+      },
+      "component": {
+        "title": "Neues Bauteil",
+        "titleEdit": "Bauteil bearbeiten",
+        "description": "Neues Bauteil erstellen - nach dem Speichern können Sie Hersteller-Varianten hinzufügen",
+        "descriptionEdit": "Bauteilinformationen und Hersteller-Varianten verwalten",
+        "saveFirstPinMapping": "Speichern Sie zuerst das Bauteil, um das Pin-Mapping zu bearbeiten",
+        "saveFirstParts": "Speichern Sie zuerst das Bauteil, um Hersteller-Varianten hinzuzufügen",
+        "saveFirstRelations": "Speichern Sie zuerst das Bauteil, um Beziehungen hinzuzufügen",
+        "createdWithVariants": "Bauteil wurde erstellt. Sie können jetzt Hersteller-Varianten hinzufügen",
+        "noPartsWarning": "Dieses Bauteil hat keine Hersteller-Varianten. Mindestens eine Variante ist erforderlich"
+      },
+      "manufacturer": {
+        "title": "Neuer Hersteller",
+        "titleEdit": "Hersteller bearbeiten",
+        "description": "Hersteller-Informationen verwalten"
+      },
+      "part": {
+        "title": "Neue Hersteller-Variante",
+        "titleEdit": "Hersteller-Variante bearbeiten",
+        "description": "Neue konkrete Hersteller-Variante eines Bauteils erstellen",
+        "descriptionEdit": "Informationen zur Hersteller-Variante ändern",
+        "saveFirstFiles": "Speichern Sie zuerst die Variante, um Dateien hochzuladen"
+      },
+      "package": {
+        "title": "Neue Bauform",
+        "titleEdit": "Bauform bearbeiten",
+        "description": "Package/Bauform-Informationen"
+      },
+      "packageGroup": {
+        "title": "Neue Bauform-Gruppe",
+        "titleEdit": "Bauform-Gruppe bearbeiten",
+        "description": "Gruppen helfen bei der Organisation von Bauformen"
+      },
+      "delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie dieses Element löschen möchten?",
+        "messageFile": "Möchten Sie diese Datei wirklich löschen?",
+        "messagePin": "Möchten Sie diesen Pin wirklich löschen?",
+        "message3dModel": "Möchten Sie dieses 3D-Modell wirklich löschen?",
+        "messageRelation": "Möchten Sie diese Beziehung wirklich löschen?"
+      }
+    },
+    "buttons": {
+      "saving": "Speichern...",
+      "saveAsDraft": "Als Entwurf speichern",
+      "update": "Aktualisieren",
+      "addPin": "Pin hinzufügen",
+      "addRelation": "Beziehung hinzufügen"
+    },
+    "messages": {
+      "success": "Erfolg",
+      "error": "Fehler",
+      "warning": "Warnung",
+      "attribute": {
+        "created": "Attribut wurde erstellt",
+        "updated": "Attribut wurde aktualisiert",
+        "deleted": "Attribut wurde gelöscht",
+        "loadFailed": "Attribute konnten nicht geladen werden",
+        "saveFailed": "Attribut konnte nicht gespeichert werden",
+        "deleteFailed": "Attribut konnte nicht gelöscht werden"
+      },
+      "category": {
+        "created": "Kategorie wurde erstellt",
+        "updated": "Kategorie wurde aktualisiert",
+        "deleted": "Kategorie wurde gelöscht",
+        "loadFailed": "Kategorien konnten nicht geladen werden",
+        "saveFailed": "Kategorie konnte nicht gespeichert werden",
+        "deleteFailed": "Kategorie konnte nicht gelöscht werden"
+      },
+      "component": {
+        "created": "Bauteil wurde erstellt",
+        "updated": "Bauteil wurde aktualisiert",
+        "deleted": "Bauteil wurde gelöscht",
+        "loadFailed": "Bauteile konnten nicht geladen werden",
+        "saveFailed": "Bauteil konnte nicht gespeichert werden",
+        "deleteFailed": "Bauteil konnte nicht gelöscht werden"
+      },
+      "manufacturer": {
+        "created": "Hersteller wurde erstellt",
+        "updated": "Hersteller wurde aktualisiert",
+        "deleted": "Hersteller wurde gelöscht",
+        "loadFailed": "Hersteller konnten nicht geladen werden",
+        "saveFailed": "Hersteller konnte nicht gespeichert werden",
+        "deleteFailed": "Hersteller konnte nicht gelöscht werden",
+        "logoUploaded": "Logo wurde hochgeladen",
+        "logoUploadFailed": "Logo konnte nicht hochgeladen werden"
+      },
+      "part": {
+        "created": "Variante wurde erstellt",
+        "updated": "Variante wurde aktualisiert",
+        "deleted": "Variante wurde gelöscht",
+        "loadFailed": "Varianten konnten nicht geladen werden",
+        "saveFailed": "Variante konnte nicht gespeichert werden",
+        "deleteFailed": "Variante konnte nicht gelöscht werden"
+      },
+      "package": {
+        "created": "Bauform wurde erstellt",
+        "updated": "Bauform wurde aktualisiert",
+        "deleted": "Bauform wurde gelöscht",
+        "loadFailed": "Bauformen konnten nicht geladen werden",
+        "saveFailed": "Bauform konnte nicht gespeichert werden",
+        "deleteFailed": "Bauform konnte nicht gelöscht werden"
+      },
+      "file": {
+        "uploaded": "Datei wurde hochgeladen",
+        "deleted": "Datei wurde gelöscht",
+        "uploadFailed": "Datei konnte nicht hochgeladen werden",
+        "deleteFailed": "Datei konnte nicht gelöscht werden",
+        "loadFailed": "Dateien konnten nicht geladen werden",
+        "downloadUrlFailed": "Download-URL konnte nicht generiert werden"
+      },
+      "pin": {
+        "created": "Pin wurde hinzugefügt",
+        "updated": "Pin wurde aktualisiert",
+        "deleted": "Pin wurde gelöscht",
+        "createFailed": "Pin konnte nicht erstellt werden",
+        "loadFailed": "Pins konnten nicht geladen werden",
+        "updateFailed": "Pin konnte nicht aktualisiert werden",
+        "deleteFailed": "Pin konnte nicht gelöscht werden"
+      },
+      "relation": {
+        "created": "Beziehung wurde hinzugefügt",
+        "deleted": "Beziehung wurde gelöscht",
+        "createFailed": "Beziehung konnte nicht erstellt werden",
+        "deleteFailed": "Beziehung konnte nicht gelöscht werden"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin-Mapping",
+      "addPin": "Pin hinzufügen",
+      "newPin": "Neuen Pin hinzufügen",
+      "pinNumber": "Pin-Nummer (z.B. 1, VCC)",
+      "pinName": "Pin-Name",
+      "selectType": "Pin-Typ auswählen",
+      "noDescription": "Keine Beschreibung",
+      "noType": "Kein Typ",
+      "loading": "Lädt Pins...",
+      "pinsCount": "{count} Pins",
+      "tabList": "Pin-Liste",
+      "tabBulkImport": "Bulk-Import",
+      "noPins": "Keine Pins definiert. Fügen Sie Pins einzeln hinzu oder nutzen Sie den Bulk-Import.",
+      "columnPinNumber": "Pin-Nr.",
+      "columnName": "Name",
+      "columnType": "Typ",
+      "columnFunction": "Funktion (DE)",
+      "columnActions": "Aktionen",
+      "functionPlaceholder": "z.B. Versorgungsspannung",
+      "deleteTitle": "Pin löschen?",
+      "deleteMessage": "Möchten Sie Pin {pinNumber} ({pinName}) wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "reorderSuccess": "Pin-Reihenfolge wurde aktualisiert",
+      "reorderFailed": "Reihenfolge konnte nicht geändert werden",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Beispiel:",
+        "typeHint": "pinTyp ist optional. Verfügbare Typen: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Pins im CSV-Format eingeben...",
+        "importButton": "Pins importieren",
+        "noPinsFound": "Keine gültigen Pin-Daten gefunden.",
+        "success": "{count} Pins wurden importiert.",
+        "failed": "Bulk-Import fehlgeschlagen."
+      }
+    },
+    "files": {
+      "uploadImage": "Produktbild hochladen",
+      "uploadDatasheet": "Datenblatt hochladen",
+      "uploadDocument": "Dokument hochladen",
+      "selectLanguage": "Sprache auswählen",
+      "noFiles": "Keine Dateien vorhanden",
+      "confirmDelete": "Datei löschen?",
+      "productImage": "Produktbild",
+      "productImageDescription": "Ein Vorschaubild für diese Hersteller-Variante",
+      "addImage": "Bild",
+      "imageDescription": "JPEG, PNG oder WebP (max. 10 MB)",
+      "noImageUploaded": "Noch kein Bild hochgeladen",
+      "datasheets": "Datenblätter",
+      "datasheetsDescription": "PDF-Datenblätter für diese Hersteller-Variante",
+      "addDatasheet": "Datenblatt",
+      "languagesRequired": "Sprachen des Datenblatts",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Mindestens eine Sprache muss ausgewählt werden",
+      "datasheetFileDescription": "PDF-Datei des Hersteller-Datenblatts",
+      "noDatasheets": "Noch keine Datenblätter hochgeladen",
+      "otherFiles": "Sonstige Dateien",
+      "otherFilesDescription": "Zusatzdokumente, Applikationshinweise, etc.",
+      "addDocument": "Dokument",
+      "languagesOptional": "Sprachen (optional)",
+      "anyFileDescription": "Beliebige Dateien (PDF, TXT, ZIP, etc.)",
+      "noDocuments": "Noch keine Dokumente hochgeladen",
+      "fileName": "Datei",
+      "fileSize": "Größe",
+      "languages": "Sprachen",
+      "actions": "Aktionen",
+      "imageCount": "{count} Bild",
+      "fileCount": "{count} Datei{plural}",
+      "datasheetCount": "{count} Datenblatt{plural}",
+      "imageUploaded": "Bild wurde hochgeladen",
+      "imageRemoved": "Bild wurde entfernt"
+    },
+    "model3d": {
+      "title": "3D-Modelle",
+      "confirmDelete": "3D-Modell löschen?",
+      "upload": "3D-Modell hochladen",
+      "noModels": "Keine 3D-Modelle vorhanden"
+    },
+    "lists": {
+      "searchPlaceholder": "Suchen...",
+      "searchByName": "Suchen nach Name oder Slug...",
+      "searchByNameCage": "Suchen nach Name, Slug oder CAGE Code...",
+      "noResults": "Keine Ergebnisse gefunden",
+      "createFirst": "Erstellen Sie den ersten Eintrag",
+      "noPackagesFound": "Keine Bauformen gefunden",
+      "createFirstPackage": "Erste Bauform erstellen"
+    },
+    "filters": {
+      "allStatus": "Alle Status",
+      "myDrafts": "Meine Entwürfe"
+    },
+    "manufacturer": {
+      "title": "Hersteller",
+      "count": "{count} Hersteller in der Datenbank",
+      "create": "Neuer Hersteller",
+      "createFirst": "Ersten Hersteller erstellen",
+      "deleteTitle": "Hersteller löschen?",
+      "deleteDescription": "Möchten Sie den Hersteller \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "status": {
+        "active": "Aktiv",
+        "acquired": "Übernommen",
+        "defunct": "Inaktiv"
+      }
+    },
+    "form": {
+      "package": "Bauform (Package)",
+      "selectPackage": "Bauform auswählen",
+      "noPackage": "Keine Bauform",
+      "editIn": "Bearbeiten in:",
+      "searchLanguage": "Sprache suchen...",
+      "noLanguageFound": "Keine Sprache gefunden",
+      "original": "Original",
+      "backToOverview": "Zurück zur Übersicht",
+      "name": "Name",
+      "nameDescription": "Der Name in Deutsch und/oder Englisch. Pflichtfeld wenn die Kategorie keine Label-Attribute hat",
+      "namePlaceholder": "Bauteilname",
+      "series": "Serie",
+      "seriesDescription": "Optionale Bauteil-Serie oder -Familie",
+      "seriesPlaceholder": "z.B. 74HC, ATmega",
+      "packageDescription": "Die physische Bauform (z.B. DIP-8, SOIC-8)",
+      "shortDescription": "Kurzbeschreibung",
+      "shortDescriptionDescription": "Ein kurzer Satz zur Beschreibung des Bauteils",
+      "shortDescriptionPlaceholder": "Kurze Beschreibung",
+      "fullDescription": "Ausführliche Beschreibung",
+      "fullDescriptionPlaceholder": "Ausführliche Beschreibung",
+      "attributesDescription": "Technische Attribute basierend auf der ausgewählten Kategorie",
+      "selectCategoryFirst": "Bitte wählen Sie zuerst eine Kategorie im Tab \"Stammdaten\"",
+      "pinMappingDescription": "Definieren Sie die Pin-Belegung für dieses Bauteil. Das Pin-Mapping gilt für alle Hersteller-Varianten",
+      "partsDescription": "Hersteller-spezifische Varianten dieses Bauteils",
+      "newVariant": "Neue Variante",
+      "close": "Schließen",
+      "parentCategory": "Übergeordnete Kategorie",
+      "parentCategoryPlaceholder": "Keine (Root-Kategorie)",
+      "parentCategoryDescription": "Leer lassen für eine Hauptkategorie (Level 0)",
+      "categoryName": "Kategoriename",
+      "categoryDescription": "Beschreibung",
+      "categoryDescriptionPlaceholder": "Beschreibung der Kategorie",
+      "sortOrder": "Sortierreihenfolge",
+      "sortOrderDescription": "Niedrigere Werte = weiter oben",
+      "status": "Status",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "icon": "Icon",
+      "iconUploadDescription": "Kategorie-Icon hochladen. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klicken oder Datei hierher ziehen.",
+      "iconMaxSize": "Icon darf maximal 5 MB groß sein.",
+      "iconAllowedTypes": "Nur JPEG, PNG, WebP oder SVG erlaubt.",
+      "iconUploaded": "Icon wurde hochgeladen.",
+      "iconUploadFailed": "Icon konnte nicht hochgeladen werden.",
+      "categoryCreatedIconFailed": "Kategorie erstellt, aber Icon-Upload fehlgeschlagen.",
+      "loading": "Lädt...",
+      "newAttribute": "Neues Attribut",
+      "ownAttributes": "Eigene Attribute ({count})",
+      "noOwnAttributes": "Keine eigenen Attribute definiert.",
+      "inheritedAttributes": "Vererbte Attribute ({count})",
+      "inheritedAttributesDescription": "Vererbte Attribute können nur in ihrer Ursprungs-Kategorie bearbeitet werden.",
+      "attributesInherited": "Attribute dieser Kategorie (werden an Unterkategorien vererbt)",
+      "cageCode": "CAGE Code",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-stelliger Code",
+      "country": "Land",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Website",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Hersteller-Logo hochladen. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klicken oder Datei hierher ziehen.",
+      "statusActive": "Aktiv",
+      "statusAcquired": "Übernommen",
+      "statusDefunct": "Inaktiv",
+      "foundedYear": "Gründungsjahr",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Auflösungsjahr",
+      "defunctYearPlaceholder": "2020",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Beschreibung",
+      "logoMaxSize": "Logo darf maximal 5 MB groß sein.",
+      "logoAllowedTypes": "Nur JPEG, PNG, WebP oder SVG erlaubt.",
+      "createdAsDraft": "Hersteller wurde als Entwurf gespeichert.",
+      "manufacturerCreatedLogoFailed": "Hersteller erstellt, aber Logo-Upload fehlgeschlagen.",
+      "save": "Speichern"
+    },
+    "audit": {
+      "created": "erstellt",
+      "updated": "aktualisiert",
+      "deleted": "gelöscht",
+      "restored": "wiederhergestellt",
+      "approved": "freigegeben",
+      "rejected": "abgelehnt"
+    },
+    "tabs": {
+      "basicInfo": "Grunddaten",
+      "attributes": "Attribute",
+      "pinMapping": "Pin-Mapping",
+      "parts": "Hersteller-Varianten",
+      "relations": "Beziehungen",
+      "files": "Dateien",
+      "details": "Stammdaten",
+      "pins": "Pin-Mapping",
+      "models": "3D-Modelle"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Hersteller",
+      "status": "Status",
+      "lifecycle": "Lifecycle",
+      "actions": "Aktionen",
+      "variantCount": "{count} Variante",
+      "variantCountPlural": "{count} Varianten",
+      "activeCount": "{count} aktiv",
+      "obsoleteCount": "{count} obsolet",
+      "unknown": "Unbekannt"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Eindeutiger Name der Bauform",
+      "group": "Gruppe",
+      "selectGroup": "Gruppe auswählen",
+      "noGroup": "Keine Gruppe",
+      "mountingType": "Gehäusetyp",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radial - Radial Bedrahtet",
+        "AXIAL": "Axial - Axial Bedrahtet",
+        "CHASSIS": "Chassis - Gehäusemontage",
+        "OTHER": "Sonstiges"
+      },
+      "pinCount": "Pin-Anzahl",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Länge (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Breite (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Höhe (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Rastermaß (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Abstand zwischen den Pins",
+      "jedecStandard": "JEDEC Standard",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA Standard",
+      "eiaPlaceholder": "0805",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Zusätzliche Informationen zur Bauform...",
+      "saveFirstModels": "Speichern Sie zuerst die Bauform, um 3D-Modelle hochzuladen.",
+      "modelsDescription": "3D-Modelle für diese Bauform (STEP, STL, 3MF, OBJ, etc.)"
+    },
+    "packageGroupForm": {
+      "namePlaceholder": "SMD Chips",
+      "nameDescription": "Name der Bauform-Gruppe",
+      "descriptionPlaceholder": "Beschreibung der Gruppe..."
+    },
+    "partForm": {
+      "coreComponent": "Generisches Bauteil",
+      "coreComponentDesc": "Das herstellerunabhängige Bauteil (z.B. 555 Timer)",
+      "manufacturer": "Hersteller",
+      "manufacturerDesc": "Der Hersteller dieser konkreten Variante (z.B. Texas Instruments)",
+      "manufacturerPlaceholder": "Hersteller auswählen",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "z.B. NE555P",
+      "mpnDesc": "Die eindeutige Herstellerteilenummer",
+      "orderingCode": "Bestellnummer",
+      "orderingCodePlaceholder": "Optional",
+      "orderingCodeDesc": "Alternative Bestellnummer (falls abweichend von MPN)",
+      "statusRecord": "Datensatz-Status",
+      "lifecycleStatus": "Lifecycle-Status",
+      "introductionYear": "Einführungsjahr",
+      "introductionYearPlaceholder": "z.B. 1972",
+      "discontinuedYear": "Einstellungsjahr",
+      "discontinuedYearPlaceholder": "z.B. 2020",
+      "rohsCompliant": "RoHS-konform",
+      "rohsDesc": "Erfüllt RoHS-Richtlinien",
+      "reachCompliant": "REACH-konform",
+      "reachDesc": "Erfüllt REACH-Verordnung",
+      "weight": "Gewicht (Gramm)",
+      "weightPlaceholder": "z.B. 0.5",
+      "dateCodeFormat": "Datumscodierung",
+      "dateCodePlaceholder": "z.B. YYWW",
+      "dateCodeDesc": "Format des Datumscodes auf dem Bauteil",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "z.B. 5962-01-123-4567",
+      "milSpec": "Militärspezifikation",
+      "milSpecPlaceholder": "z.B. MIL-PRF-38534",
+      "partAttributesDesc": "Hersteller-spezifische Attribute basierend auf der Kategorie des Bauteils.",
+      "partAttributesLabel": "Hersteller-spezifische Attribute",
+      "filesDesc": "Datenblätter, Bilder und andere Dateien für diese Hersteller-Variante verwalten.",
+      "close": "Schließen",
+      "selectComponent": "Bauteil auswählen"
     }
   },
   "errors": {
@@ -146,6 +925,7 @@
     "serverError": "Serverfehler"
   },
   "footer": {
+    "tagline": "Community-gepflegte Datenbank für elektrische Bauteile",
     "navigation": "Navigation",
     "community": "Community",
     "legal": "Rechtliches",
@@ -196,6 +976,25 @@
   "help": {
     "title": "Hilfe & FAQ",
     "subtitle": "Häufig gestellte Fragen",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Bauteile durchsuchen",
+        "description": "Finden Sie Komponenten in unserer Datenbank"
+      },
+      "createAccount": {
+        "title": "Account erstellen",
+        "description": "Tragen Sie zur Datenbank bei"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentation und Issues"
+      }
+    },
+    "contactCta": {
+      "title": "Ihre Frage wurde nicht beantwortet?",
+      "description": "Kontaktieren Sie uns gerne direkt.",
+      "button": "Kontakt aufnehmen"
+    },
     "general": {
       "title": "Allgemein",
       "what": {
@@ -238,10 +1037,16 @@
     "title": "Kontakt",
     "subtitle": "Haben Sie Fragen oder Anregungen?",
     "form": {
+      "heading": "Nachricht senden",
       "name": "Name",
       "email": "E-Mail",
       "subject": "Betreff",
       "message": "Nachricht",
+      "namePlaceholder": "Max Mustermann",
+      "emailPlaceholder": "max@beispiel.de",
+      "subjectPlaceholder": "Betreff Ihrer Nachricht",
+      "messagePlaceholder": "Ihre Nachricht...",
+      "demoNote": "Hinweis: Das Kontaktformular ist aktuell eine Demo. Die Backend-Integration erfolgt in einer späteren Phase. Nutzen Sie für wichtige Anfragen bitte GitHub oder die angegebene E-Mail-Adresse.",
       "send": "Nachricht senden",
       "sending": "Wird gesendet...",
       "success": "Nachricht erfolgreich gesendet!",
@@ -249,8 +1054,28 @@
     },
     "alternatives": {
       "title": "Weitere Kontaktmöglichkeiten",
+      "githubTitle": "GitHub Issues",
       "github": "Erstellen Sie ein Issue auf GitHub",
+      "emailTitle": "E-Mail",
       "email": "Senden Sie uns eine E-Mail"
+    },
+    "responseTime": {
+      "title": "Antwortzeiten",
+      "description": "Da ElectroVault ein Community-Projekt ist, werden Anfragen von Freiwilligen bearbeitet. Bitte haben Sie Geduld - wir antworten in der Regel innerhalb von 48 Stunden."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Community Support",
+        "description": "Nutzen Sie GitHub Discussions für allgemeine Fragen"
+      },
+      "bugReports": {
+        "title": "Bug Reports",
+        "description": "Melden Sie technische Probleme direkt auf GitHub"
+      },
+      "partnerships": {
+        "title": "Partneranfragen",
+        "description": "Für geschäftliche Anfragen nutzen Sie das Formular"
+      }
     }
   },
   "imprint": {

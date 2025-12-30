@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { CheckCircle, XCircle, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -42,6 +43,8 @@ export function ModerationActions({
   onBatchApprove,
   selectedCount,
 }: ModerationActionsProps) {
+  const t = useTranslations('admin.moderation');
+  const tCommon = useTranslations('common');
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [rejectComment, setRejectComment] = useState('');
 
@@ -61,20 +64,20 @@ export function ModerationActions({
           <AlertDialogTrigger asChild>
             <Button variant="default" size="sm">
               <CheckCircle className="h-4 w-4 mr-2" />
-              {selectedCount} freigeben
+              {t('batchApproveButton', { count: selectedCount })}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Batch-Freigabe</AlertDialogTitle>
+              <AlertDialogTitle>{t('batchApproval')}</AlertDialogTitle>
               <AlertDialogDescription>
-                Möchten Sie {selectedCount} Elemente freigeben? Diese Aktion kann nicht rückgängig gemacht werden.
+                {t('confirmBatchApproval', { count: selectedCount })}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+              <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
               <AlertDialogAction onClick={onBatchApprove}>
-                Freigeben
+                {t('approve')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -86,6 +89,8 @@ export function ModerationActions({
   // Single Item Actions
   if (!item) return null;
 
+  const itemType = item.type === 'COMPONENT' ? t('typeComponent') : t('typePart');
+
   return (
     <div className="flex gap-2 justify-end">
       {/* Approve Button */}
@@ -93,21 +98,20 @@ export function ModerationActions({
         <AlertDialogTrigger asChild>
           <Button variant="default" size="sm">
             <CheckCircle className="h-4 w-4 mr-2" />
-            Freigeben
+            {t('approve')}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Freigeben bestätigen</AlertDialogTitle>
+            <AlertDialogTitle>{t('confirmApprove')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Möchten Sie dieses {item.type === 'COMPONENT' ? 'Bauteil' : 'Part'} wirklich freigeben?
-              Es wird anschließend öffentlich sichtbar sein.
+              {t('confirmApproveDescription', { type: itemType })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={onApprove}>
-              Freigeben
+              {t('approve')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -118,39 +122,39 @@ export function ModerationActions({
         <DialogTrigger asChild>
           <Button variant="destructive" size="sm">
             <XCircle className="h-4 w-4 mr-2" />
-            Ablehnen
+            {t('reject')}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Ablehnen mit Begründung</DialogTitle>
+            <DialogTitle>{t('rejectWithReason')}</DialogTitle>
             <DialogDescription>
-              Bitte geben Sie eine Begründung für die Ablehnung an. Diese wird dem Ersteller angezeigt.
+              {t('rejectDescription')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="comment">
-                Begründung <span className="text-red-500">*</span>
+                {t('rejectReasonLabel')} <span className="text-red-500">*</span>
               </Label>
               <Textarea
                 id="comment"
-                placeholder="Warum wird dieses Element abgelehnt?"
+                placeholder={t('rejectReasonPlaceholder')}
                 value={rejectComment}
                 onChange={(e) => setRejectComment(e.target.value)}
                 rows={4}
                 className="resize-none"
               />
               <p className="text-sm text-muted-foreground">
-                Eine aussagekräftige Begründung hilft dem Ersteller, die Ablehnung zu verstehen.
+                {t('rejectReasonHelp')}
               </p>
             </div>
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setRejectDialogOpen(false)}>
-              Abbrechen
+              {tCommon('cancel')}
             </Button>
             <Button
               variant="destructive"
@@ -158,7 +162,7 @@ export function ModerationActions({
               disabled={!rejectComment.trim()}
             >
               <XCircle className="h-4 w-4 mr-2" />
-              Ablehnen
+              {t('reject')}
             </Button>
           </DialogFooter>
         </DialogContent>

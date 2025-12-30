@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { FileText, Image as ImageIcon, Trash2, ExternalLink, Plus, Loader2, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -23,17 +24,6 @@ import { useToast } from '@/hooks/use-toast';
 import { type FileAttachment } from '@/lib/api';
 import { formatFileSize } from '@/lib/utils';
 
-// Verfügbare Sprachen für die Auswahl
-const AVAILABLE_LANGUAGES = [
-  { code: 'de', label: 'Deutsch' },
-  { code: 'en', label: 'Englisch' },
-  { code: 'fr', label: 'Französisch' },
-  { code: 'es', label: 'Spanisch' },
-  { code: 'it', label: 'Italienisch' },
-  { code: 'zh', label: 'Chinesisch' },
-  { code: 'ja', label: 'Japanisch' },
-];
-
 interface PartFilesManagerProps {
   partId: string;
   /** Aktuelles Bild-URL des Parts (falls vorhanden) */
@@ -43,8 +33,22 @@ interface PartFilesManagerProps {
 }
 
 export function PartFilesManager({ partId, currentImageUrl, onImageChange }: PartFilesManagerProps) {
+  const t = useTranslations('admin');
+  const tLocale = useTranslations('locale');
+  const tCommon = useTranslations('common');
   const api = useApi();
   const { toast } = useToast();
+
+  // Verfügbare Sprachen für die Auswahl
+  const AVAILABLE_LANGUAGES = [
+    { code: 'de', label: tLocale('languages.de') },
+    { code: 'en', label: tLocale('languages.en') },
+    { code: 'fr', label: tLocale('languages.fr') },
+    { code: 'es', label: tLocale('languages.es') },
+    { code: 'it', label: tLocale('languages.it') },
+    { code: 'zh', label: tLocale('languages.zh') },
+    { code: 'ja', label: tLocale('languages.ja') },
+  ];
 
   const [files, setFiles] = useState<FileAttachment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,14 +77,14 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
     } catch (error) {
       console.error('Failed to load files:', error);
       toast({
-        title: 'Fehler',
-        description: 'Dateien konnten nicht geladen werden.',
+        title: t('messages.error'),
+        description: t('messages.file.loadFailed'),
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
-  }, [api, partId, toast]);
+  }, [api, partId, toast, t]);
 
   useEffect(() => {
     loadFiles();
@@ -97,8 +101,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
     setSelectedDatasheetLanguages([]);
     setSelectedOtherLanguages([]);
     toast({
-      title: 'Erfolg',
-      description: 'Datei wurde hochgeladen.',
+      title: t('messages.success'),
+      description: t('messages.file.uploaded'),
     });
   };
 
@@ -110,8 +114,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
       setShowUploadImage(false);
       setIsUploadingImage(false);
       toast({
-        title: 'Erfolg',
-        description: 'Bild wurde hochgeladen.',
+        title: t('messages.success'),
+        description: t('messages.file.imageUploaded'),
       });
     }
   };
@@ -121,8 +125,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
     setPartImageUrl(null);
     onImageChange?.(null);
     toast({
-      title: 'Erfolg',
-      description: 'Bild wurde entfernt.',
+      title: t('messages.success'),
+      description: t('messages.file.imageRemoved'),
     });
   };
 
@@ -134,13 +138,13 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
       await api.deleteFile(fileToDelete.id);
       setFiles(prev => prev.filter(f => f.id !== fileToDelete.id));
       toast({
-        title: 'Erfolg',
-        description: 'Datei wurde gelöscht.',
+        title: t('messages.success'),
+        description: t('messages.file.deleted'),
       });
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: 'Datei konnte nicht gelöscht werden.',
+        title: t('messages.error'),
+        description: t('messages.file.deleteFailed'),
         variant: 'destructive',
       });
     } finally {
@@ -155,8 +159,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
       window.open(result.data.url, '_blank');
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: 'Download-URL konnte nicht generiert werden.',
+        title: t('messages.error'),
+        description: t('messages.file.downloadUrlFailed'),
         variant: 'destructive',
       });
     }
@@ -204,13 +208,13 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base">Produktbild</CardTitle>
-              <CardDescription>Ein Vorschaubild für diese Hersteller-Variante</CardDescription>
+              <CardTitle className="text-base">{t('files.productImage')}</CardTitle>
+              <CardDescription>{t('files.productImageDescription')}</CardDescription>
             </div>
             {!partImageUrl && !showUploadImage && (
               <Button size="sm" onClick={() => setShowUploadImage(true)}>
                 <Plus className="mr-1 h-3 w-3" />
-                Bild
+                {t('files.addImage')}
               </Button>
             )}
           </div>
@@ -222,8 +226,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 type="part-image"
                 partId={partId}
                 onUpload={handleImageUploaded}
-                label="Produktbild hochladen"
-                description="JPEG, PNG oder WebP (max. 10 MB)"
+                label={t('files.uploadImage')}
+                description={t('files.imageDescription')}
               />
               <Button
                 variant="outline"
@@ -231,7 +235,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 className="mt-2"
                 onClick={() => setShowUploadImage(false)}
               >
-                Abbrechen
+                {tCommon('cancel')}
               </Button>
             </div>
           )}
@@ -242,7 +246,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={partImageUrl}
-                  alt="Produktbild"
+                  alt={t('files.productImage')}
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     // Fallback bei Ladefehler
@@ -269,7 +273,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
             </div>
           ) : !showUploadImage && (
             <p className="text-sm text-muted-foreground py-4 text-center">
-              Noch kein Bild hochgeladen
+              {t('files.noImageUploaded')}
             </p>
           )}
         </CardContent>
@@ -280,13 +284,13 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base">Datenblätter</CardTitle>
-              <CardDescription>PDF-Datenblätter für diese Hersteller-Variante</CardDescription>
+              <CardTitle className="text-base">{t('files.datasheets')}</CardTitle>
+              <CardDescription>{t('files.datasheetsDescription')}</CardDescription>
             </div>
             {!showUploadDatasheet && (
               <Button size="sm" onClick={() => setShowUploadDatasheet(true)}>
                 <Plus className="mr-1 h-3 w-3" />
-                Datenblatt
+                {t('files.addDatasheet')}
               </Button>
             )}
           </div>
@@ -297,7 +301,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
               {/* Sprach-Auswahl (Pflicht) */}
               <div>
                 <Label className="text-sm font-medium mb-2 block">
-                  Sprachen des Datenblatts <span className="text-destructive">*</span>
+                  {t('files.languagesRequired')} <span className="text-destructive">{t('files.requiredField')}</span>
                 </Label>
                 <div className="flex flex-wrap gap-3">
                   {AVAILABLE_LANGUAGES.map(lang => (
@@ -318,7 +322,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 </div>
                 {selectedDatasheetLanguages.length === 0 && (
                   <p className="text-xs text-destructive mt-1">
-                    Mindestens eine Sprache muss ausgewählt werden
+                    {t('files.selectAtLeastOneLanguage')}
                   </p>
                 )}
               </div>
@@ -329,8 +333,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 partId={partId}
                 languages={selectedDatasheetLanguages}
                 onUpload={handleFileUploaded}
-                label="Datenblatt hochladen"
-                description="PDF-Datei des Hersteller-Datenblatts"
+                label={t('files.uploadDatasheet')}
+                description={t('files.datasheetFileDescription')}
                 disabled={selectedDatasheetLanguages.length === 0}
               />
               <Button
@@ -341,23 +345,23 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                   setSelectedDatasheetLanguages([]);
                 }}
               >
-                Abbrechen
+                {tCommon('cancel')}
               </Button>
             </div>
           )}
 
           {datasheets.length === 0 && !showUploadDatasheet ? (
             <p className="text-sm text-muted-foreground py-4 text-center">
-              Noch keine Datenblätter hochgeladen
+              {t('files.noDatasheets')}
             </p>
           ) : datasheets.length > 0 && (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Datei</TableHead>
-                  <TableHead>Größe</TableHead>
-                  <TableHead>Sprachen</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
+                  <TableHead>{t('files.fileName')}</TableHead>
+                  <TableHead>{t('files.fileSize')}</TableHead>
+                  <TableHead>{t('files.languages')}</TableHead>
+                  <TableHead className="text-right">{t('files.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -404,13 +408,13 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-base">Sonstige Dateien</CardTitle>
-              <CardDescription>Zusatzdokumente, Applikationshinweise, etc.</CardDescription>
+              <CardTitle className="text-base">{t('files.otherFiles')}</CardTitle>
+              <CardDescription>{t('files.otherFilesDescription')}</CardDescription>
             </div>
             {!showUploadOther && (
               <Button size="sm" onClick={() => setShowUploadOther(true)}>
                 <Plus className="mr-1 h-3 w-3" />
-                Dokument
+                {t('files.addDocument')}
               </Button>
             )}
           </div>
@@ -421,7 +425,7 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
               {/* Sprach-Auswahl (Optional) */}
               <div>
                 <Label className="text-sm font-medium mb-2 block">
-                  Sprachen (optional)
+                  {t('files.languagesOptional')}
                 </Label>
                 <div className="flex flex-wrap gap-3">
                   {AVAILABLE_LANGUAGES.map(lang => (
@@ -448,8 +452,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                 partId={partId}
                 languages={selectedOtherLanguages.length > 0 ? selectedOtherLanguages : undefined}
                 onUpload={handleFileUploaded}
-                label="Dokument hochladen"
-                description="Beliebige Dateien (PDF, TXT, ZIP, etc.)"
+                label={t('files.uploadDocument')}
+                description={t('files.anyFileDescription')}
               />
               <Button
                 variant="outline"
@@ -459,23 +463,23 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
                   setSelectedOtherLanguages([]);
                 }}
               >
-                Abbrechen
+                {tCommon('cancel')}
               </Button>
             </div>
           )}
 
           {otherFiles.length === 0 && !showUploadOther ? (
             <p className="text-sm text-muted-foreground py-4 text-center">
-              Noch keine Dokumente hochgeladen
+              {t('files.noDocuments')}
             </p>
           ) : otherFiles.length > 0 && (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Datei</TableHead>
-                  <TableHead>Größe</TableHead>
-                  <TableHead>Sprachen</TableHead>
-                  <TableHead className="text-right">Aktionen</TableHead>
+                  <TableHead>{t('files.fileName')}</TableHead>
+                  <TableHead>{t('files.fileSize')}</TableHead>
+                  <TableHead>{t('files.languages')}</TableHead>
+                  <TableHead className="text-right">{t('files.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -518,13 +522,13 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
       {/* Zusammenfassung */}
       <div className="text-sm text-muted-foreground">
         {files.length === 0 && !partImageUrl ? (
-          'Keine Dateien vorhanden'
+          t('files.noFiles')
         ) : (
           <>
-            {partImageUrl && '1 Bild'}
+            {partImageUrl && t('files.imageCount', { count: 1 })}
             {partImageUrl && files.length > 0 && ' • '}
-            {files.length > 0 && `${files.length} Datei${files.length !== 1 ? 'en' : ''}`}
-            {datasheets.length > 0 && ` • ${datasheets.length} Datenblatt${datasheets.length !== 1 ? '-er' : ''}`}
+            {files.length > 0 && t('files.fileCount', { count: files.length, plural: files.length !== 1 ? 'en' : '' })}
+            {datasheets.length > 0 && ` • ${t('files.datasheetCount', { count: datasheets.length, plural: datasheets.length !== 1 ? '-er' : '' })}`}
           </>
         )}
       </div>
@@ -533,8 +537,8 @@ export function PartFilesManager({ partId, currentImageUrl, onImageChange }: Par
       <DeleteConfirmDialog
         open={!!fileToDelete}
         onOpenChange={(open) => !open && setFileToDelete(null)}
-        title="Datei löschen?"
-        description={`Möchten Sie die Datei "${fileToDelete?.originalName}" wirklich löschen?`}
+        title={t('files.confirmDelete')}
+        description={`${t('dialogs.delete.messageFile')} "${fileToDelete?.originalName}"?`}
         onConfirm={handleDelete}
       />
     </div>

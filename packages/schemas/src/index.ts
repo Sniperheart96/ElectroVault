@@ -91,6 +91,11 @@ export {
   UpdateCategorySchema,
   type CreateCategoryInput,
   type UpdateCategoryInput,
+  // Reorder Schemas
+  ReorderCategoryItemSchema,
+  BulkReorderCategoriesSchema,
+  type ReorderCategoryItem,
+  type BulkReorderCategoriesInput,
 } from './category';
 
 // ============================================
@@ -120,6 +125,17 @@ export {
 // PACKAGE SCHEMAS
 // ============================================
 export {
+  // PackageGroup Schemas
+  PackageGroupBaseSchema,
+  PackageGroupWithCountSchema,
+  CreatePackageGroupSchema,
+  UpdatePackageGroupSchema,
+  PackageGroupListQuerySchema,
+  type PackageGroupBase,
+  type PackageGroupWithCount,
+  type CreatePackageGroupInput,
+  type UpdatePackageGroupInput,
+  type PackageGroupListQuery,
   // Response Schemas
   PackageBaseSchema,
   EcadFootprintSchema,
@@ -191,10 +207,14 @@ export {
   type ChangeCategoryInput,
   // Query Schemas
   ComponentListQuerySchema,
+  AttributeFilterOperatorSchema,
   AttributeFilterSchema,
+  MultiSelectModeSchema,
   ComponentSearchQuerySchema,
   type ComponentListQuery,
+  type AttributeFilterOperator,
   type AttributeFilter,
+  type MultiSelectMode,
   type ComponentSearchQuery,
 } from './component';
 
@@ -259,6 +279,9 @@ export {
   CategoryAttributesQuerySchema,
   type AttributeListQuery,
   type CategoryAttributesQuery,
+  // Reorder Schemas
+  ReorderAttributesSchema,
+  type ReorderAttributesInput,
 } from './attribute';
 
 // ============================================
@@ -299,3 +322,104 @@ export {
   type ReorderPinInput,
   type BulkReorderPinsInput,
 } from './pin';
+
+// ============================================
+// LOCALE SCHEMAS
+// ============================================
+export {
+  // UI-Sprachen
+  SUPPORTED_UI_LOCALES,
+  DEFAULT_UI_LOCALE,
+  UILocaleSchema,
+  type UILocale,
+  // User Preferences
+  UserPreferencesSchema,
+  type UserPreferences,
+  // Cookie Konstanten
+  LOCALE_COOKIE_NAME,
+  LOCALE_COOKIE_MAX_AGE,
+  // RTL-Utilities
+  RTL_LOCALES,
+  isRTL,
+  // Locale Metadaten
+  LOCALE_METADATA,
+  getLocaleMetadata,
+} from './locale';
+
+// ============================================
+// IMPORT SCHEMAS
+// ============================================
+export {
+  // Enums
+  ImportSourceTypeSchema,
+  ImportJobStatusSchema,
+  ImportItemStatusSchema,
+  ImportMappingTypeSchema,
+  type ImportSourceType,
+  type ImportJobStatus,
+  type ImportItemStatus,
+  type ImportMappingType,
+  // Import Source Schemas
+  ImportSourceSchema,
+  ImportSourceWithStatsSchema,
+  CreateImportSourceSchema,
+  UpdateImportSourceSchema,
+  ImportSourceListQuerySchema,
+  type ImportSource,
+  type ImportSourceWithStats,
+  type CreateImportSourceInput,
+  type UpdateImportSourceInput,
+  type ImportSourceListQuery,
+  // Import Mapping Schemas
+  ImportMappingSchema,
+  ImportMappingWithRelationsSchema,
+  CreateImportMappingSchema,
+  UpdateImportMappingSchema,
+  ImportMappingListQuerySchema,
+  BulkCreateMappingsSchema,
+  type ImportMapping,
+  type ImportMappingWithRelations,
+  type CreateImportMappingInput,
+  type UpdateImportMappingInput,
+  type ImportMappingListQuery,
+  type BulkCreateMappingsInput,
+  // Import Job Schemas
+  ImportJobSchema,
+  ImportJobWithSourceSchema,
+  CreateFileImportJobSchema,
+  CreateApiImportJobSchema,
+  ImportJobListQuerySchema,
+  type ImportJob,
+  type ImportJobWithSource,
+  type CreateFileImportJobInput,
+  type CreateApiImportJobInput,
+  type ImportJobListQuery,
+  // Import Job Item Schemas
+  ImportJobItemSchema,
+  ImportJobItemWithRelationsSchema,
+  ImportJobItemListQuerySchema,
+  ResolveConflictSchema,
+  BulkResolveConflictsSchema,
+  type ImportJobItem,
+  type ImportJobItemWithRelations,
+  type ImportJobItemListQuery,
+  type ResolveConflictInput,
+  type BulkResolveConflictsInput,
+  // Unmapped Attribute Schemas
+  ImportUnmappedAttributeSchema,
+  ImportUnmappedAttributeWithSourceSchema,
+  ImportUnmappedAttributeListQuerySchema,
+  MapUnmappedAttributeSchema,
+  type ImportUnmappedAttribute,
+  type ImportUnmappedAttributeWithSource,
+  type ImportUnmappedAttributeListQuery,
+  type MapUnmappedAttributeInput,
+  // Preview Schemas
+  MappingPreviewInputSchema,
+  MappingPreviewResultSchema,
+  type MappingPreviewInput,
+  type MappingPreviewResult,
+  // Value Parser
+  ParsedValueSchema,
+  type ParsedValue,
+} from './import';

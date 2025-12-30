@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "create": "Luo",
+    "search": "Hae",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "previous": "Edellinen",
+    "noResults": "Tuloksia ei löytynyt",
+    "all": "Kaikki",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "actions": {
+      "details": "Yksityiskohdat"
+    }
+  },
+  "locale": {
+    "switch": "Vaihda kieli",
+    "current": "Nykyinen kieli",
+    "languages": {
+      "en": "Englanti",
+      "de": "Saksa",
+      "fr": "Ranska",
+      "es": "Espanja",
+      "zh": "Kiina",
+      "ja": "Japani",
+      "ko": "Korea",
+      "it": "Italia"
+    }
+  },
+  "nav": {
+    "home": "Etusivu",
+    "components": "Komponentit",
+    "categories": "Kategoriat",
+    "manufacturers": "Valmistajat",
+    "packages": "Kotelot",
+    "search": "Haku",
+    "admin": "Ylläpito",
+    "moderation": "Moderointi",
+    "myElectroVault": "Oma ElectroVault",
+    "login": "Kirjaudu",
+    "logout": "Kirjaudu ulos",
+    "profile": "Profiili"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Yhteisön ylläpitämä tietokanta elektroniikkakomponenteille",
+    "searchPlaceholder": "Hae komponentteja...",
+    "featuredCategories": "Suositut kategoriat",
+    "recentComponents": "Viimeisimmät komponentit",
+    "stats": {
+      "components": "Komponentit",
+      "manufacturers": "Valmistajat",
+      "categories": "Kategoriat",
+      "users": "Käyttäjät"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Yhteisön ylläpitämä tietokanta elektroniikkakomponenteille"
+    },
+    "stats": {
+      "components": "Komponentit",
+      "manufacturers": "Valmistajat",
+      "users": "Käyttäjät"
+    }
+  },
+  "packages": {
+    "title": "Kotelot",
+    "totalCount": "{count} koteloa tietokannassa",
+    "addNew": "Uusi kotelo",
+    "searchPlaceholder": "Hae nimellä tai slug-tunnuksella...",
+    "filterPlaceholder": "Kotelotyyppi",
+    "filterAll": "Kaikki tyypit",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radiaalinen",
+      "AXIAL": "Aksiaalinen",
+      "CHASSIS": "Runko",
+      "OTHER": "Muu"
+    },
+    "table": {
+      "name": "Nimi",
+      "type": "Tyyppi",
+      "pinCount": "Pin-määrä",
+      "dimensions": "Mitat (P x L x K mm)",
+      "pitch": "Rakoväli",
+      "actions": "Toiminnot"
+    },
+    "loading": "Ladataan...",
+    "noResults": "Koteloita ei löytynyt",
+    "noPackagesFound": "Koteloita ei löytynyt",
+    "createFirst": "Luo ensimmäinen kotelo",
+    "error": "Virhe",
+    "success": "Onnistui",
+    "loadError": "Koteloiden lataus epäonnistui.",
+    "deleteSuccess": "Kotelo poistettiin.",
+    "deleteError": "Kotelon poisto epäonnistui.",
+    "deleteDialog": {
+      "title": "Poista kotelo?",
+      "description": "Haluatko varmasti poistaa kotelon \"{name}\"? Tätä toimintoa ei voi perua."
+    }
+  },
+  "components": {
+    "title": "Komponentit",
+    "description": "Selaa laajaa elektroniikkakomponenttien tietokantaamme",
+    "filters": {
+      "category": "Kategoria",
+      "manufacturer": "Valmistaja",
+      "status": "Tila",
+      "mountingType": "Asennustyyppi"
+    },
+    "detail": {
+      "overview": "Yleiskatsaus",
+      "specifications": "Tekniset tiedot",
+      "datasheets": "Datalehdet",
+      "parts": "Valmistajan osat",
+      "history": "Versiohistoria",
+      "backToOverview": "Takaisin yleiskatsaukseen",
+      "category": "Kategoria",
+      "statistics": "Tilastot",
+      "manufacturerVariants": "Valmistajan variantit",
+      "activeVariants": "Aktiiviset variantit",
+      "additionalProperties": "Lisäominaisuudet",
+      "furtherProperties": "Tämän komponentin muut ominaisuudet",
+      "validForAllVariants": "Tekniset erittelyt (pätee kaikkiin variantteihin)",
+      "variantCount": "{count} valmistajan variantti",
+      "variantCountPlural": "{count} valmistajan varianttia",
+      "noVariantsAvailable": "Valmistajan variantteja ei ole saatavilla",
+      "noVariantsForComponent": "Tälle komponentille ei ole valmistajan variantteja.",
+      "noAttributesAvailable": "Attribuutteja ei ole saatavilla.",
+      "manufacturer": "Valmistaja",
+      "orderingCode": "Tilausnumero",
+      "details": "Yksityiskohdat",
+      "allInCategory": "Kaikki kategoriassa",
+      "status": "Tila",
+      "moreAttributes": "+{count} lisää"
+    },
+    "status": {
+      "DRAFT": "Luonnos",
+      "PENDING": "Odottaa",
+      "PUBLISHED": "Julkaistu",
+      "ARCHIVED": "Arkistoitu"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktiivinen",
+      "NRND": "Ei suositella uusiin suunnitelmiin",
+      "EOL": "Tuotanto päättyy",
+      "OBSOLETE": "Vanhentunut"
+    }
+  },
+  "categories": {
+    "title": "Kategoriat",
+    "browseAll": "Selaa kaikkia kategorioita",
+    "subcategories": "Alakategoriat",
+    "componentsInCategory": "Komponentit tässä kategoriassa"
+  },
+  "manufacturers": {
+    "title": "Valmistajat",
+    "status": {
+      "ACTIVE": "Aktiivinen",
+      "ACQUIRED": "Ostettu",
+      "DEFUNCT": "Lakkautettu"
+    }
+  },
+  "auth": {
+    "login": "Kirjaudu",
+    "logout": "Kirjaudu ulos",
+    "loginWith": "Kirjaudu palvelulla {provider}",
+    "welcome": "Tervetuloa takaisin",
+    "signInToContinue": "Kirjaudu jatkaaksesi",
+    "signIn": {
+      "title": "Kirjaudu sisään",
+      "description": "Kirjaudu tilillesi",
+      "button": "Kirjaudu Keycloakilla",
+      "loading": "Kirjaudutaan...",
+      "hint": "Sinut ohjataan Keycloakiin"
+    },
+    "signOut": {
+      "title": "Kirjaudu ulos",
+      "description": "Haluatko varmasti kirjautua ulos?",
+      "button": "Kirjaudu ulos",
+      "loading": "Kirjaudutaan ulos...",
+      "cancel": "Peruuta"
+    },
+    "error": {
+      "title": "Todennusvirhe",
+      "description": "Kirjautumisessa tapahtui virhe",
+      "tryAgain": "Yritä uudelleen",
+      "backHome": "Takaisin etusivulle"
+    },
+    "errors": {
+      "configuration": "Palvelimen määritysvirhe. Ole yhteydessä ylläpitäjään.",
+      "accessDenied": "Pääsy evätty. Sinulla ei ole oikeuksia.",
+      "verification": "Vahvistuslinkki on vanhentunut tai sitä on jo käytetty.",
+      "oauthSignin": "Virhe OAuth-kirjautumisen aloittamisessa.",
+      "oauthCallback": "Virhe OAuth-vastauksen käsittelyssä.",
+      "oauthCreateAccount": "Virhe käyttäjätilin luomisessa.",
+      "emailCreateAccount": "Virhe sähköpostitilin luomisessa.",
+      "callback": "Virhe vastauksen käsittelyssä.",
+      "oauthAccountNotLinked": "Tämä sähköposti on jo yhdistetty toiseen tiliin.",
+      "sessionRequired": "Kirjaudu sisään päästäksesi tälle sivulle.",
+      "default": "Tuntematon virhe tapahtui. Yritä uudelleen."
+    }
+  },
+  "admin": {
+    "dashboard": "Hallintapaneeli",
+    "sidebar": {
+      "dashboard": "Hallintapaneeli",
+      "moderation": "Moderointi",
+      "moderationDescription": "Hyväksyntäjono",
+      "users": "Käyttäjät",
+      "backToHome": "Etusivulle",
+      "user": "Käyttäjä",
+      "logout": "Kirjaudu ulos"
+    },
+    "components": {
+      "title": "Hallinnoi komponentteja",
+      "new": "Uusi komponentti",
+      "edit": "Muokkaa komponenttia"
+    },
+    "moderation": {
+      "title": "Moderointi",
+      "pendingReviews": "Odottavat tarkistukset",
+      "approve": "Hyväksy",
+      "reject": "Hylkää",
+      "batchApproval": "Massahyväksyntä",
+      "confirmApprove": "Vahvista hyväksyntä",
+      "confirmApproveDescription": "Haluatko varmasti hyväksyä tämän {type}? Se tulee julkisesti näkyväksi hyväksynnän jälkeen.",
+      "confirmBatchApproval": "Haluatko hyväksyä {count} kohdetta? Tätä toimintoa ei voi perua.",
+      "rejectWithReason": "Hylkää syyn kanssa",
+      "rejectDescription": "Anna perustelu hylkäämiselle. Tämä näytetään luojalle.",
+      "rejectReasonLabel": "Perustelu",
+      "rejectReasonPlaceholder": "Miksi tämä kohde hylätään?",
+      "rejectReasonHelp": "Kuvaava perustelu auttaa luojaa ymmärtämään hylkäämisen.",
+      "batchApproveButton": "Hyväksy {count}",
+      "typeComponent": "komponentti",
+      "typePart": "osa",
+      "draft": "Luonnos"
+    },
+    "users": {
+      "title": "Käyttäjät",
+      "manage": "Hallinnoi käyttäjiä"
+    },
+    "myDashboard": {
+      "title": "Oma hallintapaneeli",
+      "stats": {
+        "componentsTotal": "Komponentit yhteensä",
+        "componentsTotalDesc": "Luomasi komponentit",
+        "variants": "Variantit",
+        "variantsDesc": "Valmistajan variantit",
+        "drafts": "Luonnokset",
+        "draftsDesc": "Ei vielä lähetetty",
+        "pending": "Tarkistettavana",
+        "pendingDesc": "Odottaa moderointia",
+        "published": "Julkaistu",
+        "archived": "Arkistoitu"
+      },
+      "draftsSection": {
+        "title": "Luonnokseni",
+        "description": "Luonnokset ovat yksityisiä väliaikaistallennuksia, joita ei ole vielä lähetetty moderointiin.",
+        "newComponent": "Uusi komponentti",
+        "empty": "Ei luonnoksia. Luo uusi komponentti ja tallenna se luonnoksena.",
+        "draftBadge": "Luonnos",
+        "noName": "[Ei nimeä]"
+      },
+      "activitySection": {
+        "title": "Toimintahistoria",
+        "description": "Viimeisimmät toimintosi ElectroVaultissa",
+        "empty": "Ei vielä toimintoja."
+      },
+      "entities": {
+        "COMPONENT": "Komponentti",
+        "PART": "Variantti",
+        "MANUFACTURER": "Valmistaja",
+        "CATEGORY": "Kategoria",
+        "PACKAGE": "Kotelo"
+      },
+      "error": "Hallintapaneelin lataus epäonnistui. Yritä uudelleen."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Uusi attribuutti",
+        "titleEdit": "Muokkaa attribuuttia",
+        "description": "Attribuuttimääritys komponenteille"
+      },
+      "category": {
+        "title": "Uusi kategoria",
+        "titleEdit": "Muokkaa kategoriaa",
+        "description": "Hallinnoi kategorian tietoja ja attribuutteja",
+        "saveFirst": "Tallenna kategoria ensin lisätäksesi attribuutteja"
+      },
+      "component": {
+        "title": "Uusi komponentti",
+        "titleEdit": "Muokkaa komponenttia",
+        "description": "Luo uusi komponentti - tallennuksen jälkeen voit lisätä valmistajan variantteja",
+        "descriptionEdit": "Hallinnoi komponentin tietoja ja valmistajan variantteja",
+        "saveFirstPinMapping": "Tallenna komponentti ensin muokataksesi pin-kartoitusta",
+        "saveFirstParts": "Tallenna komponentti ensin lisätäksesi valmistajan variantteja",
+        "saveFirstRelations": "Tallenna komponentti ensin lisätäksesi suhteita",
+        "createdWithVariants": "Komponentti luotiin. Voit nyt lisätä valmistajan variantteja",
+        "noPartsWarning": "Tällä komponentilla ei ole valmistajan variantteja. Vähintään yksi variantti vaaditaan"
+      },
+      "manufacturer": {
+        "title": "Uusi valmistaja",
+        "titleEdit": "Muokkaa valmistajaa",
+        "description": "Hallinnoi valmistajan tietoja"
+      },
+      "part": {
+        "title": "Uusi variantti",
+        "titleEdit": "Muokkaa varianttia",
+        "description": "Luo uusi konkreettinen valmistajan variantti komponentista",
+        "descriptionEdit": "Muokkaa valmistajan variantin tietoja",
+        "saveFirstFiles": "Tallenna variantti ensin ladataksesi tiedostoja"
+      },
+      "package": {
+        "title": "Uusi kotelo",
+        "titleEdit": "Muokkaa koteloa",
+        "description": "Kotelo/jalanjälki tiedot"
+      },
+      "delete": {
+        "title": "Vahvista poisto",
+        "message": "Haluatko varmasti poistaa tämän kohteen?",
+        "messageFile": "Haluatko todella poistaa tämän tiedoston?",
+        "messagePin": "Haluatko todella poistaa tämän pin-määrityksen?",
+        "message3dModel": "Haluatko todella poistaa tämän 3D-mallin?",
+        "messageRelation": "Haluatko todella poistaa tämän suhteen?"
+      }
+    },
+    "buttons": {
+      "saving": "Tallennetaan...",
+      "saveAsDraft": "Tallenna luonnoksena",
+      "update": "Päivitä",
+      "addPin": "Lisää pin",
+      "addRelation": "Lisää suhde"
+    },
+    "messages": {
+      "success": "Onnistui",
+      "error": "Virhe",
+      "warning": "Varoitus",
+      "attribute": {
+        "created": "Attribuutti luotiin",
+        "updated": "Attribuutti päivitettiin",
+        "deleted": "Attribuutti poistettiin",
+        "loadFailed": "Attribuuttien lataus epäonnistui",
+        "saveFailed": "Attribuutin tallennus epäonnistui",
+        "deleteFailed": "Attribuutin poisto epäonnistui"
+      },
+      "category": {
+        "created": "Kategoria luotiin",
+        "updated": "Kategoria päivitettiin",
+        "deleted": "Kategoria poistettiin",
+        "loadFailed": "Kategorioiden lataus epäonnistui",
+        "saveFailed": "Kategorian tallennus epäonnistui",
+        "deleteFailed": "Kategorian poisto epäonnistui"
+      },
+      "component": {
+        "created": "Komponentti luotiin",
+        "updated": "Komponentti päivitettiin",
+        "deleted": "Komponentti poistettiin",
+        "loadFailed": "Komponenttien lataus epäonnistui",
+        "saveFailed": "Komponentin tallennus epäonnistui",
+        "deleteFailed": "Komponentin poisto epäonnistui"
+      },
+      "manufacturer": {
+        "created": "Valmistaja luotiin",
+        "updated": "Valmistaja päivitettiin",
+        "deleted": "Valmistaja poistettiin",
+        "loadFailed": "Valmistajien lataus epäonnistui",
+        "saveFailed": "Valmistajan tallennus epäonnistui",
+        "deleteFailed": "Valmistajan poisto epäonnistui",
+        "logoUploaded": "Logo ladattiin",
+        "logoUploadFailed": "Logon lataus epäonnistui"
+      },
+      "part": {
+        "created": "Variantti luotiin",
+        "updated": "Variantti päivitettiin",
+        "deleted": "Variantti poistettiin",
+        "loadFailed": "Varianttien lataus epäonnistui",
+        "saveFailed": "Variantin tallennus epäonnistui",
+        "deleteFailed": "Variantin poisto epäonnistui"
+      },
+      "package": {
+        "created": "Kotelo luotiin",
+        "updated": "Kotelo päivitettiin",
+        "deleted": "Kotelo poistettiin",
+        "loadFailed": "Koteloiden lataus epäonnistui",
+        "saveFailed": "Kotelon tallennus epäonnistui",
+        "deleteFailed": "Kotelon poisto epäonnistui"
+      },
+      "file": {
+        "uploaded": "Tiedosto ladattiin",
+        "deleted": "Tiedosto poistettiin",
+        "uploadFailed": "Tiedoston lataus epäonnistui",
+        "deleteFailed": "Tiedoston poisto epäonnistui",
+        "loadFailed": "Tiedostojen lataus epäonnistui",
+        "downloadUrlFailed": "Latauslinkin luonti epäonnistui"
+      },
+      "pin": {
+        "created": "Pin lisättiin",
+        "updated": "Pin päivitettiin",
+        "deleted": "Pin poistettiin",
+        "createFailed": "Pin-määrityksen luonti epäonnistui",
+        "loadFailed": "Pin-määritysten lataus epäonnistui",
+        "updateFailed": "Pin-määrityksen päivitys epäonnistui",
+        "deleteFailed": "Pin-määrityksen poisto epäonnistui"
+      },
+      "relation": {
+        "created": "Suhde lisättiin",
+        "deleted": "Suhde poistettiin",
+        "createFailed": "Suhteen luonti epäonnistui",
+        "deleteFailed": "Suhteen poisto epäonnistui"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin-kartoitus",
+      "addPin": "Lisää pin",
+      "newPin": "Lisää uusi pin",
+      "pinNumber": "Pin-numero (esim. 1, VCC)",
+      "pinName": "Pin-nimi",
+      "selectType": "Valitse pin-tyyppi",
+      "noDescription": "Ei kuvausta",
+      "noType": "Ei tyyppiä",
+      "loading": "Ladataan pin-määrityksiä...",
+      "pinsCount": "{count} pin-määritystä",
+      "tabList": "Pin-lista",
+      "tabBulkImport": "Massatuonti",
+      "noPins": "Ei pin-määrityksiä. Lisää pin-määrityksiä yksitellen tai käytä massatuontia.",
+      "columnPinNumber": "Pin-nro",
+      "columnName": "Nimi",
+      "columnType": "Tyyppi",
+      "columnFunction": "Toiminto (FI)",
+      "columnActions": "Toiminnot",
+      "functionPlaceholder": "esim. Käyttöjännite",
+      "deleteTitle": "Poista pin?",
+      "deleteMessage": "Haluatko varmasti poistaa pin {pinNumber} ({pinName})? Tätä toimintoa ei voi perua.",
+      "reorderSuccess": "Pin-järjestys päivitettiin",
+      "reorderFailed": "Järjestyksen muuttaminen epäonnistui",
+      "bulkImport": {
+        "formatLabel": "Muoto:",
+        "exampleLabel": "Esimerkki:",
+        "typeHint": "pinTyp on valinnainen. Saatavilla olevat tyypit: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Syötä pin-määritykset CSV-muodossa...",
+        "importButton": "Tuo pin-määritykset",
+        "noPinsFound": "Kelvollisia pin-tietoja ei löytynyt.",
+        "success": "{count} pin-määritystä tuotiin.",
+        "failed": "Massatuonti epäonnistui."
+      }
+    },
+    "files": {
+      "uploadImage": "Lataa tuotekuva",
+      "uploadDatasheet": "Lataa datalehti",
+      "uploadDocument": "Lataa asiakirja",
+      "selectLanguage": "Valitse kieli",
+      "noFiles": "Ei tiedostoja saatavilla",
+      "confirmDelete": "Poista tiedosto?",
+      "productImage": "Tuotekuva",
+      "productImageDescription": "Esikatselukuva tälle valmistajan variantille",
+      "addImage": "Kuva",
+      "imageDescription": "JPEG, PNG tai WebP (enintään 10 MB)",
+      "noImageUploaded": "Ei vielä ladattua kuvaa",
+      "datasheets": "Datalehdet",
+      "datasheetsDescription": "PDF-datalehdet tälle valmistajan variantille",
+      "addDatasheet": "Datalehti",
+      "languagesRequired": "Datalehden kielet",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Vähintään yksi kieli on valittava",
+      "datasheetFileDescription": "PDF-tiedosto valmistajan datalehdestä",
+      "noDatasheets": "Ei vielä ladattuja datalehtiä",
+      "otherFiles": "Muut tiedostot",
+      "otherFilesDescription": "Lisädokumentit, sovellusvinkit jne.",
+      "addDocument": "Asiakirja",
+      "languagesOptional": "Kielet (valinnainen)",
+      "anyFileDescription": "Mitkä tahansa tiedostot (PDF, TXT, ZIP jne.)",
+      "noDocuments": "Ei vielä ladattuja asiakirjoja",
+      "fileName": "Tiedosto",
+      "fileSize": "Koko",
+      "languages": "Kielet",
+      "actions": "Toiminnot",
+      "imageCount": "{count} kuva",
+      "fileCount": "{count} tiedosto{plural}",
+      "datasheetCount": "{count} datalehti{plural}",
+      "imageUploaded": "Kuva ladattiin",
+      "imageRemoved": "Kuva poistettiin"
+    },
+    "model3d": {
+      "title": "3D-mallit",
+      "confirmDelete": "Poista 3D-malli?",
+      "upload": "Lataa 3D-malli",
+      "noModels": "Ei 3D-malleja saatavilla"
+    },
+    "lists": {
+      "searchPlaceholder": "Hae...",
+      "searchByName": "Hae nimellä tai slug-tunnuksella...",
+      "searchByNameCage": "Hae nimellä, slug-tunnuksella tai CAGE-koodilla...",
+      "noResults": "Tuloksia ei löytynyt",
+      "createFirst": "Luo ensimmäinen merkintä",
+      "noPackagesFound": "Koteloita ei löytynyt",
+      "createFirstPackage": "Luo ensimmäinen kotelo"
+    },
+    "filters": {
+      "allStatus": "Kaikki tilat",
+      "myDrafts": "Luonnokseni"
+    },
+    "manufacturer": {
+      "title": "Valmistajat",
+      "count": "{count} valmistajaa tietokannassa",
+      "create": "Uusi valmistaja",
+      "createFirst": "Luo ensimmäinen valmistaja",
+      "deleteTitle": "Poista valmistaja?",
+      "deleteDescription": "Haluatko varmasti poistaa valmistajan \"{name}\"? Tätä toimintoa ei voi perua.",
+      "status": {
+        "active": "Aktiivinen",
+        "acquired": "Ostettu",
+        "defunct": "Lakkautettu"
+      }
+    },
+    "form": {
+      "package": "Kotelo",
+      "selectPackage": "Valitse kotelo",
+      "noPackage": "Ei koteloa",
+      "editIn": "Muokkaa kielellä:",
+      "searchLanguage": "Hae kieli...",
+      "noLanguageFound": "Kieltä ei löytynyt",
+      "original": "Alkuperäinen",
+      "backToOverview": "Takaisin yleiskatsaukseen",
+      "name": "Nimi",
+      "nameDescription": "Nimi saksaksi ja/tai englanniksi. Pakollinen, jos kategorialla ei ole label-attribuutteja",
+      "namePlaceholder": "Komponentin nimi",
+      "series": "Sarja",
+      "seriesDescription": "Valinnainen komponenttisarja tai -perhe",
+      "seriesPlaceholder": "esim. 74HC, ATmega",
+      "packageDescription": "Fyysinen kotelo (esim. DIP-8, SOIC-8)",
+      "shortDescription": "Lyhyt kuvaus",
+      "shortDescriptionDescription": "Lyhyt lause komponentin kuvaamiseksi",
+      "shortDescriptionPlaceholder": "Lyhyt kuvaus",
+      "fullDescription": "Yksityiskohtainen kuvaus",
+      "fullDescriptionPlaceholder": "Yksityiskohtainen kuvaus",
+      "attributesDescription": "Tekniset attribuutit valitun kategorian perusteella",
+      "selectCategoryFirst": "Valitse ensin kategoria välilehdeltä \"Stammdaten\"",
+      "pinMappingDescription": "Määrittele pin-kartoitus tälle komponentille. Pin-kartoitus pätee kaikkiin valmistajan variantteihin",
+      "partsDescription": "Valmistajaspesifiset variantit tästä komponentista",
+      "newVariant": "Uusi variantti",
+      "close": "Sulje",
+      "parentCategory": "Yläkategoria",
+      "parentCategoryPlaceholder": "Ei (pääkategoria)",
+      "parentCategoryDescription": "Jätä tyhjäksi pääkategorialle (taso 0)",
+      "categoryName": "Kategorian nimi",
+      "categoryDescription": "Kuvaus",
+      "categoryDescriptionPlaceholder": "Kategorian kuvaus",
+      "sortOrder": "Järjestys",
+      "sortOrderDescription": "Pienemmät arvot = ylempänä",
+      "status": "Tila",
+      "active": "Aktiivinen",
+      "inactive": "Ei aktiivinen",
+      "icon": "Kuvake",
+      "iconUploadDescription": "Lataa kategorian kuvake. Enintään 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klikkaa tai vedä tiedosto tähän.",
+      "iconMaxSize": "Kuvake saa olla enintään 5 MB.",
+      "iconAllowedTypes": "Vain JPEG, PNG, WebP tai SVG sallittu.",
+      "iconUploaded": "Kuvake ladattiin.",
+      "iconUploadFailed": "Kuvakkeen lataus epäonnistui.",
+      "categoryCreatedIconFailed": "Kategoria luotiin, mutta kuvakkeen lataus epäonnistui.",
+      "loading": "Ladataan...",
+      "newAttribute": "Uusi attribuutti",
+      "ownAttributes": "Omat attribuutit ({count})",
+      "noOwnAttributes": "Ei omia attribuutteja määritelty.",
+      "inheritedAttributes": "Perityt attribuutit ({count})",
+      "inheritedAttributesDescription": "Perittyjä attribuutteja voi muokata vain niiden alkuperäisessä kategoriassa.",
+      "attributesInherited": "Tämän kategorian attribuutit (periytyvät alakategorioille)",
+      "cageCode": "CAGE-koodi",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-numeroinen koodi",
+      "country": "Maa",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Verkkosivusto",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Lataa valmistajan logo. Enintään 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klikkaa tai vedä tiedosto tähän.",
+      "statusActive": "Aktiivinen",
+      "statusAcquired": "Ostettu",
+      "statusDefunct": "Lakkautettu",
+      "foundedYear": "Perustusvuosi",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Lakkauttamisvuosi",
+      "defunctYearPlaceholder": "2020",
+      "description": "Kuvaus",
+      "descriptionPlaceholder": "Kuvaus",
+      "logoMaxSize": "Logo saa olla enintään 5 MB.",
+      "logoAllowedTypes": "Vain JPEG, PNG, WebP tai SVG sallittu.",
+      "createdAsDraft": "Valmistaja tallennettiin luonnoksena.",
+      "manufacturerCreatedLogoFailed": "Valmistaja luotiin, mutta logon lataus epäonnistui.",
+      "save": "Tallenna"
+    },
+    "audit": {
+      "created": "luotu",
+      "updated": "päivitetty",
+      "deleted": "poistettu",
+      "restored": "palautettu",
+      "approved": "hyväksytty",
+      "rejected": "hylätty"
+    },
+    "tabs": {
+      "basicInfo": "Perustiedot",
+      "attributes": "Attribuutit",
+      "pinMapping": "Pin-kartoitus",
+      "parts": "Valmistajan variantit",
+      "relations": "Suhteet",
+      "files": "Tiedostot",
+      "details": "Perustiedot",
+      "pins": "Pin-kartoitus",
+      "models": "3D-mallit"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Valmistaja",
+      "status": "Tila",
+      "lifecycle": "Elinkaari",
+      "actions": "Toiminnot",
+      "variantCount": "{count} variantti",
+      "variantCountPlural": "{count} varianttia",
+      "activeCount": "{count} aktiivinen",
+      "obsoleteCount": "{count} vanhentunut",
+      "unknown": "Tuntematon"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Kotelon yksilöllinen nimi",
+      "mountingType": "Kotelotyyppi",
+      "mountingTypes": {
+        "SMD": "SMD - Pintaliitos",
+        "THT": "THT - Läpireikäliitos",
+        "RADIAL": "Radiaalinen - Radiaaliliitos",
+        "AXIAL": "Aksiaalinen - Aksiaaliliitos",
+        "CHASSIS": "Runko - Runkokiinnitys",
+        "OTHER": "Muu"
+      },
+      "pinCount": "Pin-määrä",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Pituus (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Leveys (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Korkeus (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Rakoväli (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Pin-välien etäisyys",
+      "jedecStandard": "JEDEC-standardi",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA-standardi",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "Piirustus-URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Linkki tekniseen piirustukseen tai datalehteen",
+      "description": "Kuvaus",
+      "descriptionPlaceholder": "Lisätietoja kotelosta...",
+      "saveFirstModels": "Tallenna kotelo ensin ladataksesi 3D-malleja.",
+      "modelsDescription": "3D-mallit tälle kotelolle (STEP, STL, 3MF, OBJ jne.)"
+    },
+    "partForm": {
+      "coreComponent": "Yleinen komponentti",
+      "coreComponentDesc": "Valmistajariippumaton komponentti (esim. 555 Timer)",
+      "manufacturer": "Valmistaja",
+      "manufacturerDesc": "Tämän konkreettisen variantin valmistaja (esim. Texas Instruments)",
+      "manufacturerPlaceholder": "Valitse valmistaja",
+      "mpn": "MPN (Valmistajan osanumero)",
+      "mpnPlaceholder": "esim. NE555P",
+      "mpnDesc": "Yksilöllinen valmistajan osanumero",
+      "orderingCode": "Tilausnumero",
+      "orderingCodePlaceholder": "Valinnainen",
+      "orderingCodeDesc": "Vaihtoehtoinen tilausnumero (jos eri kuin MPN)",
+      "statusRecord": "Tietueen tila",
+      "lifecycleStatus": "Elinkaaren tila",
+      "introductionYear": "Julkaisuvuosi",
+      "introductionYearPlaceholder": "esim. 1972",
+      "discontinuedYear": "Lopettumisvuosi",
+      "discontinuedYearPlaceholder": "esim. 2020",
+      "rohsCompliant": "RoHS-yhteensopiva",
+      "rohsDesc": "Täyttää RoHS-direktiivin",
+      "reachCompliant": "REACH-yhteensopiva",
+      "reachDesc": "Täyttää REACH-asetuksen",
+      "weight": "Paino (grammaa)",
+      "weightPlaceholder": "esim. 0.5",
+      "dateCodeFormat": "Päivämääräkoodi",
+      "dateCodePlaceholder": "esim. YYWW",
+      "dateCodeDesc": "Komponentin päivämääräkoodin muoto",
+      "nsn": "NSN (NATO-varastonumero)",
+      "nsnPlaceholder": "esim. 5962-01-123-4567",
+      "milSpec": "Sotilasstandardi",
+      "milSpecPlaceholder": "esim. MIL-PRF-38534",
+      "partAttributesDesc": "Valmistajaspesifiset attribuutit komponentin kategorian perusteella.",
+      "partAttributesLabel": "Valmistajaspesifiset attribuutit",
+      "filesDesc": "Hallinnoi datalehtiä, kuvia ja muita tiedostoja tälle valmistajan variantille.",
+      "close": "Sulje",
+      "selectComponent": "Valitse komponentti"
+    }
+  },
+  "errors": {
+    "notFound": "Sivua ei löytynyt",
+    "unauthorized": "Ei valtuutusta",
+    "serverError": "Palvelinvirhe"
+  },
+  "footer": {
+    "tagline": "Yhteisön ylläpitämä elektroniikkakomponenttien tietokanta",
+    "navigation": "Navigointi",
+    "community": "Yhteisö",
+    "legal": "Oikeudelliset",
+    "about": "Tietoa",
+    "help": "Ohje",
+    "contact": "Yhteystiedot",
+    "contribute": "Osallistu",
+    "github": "GitHub",
+    "privacy": "Tietosuoja",
+    "imprint": "Vastuuvapauslauseke",
+    "copyright": "Avoimen lähdekoodin MIT-lisenssillä"
+  },
+  "about": {
+    "title": "Tietoa ElectroVaultista",
+    "subtitle": "Yhteisön ylläpitämä tietokanta elektroniikkakomponenteille",
+    "mission": {
+      "title": "Tehtävämme",
+      "description": "ElectroVault on ilmainen ja avoin tietokanta elektroniikkakomponenteille - historiallisista elektronputkista moderniin nanoteknologiaan. Tavoitteemme on säilyttää tieto elektroniikkakomponenteista ja tehdä se kaikkien saataville."
+    },
+    "features": {
+      "title": "Ominaisuudet",
+      "comprehensive": {
+        "title": "Kattava tietokanta",
+        "description": "Vastuksista ja kondensaattoreista korkeasti integroituihin piireihin - dokumentoimme kaikki tärkeät komponentit yksityiskohtaisine erittelyineen."
+      },
+      "historical": {
+        "title": "Historiallinen arkisto",
+        "description": "Historiallisten komponenttien dokumentointi vanhojen laitteiden korjausta ja kunnostusta varten."
+      },
+      "community": {
+        "title": "Yhteisövetoinen",
+        "description": "Kaikki voivat osallistua ja jakaa tietämystään. Yhdessä rakennamme kattavimman komponenttitietokannan."
+      },
+      "open": {
+        "title": "Avoimen lähdekoodin",
+        "description": "Täysin läpinäkyvä ja vapaasti saatavilla MIT-lisenssillä."
+      }
+    },
+    "contribute": {
+      "title": "Osallistu",
+      "description": "ElectroVault elää yhteisöstään. Tässä joitakin tapoja osallistua:",
+      "dataEntry": "Lisää tai muokkaa komponentteja",
+      "datasheets": "Lataa datalehtiä",
+      "code": "Koodipanokset GitHubissa",
+      "feedback": "Palaute ja parannusehdotukset"
+    }
+  },
+  "help": {
+    "title": "Ohje & UKK",
+    "subtitle": "Usein kysytyt kysymykset",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Selaa komponentteja",
+        "description": "Etsi komponentteja tietokannastamme"
+      },
+      "createAccount": {
+        "title": "Luo tili",
+        "description": "Osallistu tietokantaan"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentaatio ja ilmoitukset"
+      }
+    },
+    "contactCta": {
+      "title": "Kysymykseesi ei vastattu?",
+      "description": "Ota meihin yhteyttä suoraan.",
+      "button": "Ota yhteyttä"
+    },
+    "general": {
+      "title": "Yleistä",
+      "what": {
+        "question": "Mikä on ElectroVault?",
+        "answer": "ElectroVault on ilmainen, yhteisön ylläpitämä tietokanta sähkö- ja elektroniikkakomponenteille. Dokumentoimme komponentit historiallisista elektronputkista moderneihin integroituihin piireihin kattavine metatietoineen, datalehtiä ja erittelyineen."
+      },
+      "free": {
+        "question": "Onko ElectroVault ilmainen?",
+        "answer": "Kyllä, ElectroVault on täysin ilmainen ja avoimen lähdekoodin. Sekä käyttö että lähdekoodi ovat vapaasti saatavilla."
+      }
+    },
+    "search": {
+      "title": "Haku",
+      "how": {
+        "question": "Miten löydän tietyn komponentin?",
+        "answer": "Käytä hakutoimintoa oikeassa yläkulmassa tai selaa kategorioita. Voit hakea osanumerolla, valmistajalla tai ominaisuuksilla."
+      },
+      "filters": {
+        "question": "Mitä suodattimia on saatavilla?",
+        "answer": "Voit suodattaa kategorian, valmistajan, tilan (aktiivinen/vanhentunut), kotelotyypin ja monien muiden teknisten parametrien mukaan."
+      }
+    },
+    "contribute": {
+      "title": "Osallistuminen",
+      "account": {
+        "question": "Tarvitsenko tilin osallistuakseni?",
+        "answer": "Kyllä, komponenttien lisäämiseen tai muokkaamiseen tarvitset ilmaisen tilin. Tämä auttaa meitä varmistamaan tiedon laadun."
+      },
+      "how": {
+        "question": "Miten voin lisätä komponentin?",
+        "answer": "Kirjautumisen jälkeen voit luoda uusia komponentteja 'Uusi komponentti' -painikkeella komponenttien yleiskatsauksessa. Moderaattori tarkistaa panoksesi ennen julkaisua."
+      },
+      "quality": {
+        "question": "Miten tiedon laatu varmistetaan?",
+        "answer": "Kaikki panokset tarkistetaan kokeneiden moderaattorien toimesta. Lisäksi rekisteröityneet käyttäjät voivat ehdottaa korjauksia."
+      }
+    }
+  },
+  "contact": {
+    "title": "Yhteystiedot",
+    "subtitle": "Onko sinulla kysymyksiä tai ehdotuksia?",
+    "form": {
+      "heading": "Lähetä viesti",
+      "name": "Nimi",
+      "email": "Sähköposti",
+      "subject": "Aihe",
+      "message": "Viesti",
+      "namePlaceholder": "Matti Meikäläinen",
+      "emailPlaceholder": "matti@esimerkki.fi",
+      "subjectPlaceholder": "Viestisi aihe",
+      "messagePlaceholder": "Viestisi...",
+      "demoNote": "Huomautus: Yhteydenottolomake on tällä hetkellä demo. Backend-integrointi tehdään myöhemmässä vaiheessa. Tärkeisiin kyselyihin käytä GitHubia tai annettua sähköpostiosoitetta.",
+      "send": "Lähetä viesti",
+      "sending": "Lähetetään...",
+      "success": "Viesti lähetetty onnistuneesti!",
+      "error": "Virhe viestin lähetyksessä"
+    },
+    "alternatives": {
+      "title": "Muut yhteydenottovaihtoehdot",
+      "githubTitle": "GitHub Issues",
+      "github": "Luo issue GitHubissa",
+      "emailTitle": "Sähköposti",
+      "email": "Lähetä meille sähköpostia"
+    },
+    "responseTime": {
+      "title": "Vastausajat",
+      "description": "Koska ElectroVault on yhteisöprojekti, kyselyjä käsittelevät vapaaehtoiset. Ole kärsivällinen - vastaamme yleensä 48 tunnin kuluessa."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Yhteisötuki",
+        "description": "Käytä GitHub Discussions yleisiin kysymyksiin"
+      },
+      "bugReports": {
+        "title": "Virheilmoitukset",
+        "description": "Ilmoita tekniset ongelmat suoraan GitHubissa"
+      },
+      "partnerships": {
+        "title": "Yhteistyökyselyt",
+        "description": "Liiketoiminnallisiin kyselyihin käytä lomaketta"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Vastuuvapauslauseke",
+    "responsible": "Sisällöstä vastaava",
+    "contact": "Yhteystiedot",
+    "disclaimer": {
+      "title": "Vastuuvapautus",
+      "content": "Huolellisesta sisällönvalvonnasta huolimatta emme ota vastuuta ulkoisten linkkien sisällöstä. Linkitettyjen sivujen ylläpitäjät ovat yksin vastuussa niiden sisällöstä.",
+      "liability": "Näiden sivujen sisältö on luotu suurimmalla huolellisuudella. Emme kuitenkaan voi taata sisällön tarkkuutta, täydellisyyttä ja ajantasaisuutta."
+    },
+    "opensource": {
+      "title": "Avoimen lähdekoodin",
+      "description": "ElectroVault on avoimen lähdekoodin projekti MIT-lisenssillä. Lähdekoodi on saatavilla GitHubissa."
+    }
+  },
+  "privacy": {
+    "title": "Tietosuojakäytäntö",
+    "lastUpdated": "Viimeksi päivitetty",
+    "intro": "Otamme henkilötietojesi suojan erittäin vakavasti. Tämä tietosuojakäytäntö kertoo henkilötietojen käsittelyn luonteesta, laajuudesta ja tarkoituksesta.",
+    "responsible": {
+      "title": "Rekisterinpitäjä",
+      "description": "Tämän verkkosivuston tietojenkäsittelystä vastaa:"
+    },
+    "collection": {
+      "title": "Henkilötietojen kerääminen ja tallentaminen",
+      "description": "Kun vierailet verkkosivustollamme, tietoja kerätään automaattisesti, jotka selaimesi välittää:",
+      "data": "IP-osoite, pääsyn päivämäärä ja aika, selaimen tyyppi ja versio, käytetty käyttöjärjestelmä, viittaava URL"
+    },
+    "cookies": {
+      "title": "Evästeet",
+      "description": "Verkkosivustomme käyttää evästeitä. Evästeet ovat pieniä tekstitiedostoja, jotka tallennetaan laitteeseesi.",
+      "essential": "Teknisesti välttämättömät evästeet todennusta ja istunnon hallintaa varten",
+      "functional": "Toiminnalliset evästeet käyttökokemuksen parantamiseksi"
+    },
+    "auth": {
+      "title": "Todennus",
+      "description": "Käytämme Keycloakia rekisteröitymiseen ja kirjautumiseen. Seuraavat tiedot tallennetaan:",
+      "data": "Käyttäjätunnus, sähköpostiosoite, profiilikuva (valinnainen), rooli ja käyttöoikeudet"
+    },
+    "rights": {
+      "title": "Oikeutesi",
+      "description": "Sinulla on seuraavat oikeudet henkilötietoihisi liittyen:",
+      "access": "Oikeus päästä tietoihin",
+      "correction": "Oikeus oikaista tietoja",
+      "deletion": "Oikeus tietojen poistamiseen",
+      "restriction": "Oikeus käsittelyn rajoittamiseen",
+      "portability": "Oikeus tietojen siirrettävyyteen",
+      "objection": "Oikeus vastustaa"
+    },
+    "contact": {
+      "title": "Yhteystiedot tietosuojakysymyksiin",
+      "description": "Jos sinulla on kysymyksiä tietosuojasta, voit ottaa meihin yhteyttä milloin tahansa."
+    }
+  }
+}

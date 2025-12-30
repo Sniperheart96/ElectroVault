@@ -19,7 +19,6 @@ export const CategoryBaseSchema = z.object({
   description: LocalizedStringNullableSchema,
   iconUrl: z.string().nullable(),
   sortOrder: z.number(),
-  isActive: z.boolean(),
   parentId: UUIDSchema.nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
@@ -78,7 +77,6 @@ export type CategoryWithAttributes = z.infer<typeof CategoryWithAttributesSchema
 export const CategoryListQuerySchema = PaginationSchema.merge(SortSchema).extend({
   level: z.coerce.number().int().min(0).max(4).optional(),
   parentId: UUIDSchema.optional(),
-  isActive: z.coerce.boolean().optional(),
   search: z.string().max(100).optional(),
 });
 
@@ -90,7 +88,6 @@ export type CategoryListQuery = z.infer<typeof CategoryListQuerySchema>;
 export const CategoryTreeQuerySchema = z.object({
   rootId: UUIDSchema.optional(), // Starte von dieser Kategorie
   maxDepth: z.coerce.number().int().min(0).max(4).default(4),
-  includeInactive: z.coerce.boolean().default(false),
 });
 
 export type CategoryTreeQuery = z.infer<typeof CategoryTreeQuerySchema>;
@@ -125,22 +122,42 @@ export const CreateCategorySchema = z.object({
   parentId: UUIDSchema.optional().nullable(),
   description: LocalizedStringNullableOptionalSchema,
   iconUrl: z.string().url().optional().nullable(),
-  sortOrder: z.number().int().min(0).default(0),
-  isActive: z.boolean().default(true),
 });
 
 export type CreateCategoryInput = z.infer<typeof CreateCategorySchema>;
 
 /**
  * Schema zum Aktualisieren einer Kategorie
+ * Hinweis: parentId und sortOrder können nach Erstellung nicht mehr geändert werden
  */
 export const UpdateCategorySchema = z.object({
   name: LocalizedStringSchema.optional(),
-  parentId: UUIDSchema.optional().nullable(),
   description: LocalizedStringNullableOptionalSchema,
   iconUrl: z.string().url().optional().nullable(),
-  sortOrder: z.number().int().min(0).optional(),
-  isActive: z.boolean().optional(),
 });
 
 export type UpdateCategoryInput = z.infer<typeof UpdateCategorySchema>;
+
+// ============================================
+// CATEGORY REORDER SCHEMAS
+// ============================================
+
+/**
+ * Schema für ein Element beim Umsortieren
+ */
+export const ReorderCategoryItemSchema = z.object({
+  id: UUIDSchema,
+  sortOrder: z.number().int().min(0),
+});
+
+export type ReorderCategoryItem = z.infer<typeof ReorderCategoryItemSchema>;
+
+/**
+ * Schema für Bulk-Umsortierung von Kategorien
+ */
+export const BulkReorderCategoriesSchema = z.object({
+  parentId: UUIDSchema.nullable(),
+  categories: z.array(ReorderCategoryItemSchema).min(1),
+});
+
+export type BulkReorderCategoriesInput = z.infer<typeof BulkReorderCategoriesSchema>;

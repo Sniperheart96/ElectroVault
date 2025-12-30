@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Laster...",
+    "error": "Feil",
+    "save": "Lagre",
+    "cancel": "Avbryt",
+    "delete": "Slett",
+    "edit": "Rediger",
+    "create": "Opprett",
+    "search": "Søk",
+    "back": "Tilbake",
+    "next": "Neste",
+    "previous": "Forrige",
+    "noResults": "Ingen resultater funnet",
+    "all": "Alle",
+    "yes": "Ja",
+    "no": "Nei",
+    "actions": {
+      "details": "Detaljer"
+    }
+  },
+  "locale": {
+    "switch": "Bytt språk",
+    "current": "Gjeldende språk",
+    "languages": {
+      "en": "Engelsk",
+      "de": "Tysk",
+      "fr": "Fransk",
+      "es": "Spansk",
+      "zh": "Kinesisk",
+      "ja": "Japansk",
+      "ko": "Koreansk",
+      "it": "Italiensk"
+    }
+  },
+  "nav": {
+    "home": "Hjem",
+    "components": "Komponenter",
+    "categories": "Kategorier",
+    "manufacturers": "Produsenter",
+    "packages": "Pakker",
+    "search": "Søk",
+    "admin": "Admin",
+    "moderation": "Moderering",
+    "myElectroVault": "Min ElectroVault",
+    "login": "Logg inn",
+    "logout": "Logg ut",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Fellesskapsdrevet database for elektroniske komponenter",
+    "searchPlaceholder": "Søk etter komponenter...",
+    "featuredCategories": "Utvalgte kategorier",
+    "recentComponents": "Nylige komponenter",
+    "stats": {
+      "components": "Komponenter",
+      "manufacturers": "Produsenter",
+      "categories": "Kategorier",
+      "users": "Brukere"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Fellesskapsdrevet database for elektroniske komponenter"
+    },
+    "stats": {
+      "components": "Komponenter",
+      "manufacturers": "Produsenter",
+      "users": "Brukere"
+    }
+  },
+  "packages": {
+    "title": "Pakker",
+    "totalCount": "{count} pakker i databasen",
+    "addNew": "Ny pakke",
+    "searchPlaceholder": "Søk etter navn eller slug...",
+    "filterPlaceholder": "Pakketype",
+    "filterAll": "Alle typer",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radial",
+      "AXIAL": "Axial",
+      "CHASSIS": "Chassis",
+      "OTHER": "Annet"
+    },
+    "table": {
+      "name": "Navn",
+      "type": "Type",
+      "pinCount": "Pin-antall",
+      "dimensions": "Dimensjoner (L x B x H mm)",
+      "pitch": "Avstand",
+      "actions": "Handlinger"
+    },
+    "loading": "Laster...",
+    "noResults": "Ingen pakker funnet",
+    "noPackagesFound": "Ingen pakker funnet",
+    "createFirst": "Opprett første pakke",
+    "error": "Feil",
+    "success": "Vellykket",
+    "loadError": "Kunne ikke laste pakker.",
+    "deleteSuccess": "Pakke ble slettet.",
+    "deleteError": "Kunne ikke slette pakke.",
+    "deleteDialog": {
+      "title": "Slette pakke?",
+      "description": "Vil du virkelig slette pakken \"{name}\"? Denne handlingen kan ikke angres."
+    }
+  },
+  "components": {
+    "title": "Komponenter",
+    "description": "Bla gjennom vår omfattende database av elektroniske komponenter",
+    "filters": {
+      "category": "Kategori",
+      "manufacturer": "Produsent",
+      "status": "Status",
+      "mountingType": "Monteringstype"
+    },
+    "detail": {
+      "overview": "Oversikt",
+      "specifications": "Spesifikasjoner",
+      "datasheets": "Datablad",
+      "parts": "Produsentvarianter",
+      "history": "Versjonshistorikk",
+      "backToOverview": "Tilbake til oversikt",
+      "category": "Kategori",
+      "statistics": "Statistikk",
+      "manufacturerVariants": "Produsentvarianter",
+      "activeVariants": "Aktive varianter",
+      "additionalProperties": "Tilleggsegenskaper",
+      "furtherProperties": "Ytterligere egenskaper for denne komponenten",
+      "validForAllVariants": "Tekniske spesifikasjoner (gyldig for alle varianter)",
+      "variantCount": "{count} produsent-variant",
+      "variantCountPlural": "{count} produsent-varianter",
+      "noVariantsAvailable": "Ingen produsentvarianter tilgjengelig",
+      "noVariantsForComponent": "Ingen produsentvarianter tilgjengelig for denne komponenten.",
+      "noAttributesAvailable": "Ingen attributter tilgjengelig.",
+      "manufacturer": "Produsent",
+      "orderingCode": "Bestillingsnummer",
+      "details": "Detaljer",
+      "allInCategory": "Alle i kategori",
+      "status": "Status",
+      "moreAttributes": "+{count} flere"
+    },
+    "status": {
+      "DRAFT": "Utkast",
+      "PENDING": "Venter",
+      "PUBLISHED": "Publisert",
+      "ARCHIVED": "Arkivert"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktiv",
+      "NRND": "Ikke anbefalt for nye design",
+      "EOL": "Utgått",
+      "OBSOLETE": "Foreldet"
+    }
+  },
+  "categories": {
+    "title": "Kategorier",
+    "browseAll": "Bla gjennom alle kategorier",
+    "subcategories": "Underkategorier",
+    "componentsInCategory": "Komponenter i denne kategorien"
+  },
+  "manufacturers": {
+    "title": "Produsenter",
+    "status": {
+      "ACTIVE": "Aktiv",
+      "ACQUIRED": "Oppkjøpt",
+      "DEFUNCT": "Nedlagt"
+    }
+  },
+  "auth": {
+    "login": "Logg inn",
+    "logout": "Logg ut",
+    "loginWith": "Logg inn med {provider}",
+    "welcome": "Velkommen tilbake",
+    "signInToContinue": "Logg inn for å fortsette",
+    "signIn": {
+      "title": "Logg inn",
+      "description": "Logg inn på kontoen din",
+      "button": "Logg inn med Keycloak",
+      "loading": "Logger inn...",
+      "hint": "Du vil bli omdirigert til Keycloak"
+    },
+    "signOut": {
+      "title": "Logg ut",
+      "description": "Er du sikker på at du vil logge ut?",
+      "button": "Logg ut",
+      "loading": "Logger ut...",
+      "cancel": "Avbryt"
+    },
+    "error": {
+      "title": "Autentiseringsfeil",
+      "description": "En feil oppstod under innlogging",
+      "tryAgain": "Prøv igjen",
+      "backHome": "Tilbake til hjemmesiden"
+    },
+    "errors": {
+      "configuration": "Serverkonfigurasjonsfeil. Vennligst kontakt administratoren.",
+      "accessDenied": "Tilgang nektet. Du har ikke tillatelse.",
+      "verification": "Verifiseringslenken har utløpt eller er allerede brukt.",
+      "oauthSignin": "Feil ved oppstart av OAuth-innlogging.",
+      "oauthCallback": "Feil ved behandling av OAuth-tilbakemelding.",
+      "oauthCreateAccount": "Feil ved opprettelse av brukerkonto.",
+      "emailCreateAccount": "Feil ved opprettelse av e-postkonto.",
+      "callback": "Feil ved behandling av tilbakemelding.",
+      "oauthAccountNotLinked": "Denne e-posten er allerede knyttet til en annen konto.",
+      "sessionRequired": "Vennligst logg inn for å få tilgang til denne siden.",
+      "default": "En ukjent feil oppstod. Vennligst prøv igjen."
+    }
+  },
+  "admin": {
+    "dashboard": "Dashbord",
+    "sidebar": {
+      "dashboard": "Dashbord",
+      "moderation": "Moderering",
+      "moderationDescription": "Godkjenningskø",
+      "users": "Brukere",
+      "backToHome": "Til hovedsiden",
+      "user": "Bruker",
+      "logout": "Logg ut"
+    },
+    "components": {
+      "title": "Administrer komponenter",
+      "new": "Ny komponent",
+      "edit": "Rediger komponent"
+    },
+    "moderation": {
+      "title": "Moderering",
+      "pendingReviews": "Ventende gjennomganger",
+      "approve": "Godkjenn",
+      "reject": "Avvis",
+      "batchApproval": "Massegodkjenning",
+      "confirmApprove": "Bekreft godkjenning",
+      "confirmApproveDescription": "Vil du virkelig godkjenne denne {type}? Den vil deretter være offentlig synlig.",
+      "confirmBatchApproval": "Vil du godkjenne {count} elementer? Denne handlingen kan ikke angres.",
+      "rejectWithReason": "Avvis med begrunnelse",
+      "rejectDescription": "Vennligst oppgi en begrunnelse for avvisningen. Denne vil vises til oppretteren.",
+      "rejectReasonLabel": "Begrunnelse",
+      "rejectReasonPlaceholder": "Hvorfor blir dette elementet avvist?",
+      "rejectReasonHelp": "En meningsfull begrunnelse hjelper oppretteren å forstå avvisningen.",
+      "batchApproveButton": "Godkjenn {count}",
+      "typeComponent": "Komponent",
+      "typePart": "Del",
+      "draft": "Utkast"
+    },
+    "users": {
+      "title": "Brukere",
+      "manage": "Administrer brukere"
+    },
+    "myDashboard": {
+      "title": "Mitt dashbord",
+      "stats": {
+        "componentsTotal": "Komponenter totalt",
+        "componentsTotalDesc": "Komponenter opprettet av deg",
+        "variants": "Varianter",
+        "variantsDesc": "Produsentvarianter",
+        "drafts": "Utkast",
+        "draftsDesc": "Ennå ikke sendt inn",
+        "pending": "Til godkjenning",
+        "pendingDesc": "Venter på moderering",
+        "published": "Publisert",
+        "archived": "Arkivert"
+      },
+      "draftsSection": {
+        "title": "Mine utkast",
+        "description": "Utkast er private mellomlagringer og ikke sendt til moderering ennå.",
+        "newComponent": "Ny komponent",
+        "empty": "Ingen utkast tilgjengelig. Opprett en ny komponent og lagre den som utkast.",
+        "draftBadge": "Utkast",
+        "noName": "[Ingen navn]"
+      },
+      "activitySection": {
+        "title": "Aktivitetslogg",
+        "description": "Dine siste handlinger i ElectroVault",
+        "empty": "Ingen aktiviteter ennå."
+      },
+      "entities": {
+        "COMPONENT": "Komponent",
+        "PART": "Variant",
+        "MANUFACTURER": "Produsent",
+        "CATEGORY": "Kategori",
+        "PACKAGE": "Pakke"
+      },
+      "error": "Kunne ikke laste dashbord. Vennligst prøv igjen."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Nytt attributt",
+        "titleEdit": "Rediger attributt",
+        "description": "Attributtdefinisjon for komponenter"
+      },
+      "category": {
+        "title": "Ny kategori",
+        "titleEdit": "Rediger kategori",
+        "description": "Administrer kategoriinformasjon og attributter",
+        "saveFirst": "Lagre kategorien først for å legge til attributter"
+      },
+      "component": {
+        "title": "Ny komponent",
+        "titleEdit": "Rediger komponent",
+        "description": "Opprett ny komponent - etter lagring kan du legge til produsentvarianter",
+        "descriptionEdit": "Administrer komponentinformasjon og produsentvarianter",
+        "saveFirstPinMapping": "Lagre komponenten først for å redigere pin-mapping",
+        "saveFirstParts": "Lagre komponenten først for å legge til produsentvarianter",
+        "saveFirstRelations": "Lagre komponenten først for å legge til relasjoner",
+        "createdWithVariants": "Komponent ble opprettet. Du kan nå legge til produsentvarianter",
+        "noPartsWarning": "Denne komponenten har ingen produsentvarianter. Minst én variant er påkrevd"
+      },
+      "manufacturer": {
+        "title": "Ny produsent",
+        "titleEdit": "Rediger produsent",
+        "description": "Administrer produsent-informasjon"
+      },
+      "part": {
+        "title": "Ny produsent-variant",
+        "titleEdit": "Rediger produsent-variant",
+        "description": "Opprett ny konkret produsent-variant av en komponent",
+        "descriptionEdit": "Endre informasjon om produsent-varianten",
+        "saveFirstFiles": "Lagre varianten først for å laste opp filer"
+      },
+      "package": {
+        "title": "Ny pakke",
+        "titleEdit": "Rediger pakke",
+        "description": "Pakke-/footprint-informasjon"
+      },
+      "delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette dette elementet?",
+        "messageFile": "Vil du virkelig slette denne filen?",
+        "messagePin": "Vil du virkelig slette denne pinnen?",
+        "message3dModel": "Vil du virkelig slette denne 3D-modellen?",
+        "messageRelation": "Vil du virkelig slette denne relasjonen?"
+      }
+    },
+    "buttons": {
+      "saving": "Lagrer...",
+      "saveAsDraft": "Lagre som utkast",
+      "update": "Oppdater",
+      "addPin": "Legg til pin",
+      "addRelation": "Legg til relasjon"
+    },
+    "messages": {
+      "success": "Vellykket",
+      "error": "Feil",
+      "warning": "Advarsel",
+      "attribute": {
+        "created": "Attributt ble opprettet",
+        "updated": "Attributt ble oppdatert",
+        "deleted": "Attributt ble slettet",
+        "loadFailed": "Kunne ikke laste attributter",
+        "saveFailed": "Kunne ikke lagre attributt",
+        "deleteFailed": "Kunne ikke slette attributt"
+      },
+      "category": {
+        "created": "Kategori ble opprettet",
+        "updated": "Kategori ble oppdatert",
+        "deleted": "Kategori ble slettet",
+        "loadFailed": "Kunne ikke laste kategorier",
+        "saveFailed": "Kunne ikke lagre kategori",
+        "deleteFailed": "Kunne ikke slette kategori"
+      },
+      "component": {
+        "created": "Komponent ble opprettet",
+        "updated": "Komponent ble oppdatert",
+        "deleted": "Komponent ble slettet",
+        "loadFailed": "Kunne ikke laste komponenter",
+        "saveFailed": "Kunne ikke lagre komponent",
+        "deleteFailed": "Kunne ikke slette komponent"
+      },
+      "manufacturer": {
+        "created": "Produsent ble opprettet",
+        "updated": "Produsent ble oppdatert",
+        "deleted": "Produsent ble slettet",
+        "loadFailed": "Kunne ikke laste produsenter",
+        "saveFailed": "Kunne ikke lagre produsent",
+        "deleteFailed": "Kunne ikke slette produsent",
+        "logoUploaded": "Logo ble lastet opp",
+        "logoUploadFailed": "Kunne ikke laste opp logo"
+      },
+      "part": {
+        "created": "Variant ble opprettet",
+        "updated": "Variant ble oppdatert",
+        "deleted": "Variant ble slettet",
+        "loadFailed": "Kunne ikke laste varianter",
+        "saveFailed": "Kunne ikke lagre variant",
+        "deleteFailed": "Kunne ikke slette variant"
+      },
+      "package": {
+        "created": "Pakke ble opprettet",
+        "updated": "Pakke ble oppdatert",
+        "deleted": "Pakke ble slettet",
+        "loadFailed": "Kunne ikke laste pakker",
+        "saveFailed": "Kunne ikke lagre pakke",
+        "deleteFailed": "Kunne ikke slette pakke"
+      },
+      "file": {
+        "uploaded": "Fil ble lastet opp",
+        "deleted": "Fil ble slettet",
+        "uploadFailed": "Kunne ikke laste opp fil",
+        "deleteFailed": "Kunne ikke slette fil",
+        "loadFailed": "Kunne ikke laste filer",
+        "downloadUrlFailed": "Kunne ikke generere nedlastings-URL"
+      },
+      "pin": {
+        "created": "Pin ble lagt til",
+        "updated": "Pin ble oppdatert",
+        "deleted": "Pin ble slettet",
+        "createFailed": "Kunne ikke opprette pin",
+        "loadFailed": "Kunne ikke laste pinner",
+        "updateFailed": "Kunne ikke oppdatere pin",
+        "deleteFailed": "Kunne ikke slette pin"
+      },
+      "relation": {
+        "created": "Relasjon ble lagt til",
+        "deleted": "Relasjon ble slettet",
+        "createFailed": "Kunne ikke opprette relasjon",
+        "deleteFailed": "Kunne ikke slette relasjon"
+      }
+    },
+    "pinMapping": {
+      "title": "Pin-mapping",
+      "addPin": "Legg til pin",
+      "newPin": "Legg til ny pin",
+      "pinNumber": "Pin-nummer (f.eks. 1, VCC)",
+      "pinName": "Pin-navn",
+      "selectType": "Velg pin-type",
+      "noDescription": "Ingen beskrivelse",
+      "noType": "Ingen type",
+      "loading": "Laster pinner...",
+      "pinsCount": "{count} pinner",
+      "tabList": "Pin-liste",
+      "tabBulkImport": "Masseimport",
+      "noPins": "Ingen pinner definert. Legg til pinner individuelt eller bruk masseimport.",
+      "columnPinNumber": "Pin-nr.",
+      "columnName": "Navn",
+      "columnType": "Type",
+      "columnFunction": "Funksjon (NO)",
+      "columnActions": "Handlinger",
+      "functionPlaceholder": "f.eks. Strømforsyning",
+      "deleteTitle": "Slette pin?",
+      "deleteMessage": "Vil du virkelig slette pin {pinNumber} ({pinName})? Denne handlingen kan ikke angres.",
+      "reorderSuccess": "Pin-rekkefølge ble oppdatert",
+      "reorderFailed": "Kunne ikke endre rekkefølge",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Eksempel:",
+        "typeHint": "pinType er valgfritt. Tilgjengelige typer: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Skriv inn pinner i CSV-format...",
+        "importButton": "Importer pinner",
+        "noPinsFound": "Ingen gyldige pin-data funnet.",
+        "success": "{count} pinner ble importert.",
+        "failed": "Masseimport mislyktes."
+      }
+    },
+    "files": {
+      "uploadImage": "Last opp produktbilde",
+      "uploadDatasheet": "Last opp datablad",
+      "uploadDocument": "Last opp dokument",
+      "selectLanguage": "Velg språk",
+      "noFiles": "Ingen filer tilgjengelig",
+      "confirmDelete": "Slette fil?",
+      "productImage": "Produktbilde",
+      "productImageDescription": "Et forhåndsvisningsbilde for denne produsent-varianten",
+      "addImage": "Bilde",
+      "imageDescription": "JPEG, PNG eller WebP (maks. 10 MB)",
+      "noImageUploaded": "Ingen bilde lastet opp ennå",
+      "datasheets": "Datablad",
+      "datasheetsDescription": "PDF-datablad for denne produsent-varianten",
+      "addDatasheet": "Datablad",
+      "languagesRequired": "Språk på databladet",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Minst ett språk må velges",
+      "datasheetFileDescription": "PDF-fil av produsent-databladet",
+      "noDatasheets": "Ingen datablad lastet opp ennå",
+      "otherFiles": "Andre filer",
+      "otherFilesDescription": "Tilleggsdokumenter, applikasjonsnotater, etc.",
+      "addDocument": "Dokument",
+      "languagesOptional": "Språk (valgfritt)",
+      "anyFileDescription": "Alle filtyper (PDF, TXT, ZIP, etc.)",
+      "noDocuments": "Ingen dokumenter lastet opp ennå",
+      "fileName": "Fil",
+      "fileSize": "Størrelse",
+      "languages": "Språk",
+      "actions": "Handlinger",
+      "imageCount": "{count} bilde",
+      "fileCount": "{count} fil{plural}",
+      "datasheetCount": "{count} datablad{plural}",
+      "imageUploaded": "Bilde ble lastet opp",
+      "imageRemoved": "Bilde ble fjernet"
+    },
+    "model3d": {
+      "title": "3D-modeller",
+      "confirmDelete": "Slette 3D-modell?",
+      "upload": "Last opp 3D-modell",
+      "noModels": "Ingen 3D-modeller tilgjengelig"
+    },
+    "lists": {
+      "searchPlaceholder": "Søk...",
+      "searchByName": "Søk etter navn eller slug...",
+      "searchByNameCage": "Søk etter navn, slug eller CAGE-kode...",
+      "noResults": "Ingen resultater funnet",
+      "createFirst": "Opprett den første oppføringen",
+      "noPackagesFound": "Ingen pakker funnet",
+      "createFirstPackage": "Opprett første pakke"
+    },
+    "filters": {
+      "allStatus": "Alle statuser",
+      "myDrafts": "Mine utkast"
+    },
+    "manufacturer": {
+      "title": "Produsenter",
+      "count": "{count} produsenter i databasen",
+      "create": "Ny produsent",
+      "createFirst": "Opprett første produsent",
+      "deleteTitle": "Slette produsent?",
+      "deleteDescription": "Vil du virkelig slette produsenten \"{name}\"? Denne handlingen kan ikke angres.",
+      "status": {
+        "active": "Aktiv",
+        "acquired": "Oppkjøpt",
+        "defunct": "Inaktiv"
+      }
+    },
+    "form": {
+      "package": "Pakke",
+      "selectPackage": "Velg pakke",
+      "noPackage": "Ingen pakke",
+      "editIn": "Rediger i:",
+      "searchLanguage": "Søk språk...",
+      "noLanguageFound": "Ingen språk funnet",
+      "original": "Original",
+      "backToOverview": "Tilbake til oversikt",
+      "name": "Navn",
+      "nameDescription": "Navnet på norsk og/eller engelsk. Obligatorisk felt hvis kategorien ikke har etikett-attributter",
+      "namePlaceholder": "Komponentnavn",
+      "series": "Serie",
+      "seriesDescription": "Valgfri komponentserie eller -familie",
+      "seriesPlaceholder": "f.eks. 74HC, ATmega",
+      "packageDescription": "Den fysiske pakkeformen (f.eks. DIP-8, SOIC-8)",
+      "shortDescription": "Kort beskrivelse",
+      "shortDescriptionDescription": "En kort setning for å beskrive komponenten",
+      "shortDescriptionPlaceholder": "Kort beskrivelse",
+      "fullDescription": "Fullstendig beskrivelse",
+      "fullDescriptionPlaceholder": "Fullstendig beskrivelse",
+      "attributesDescription": "Tekniske attributter basert på valgt kategori",
+      "selectCategoryFirst": "Vennligst velg en kategori i fanen \"Grunndata\" først",
+      "pinMappingDescription": "Definer pin-tilordningen for denne komponenten. Pin-mapping gjelder for alle produsentvarianter",
+      "partsDescription": "Produsent-spesifikke varianter av denne komponenten",
+      "newVariant": "Ny variant",
+      "close": "Lukk",
+      "parentCategory": "Overordnet kategori",
+      "parentCategoryPlaceholder": "Ingen (rotkategori)",
+      "parentCategoryDescription": "La stå tom for hovedkategori (nivå 0)",
+      "categoryName": "Kategorinavn",
+      "categoryDescription": "Beskrivelse",
+      "categoryDescriptionPlaceholder": "Beskrivelse av kategorien",
+      "sortOrder": "Sorteringsrekkefølge",
+      "sortOrderDescription": "Lavere verdier = høyere opp",
+      "status": "Status",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "icon": "Ikon",
+      "iconUploadDescription": "Last opp kategoriikon. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klikk eller dra fil hit.",
+      "iconMaxSize": "Ikon må være maksimalt 5 MB.",
+      "iconAllowedTypes": "Kun JPEG, PNG, WebP eller SVG tillatt.",
+      "iconUploaded": "Ikon ble lastet opp.",
+      "iconUploadFailed": "Kunne ikke laste opp ikon.",
+      "categoryCreatedIconFailed": "Kategori opprettet, men ikonopplasting mislyktes.",
+      "loading": "Laster...",
+      "newAttribute": "Nytt attributt",
+      "ownAttributes": "Egne attributter ({count})",
+      "noOwnAttributes": "Ingen egne attributter definert.",
+      "inheritedAttributes": "Arvede attributter ({count})",
+      "inheritedAttributesDescription": "Arvede attributter kan kun redigeres i sin opprinnelige kategori.",
+      "attributesInherited": "Attributter for denne kategorien (arves til underkategorier)",
+      "cageCode": "CAGE-kode",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-sifret kode",
+      "country": "Land",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Nettsted",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Last opp produsent-logo. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klikk eller dra fil hit.",
+      "statusActive": "Aktiv",
+      "statusAcquired": "Oppkjøpt",
+      "statusDefunct": "Inaktiv",
+      "foundedYear": "Etableringsår",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Nedleggelsesår",
+      "defunctYearPlaceholder": "2020",
+      "description": "Beskrivelse",
+      "descriptionPlaceholder": "Beskrivelse",
+      "logoMaxSize": "Logo må være maksimalt 5 MB.",
+      "logoAllowedTypes": "Kun JPEG, PNG, WebP eller SVG tillatt.",
+      "createdAsDraft": "Produsent ble lagret som utkast.",
+      "manufacturerCreatedLogoFailed": "Produsent opprettet, men logoopplasting mislyktes.",
+      "save": "Lagre"
+    },
+    "audit": {
+      "created": "opprettet",
+      "updated": "oppdatert",
+      "deleted": "slettet",
+      "restored": "gjenopprettet",
+      "approved": "godkjent",
+      "rejected": "avvist"
+    },
+    "tabs": {
+      "basicInfo": "Grunnleggende informasjon",
+      "attributes": "Attributter",
+      "pinMapping": "Pin-mapping",
+      "parts": "Produsentvarianter",
+      "relations": "Relasjoner",
+      "files": "Filer",
+      "details": "Stamdata",
+      "pins": "Pin-mapping",
+      "models": "3D-modeller"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Produsent",
+      "status": "Status",
+      "lifecycle": "Livssyklus",
+      "actions": "Handlinger",
+      "variantCount": "{count} variant",
+      "variantCountPlural": "{count} varianter",
+      "activeCount": "{count} aktiv",
+      "obsoleteCount": "{count} foreldet",
+      "unknown": "Ukjent"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Unikt navn på pakkeformen",
+      "mountingType": "Pakketype",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radial - Radial ledninger",
+        "AXIAL": "Axial - Aksial ledninger",
+        "CHASSIS": "Chassis - Chassismontering",
+        "OTHER": "Annet"
+      },
+      "pinCount": "Pin-antall",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Lengde (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Bredde (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Høyde (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Avstand (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Avstand mellom pinnene",
+      "jedecStandard": "JEDEC-standard",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA-standard",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "Tegnings-URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Lenke til teknisk tegning eller datablad",
+      "description": "Beskrivelse",
+      "descriptionPlaceholder": "Tilleggsinformasjon om pakkeformen...",
+      "saveFirstModels": "Lagre pakkeformen først for å laste opp 3D-modeller.",
+      "modelsDescription": "3D-modeller for denne pakkeformen (STEP, STL, 3MF, OBJ, etc.)"
+    },
+    "partForm": {
+      "coreComponent": "Generisk komponent",
+      "coreComponentDesc": "Den produsent-uavhengige komponenten (f.eks. 555 Timer)",
+      "manufacturer": "Produsent",
+      "manufacturerDesc": "Produsenten av denne konkrete varianten (f.eks. Texas Instruments)",
+      "manufacturerPlaceholder": "Velg produsent",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "f.eks. NE555P",
+      "mpnDesc": "Det unike produsent-delenummeret",
+      "orderingCode": "Bestillingsnummer",
+      "orderingCodePlaceholder": "Valgfritt",
+      "orderingCodeDesc": "Alternativt bestillingsnummer (hvis avvikende fra MPN)",
+      "statusRecord": "Poststatus",
+      "lifecycleStatus": "Livssyklus-status",
+      "introductionYear": "Introduksjonsår",
+      "introductionYearPlaceholder": "f.eks. 1972",
+      "discontinuedYear": "Avslutningsår",
+      "discontinuedYearPlaceholder": "f.eks. 2020",
+      "rohsCompliant": "RoHS-kompatibel",
+      "rohsDesc": "Oppfyller RoHS-direktiver",
+      "reachCompliant": "REACH-kompatibel",
+      "reachDesc": "Oppfyller REACH-forordning",
+      "weight": "Vekt (gram)",
+      "weightPlaceholder": "f.eks. 0.5",
+      "dateCodeFormat": "Datokoding",
+      "dateCodePlaceholder": "f.eks. YYWW",
+      "dateCodeDesc": "Format på datokoden på komponenten",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "f.eks. 5962-01-123-4567",
+      "milSpec": "Militær spesifikasjon",
+      "milSpecPlaceholder": "f.eks. MIL-PRF-38534",
+      "partAttributesDesc": "Produsent-spesifikke attributter basert på komponentens kategori.",
+      "partAttributesLabel": "Produsent-spesifikke attributter",
+      "filesDesc": "Administrer datablad, bilder og andre filer for denne produsent-varianten.",
+      "close": "Lukk",
+      "selectComponent": "Velg komponent"
+    }
+  },
+  "errors": {
+    "notFound": "Siden ble ikke funnet",
+    "unauthorized": "Uautorisert",
+    "serverError": "Serverfeil"
+  },
+  "footer": {
+    "tagline": "Fellesskapsvedlikeholdt database for elektroniske komponenter",
+    "navigation": "Navigasjon",
+    "community": "Fellesskap",
+    "legal": "Juridisk",
+    "about": "Om",
+    "help": "Hjelp",
+    "contact": "Kontakt",
+    "contribute": "Bidra",
+    "github": "GitHub",
+    "privacy": "Personvern",
+    "imprint": "Impressum",
+    "copyright": "Åpen kildekode under MIT-lisens"
+  },
+  "about": {
+    "title": "Om ElectroVault",
+    "subtitle": "Fellesskapsdrevet database for elektroniske komponenter",
+    "mission": {
+      "title": "Vårt oppdrag",
+      "description": "ElectroVault er en gratis og åpen database for elektroniske komponenter - fra historiske rør til moderne nanoteknologi. Vårt mål er å bevare kunnskap om elektroniske komponenter og gjøre den tilgjengelig for alle."
+    },
+    "features": {
+      "title": "Funksjoner",
+      "comprehensive": {
+        "title": "Omfattende database",
+        "description": "Fra motstander til kondensatorer til høyt integrerte kretser - vi dokumenterer alle viktige komponenter med detaljerte spesifikasjoner."
+      },
+      "historical": {
+        "title": "Historisk arkiv",
+        "description": "Dokumentasjon av historiske komponenter for reparasjon og restaurering av vintage-utstyr."
+      },
+      "community": {
+        "title": "Fellesskapsdrevet",
+        "description": "Alle kan bidra og dele sin kunnskap. Sammen bygger vi den mest omfattende komponentdatabasen."
+      },
+      "open": {
+        "title": "Åpen kildekode",
+        "description": "Fullstendig gjennomsiktig og fritt tilgjengelig under MIT-lisens."
+      }
+    },
+    "contribute": {
+      "title": "Bli involvert",
+      "description": "ElectroVault lever av sitt fellesskap. Her er noen måter du kan bidra på:",
+      "dataEntry": "Legg til eller rediger komponenter",
+      "datasheets": "Last opp datablad",
+      "code": "Kodebidrag på GitHub",
+      "feedback": "Tilbakemeldinger og forslag til forbedringer"
+    }
+  },
+  "help": {
+    "title": "Hjelp & FAQ",
+    "subtitle": "Ofte stilte spørsmål",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Bla gjennom komponenter",
+        "description": "Finn komponenter i vår database"
+      },
+      "createAccount": {
+        "title": "Opprett konto",
+        "description": "Bidra til databasen"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentasjon og issues"
+      }
+    },
+    "contactCta": {
+      "title": "Spørsmålet ditt ble ikke besvart?",
+      "description": "Ta gjerne direkte kontakt med oss.",
+      "button": "Ta kontakt"
+    },
+    "general": {
+      "title": "Generelt",
+      "what": {
+        "question": "Hva er ElectroVault?",
+        "answer": "ElectroVault er en gratis, fellesskapsdrevet database for elektriske og elektroniske komponenter. Vi dokumenterer komponenter fra historiske rør til moderne IC-er med omfattende metadata, datablad og spesifikasjoner."
+      },
+      "free": {
+        "question": "Er ElectroVault gratis?",
+        "answer": "Ja, ElectroVault er helt gratis og åpen kildekode. Både bruk og kildekode er fritt tilgjengelig."
+      }
+    },
+    "search": {
+      "title": "Søk",
+      "how": {
+        "question": "Hvordan finner jeg en spesifikk komponent?",
+        "answer": "Bruk søkefunksjonen øverst til høyre eller naviger gjennom kategoriene. Du kan søke etter artikkelnummer, produsent eller egenskaper."
+      },
+      "filters": {
+        "question": "Hvilke filtre er tilgjengelige?",
+        "answer": "Du kan filtrere etter kategori, produsent, status (aktiv/foreldet), pakketype og mange andre tekniske parametere."
+      }
+    },
+    "contribute": {
+      "title": "Bidra",
+      "account": {
+        "question": "Trenger jeg en konto for å bidra?",
+        "answer": "Ja, for å legge til eller redigere komponenter trenger du en gratis konto. Dette hjelper oss med å sikre datakvalitet."
+      },
+      "how": {
+        "question": "Hvordan kan jeg legge til en komponent?",
+        "answer": "Etter innlogging kan du opprette nye komponenter via 'Ny komponent'-knappen i komponentoversikten. En moderator vil gjennomgå ditt bidrag før publisering."
+      },
+      "quality": {
+        "question": "Hvordan sikres datakvaliteten?",
+        "answer": "Alle bidrag gjennomgås av erfarne moderatorer. I tillegg kan registrerte brukere foreslå korrigeringer."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Har du spørsmål eller forslag?",
+    "form": {
+      "heading": "Send melding",
+      "name": "Navn",
+      "email": "E-post",
+      "subject": "Emne",
+      "message": "Melding",
+      "namePlaceholder": "Ola Nordmann",
+      "emailPlaceholder": "ola@eksempel.no",
+      "subjectPlaceholder": "Emne for meldingen din",
+      "messagePlaceholder": "Din melding...",
+      "demoNote": "Merk: Kontaktskjemaet er for øyeblikket en demo. Backend-integrasjon kommer i en senere fase. Bruk GitHub eller den oppgitte e-postadressen for viktige henvendelser.",
+      "send": "Send melding",
+      "sending": "Sender...",
+      "success": "Melding sendt!",
+      "error": "Feil ved sending av melding"
+    },
+    "alternatives": {
+      "title": "Andre kontaktmuligheter",
+      "githubTitle": "GitHub Issues",
+      "github": "Opprett en sak på GitHub",
+      "emailTitle": "E-post",
+      "email": "Send oss en e-post"
+    },
+    "responseTime": {
+      "title": "Svartider",
+      "description": "Siden ElectroVault er et fellesskapsprosjekt, behandles forespørsler av frivillige. Vennligst ha tålmodighet - vi svarer vanligvis innen 48 timer."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Fellesskapsstøtte",
+        "description": "Bruk GitHub Discussions for generelle spørsmål"
+      },
+      "bugReports": {
+        "title": "Feilrapporter",
+        "description": "Rapporter tekniske problemer direkte på GitHub"
+      },
+      "partnerships": {
+        "title": "Partnerskapsforespørsler",
+        "description": "Bruk skjemaet for forretningshenvendelser"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Impressum",
+    "responsible": "Ansvarlig for innhold",
+    "contact": "Kontakt",
+    "disclaimer": {
+      "title": "Ansvarsfraskrivelse",
+      "content": "Til tross for nøye innholdskontroll tar vi ikke ansvar for innholdet på eksterne lenker. Operatørene av de koblede sidene er eneansvarlige for deres innhold.",
+      "liability": "Innholdet på disse sidene ble opprettet med største omhu. Vi kan imidlertid ikke garantere for nøyaktighet, fullstendighet og aktualitet av innholdet."
+    },
+    "opensource": {
+      "title": "Åpen kildekode",
+      "description": "ElectroVault er et åpen kildekode-prosjekt under MIT-lisensen. Kildekoden er tilgjengelig på GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Personvernerklæring",
+    "lastUpdated": "Sist oppdatert",
+    "intro": "Vi tar beskyttelsen av dine personopplysninger svært alvorlig. Denne personvernerklæringen informerer deg om arten, omfanget og formålet med behandlingen av personopplysninger.",
+    "responsible": {
+      "title": "Dataansvarlig",
+      "description": "Ansvarlig for databehandling på denne nettsiden er:"
+    },
+    "collection": {
+      "title": "Innsamling og lagring av personopplysninger",
+      "description": "Når du besøker vår nettside, blir informasjon automatisk samlet inn som nettleseren din overfører:",
+      "data": "IP-adresse, dato og klokkeslett for tilgang, nettlesertype og versjon, operativsystem brukt, henvisnings-URL"
+    },
+    "cookies": {
+      "title": "Informasjonskapsler",
+      "description": "Vår nettside bruker informasjonskapsler. Informasjonskapsler er små tekstfiler som lagres på enheten din.",
+      "essential": "Teknisk nødvendige informasjonskapsler for autentisering og øktbehandling",
+      "functional": "Funksjonelle informasjonskapsler for å forbedre brukeropplevelsen"
+    },
+    "auth": {
+      "title": "Autentisering",
+      "description": "Vi bruker Keycloak for registrering og innlogging. Følgende data lagres:",
+      "data": "Brukernavn, e-postadresse, profilbilde (valgfritt), rolle og tillatelser"
+    },
+    "rights": {
+      "title": "Dine rettigheter",
+      "description": "Du har følgende rettigheter angående dine personopplysninger:",
+      "access": "Rett til innsyn",
+      "correction": "Rett til retting",
+      "deletion": "Rett til sletting",
+      "restriction": "Rett til begrensning av behandling",
+      "portability": "Rett til dataportabilitet",
+      "objection": "Rett til å protestere"
+    },
+    "contact": {
+      "title": "Kontakt for personvernspørsmål",
+      "description": "Hvis du har spørsmål om personvern, kan du kontakte oss når som helst."
+    }
+  }
+}

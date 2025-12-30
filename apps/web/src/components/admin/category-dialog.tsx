@@ -4,8 +4,26 @@ import { useEffect, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { LocalizedStringSchema } from '@electrovault/schemas';
-import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, ArrowDown, X, Loader2, Image as ImageIcon } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { LocalizedStringSchema, type UILocale } from '@electrovault/schemas';
+import { Plus, Pencil, Trash2, ChevronDown, ChevronUp, ArrowDown, X, Loader2, Image as ImageIcon, GripVertical, ArrowUpDown } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import {
   Dialog,
   DialogContent,
@@ -23,13 +41,6 @@ import {
   FormMessage,
   FormDescription,
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import {
   Tabs,
   TabsContent,
@@ -49,32 +60,33 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LocalizedInput } from '@/components/forms/localized-input';
-import { type Category, type CategoryTreeNode, type AttributeDefinition } from '@/lib/api';
+import { DialogEditLocaleSelector } from '@/components/forms/dialog-edit-locale-selector';
+import { EditLocaleProvider } from '@/contexts/edit-locale-context';
+import { type Category, type AttributeDefinition } from '@/lib/api';
 import { AttributeDialog } from '@/components/admin/attribute-dialog';
 import { DeleteConfirmDialog } from '@/components/admin/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { useApi } from '@/hooks/use-api';
 import { cn } from '@/lib/utils';
+import { getLocalizedValue } from '@/components/ui/localized-text';
 
 // API Base URL für Proxy-Endpunkte
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 // Local schema for category creation/editing
+// Note: parentId is passed as prop and not editable after creation
+// sortOrder is managed via drag-and-drop in the category sidebar
 const CreateCategorySchema = z.object({
   name: LocalizedStringSchema,
-  parentId: z.string().uuid().optional().nullable(),
   description: z.object({
     de: z.string().optional(),
     en: z.string().optional(),
   }).optional(),
   iconUrl: z.string().url().optional().nullable(),
-  sortOrder: z.number().int().min(0).default(0),
-  isActive: z.boolean().default(true),
 });
 
 type CreateCategoryInput = z.infer<typeof CreateCategorySchema>;
@@ -93,17 +105,51 @@ interface AttributeWithInheritance extends AttributeDefinition {
   isInherited: boolean;
 }
 
-function flattenCategories(nodes: CategoryTreeNode[], prefix = '', excludeId?: string): { id: string; name: string }[] {
-  const result: { id: string; name: string }[] = [];
-  for (const node of nodes) {
-    if (excludeId && node.id === excludeId) continue;
-    const name = prefix + (node.name.de || node.name.en || 'Unbekannt');
-    result.push({ id: node.id, name });
-    if (node.children && node.children.length > 0) {
-      result.push(...flattenCategories(node.children, name + ' → ', excludeId));
-    }
-  }
-  return result;
+// Sortierbare Attribut-Zeile für Drag & Drop
+interface SortableAttributeRowProps {
+  attribute: AttributeDefinition;
+  locale: UILocale;
+  getDataTypeBadge: (dataType: AttributeDefinition['dataType']) => React.ReactNode;
+  getScopeBadge: (scope: AttributeDefinition['scope']) => React.ReactNode;
+}
+
+function SortableAttributeRow({ attribute, locale, getDataTypeBadge, getScopeBadge }: SortableAttributeRowProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: attribute.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <TableRow
+      ref={setNodeRef}
+      style={style}
+      className={cn('h-8', isDragging && 'opacity-50 bg-muted')}
+    >
+      <TableCell className="py-1 px-2 w-8">
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-grab active:cursor-grabbing p-0.5"
+        >
+          <GripVertical className="h-3 w-3 text-muted-foreground" />
+        </div>
+      </TableCell>
+      <TableCell className="py-1 px-2 text-sm">{getLocalizedValue(attribute.displayName, locale)}</TableCell>
+      <TableCell className="py-1 px-2 font-mono text-xs text-muted-foreground">{attribute.name}</TableCell>
+      <TableCell className="py-1 px-2">{getDataTypeBadge(attribute.dataType)}</TableCell>
+      <TableCell className="py-1 px-2">{getScopeBadge(attribute.scope)}</TableCell>
+      <TableCell className="py-1 px-2 text-xs text-muted-foreground">{attribute.unit || '-'}</TableCell>
+    </TableRow>
+  );
 }
 
 export function CategoryDialog({
@@ -116,9 +162,11 @@ export function CategoryDialog({
 }: CategoryDialogProps) {
   const api = useApi();
   const { toast } = useToast();
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
+  const tForm = useTranslations('admin.form');
+  const locale = useLocale() as UILocale;
   const isEdit = !!category;
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
 
   // Icon upload state
   const [iconFile, setIconFile] = useState<File | null>(null);
@@ -137,36 +185,27 @@ export function CategoryDialog({
   const [isAttrEditDialogOpen, setIsAttrEditDialogOpen] = useState(false);
   const [attributeToDelete, setAttributeToDelete] = useState<AttributeDefinition | null>(null);
 
+  // Sortier-Modus State
+  const [isAttributeSortMode, setIsAttributeSortMode] = useState(false);
+  const [sortedAttributes, setSortedAttributes] = useState<AttributeDefinition[]>([]);
+  const [isSavingSortOrder, setIsSavingSortOrder] = useState(false);
+
+  // Drag & Drop Sensoren
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const form = useForm<CreateCategoryInput>({
     resolver: zodResolver(CreateCategorySchema) as never,
     defaultValues: {
       name: { de: '', en: '' },
-      parentId: null,
       description: { de: '', en: '' },
       iconUrl: null,
-      sortOrder: 0,
-      isActive: true,
     },
   });
-
-  // Load categories for parent selection
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        setLoadingCategories(true);
-        const result = await api.getCategoryTree();
-        // Exclude current category and its children when editing
-        setCategories(flattenCategories(result.data, '', category?.id));
-      } catch (error) {
-        console.error('Failed to load categories:', error);
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-    if (open) {
-      loadCategories();
-    }
-  }, [open, category?.id]);
 
   // Load attributes when editing
   useEffect(() => {
@@ -240,11 +279,8 @@ export function CategoryDialog({
     if (category) {
       form.reset({
         name: category.name || { de: '', en: '' },
-        parentId: category.parentId,
         description: category.description || { de: '', en: '' },
         iconUrl: category.iconUrl,
-        sortOrder: category.sortOrder,
-        isActive: category.isActive,
       });
       // Verwende Proxy-URL für die Vorschau, um CORS-Probleme zu vermeiden
       setIconPreviewUrl(category.iconUrl ? `${API_BASE_URL}/categories/${category.id}/icon` : null);
@@ -252,11 +288,8 @@ export function CategoryDialog({
     } else {
       form.reset({
         name: { de: '', en: '' },
-        parentId: initialParentId || null,
         description: { de: '', en: '' },
         iconUrl: null,
-        sortOrder: 0,
-        isActive: true,
       });
       setIconPreviewUrl(null);
       setIconFile(null);
@@ -278,8 +311,8 @@ export function CategoryDialog({
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
       toast({
-        title: 'Fehler',
-        description: 'Icon darf maximal 5 MB groß sein.',
+        title: t('messages.error'),
+        description: tForm('iconMaxSize'),
         variant: 'destructive',
       });
       return;
@@ -288,8 +321,8 @@ export function CategoryDialog({
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
       toast({
-        title: 'Fehler',
-        description: 'Nur JPEG, PNG, WebP oder SVG erlaubt.',
+        title: t('messages.error'),
+        description: tForm('iconAllowedTypes'),
         variant: 'destructive',
       });
       return;
@@ -308,13 +341,13 @@ export function CategoryDialog({
         form.setValue('iconUrl', uploadedUrl);
 
         toast({
-          title: 'Erfolg',
-          description: 'Icon wurde hochgeladen.',
+          title: t('messages.success'),
+          description: tForm('iconUploaded'),
         });
       } catch (error) {
         toast({
-          title: 'Fehler',
-          description: 'Icon konnte nicht hochgeladen werden.',
+          title: t('messages.error'),
+          description: tForm('iconUploadFailed'),
           variant: 'destructive',
         });
       } finally {
@@ -333,19 +366,22 @@ export function CategoryDialog({
       // Clean up empty strings
       const payload = {
         ...data,
-        parentId: data.parentId || null,
         iconUrl: data.iconUrl || null,
       };
 
       if (isEdit) {
         await api.updateCategory(category.id, payload);
         toast({
-          title: 'Erfolg',
-          description: 'Kategorie wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.category.updated'),
         });
       } else {
-        // Neue Kategorie: Erst erstellen, dann Icon hochladen falls vorhanden
-        const result = await api.createCategory(payload);
+        // Neue Kategorie: parentId aus props verwenden
+        const createPayload = {
+          ...payload,
+          parentId: initialParentId || null,
+        };
+        const result = await api.createCategory(createPayload);
         const newCategoryId = result.data.id;
 
         // Icon hochladen falls ausgewählt
@@ -361,23 +397,23 @@ export function CategoryDialog({
             });
           } catch (uploadError) {
             toast({
-              title: 'Warnung',
-              description: 'Kategorie erstellt, aber Icon-Upload fehlgeschlagen.',
+              title: t('messages.warning'),
+              description: tForm('categoryCreatedIconFailed'),
               variant: 'destructive',
             });
           }
         }
 
         toast({
-          title: 'Erfolg',
-          description: 'Kategorie wurde erstellt.',
+          title: t('messages.success'),
+          description: t('messages.category.created'),
         });
       }
       onSaved();
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Kategorie konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.category.saveFailed'),
         variant: 'destructive',
       });
     }
@@ -410,15 +446,15 @@ export function CategoryDialog({
     try {
       await api.deleteAttributeDefinition(attribute.id);
       toast({
-        title: 'Erfolg',
-        description: 'Attribut-Definition wurde gelöscht.',
+        title: t('messages.success'),
+        description: t('messages.attribute.deleted'),
       });
       reloadAttributes();
       setAttributeToDelete(null);
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: 'Attribut-Definition konnte nicht gelöscht werden.',
+        title: t('messages.error'),
+        description: t('messages.attribute.deleteFailed'),
         variant: 'destructive',
       });
     }
@@ -431,6 +467,61 @@ export function CategoryDialog({
     setSelectedAttribute(null);
   };
 
+  // Sortier-Modus starten
+  const enterSortMode = () => {
+    setSortedAttributes([...ownAttributes]);
+    setIsAttributeSortMode(true);
+  };
+
+  // Sortier-Modus abbrechen
+  const cancelSortMode = () => {
+    setSortedAttributes([]);
+    setIsAttributeSortMode(false);
+  };
+
+  // Drag & Drop Handler
+  const handleAttributeDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = sortedAttributes.findIndex((a) => a.id === active.id);
+      const newIndex = sortedAttributes.findIndex((a) => a.id === over.id);
+      setSortedAttributes(arrayMove(sortedAttributes, oldIndex, newIndex));
+    }
+  };
+
+  // Sortierung speichern
+  const saveSortOrder = async () => {
+    if (!category) return;
+
+    setIsSavingSortOrder(true);
+    try {
+      const attributeOrder = sortedAttributes.map((attr, index) => ({
+        id: attr.id,
+        sortOrder: index,
+      }));
+
+      await api.reorderAttributes(category.id, attributeOrder);
+
+      toast({
+        title: t('messages.success'),
+        description: 'Reihenfolge gespeichert',
+      });
+
+      // Neu laden und Sortier-Modus beenden
+      await reloadAttributes();
+      setIsAttributeSortMode(false);
+      setSortedAttributes([]);
+    } catch (error) {
+      toast({
+        title: t('messages.error'),
+        description: 'Fehler beim Speichern der Reihenfolge',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSavingSortOrder(false);
+    }
+  };
+
   const getScopeBadge = (scope: AttributeDefinition['scope']) => {
     const variants = {
       COMPONENT: 'default',
@@ -439,40 +530,49 @@ export function CategoryDialog({
     } as const;
 
     const labels = {
-      COMPONENT: 'Component',
+      COMPONENT: 'Comp',
       PART: 'Part',
       BOTH: 'Beide',
     };
 
-    return <Badge variant={variants[scope]}>{labels[scope]}</Badge>;
+    return <Badge variant={variants[scope]} className="text-xs py-0 px-1">{labels[scope]}</Badge>;
   };
 
   const getDataTypeBadge = (dataType: AttributeDefinition['dataType']) => {
     const labels: Record<string, string> = {
-      DECIMAL: 'Dezimal',
-      INTEGER: 'Ganzzahl',
+      DECIMAL: 'Dez',
+      INTEGER: 'Int',
       STRING: 'Text',
-      BOOLEAN: 'Ja/Nein',
+      BOOLEAN: 'Bool',
+      RANGE: 'Range',
+      SELECT: 'Select',
+      MULTISELECT: 'Multi',
     };
 
-    return <Badge variant="outline">{labels[dataType] || dataType}</Badge>;
+    return <Badge variant="outline" className="text-xs py-0 px-1">{labels[dataType] || dataType}</Badge>;
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isEdit ? 'Kategorie bearbeiten' : 'Neue Kategorie'}</DialogTitle>
-          <DialogDescription>
-            {isEdit ? 'Kategorie-Informationen und Attribute verwalten' : 'Neue Kategorie erstellen'}
-          </DialogDescription>
-        </DialogHeader>
+        <EditLocaleProvider>
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle>{isEdit ? t('dialogs.category.titleEdit') : t('dialogs.category.title')}</DialogTitle>
+                <DialogDescription>
+                  {t('dialogs.category.description')}
+                </DialogDescription>
+              </div>
+              <DialogEditLocaleSelector />
+            </div>
+          </DialogHeader>
 
-        <Tabs defaultValue="details" className="w-full">
+          <Tabs defaultValue="details" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="details">Stammdaten</TabsTrigger>
+            <TabsTrigger value="details">{t('tabs.basicInfo')}</TabsTrigger>
             <TabsTrigger value="attributes" disabled={!isEdit}>
-              Attribute {isEdit && `(${ownAttributes.length + inheritedAttributes.length})`}
+              {t('tabs.attributes')} {isEdit && `(${ownAttributes.length + inheritedAttributes.length})`}
             </TabsTrigger>
           </TabsList>
 
@@ -485,46 +585,14 @@ export function CategoryDialog({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name *</FormLabel>
+                      <FormLabel>{tForm('name')} *</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
                           onChange={field.onChange}
-                          placeholder="Kategoriename"
+                          placeholder={tForm('categoryName')}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="parentId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Übergeordnete Kategorie</FormLabel>
-                      <Select
-                        onValueChange={(value) => field.onChange(value === '_none_' ? null : value)}
-                        value={field.value || '_none_'}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={loadingCategories ? 'Lädt...' : 'Keine (Root-Kategorie)'} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="_none_">Keine (Root-Kategorie)</SelectItem>
-                          {categories.map((cat) => (
-                            <SelectItem key={cat.id} value={cat.id}>
-                              {cat.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Leer lassen für eine Hauptkategorie (Level 0)
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -535,13 +603,13 @@ export function CategoryDialog({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Beschreibung</FormLabel>
+                      <FormLabel>{tForm('categoryDescription')}</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
                           onChange={field.onChange}
                           multiline
-                          placeholder="Beschreibung der Kategorie"
+                          placeholder={tForm('categoryDescriptionPlaceholder')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -549,59 +617,9 @@ export function CategoryDialog({
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="sortOrder"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sortierreihenfolge</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            min={0}
-                            {...field}
-                            value={field.value || 0}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Niedrigere Werte = weiter oben
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="isActive"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <Select
-                          onValueChange={(value) => field.onChange(value === 'true')}
-                          value={field.value ? 'true' : 'false'}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="true">Aktiv</SelectItem>
-                            <SelectItem value="false">Inaktiv</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
                 {/* Icon Upload */}
                 <div className="space-y-2">
-                  <FormLabel>Icon</FormLabel>
+                  <FormLabel>{tForm('icon')}</FormLabel>
                   <div className="flex items-start gap-4">
                     {/* Icon Preview */}
                     <div
@@ -675,10 +693,10 @@ export function CategoryDialog({
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-muted-foreground">
-                        Kategorie-Icon hochladen. Max. 5 MB, JPEG/PNG/WebP/SVG.
+                        {tForm('iconUploadDescription')}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Klicken oder Datei hierher ziehen.
+                        {tForm('iconUploadHint')}
                       </p>
                     </div>
                   </div>
@@ -686,10 +704,10 @@ export function CategoryDialog({
 
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                    Abbrechen
+                    {tCommon('cancel')}
                   </Button>
                   <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Speichern...' : isEdit ? 'Aktualisieren' : 'Erstellen'}
+                    {form.formState.isSubmitting ? t('buttons.saving') : isEdit ? t('buttons.update') : tCommon('create')}
                   </Button>
                 </DialogFooter>
               </form>
@@ -700,7 +718,7 @@ export function CategoryDialog({
           <TabsContent value="attributes" className="mt-4">
             {!isEdit ? (
               <div className="text-center py-8 text-muted-foreground">
-                <p>Speichern Sie zuerst die Kategorie, um Attribute hinzuzufügen.</p>
+                <p>{t('dialogs.category.saveFirst')}</p>
               </div>
             ) : loadingAttributes ? (
               <div className="space-y-2">
@@ -708,52 +726,113 @@ export function CategoryDialog({
                 <Skeleton className="h-24 w-full" />
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
+                {/* Header mit Buttons */}
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground">
-                    Attribute dieser Kategorie (werden an Unterkategorien vererbt)
+                  <p className="text-xs text-muted-foreground">
+                    {tForm('attributesInherited')}
                   </p>
-                  <Button size="sm" onClick={() => setIsAttrCreateDialogOpen(true)}>
-                    <Plus className="mr-1 h-3 w-3" />
-                    Neues Attribut
-                  </Button>
+                  {isAttributeSortMode ? (
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" onClick={cancelSortMode} disabled={isSavingSortOrder}>
+                        {tCommon('cancel')}
+                      </Button>
+                      <Button size="sm" onClick={saveSortOrder} disabled={isSavingSortOrder}>
+                        {isSavingSortOrder ? <Loader2 className="mr-1 h-3 w-3 animate-spin" /> : null}
+                        Speichern
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      {ownAttributes.length > 1 && (
+                        <Button size="sm" variant="outline" onClick={enterSortMode}>
+                          <ArrowUpDown className="mr-1 h-3 w-3" />
+                          Sortieren
+                        </Button>
+                      )}
+                      <Button size="sm" onClick={() => setIsAttrCreateDialogOpen(true)}>
+                        <Plus className="mr-1 h-3 w-3" />
+                        {tForm('newAttribute')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Eigene Attribute */}
                 <div>
-                  <h4 className="text-sm font-medium text-muted-foreground mb-2">
-                    Eigene Attribute ({ownAttributes.length})
+                  <h4 className="text-xs font-medium text-muted-foreground mb-1">
+                    {tForm('ownAttributes', { count: ownAttributes.length })}
                   </h4>
                   {ownAttributes.length === 0 ? (
-                    <p className="text-sm text-muted-foreground italic">
-                      Keine eigenen Attribute definiert.
+                    <p className="text-xs text-muted-foreground italic">
+                      {tForm('noOwnAttributes')}
                     </p>
+                  ) : isAttributeSortMode ? (
+                    /* Sortier-Modus: Drag & Drop Tabelle */
+                    <div className="max-h-[200px] overflow-y-auto border rounded">
+                      <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleAttributeDragEnd}
+                      >
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="h-7">
+                              <TableHead className="w-8 py-1 px-2"></TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Anzeigename</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Name</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Typ</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Scope</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Einheit</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            <SortableContext
+                              items={sortedAttributes.map((a) => a.id)}
+                              strategy={verticalListSortingStrategy}
+                            >
+                              {sortedAttributes.map((attr) => (
+                                <SortableAttributeRow
+                                  key={attr.id}
+                                  attribute={attr}
+                                  locale={locale}
+                                  getDataTypeBadge={getDataTypeBadge}
+                                  getScopeBadge={getScopeBadge}
+                                />
+                              ))}
+                            </SortableContext>
+                          </TableBody>
+                        </Table>
+                      </DndContext>
+                    </div>
                   ) : (
-                    <div className="max-h-[200px] overflow-y-auto">
+                    /* Normaler Modus: Kompakte Tabelle mit Aktionen */
+                    <div className="max-h-[200px] overflow-y-auto border rounded">
                       <Table>
                         <TableHeader>
-                          <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Anzeigename</TableHead>
-                            <TableHead>Typ</TableHead>
-                            <TableHead>Scope</TableHead>
-                            <TableHead>Einheit</TableHead>
-                            <TableHead className="text-right">Aktionen</TableHead>
+                          <TableRow className="h-7">
+                            <TableHead className="py-1 px-2 text-xs">Anzeigename</TableHead>
+                            <TableHead className="py-1 px-2 text-xs">Name</TableHead>
+                            <TableHead className="py-1 px-2 text-xs">Typ</TableHead>
+                            <TableHead className="py-1 px-2 text-xs">Scope</TableHead>
+                            <TableHead className="py-1 px-2 text-xs">Einheit</TableHead>
+                            <TableHead className="py-1 px-2 text-xs text-right">Aktionen</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {ownAttributes.map((attr) => (
-                            <TableRow key={attr.id}>
-                              <TableCell className="font-mono text-sm">{attr.name}</TableCell>
-                              <TableCell>{attr.displayName.de || attr.displayName.en}</TableCell>
-                              <TableCell>{getDataTypeBadge(attr.dataType)}</TableCell>
-                              <TableCell>{getScopeBadge(attr.scope)}</TableCell>
-                              <TableCell>{attr.unit || '-'}</TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex justify-end gap-1">
+                            <TableRow key={attr.id} className="h-8">
+                              <TableCell className="py-1 px-2 text-sm">{getLocalizedValue(attr.displayName, locale)}</TableCell>
+                              <TableCell className="py-1 px-2 font-mono text-xs text-muted-foreground">{attr.name}</TableCell>
+                              <TableCell className="py-1 px-2">{getDataTypeBadge(attr.dataType)}</TableCell>
+                              <TableCell className="py-1 px-2">{getScopeBadge(attr.scope)}</TableCell>
+                              <TableCell className="py-1 px-2 text-xs text-muted-foreground">{attr.unit || '-'}</TableCell>
+                              <TableCell className="py-1 px-2 text-right">
+                                <div className="flex justify-end gap-0.5">
                                   <Button
                                     variant="ghost"
                                     size="sm"
+                                    className="h-6 w-6 p-0"
                                     onClick={() => handleAttrEdit(attr)}
                                   >
                                     <Pencil className="h-3 w-3" />
@@ -761,6 +840,7 @@ export function CategoryDialog({
                                   <Button
                                     variant="ghost"
                                     size="sm"
+                                    className="h-6 w-6 p-0"
                                     onClick={() => setAttributeToDelete(attr)}
                                   >
                                     <Trash2 className="h-3 w-3 text-destructive" />
@@ -775,44 +855,42 @@ export function CategoryDialog({
                   )}
                 </div>
 
-                {/* Vererbte Attribute */}
-                {inheritedAttributes.length > 0 && (
+                {/* Vererbte Attribute - nur im Normalmodus anzeigen */}
+                {!isAttributeSortMode && inheritedAttributes.length > 0 && (
                   <Collapsible open={isInheritedOpen} onOpenChange={setIsInheritedOpen}>
                     <CollapsibleTrigger asChild>
-                      <Button variant="ghost" className="w-full justify-between">
-                        <span className="flex items-center gap-2">
-                          <ArrowDown className="h-4 w-4" />
-                          Vererbte Attribute ({inheritedAttributes.length})
+                      <Button variant="ghost" size="sm" className="w-full justify-between h-7">
+                        <span className="flex items-center gap-2 text-xs">
+                          <ArrowDown className="h-3 w-3" />
+                          {tForm('inheritedAttributes', { count: inheritedAttributes.length })}
                         </span>
                         {isInheritedOpen ? (
-                          <ChevronUp className="h-4 w-4" />
+                          <ChevronUp className="h-3 w-3" />
                         ) : (
-                          <ChevronDown className="h-4 w-4" />
+                          <ChevronDown className="h-3 w-3" />
                         )}
                       </Button>
                     </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2">
-                      <div className="max-h-[200px] overflow-y-auto">
+                    <CollapsibleContent className="mt-1">
+                      <div className="max-h-[150px] overflow-y-auto border rounded">
                         <Table>
                           <TableHeader>
-                            <TableRow>
-                              <TableHead>Name</TableHead>
-                              <TableHead>Anzeigename</TableHead>
-                              <TableHead>Typ</TableHead>
-                              <TableHead>Scope</TableHead>
-                              <TableHead>Von Kategorie</TableHead>
+                            <TableRow className="h-7">
+                              <TableHead className="py-1 px-2 text-xs">Anzeigename</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Name</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Typ</TableHead>
+                              <TableHead className="py-1 px-2 text-xs">Von</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {inheritedAttributes.map((attr) => (
-                              <TableRow key={attr.id} className="opacity-70">
-                                <TableCell className="font-mono text-sm">{attr.name}</TableCell>
-                                <TableCell>{attr.displayName.de || attr.displayName.en}</TableCell>
-                                <TableCell>{getDataTypeBadge(attr.dataType)}</TableCell>
-                                <TableCell>{getScopeBadge(attr.scope)}</TableCell>
-                                <TableCell>
-                                  <Badge variant="outline">
-                                    {attr.inheritedFrom?.name.de || attr.inheritedFrom?.name.en}
+                              <TableRow key={attr.id} className="h-7 opacity-60">
+                                <TableCell className="py-1 px-2 text-xs">{getLocalizedValue(attr.displayName, locale)}</TableCell>
+                                <TableCell className="py-1 px-2 font-mono text-xs text-muted-foreground">{attr.name}</TableCell>
+                                <TableCell className="py-1 px-2">{getDataTypeBadge(attr.dataType)}</TableCell>
+                                <TableCell className="py-1 px-2">
+                                  <Badge variant="outline" className="text-xs py-0 px-1">
+                                    {attr.inheritedFrom ? getLocalizedValue(attr.inheritedFrom.name, locale) : ''}
                                   </Badge>
                                 </TableCell>
                               </TableRow>
@@ -820,16 +898,13 @@ export function CategoryDialog({
                           </TableBody>
                         </Table>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-2 italic">
-                        Vererbte Attribute können nur in ihrer Ursprungs-Kategorie bearbeitet werden.
-                      </p>
                     </CollapsibleContent>
                   </Collapsible>
                 )}
 
                 <DialogFooter>
                   <Button variant="outline" onClick={() => onOpenChange(false)}>
-                    Schließen
+                    {tCommon('cancel')}
                   </Button>
                 </DialogFooter>
               </div>
@@ -852,6 +927,7 @@ export function CategoryDialog({
               onOpenChange={setIsAttrEditDialogOpen}
               attribute={selectedAttribute}
               onSaved={handleAttrSaved}
+              presetCategoryId={selectedAttribute?.categoryId || category.id}
             />
 
             <DeleteConfirmDialog
@@ -863,6 +939,7 @@ export function CategoryDialog({
             />
           </>
         )}
+        </EditLocaleProvider>
       </DialogContent>
     </Dialog>
   );

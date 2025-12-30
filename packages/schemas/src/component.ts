@@ -334,6 +334,8 @@ export type ComponentListItem = z.infer<typeof ComponentListItemSchema>;
  *         Pflichtfeld (mindestens eine Sprache) wenn keine Label-Attribute vorhanden
  *         -> Validierung erfolgt im Service basierend auf Kategorie-Attributen
  * - shortDescription/fullDescription: Komplett optional (keine Sprache erforderlich)
+ * - status: Wird vom Backend gesetzt (DRAFT bei saveAsDraft=true, PENDING bei saveAsDraft=false)
+ * - saveAsDraft: Wenn true, wird das Bauteil als Entwurf gespeichert (nicht alle Pflichtfelder erforderlich)
  */
 export const CreateComponentSchema = z.object({
   name: LocalizedStringLooseOptionalSchema, // Validierung im Service basierend auf Label-Attributen
@@ -344,7 +346,7 @@ export const CreateComponentSchema = z.object({
   shortDescription: LocalizedStringLooseOptionalSchema,
   fullDescription: LocalizedStringLooseOptionalSchema,
   commonAttributes: z.record(z.unknown()).optional(),
-  status: ComponentStatusSchema.default('DRAFT'),
+  saveAsDraft: z.boolean().optional().default(false), // Wenn true -> DRAFT, sonst PENDING
   attributeValues: z.array(CreateAttributeValueSchema).optional(),
   pinMappings: z.array(CreatePinMappingSchema).optional(),
 });
@@ -384,27 +386,72 @@ export const ComponentListQuerySchema = PaginationSchema.merge(SortSchema).exten
   includeSubcategories: z.coerce.boolean().default(true),
   search: z.string().max(100).optional(),
   createdById: UUIDSchema.optional(),
+  // Eigene Entwürfe einbeziehen (nur für eingeloggte User)
+  includeDrafts: z.coerce.boolean().optional(),
+  // User-ID für Entwürfe-Filter (wird vom Backend gesetzt)
+  userId: UUIDSchema.optional(),
 });
 
 export type ComponentListQuery = z.infer<typeof ComponentListQuerySchema>;
+
+/**
+ * Filter-Operatoren für Attribute
+ */
+export const AttributeFilterOperatorSchema = z.enum([
+  // Numerische Operatoren (DECIMAL, INTEGER)
+  'eq',       // Gleich
+  'ne',       // Ungleich
+  'gt',       // Größer als
+  'gte',      // Größer oder gleich
+  'lt',       // Kleiner als
+  'lte',      // Kleiner oder gleich
+  'between',  // Zwischen (benötigt valueTo)
+  // String-Operatoren
+  'contains', // Enthält
+  // Boolean-Operatoren
+  'isTrue',   // Ist wahr
+  'isFalse',  // Ist falsch
+  // Range-Operatoren (Benutzer-Wert muss im gespeicherten Bereich liegen)
+  'withinRange',
+  // SELECT-Operatoren
+  'in',       // Wert ist in Liste
+  'notIn',    // Wert ist nicht in Liste
+  // MULTISELECT-Operatoren
+  'hasAll',   // Hat alle angegebenen Werte (AND)
+  'hasAny',   // Hat mindestens einen Wert (OR)
+]);
+
+export type AttributeFilterOperator = z.infer<typeof AttributeFilterOperatorSchema>;
 
 /**
  * Attribute Filter Schema
  */
 export const AttributeFilterSchema = z.object({
   definitionId: UUIDSchema,
-  operator: z.enum(['eq', 'ne', 'gt', 'gte', 'lt', 'lte', 'between', 'contains']),
-  value: z.union([z.string(), z.number()]),
+  operator: AttributeFilterOperatorSchema,
+  value: z.union([z.string(), z.number(), z.array(z.string())]).optional(),
   valueTo: z.union([z.string(), z.number()]).optional(), // Für 'between'
+  // UI-Felder für Präfix-Anzeige (werden vom Backend ignoriert)
+  displayValue: z.number().optional(),    // Ursprünglicher Eingabewert (ohne Normalisierung)
+  displayValueTo: z.number().optional(),  // Ursprünglicher "bis"-Wert
+  displayPrefix: SIPrefixSchema.optional(), // SI-Präfix für value
+  displayPrefixTo: SIPrefixSchema.optional(), // SI-Präfix für valueTo
 });
 
 export type AttributeFilter = z.infer<typeof AttributeFilterSchema>;
+
+/**
+ * MULTISELECT Verknüpfungsmodus
+ */
+export const MultiSelectModeSchema = z.enum(['AND', 'OR']);
+export type MultiSelectMode = z.infer<typeof MultiSelectModeSchema>;
 
 /**
  * Erweiterte Suche
  */
 export const ComponentSearchQuerySchema = ComponentListQuerySchema.extend({
   attributeFilters: z.array(AttributeFilterSchema).optional(),
+  multiSelectMode: MultiSelectModeSchema.default('OR'), // Globaler Modus für MULTISELECT
   series: z.string().optional(),
 });
 

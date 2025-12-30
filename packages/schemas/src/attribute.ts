@@ -32,6 +32,7 @@ export const AttributeDefinitionSchema = z.object({
   isRequired: z.boolean(),
   isLabel: z.boolean(),                          // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
+  allowedValues: z.array(z.string()).nullable(), // Für SELECT/MULTISELECT: vordefinierte Optionen
   // Legacy-Felder
   siUnit: z.string().max(20).nullable(),
   siMultiplier: z.number().nullable(),
@@ -78,6 +79,7 @@ export const CreateAttributeDefinitionSchema = z.object({
   isRequired: z.boolean().default(false),
   isLabel: z.boolean().default(false),           // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).default([]),  // Erlaubte SI-Präfixe
+  allowedValues: z.array(z.string()).optional(), // Für SELECT/MULTISELECT: vordefinierte Optionen
   // Legacy-Felder (optional)
   siUnit: z.string().max(20).optional(),
   siMultiplier: z.number().positive().optional(),
@@ -85,6 +87,15 @@ export const CreateAttributeDefinitionSchema = z.object({
 }).refine(
   (data) => !data.isLabel || data.isRequired,
   { message: 'Label erfordert Pflichtfeld', path: ['isLabel'] }
+).refine(
+  (data) => {
+    // SELECT und MULTISELECT erfordern allowedValues
+    if (data.dataType === 'SELECT' || data.dataType === 'MULTISELECT') {
+      return data.allowedValues && data.allowedValues.length > 0;
+    }
+    return true;
+  },
+  { message: 'SELECT/MULTISELECT erfordern mindestens eine Option in allowedValues', path: ['allowedValues'] }
 );
 
 export type CreateAttributeDefinitionInput = z.infer<typeof CreateAttributeDefinitionSchema>;
@@ -100,6 +111,7 @@ export const UpdateAttributeDefinitionSchema = z.object({
   isRequired: z.boolean().optional(),
   isLabel: z.boolean().optional(),               // Für dynamische Bauteilbezeichnung
   allowedPrefixes: z.array(SIPrefixSchema).optional(),  // Erlaubte SI-Präfixe
+  allowedValues: z.array(z.string()).nullable().optional(), // Für SELECT/MULTISELECT
   // Legacy-Felder
   siUnit: z.string().max(20).nullable().optional(),
   siMultiplier: z.number().positive().nullable().optional(),
@@ -134,3 +146,20 @@ export const CategoryAttributesQuerySchema = z.object({
 });
 
 export type CategoryAttributesQuery = z.infer<typeof CategoryAttributesQuerySchema>;
+
+// ============================================
+// REORDER SCHEMA
+// ============================================
+
+/**
+ * Schema für Attribute-Reorder
+ */
+export const ReorderAttributesSchema = z.object({
+  categoryId: UUIDSchema,
+  attributes: z.array(z.object({
+    id: UUIDSchema,
+    sortOrder: z.number().int().min(0),
+  })),
+});
+
+export type ReorderAttributesInput = z.infer<typeof ReorderAttributesSchema>;

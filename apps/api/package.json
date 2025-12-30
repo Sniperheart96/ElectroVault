@@ -14,6 +14,7 @@
     "@electrovault/auth": "workspace:*",
     "@electrovault/database": "workspace:*",
     "@electrovault/schemas": "workspace:*",
+    "zod": "^3.23.8",
     "@fastify/compress": "^7.0.0",
     "@fastify/cors": "^8.0.0",
     "@fastify/helmet": "^11.0.0",

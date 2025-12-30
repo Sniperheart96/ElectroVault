@@ -586,6 +586,7 @@ pnpm db:generate
 
 | Datum | Änderung |
 |-------|----------|
+| 2025-12-30 | FILTER-001 behoben: MULTISELECT hasAny/hasAll Teilstring-Bug |
 | 2025-12-29 | Initiale Erstellung der known-issues.md |
 
 ---

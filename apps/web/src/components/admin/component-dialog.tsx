@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { CreateComponentSchema, type CreateComponentInput } from '@electrovault/schemas';
 import { Plus, Pencil, Trash2, AlertCircle } from 'lucide-react';
 import {
@@ -49,6 +50,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LocalizedInput } from '@/components/forms/localized-input';
+import { DialogEditLocaleSelector } from '@/components/forms/dialog-edit-locale-selector';
+import { EditLocaleProvider } from '@/contexts/edit-locale-context';
 import { CategoryCascadeSelect } from '@/components/forms/category-cascade-select';
 import { type Component, type CategoryTreeNode, type Part, type Manufacturer, type Package } from '@/lib/api';
 import { PartDialog } from '@/components/admin/part-dialog';
@@ -88,6 +91,9 @@ export function ComponentDialog({
 }: ComponentDialogProps) {
   const api = useApi();
   const { toast } = useToast();
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
+  const tComponents = useTranslations('components');
   const [categoryTree, setCategoryTree] = useState<CategoryTreeNode[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingComponent, setLoadingComponent] = useState(false);
@@ -116,7 +122,7 @@ export function ComponentDialog({
       name: { de: '', en: '' },
       categoryId: '',
       packageId: undefined,
-      status: 'DRAFT',
+      saveAsDraft: false,
       shortDescription: { de: '', en: '' },
       fullDescription: { de: '', en: '' },
       series: '',
@@ -168,8 +174,8 @@ export function ComponentDialog({
       } catch (error) {
         console.error('Failed to load initial data:', error);
         toast({
-          title: 'Fehler',
-          description: 'Daten konnten nicht geladen werden.',
+          title: t('messages.error'),
+          description: t('messages.component.loadFailed'),
           variant: 'destructive',
         });
       } finally {
@@ -223,7 +229,7 @@ export function ComponentDialog({
         name: localComponent.name || { de: '', en: '' },
         categoryId: localComponent.categoryId,
         packageId: localComponent.packageId || undefined,
-        status: localComponent.status,
+        saveAsDraft: localComponent.status === 'DRAFT',
         shortDescription: localComponent.shortDescription || { de: '', en: '' },
         fullDescription: localComponent.fullDescription || { de: '', en: '' },
         series: localComponent.series || '',
@@ -255,7 +261,7 @@ export function ComponentDialog({
         name: { de: '', en: '' },
         categoryId: '',
         packageId: undefined,
-        status: 'DRAFT',
+        saveAsDraft: false,
         shortDescription: { de: '', en: '' },
         fullDescription: { de: '', en: '' },
         series: '',
@@ -278,8 +284,8 @@ export function ComponentDialog({
         const { categoryId, ...updateData } = dataWithAttributes;
         await api.updateComponent(localComponent.id, updateData);
         toast({
-          title: 'Erfolg',
-          description: 'Bauteil wurde aktualisiert.',
+          title: t('messages.success'),
+          description: t('messages.component.updated'),
         });
         onSaved();
       } else {
@@ -288,8 +294,8 @@ export function ComponentDialog({
         const newComponent = result.data;
 
         toast({
-          title: 'Erfolg',
-          description: 'Bauteil wurde erstellt. Sie können jetzt Hersteller-Varianten hinzufügen.',
+          title: t('messages.success'),
+          description: t('dialogs.component.createdWithVariants'),
         });
 
         // Switch to edit mode with the new component
@@ -315,8 +321,8 @@ export function ComponentDialog({
       }
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: `Bauteil konnte nicht ${isEdit ? 'aktualisiert' : 'erstellt'} werden.`,
+        title: t('messages.error'),
+        description: t('messages.component.saveFailed'),
         variant: 'destructive',
       });
     }
@@ -345,15 +351,15 @@ export function ComponentDialog({
     try {
       await api.deletePart(part.id);
       toast({
-        title: 'Erfolg',
-        description: 'Hersteller-Variante wurde gelöscht.',
+        title: t('messages.success'),
+        description: t('messages.part.deleted'),
       });
       reloadParts();
       setPartToDelete(null);
     } catch (error) {
       toast({
-        title: 'Fehler',
-        description: 'Hersteller-Variante konnte nicht gelöscht werden.',
+        title: t('messages.error'),
+        description: t('messages.part.deleteFailed'),
         variant: 'destructive',
       });
     }
@@ -374,14 +380,7 @@ export function ComponentDialog({
       ARCHIVED: 'outline',
     } as const;
 
-    const labels = {
-      DRAFT: 'Entwurf',
-      PENDING: 'Prüfung',
-      PUBLISHED: 'Veröffentlicht',
-      ARCHIVED: 'Archiviert',
-    };
-
-    return <Badge variant={variants[status] || 'secondary'}>{labels[status] || status}</Badge>;
+    return <Badge variant={variants[status] || 'secondary'}>{tComponents(`status.${status}`)}</Badge>;
   };
 
   const getLifecycleBadge = (status: Part['lifecycleStatus']) => {
@@ -392,19 +391,12 @@ export function ComponentDialog({
       OBSOLETE: 'destructive',
     } as const;
 
-    const labels = {
-      ACTIVE: 'Aktiv',
-      NRND: 'NRND',
-      EOL: 'Auslaufend',
-      OBSOLETE: 'Obsolet',
-    };
-
-    return <Badge variant={variants[status] || 'secondary'}>{labels[status] || status}</Badge>;
+    return <Badge variant={variants[status] || 'secondary'}>{tComponents(`lifecycle.${status}`)}</Badge>;
   };
 
   const getManufacturerName = (manufacturerId: string) => {
     const manufacturer = manufacturers.find((m) => m.id === manufacturerId);
-    return manufacturer?.name || 'Unbekannt';
+    return manufacturer?.name || t('parts.unknown');
   };
 
   const handleClose = () => {
@@ -414,16 +406,24 @@ export function ComponentDialog({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{isEdit ? 'Bauteil bearbeiten' : 'Neues Bauteil'}</DialogTitle>
-          <DialogDescription>
-            {isEdit
-              ? 'Bauteilinformationen und Hersteller-Varianten verwalten'
-              : 'Neues Bauteil erstellen - nach dem Speichern können Sie Hersteller-Varianten hinzufügen'}
-          </DialogDescription>
-        </DialogHeader>
+        <EditLocaleProvider>
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle>
+                  {isEdit ? t('dialogs.component.titleEdit') : t('dialogs.component.title')}
+                </DialogTitle>
+                <DialogDescription>
+                  {isEdit
+                    ? t('dialogs.component.descriptionEdit')
+                    : t('dialogs.component.description')}
+                </DialogDescription>
+              </div>
+              <DialogEditLocaleSelector />
+            </div>
+          </DialogHeader>
 
-        {loadingComponent ? (
+          {loadingComponent ? (
           <div className="space-y-4 py-4">
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
@@ -433,16 +433,16 @@ export function ComponentDialog({
         ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="details">Stammdaten</TabsTrigger>
-            <TabsTrigger value="attributes">Attribute</TabsTrigger>
+            <TabsTrigger value="details">{t('tabs.details')}</TabsTrigger>
+            <TabsTrigger value="attributes">{t('tabs.attributes')}</TabsTrigger>
             <TabsTrigger value="pins" disabled={!isEdit}>
-              Pin-Mapping
+              {t('tabs.pins')}
             </TabsTrigger>
             <TabsTrigger value="parts" disabled={!isEdit}>
-              Varianten {isEdit && `(${parts.length})`}
+              {t('tabs.parts')} {isEdit && `(${parts.length})`}
             </TabsTrigger>
             <TabsTrigger value="relations" disabled={!isEdit}>
-              Beziehungen
+              {t('tabs.relations')}
             </TabsTrigger>
           </TabsList>
 
@@ -455,16 +455,16 @@ export function ComponentDialog({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t('form.name')}</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
                           onChange={field.onChange}
-                          placeholder="Bauteilname"
+                          placeholder={t('form.namePlaceholder')}
                         />
                       </FormControl>
                       <FormDescription>
-                        Der Name in Deutsch und/oder Englisch. Pflichtfeld wenn die Kategorie keine Label-Attribute hat.
+                        {t('form.nameDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -490,47 +490,19 @@ export function ComponentDialog({
 
                 <FormField
                   control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue="DRAFT"
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="DRAFT">Entwurf</SelectItem>
-                          <SelectItem value="PENDING">Ausstehend</SelectItem>
-                          <SelectItem value="PUBLISHED">Veröffentlicht</SelectItem>
-                          <SelectItem value="ARCHIVED">Archiviert</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="series"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Serie</FormLabel>
+                      <FormLabel>{t('form.series')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="z.B. 74HC, ATmega"
+                          placeholder={t('form.seriesPlaceholder')}
                           {...field}
                           value={field.value || ''}
                         />
                       </FormControl>
                       <FormDescription>
-                        Optionale Bauteil-Serie oder -Familie
+                        {t('form.seriesDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -542,7 +514,7 @@ export function ComponentDialog({
                   name="packageId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Bauform (Package)</FormLabel>
+                      <FormLabel>{t('form.package')}</FormLabel>
                       <Select
                         onValueChange={(value) => field.onChange(value === '__none__' ? undefined : value)}
                         value={field.value || '__none__'}
@@ -550,11 +522,11 @@ export function ComponentDialog({
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Bauform auswählen" />
+                            <SelectValue placeholder={t('form.selectPackage')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="__none__">Keine Bauform</SelectItem>
+                          <SelectItem value="__none__">{t('form.noPackage')}</SelectItem>
                           {packages.map((pkg) => (
                             <SelectItem key={pkg.id} value={pkg.id}>
                               {pkg.name} ({pkg.mountingType})
@@ -563,7 +535,7 @@ export function ComponentDialog({
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Die physische Bauform (z.B. DIP-8, SOIC-8)
+                        {t('form.packageDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -575,16 +547,16 @@ export function ComponentDialog({
                   name="shortDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Kurzbeschreibung</FormLabel>
+                      <FormLabel>{t('form.shortDescription')}</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
                           onChange={field.onChange}
-                          placeholder="Kurze Beschreibung"
+                          placeholder={t('form.shortDescriptionPlaceholder')}
                         />
                       </FormControl>
                       <FormDescription>
-                        Ein kurzer Satz zur Beschreibung des Bauteils
+                        {t('form.shortDescriptionDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -596,13 +568,13 @@ export function ComponentDialog({
                   name="fullDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ausführliche Beschreibung</FormLabel>
+                      <FormLabel>{t('form.fullDescription')}</FormLabel>
                       <FormControl>
                         <LocalizedInput
                           value={field.value || { de: '', en: '' }}
                           onChange={field.onChange}
                           multiline
-                          placeholder="Ausführliche Beschreibung"
+                          placeholder={t('form.fullDescriptionPlaceholder')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -612,14 +584,34 @@ export function ComponentDialog({
 
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={handleClose}>
-                    Abbrechen
+                    {tCommon('cancel')}
                   </Button>
-                  <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {!isEdit && (
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      disabled={form.formState.isSubmitting}
+                      onClick={() => {
+                        form.setValue('saveAsDraft', true);
+                        form.handleSubmit(onSubmit)();
+                      }}
+                    >
+                      {form.formState.isSubmitting ? t('buttons.saving') : t('buttons.saveAsDraft')}
+                    </Button>
+                  )}
+                  <Button
+                    type="button"
+                    disabled={form.formState.isSubmitting}
+                    onClick={() => {
+                      form.setValue('saveAsDraft', false);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  >
                     {form.formState.isSubmitting
-                      ? 'Speichern...'
+                      ? t('buttons.saving')
                       : isEdit
-                        ? 'Aktualisieren'
-                        : 'Speichern & Varianten hinzufügen'}
+                        ? t('buttons.update')
+                        : tCommon('save')}
                   </Button>
                 </DialogFooter>
               </form>
@@ -630,10 +622,10 @@ export function ComponentDialog({
           <TabsContent value="attributes" className="mt-4">
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Technische Attribute basierend auf der ausgewählten Kategorie.
+                {t('form.attributesDescription')}
                 {!form.watch('categoryId') && (
                   <span className="text-warning ml-1">
-                    Bitte wählen Sie zuerst eine Kategorie im Tab &quot;Stammdaten&quot;.
+                    {t('form.selectCategoryFirst')}
                   </span>
                 )}
               </p>
@@ -649,18 +641,34 @@ export function ComponentDialog({
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={handleClose}>
-                  Abbrechen
+                  {tCommon('cancel')}
                 </Button>
+                {!isEdit && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    disabled={form.formState.isSubmitting}
+                    onClick={() => {
+                      form.setValue('saveAsDraft', true);
+                      form.handleSubmit(onSubmit)();
+                    }}
+                  >
+                    {form.formState.isSubmitting ? t('buttons.saving') : t('buttons.saveAsDraft')}
+                  </Button>
+                )}
                 <Button
                   type="button"
-                  onClick={form.handleSubmit(onSubmit)}
                   disabled={form.formState.isSubmitting}
+                  onClick={() => {
+                    form.setValue('saveAsDraft', false);
+                    form.handleSubmit(onSubmit)();
+                  }}
                 >
                   {form.formState.isSubmitting
-                    ? 'Speichern...'
+                    ? t('buttons.saving')
                     : isEdit
-                      ? 'Aktualisieren'
-                      : 'Speichern & Varianten hinzufügen'}
+                      ? t('buttons.update')
+                      : tCommon('save')}
                 </Button>
               </DialogFooter>
             </div>
@@ -670,17 +678,17 @@ export function ComponentDialog({
           <TabsContent value="pins" className="mt-4">
             {!isEdit ? (
               <div className="text-center py-8 text-muted-foreground">
-                <p>Speichern Sie zuerst das Bauteil, um das Pin-Mapping zu bearbeiten.</p>
+                <p>{t('dialogs.component.saveFirstPinMapping')}</p>
               </div>
             ) : localComponent ? (
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Definieren Sie die Pin-Belegung für dieses Bauteil. Das Pin-Mapping gilt für alle Hersteller-Varianten.
+                  {t('form.pinMappingDescription')}
                 </p>
                 <PinMappingEditor componentId={localComponent.id} />
                 <DialogFooter>
                   <Button variant="outline" onClick={handleClose}>
-                    Schließen
+                    {t('form.close')}
                   </Button>
                 </DialogFooter>
               </div>
@@ -848,6 +856,7 @@ export function ComponentDialog({
             />
           </>
         )}
+        </EditLocaleProvider>
       </DialogContent>
     </Dialog>
   );

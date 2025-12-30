@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Memuat...",
+    "error": "Kesalahan",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "create": "Buat",
+    "search": "Cari",
+    "back": "Kembali",
+    "next": "Berikutnya",
+    "previous": "Sebelumnya",
+    "noResults": "Tidak ada hasil ditemukan",
+    "all": "Semua",
+    "yes": "Ya",
+    "no": "Tidak",
+    "actions": {
+      "details": "Detail"
+    }
+  },
+  "locale": {
+    "switch": "Ubah bahasa",
+    "current": "Bahasa saat ini",
+    "languages": {
+      "en": "Inggris",
+      "de": "Jerman",
+      "fr": "Prancis",
+      "es": "Spanyol",
+      "zh": "Mandarin",
+      "ja": "Jepang",
+      "ko": "Korea",
+      "it": "Italia"
+    }
+  },
+  "nav": {
+    "home": "Beranda",
+    "components": "Komponen",
+    "categories": "Kategori",
+    "manufacturers": "Produsen",
+    "packages": "Kemasan",
+    "search": "Cari",
+    "admin": "Admin",
+    "moderation": "Moderasi",
+    "myElectroVault": "ElectroVault Saya",
+    "login": "Masuk",
+    "logout": "Keluar",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Basis data komponen elektronik yang dikelola komunitas",
+    "searchPlaceholder": "Cari komponen...",
+    "featuredCategories": "Kategori Unggulan",
+    "recentComponents": "Komponen Terbaru",
+    "stats": {
+      "components": "Komponen",
+      "manufacturers": "Produsen",
+      "categories": "Kategori",
+      "users": "Pengguna"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Basis data komponen elektronik yang dikelola komunitas"
+    },
+    "stats": {
+      "components": "Komponen",
+      "manufacturers": "Produsen",
+      "users": "Pengguna"
+    }
+  },
+  "packages": {
+    "title": "Kemasan",
+    "totalCount": "{count} kemasan dalam basis data",
+    "addNew": "Kemasan Baru",
+    "searchPlaceholder": "Cari berdasarkan nama atau slug...",
+    "filterPlaceholder": "Jenis kemasan",
+    "filterAll": "Semua Jenis",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radial",
+      "AXIAL": "Aksial",
+      "CHASSIS": "Sasis",
+      "OTHER": "Lainnya"
+    },
+    "table": {
+      "name": "Nama",
+      "type": "Jenis",
+      "pinCount": "Jumlah Pin",
+      "dimensions": "Dimensi (P x L x T mm)",
+      "pitch": "Jarak Pin",
+      "actions": "Tindakan"
+    },
+    "loading": "Memuat...",
+    "noResults": "Tidak ada kemasan ditemukan",
+    "noPackagesFound": "Tidak ada kemasan ditemukan",
+    "createFirst": "Buat kemasan pertama",
+    "error": "Kesalahan",
+    "success": "Berhasil",
+    "loadError": "Gagal memuat kemasan.",
+    "deleteSuccess": "Kemasan telah dihapus.",
+    "deleteError": "Gagal menghapus kemasan.",
+    "deleteDialog": {
+      "title": "Hapus kemasan?",
+      "description": "Apakah Anda yakin ingin menghapus kemasan \"{name}\"? Tindakan ini tidak dapat dibatalkan."
+    }
+  },
+  "components": {
+    "title": "Komponen",
+    "description": "Jelajahi basis data komponen elektronik kami yang luas",
+    "filters": {
+      "category": "Kategori",
+      "manufacturer": "Produsen",
+      "status": "Status",
+      "mountingType": "Jenis Pemasangan"
+    },
+    "detail": {
+      "overview": "Ringkasan",
+      "specifications": "Spesifikasi",
+      "datasheets": "Lembar Data",
+      "parts": "Komponen Produsen",
+      "history": "Riwayat Versi",
+      "backToOverview": "Kembali ke Ringkasan",
+      "category": "Kategori",
+      "statistics": "Statistik",
+      "manufacturerVariants": "Varian Produsen",
+      "activeVariants": "Varian Aktif",
+      "additionalProperties": "Properti Tambahan",
+      "furtherProperties": "Properti lebih lanjut dari komponen ini",
+      "validForAllVariants": "Spesifikasi Teknis (berlaku untuk semua varian)",
+      "variantCount": "{count} Varian Produsen",
+      "variantCountPlural": "{count} Varian Produsen",
+      "noVariantsAvailable": "Tidak ada varian produsen tersedia",
+      "noVariantsForComponent": "Tidak ada varian produsen untuk komponen ini.",
+      "noAttributesAvailable": "Tidak ada atribut tersedia.",
+      "manufacturer": "Produsen",
+      "orderingCode": "Kode Pesanan",
+      "details": "Detail",
+      "allInCategory": "Semua dalam Kategori",
+      "status": "Status",
+      "moreAttributes": "+{count} lainnya"
+    },
+    "status": {
+      "DRAFT": "Draf",
+      "PENDING": "Menunggu",
+      "PUBLISHED": "Diterbitkan",
+      "ARCHIVED": "Diarsipkan"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktif",
+      "NRND": "Tidak Direkomendasikan untuk Desain Baru",
+      "EOL": "Akhir Masa Pakai",
+      "OBSOLETE": "Usang"
+    }
+  },
+  "categories": {
+    "title": "Kategori",
+    "browseAll": "Jelajahi semua kategori",
+    "subcategories": "Subkategori",
+    "componentsInCategory": "Komponen dalam kategori ini"
+  },
+  "manufacturers": {
+    "title": "Produsen",
+    "status": {
+      "ACTIVE": "Aktif",
+      "ACQUIRED": "Diakuisisi",
+      "DEFUNCT": "Tidak Aktif"
+    }
+  },
+  "auth": {
+    "login": "Masuk",
+    "logout": "Keluar",
+    "loginWith": "Masuk dengan {provider}",
+    "welcome": "Selamat datang kembali",
+    "signInToContinue": "Masuk untuk melanjutkan",
+    "signIn": {
+      "title": "Masuk",
+      "description": "Masuk ke akun Anda",
+      "button": "Masuk dengan Keycloak",
+      "loading": "Sedang masuk...",
+      "hint": "Anda akan dialihkan ke Keycloak"
+    },
+    "signOut": {
+      "title": "Keluar",
+      "description": "Apakah Anda yakin ingin keluar?",
+      "button": "Keluar",
+      "loading": "Sedang keluar...",
+      "cancel": "Batal"
+    },
+    "error": {
+      "title": "Kesalahan Autentikasi",
+      "description": "Terjadi kesalahan saat masuk",
+      "tryAgain": "Coba Lagi",
+      "backHome": "Kembali ke Beranda"
+    },
+    "errors": {
+      "configuration": "Kesalahan konfigurasi server. Silakan hubungi administrator.",
+      "accessDenied": "Akses ditolak. Anda tidak memiliki izin.",
+      "verification": "Link verifikasi telah kedaluwarsa atau sudah digunakan.",
+      "oauthSignin": "Kesalahan memulai proses masuk OAuth.",
+      "oauthCallback": "Kesalahan memproses callback OAuth.",
+      "oauthCreateAccount": "Kesalahan membuat akun pengguna.",
+      "emailCreateAccount": "Kesalahan membuat akun email.",
+      "callback": "Kesalahan memproses callback.",
+      "oauthAccountNotLinked": "Email ini sudah terhubung dengan akun lain.",
+      "sessionRequired": "Silakan masuk untuk mengakses halaman ini.",
+      "default": "Terjadi kesalahan yang tidak diketahui. Silakan coba lagi."
+    }
+  },
+  "admin": {
+    "dashboard": "Dasbor",
+    "sidebar": {
+      "dashboard": "Dasbor",
+      "moderation": "Moderasi",
+      "moderationDescription": "Antrian Persetujuan",
+      "users": "Pengguna",
+      "backToHome": "Ke Halaman Utama",
+      "user": "Pengguna",
+      "logout": "Keluar"
+    },
+    "components": {
+      "title": "Kelola Komponen",
+      "new": "Komponen Baru",
+      "edit": "Edit Komponen"
+    },
+    "moderation": {
+      "title": "Moderasi",
+      "pendingReviews": "Tinjauan Tertunda",
+      "approve": "Setujui",
+      "reject": "Tolak",
+      "batchApproval": "Persetujuan Massal",
+      "confirmApprove": "Konfirmasi Persetujuan",
+      "confirmApproveDescription": "Apakah Anda yakin ingin menyetujui {type} ini? Ini akan terlihat publik setelah itu.",
+      "confirmBatchApproval": "Apakah Anda ingin menyetujui {count} item? Tindakan ini tidak dapat dibatalkan.",
+      "rejectWithReason": "Tolak dengan Alasan",
+      "rejectDescription": "Silakan berikan alasan penolakan. Ini akan ditampilkan kepada pembuat.",
+      "rejectReasonLabel": "Alasan",
+      "rejectReasonPlaceholder": "Mengapa item ini ditolak?",
+      "rejectReasonHelp": "Alasan yang jelas membantu pembuat memahami penolakan.",
+      "batchApproveButton": "Setujui {count}",
+      "typeComponent": "Komponen",
+      "typePart": "Part",
+      "draft": "Draf"
+    },
+    "users": {
+      "title": "Pengguna",
+      "manage": "Kelola Pengguna"
+    },
+    "myDashboard": {
+      "title": "Dasbor Saya",
+      "stats": {
+        "componentsTotal": "Total Komponen",
+        "componentsTotalDesc": "Komponen yang dibuat oleh Anda",
+        "variants": "Varian",
+        "variantsDesc": "Varian Produsen",
+        "drafts": "Draf",
+        "draftsDesc": "Belum dikirimkan",
+        "pending": "Dalam Peninjauan",
+        "pendingDesc": "Menunggu moderasi",
+        "published": "Diterbitkan",
+        "archived": "Diarsipkan"
+      },
+      "draftsSection": {
+        "title": "Draf Saya",
+        "description": "Draf adalah penyimpanan sementara pribadi dan belum dikirimkan untuk moderasi.",
+        "newComponent": "Komponen Baru",
+        "empty": "Tidak ada draf. Buat komponen baru dan simpan sebagai draf.",
+        "draftBadge": "Draf",
+        "noName": "[Tidak Ada Nama]"
+      },
+      "activitySection": {
+        "title": "Riwayat Aktivitas",
+        "description": "Aktivitas terakhir Anda di ElectroVault",
+        "empty": "Belum ada aktivitas."
+      },
+      "entities": {
+        "COMPONENT": "Komponen",
+        "PART": "Varian",
+        "MANUFACTURER": "Produsen",
+        "CATEGORY": "Kategori",
+        "PACKAGE": "Kemasan"
+      },
+      "error": "Dasbor tidak dapat dimuat. Silakan coba lagi."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Atribut Baru",
+        "titleEdit": "Edit Atribut",
+        "description": "Definisi atribut untuk komponen"
+      },
+      "category": {
+        "title": "Kategori Baru",
+        "titleEdit": "Edit Kategori",
+        "description": "Kelola informasi kategori dan atribut",
+        "saveFirst": "Simpan kategori terlebih dahulu untuk menambahkan atribut"
+      },
+      "component": {
+        "title": "Komponen Baru",
+        "titleEdit": "Edit Komponen",
+        "description": "Buat komponen baru - setelah menyimpan Anda dapat menambahkan varian produsen",
+        "descriptionEdit": "Kelola informasi komponen dan varian produsen",
+        "saveFirstPinMapping": "Simpan komponen terlebih dahulu untuk mengedit pemetaan pin",
+        "saveFirstParts": "Simpan komponen terlebih dahulu untuk menambahkan varian produsen",
+        "saveFirstRelations": "Simpan komponen terlebih dahulu untuk menambahkan hubungan",
+        "createdWithVariants": "Komponen telah dibuat. Anda sekarang dapat menambahkan varian produsen",
+        "noPartsWarning": "Komponen ini tidak memiliki varian produsen. Setidaknya satu varian diperlukan"
+      },
+      "manufacturer": {
+        "title": "Produsen Baru",
+        "titleEdit": "Edit Produsen",
+        "description": "Kelola informasi produsen"
+      },
+      "part": {
+        "title": "Varian Produsen Baru",
+        "titleEdit": "Edit Varian Produsen",
+        "description": "Buat varian produsen konkret baru dari komponen",
+        "descriptionEdit": "Ubah informasi varian produsen",
+        "saveFirstFiles": "Simpan varian terlebih dahulu untuk mengunggah file"
+      },
+      "package": {
+        "title": "Kemasan Baru",
+        "titleEdit": "Edit Kemasan",
+        "description": "Informasi kemasan/jejak kaki"
+      },
+      "delete": {
+        "title": "Konfirmasi Penghapusan",
+        "message": "Apakah Anda yakin ingin menghapus item ini?",
+        "messageFile": "Apakah Anda benar-benar ingin menghapus file ini?",
+        "messagePin": "Apakah Anda benar-benar ingin menghapus pin ini?",
+        "message3dModel": "Apakah Anda benar-benar ingin menghapus model 3D ini?",
+        "messageRelation": "Apakah Anda benar-benar ingin menghapus hubungan ini?"
+      }
+    },
+    "buttons": {
+      "saving": "Menyimpan...",
+      "saveAsDraft": "Simpan sebagai Draf",
+      "update": "Perbarui",
+      "addPin": "Tambah Pin",
+      "addRelation": "Tambah Hubungan"
+    },
+    "messages": {
+      "success": "Berhasil",
+      "error": "Kesalahan",
+      "warning": "Peringatan",
+      "attribute": {
+        "created": "Atribut telah dibuat",
+        "updated": "Atribut telah diperbarui",
+        "deleted": "Atribut telah dihapus",
+        "loadFailed": "Gagal memuat atribut",
+        "saveFailed": "Gagal menyimpan atribut",
+        "deleteFailed": "Gagal menghapus atribut"
+      },
+      "category": {
+        "created": "Kategori telah dibuat",
+        "updated": "Kategori telah diperbarui",
+        "deleted": "Kategori telah dihapus",
+        "loadFailed": "Gagal memuat kategori",
+        "saveFailed": "Gagal menyimpan kategori",
+        "deleteFailed": "Gagal menghapus kategori"
+      },
+      "component": {
+        "created": "Komponen telah dibuat",
+        "updated": "Komponen telah diperbarui",
+        "deleted": "Komponen telah dihapus",
+        "loadFailed": "Gagal memuat komponen",
+        "saveFailed": "Gagal menyimpan komponen",
+        "deleteFailed": "Gagal menghapus komponen"
+      },
+      "manufacturer": {
+        "created": "Produsen telah dibuat",
+        "updated": "Produsen telah diperbarui",
+        "deleted": "Produsen telah dihapus",
+        "loadFailed": "Gagal memuat produsen",
+        "saveFailed": "Gagal menyimpan produsen",
+        "deleteFailed": "Gagal menghapus produsen",
+        "logoUploaded": "Logo telah diunggah",
+        "logoUploadFailed": "Gagal mengunggah logo"
+      },
+      "part": {
+        "created": "Varian telah dibuat",
+        "updated": "Varian telah diperbarui",
+        "deleted": "Varian telah dihapus",
+        "loadFailed": "Gagal memuat varian",
+        "saveFailed": "Gagal menyimpan varian",
+        "deleteFailed": "Gagal menghapus varian"
+      },
+      "package": {
+        "created": "Kemasan telah dibuat",
+        "updated": "Kemasan telah diperbarui",
+        "deleted": "Kemasan telah dihapus",
+        "loadFailed": "Gagal memuat kemasan",
+        "saveFailed": "Gagal menyimpan kemasan",
+        "deleteFailed": "Gagal menghapus kemasan"
+      },
+      "file": {
+        "uploaded": "File telah diunggah",
+        "deleted": "File telah dihapus",
+        "uploadFailed": "Gagal mengunggah file",
+        "deleteFailed": "Gagal menghapus file",
+        "loadFailed": "Gagal memuat file",
+        "downloadUrlFailed": "Gagal menghasilkan URL unduhan"
+      },
+      "pin": {
+        "created": "Pin telah ditambahkan",
+        "updated": "Pin telah diperbarui",
+        "deleted": "Pin telah dihapus",
+        "createFailed": "Gagal membuat pin",
+        "loadFailed": "Gagal memuat pin",
+        "updateFailed": "Gagal memperbarui pin",
+        "deleteFailed": "Gagal menghapus pin"
+      },
+      "relation": {
+        "created": "Hubungan telah ditambahkan",
+        "deleted": "Hubungan telah dihapus",
+        "createFailed": "Gagal membuat hubungan",
+        "deleteFailed": "Gagal menghapus hubungan"
+      }
+    },
+    "pinMapping": {
+      "title": "Pemetaan Pin",
+      "addPin": "Tambah Pin",
+      "newPin": "Tambah Pin Baru",
+      "pinNumber": "Nomor Pin (mis. 1, VCC)",
+      "pinName": "Nama Pin",
+      "selectType": "Pilih Jenis Pin",
+      "noDescription": "Tidak ada deskripsi",
+      "noType": "Tidak ada jenis",
+      "loading": "Memuat pin...",
+      "pinsCount": "{count} Pin",
+      "tabList": "Daftar Pin",
+      "tabBulkImport": "Impor Massal",
+      "noPins": "Tidak ada pin yang didefinisikan. Tambahkan pin satu per satu atau gunakan impor massal.",
+      "columnPinNumber": "No. Pin",
+      "columnName": "Nama",
+      "columnType": "Jenis",
+      "columnFunction": "Fungsi (DE)",
+      "columnActions": "Tindakan",
+      "functionPlaceholder": "mis. Tegangan suplai",
+      "deleteTitle": "Hapus pin?",
+      "deleteMessage": "Apakah Anda yakin ingin menghapus pin {pinNumber} ({pinName})? Tindakan ini tidak dapat dibatalkan.",
+      "reorderSuccess": "Urutan pin telah diperbarui",
+      "reorderFailed": "Gagal mengubah urutan",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Contoh:",
+        "typeHint": "pinType opsional. Jenis yang tersedia: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Masukkan pin dalam format CSV...",
+        "importButton": "Impor Pin",
+        "noPinsFound": "Tidak ada data pin valid ditemukan.",
+        "success": "{count} pin telah diimpor.",
+        "failed": "Impor massal gagal."
+      }
+    },
+    "files": {
+      "uploadImage": "Unggah Gambar Produk",
+      "uploadDatasheet": "Unggah Lembar Data",
+      "uploadDocument": "Unggah Dokumen",
+      "selectLanguage": "Pilih Bahasa",
+      "noFiles": "Tidak ada file tersedia",
+      "confirmDelete": "Hapus file?",
+      "productImage": "Gambar Produk",
+      "productImageDescription": "Gambar pratinjau untuk varian produsen ini",
+      "addImage": "Gambar",
+      "imageDescription": "JPEG, PNG atau WebP (maks. 10 MB)",
+      "noImageUploaded": "Belum ada gambar diunggah",
+      "datasheets": "Lembar Data",
+      "datasheetsDescription": "Lembar data PDF untuk varian produsen ini",
+      "addDatasheet": "Lembar Data",
+      "languagesRequired": "Bahasa lembar data",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Setidaknya satu bahasa harus dipilih",
+      "datasheetFileDescription": "File PDF dari lembar data produsen",
+      "noDatasheets": "Belum ada lembar data diunggah",
+      "otherFiles": "File Lainnya",
+      "otherFilesDescription": "Dokumen tambahan, catatan aplikasi, dll.",
+      "addDocument": "Dokumen",
+      "languagesOptional": "Bahasa (opsional)",
+      "anyFileDescription": "File apa pun (PDF, TXT, ZIP, dll.)",
+      "noDocuments": "Belum ada dokumen diunggah",
+      "fileName": "File",
+      "fileSize": "Ukuran",
+      "languages": "Bahasa",
+      "actions": "Tindakan",
+      "imageCount": "{count} Gambar",
+      "fileCount": "{count} File",
+      "datasheetCount": "{count} Lembar Data",
+      "imageUploaded": "Gambar telah diunggah",
+      "imageRemoved": "Gambar telah dihapus"
+    },
+    "model3d": {
+      "title": "Model 3D",
+      "confirmDelete": "Hapus model 3D?",
+      "upload": "Unggah Model 3D",
+      "noModels": "Tidak ada model 3D tersedia"
+    },
+    "lists": {
+      "searchPlaceholder": "Cari...",
+      "searchByName": "Cari berdasarkan nama atau slug...",
+      "searchByNameCage": "Cari berdasarkan nama, slug atau kode CAGE...",
+      "noResults": "Tidak ada hasil ditemukan",
+      "createFirst": "Buat entri pertama",
+      "noPackagesFound": "Tidak ada kemasan ditemukan",
+      "createFirstPackage": "Buat kemasan pertama"
+    },
+    "filters": {
+      "allStatus": "Semua Status",
+      "myDrafts": "Draf Saya"
+    },
+    "manufacturer": {
+      "title": "Produsen",
+      "count": "{count} produsen dalam basis data",
+      "create": "Produsen Baru",
+      "createFirst": "Buat produsen pertama",
+      "deleteTitle": "Hapus produsen?",
+      "deleteDescription": "Apakah Anda yakin ingin menghapus produsen \"{name}\"? Tindakan ini tidak dapat dibatalkan.",
+      "status": {
+        "active": "Aktif",
+        "acquired": "Diakuisisi",
+        "defunct": "Tidak Aktif"
+      }
+    },
+    "form": {
+      "package": "Kemasan",
+      "selectPackage": "Pilih Kemasan",
+      "noPackage": "Tanpa Kemasan",
+      "editIn": "Edit dalam:",
+      "searchLanguage": "Cari bahasa...",
+      "noLanguageFound": "Tidak ada bahasa ditemukan",
+      "original": "Asli",
+      "backToOverview": "Kembali ke Ringkasan",
+      "name": "Nama",
+      "nameDescription": "Nama dalam bahasa Jerman dan/atau Inggris. Wajib diisi jika kategori tidak memiliki atribut label",
+      "namePlaceholder": "Nama komponen",
+      "series": "Seri",
+      "seriesDescription": "Seri atau keluarga komponen opsional",
+      "seriesPlaceholder": "mis. 74HC, ATmega",
+      "packageDescription": "Bentuk fisik (mis. DIP-8, SOIC-8)",
+      "shortDescription": "Deskripsi Singkat",
+      "shortDescriptionDescription": "Kalimat singkat untuk mendeskripsikan komponen",
+      "shortDescriptionPlaceholder": "Deskripsi singkat",
+      "fullDescription": "Deskripsi Lengkap",
+      "fullDescriptionPlaceholder": "Deskripsi lengkap",
+      "attributesDescription": "Atribut teknis berdasarkan kategori yang dipilih",
+      "selectCategoryFirst": "Silakan pilih kategori terlebih dahulu di tab \"Data Dasar\"",
+      "pinMappingDescription": "Tentukan pemetaan pin untuk komponen ini. Pemetaan pin berlaku untuk semua varian produsen",
+      "partsDescription": "Varian khusus produsen dari komponen ini",
+      "newVariant": "Varian Baru",
+      "close": "Tutup",
+      "parentCategory": "Kategori Induk",
+      "parentCategoryPlaceholder": "Tidak ada (Kategori Root)",
+      "parentCategoryDescription": "Kosongkan untuk kategori utama (Level 0)",
+      "categoryName": "Nama Kategori",
+      "categoryDescription": "Deskripsi",
+      "categoryDescriptionPlaceholder": "Deskripsi kategori",
+      "sortOrder": "Urutan Sortir",
+      "sortOrderDescription": "Nilai lebih rendah = lebih tinggi",
+      "status": "Status",
+      "active": "Aktif",
+      "inactive": "Tidak Aktif",
+      "icon": "Ikon",
+      "iconUploadDescription": "Unggah ikon kategori. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klik atau seret file ke sini.",
+      "iconMaxSize": "Ikon tidak boleh lebih dari 5 MB.",
+      "iconAllowedTypes": "Hanya JPEG, PNG, WebP atau SVG yang diizinkan.",
+      "iconUploaded": "Ikon telah diunggah.",
+      "iconUploadFailed": "Gagal mengunggah ikon.",
+      "categoryCreatedIconFailed": "Kategori dibuat, tetapi unggahan ikon gagal.",
+      "loading": "Memuat...",
+      "newAttribute": "Atribut Baru",
+      "ownAttributes": "Atribut Sendiri ({count})",
+      "noOwnAttributes": "Tidak ada atribut sendiri yang didefinisikan.",
+      "inheritedAttributes": "Atribut Diwariskan ({count})",
+      "inheritedAttributesDescription": "Atribut yang diwariskan hanya dapat diedit di kategori asalnya.",
+      "attributesInherited": "Atribut kategori ini (akan diwariskan ke subkategori)",
+      "cageCode": "Kode CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "Kode 5 digit",
+      "country": "Negara",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Situs Web",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Unggah logo produsen. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klik atau seret file ke sini.",
+      "statusActive": "Aktif",
+      "statusAcquired": "Diakuisisi",
+      "statusDefunct": "Tidak Aktif",
+      "foundedYear": "Tahun Didirikan",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Tahun Dibubarkan",
+      "defunctYearPlaceholder": "2020",
+      "description": "Deskripsi",
+      "descriptionPlaceholder": "Deskripsi",
+      "logoMaxSize": "Logo tidak boleh lebih dari 5 MB.",
+      "logoAllowedTypes": "Hanya JPEG, PNG, WebP atau SVG yang diizinkan.",
+      "createdAsDraft": "Produsen disimpan sebagai draf.",
+      "manufacturerCreatedLogoFailed": "Produsen dibuat, tetapi unggahan logo gagal.",
+      "save": "Simpan"
+    },
+    "audit": {
+      "created": "dibuat",
+      "updated": "diperbarui",
+      "deleted": "dihapus",
+      "restored": "dipulihkan",
+      "approved": "disetujui",
+      "rejected": "ditolak"
+    },
+    "tabs": {
+      "basicInfo": "Info Dasar",
+      "attributes": "Atribut",
+      "pinMapping": "Pemetaan Pin",
+      "parts": "Varian Produsen",
+      "relations": "Hubungan",
+      "files": "File",
+      "details": "Data Dasar",
+      "pins": "Pemetaan Pin",
+      "models": "Model 3D"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Produsen",
+      "status": "Status",
+      "lifecycle": "Siklus Hidup",
+      "actions": "Tindakan",
+      "variantCount": "{count} Varian",
+      "variantCountPlural": "{count} Varian",
+      "activeCount": "{count} aktif",
+      "obsoleteCount": "{count} usang",
+      "unknown": "Tidak Diketahui"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Nama unik dari kemasan",
+      "mountingType": "Jenis Kemasan",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radial - Berkabel Radial",
+        "AXIAL": "Aksial - Berkabel Aksial",
+        "CHASSIS": "Sasis - Pemasangan Sasis",
+        "OTHER": "Lainnya"
+      },
+      "pinCount": "Jumlah Pin",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Panjang (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Lebar (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Tinggi (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Jarak Pin (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Jarak antar pin",
+      "jedecStandard": "Standar JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "Standar EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL Gambar",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Tautan ke gambar teknis atau lembar data",
+      "description": "Deskripsi",
+      "descriptionPlaceholder": "Informasi tambahan tentang kemasan...",
+      "saveFirstModels": "Simpan kemasan terlebih dahulu untuk mengunggah model 3D.",
+      "modelsDescription": "Model 3D untuk kemasan ini (STEP, STL, 3MF, OBJ, dll.)"
+    },
+    "partForm": {
+      "coreComponent": "Komponen Generik",
+      "coreComponentDesc": "Komponen independen produsen (mis. 555 Timer)",
+      "manufacturer": "Produsen",
+      "manufacturerDesc": "Produsen dari varian konkret ini (mis. Texas Instruments)",
+      "manufacturerPlaceholder": "Pilih produsen",
+      "mpn": "MPN (Nomor Part Produsen)",
+      "mpnPlaceholder": "mis. NE555P",
+      "mpnDesc": "Nomor part produsen yang unik",
+      "orderingCode": "Kode Pemesanan",
+      "orderingCodePlaceholder": "Opsional",
+      "orderingCodeDesc": "Nomor pemesanan alternatif (jika berbeda dari MPN)",
+      "statusRecord": "Status Catatan",
+      "lifecycleStatus": "Status Siklus Hidup",
+      "introductionYear": "Tahun Pengenalan",
+      "introductionYearPlaceholder": "mis. 1972",
+      "discontinuedYear": "Tahun Penghentian",
+      "discontinuedYearPlaceholder": "mis. 2020",
+      "rohsCompliant": "Sesuai RoHS",
+      "rohsDesc": "Memenuhi pedoman RoHS",
+      "reachCompliant": "Sesuai REACH",
+      "reachDesc": "Memenuhi peraturan REACH",
+      "weight": "Berat (gram)",
+      "weightPlaceholder": "mis. 0.5",
+      "dateCodeFormat": "Format Kode Tanggal",
+      "dateCodePlaceholder": "mis. YYWW",
+      "dateCodeDesc": "Format kode tanggal pada komponen",
+      "nsn": "NSN (Nomor Stok NATO)",
+      "nsnPlaceholder": "mis. 5962-01-123-4567",
+      "milSpec": "Spesifikasi Militer",
+      "milSpecPlaceholder": "mis. MIL-PRF-38534",
+      "partAttributesDesc": "Atribut khusus produsen berdasarkan kategori komponen.",
+      "partAttributesLabel": "Atribut Khusus Produsen",
+      "filesDesc": "Kelola lembar data, gambar, dan file lainnya untuk varian produsen ini.",
+      "close": "Tutup",
+      "selectComponent": "Pilih komponen"
+    }
+  },
+  "errors": {
+    "notFound": "Halaman tidak ditemukan",
+    "unauthorized": "Tidak Terotorisasi",
+    "serverError": "Kesalahan server"
+  },
+  "footer": {
+    "tagline": "Database komponen elektronik yang dikelola komunitas",
+    "navigation": "Navigasi",
+    "community": "Komunitas",
+    "legal": "Hukum",
+    "about": "Tentang",
+    "help": "Bantuan",
+    "contact": "Kontak",
+    "contribute": "Berkontribusi",
+    "github": "GitHub",
+    "privacy": "Privasi",
+    "imprint": "Keterangan",
+    "copyright": "Sumber Terbuka di bawah Lisensi MIT"
+  },
+  "about": {
+    "title": "Tentang ElectroVault",
+    "subtitle": "Basis data komponen elektronik yang dikelola komunitas",
+    "mission": {
+      "title": "Misi Kami",
+      "description": "ElectroVault adalah basis data gratis dan terbuka untuk komponen elektronik - dari tabung historis hingga nanoteknologi modern. Tujuan kami adalah melestarikan pengetahuan tentang komponen elektronik dan membuatnya dapat diakses oleh semua orang."
+    },
+    "features": {
+      "title": "Fitur",
+      "comprehensive": {
+        "title": "Basis Data Komprehensif",
+        "description": "Dari resistor hingga kapasitor hingga sirkuit terintegrasi tinggi - kami mencatat semua komponen penting dengan spesifikasi terperinci."
+      },
+      "historical": {
+        "title": "Arsip Historis",
+        "description": "Dokumentasi komponen historis untuk perbaikan dan restorasi peralatan vintage."
+      },
+      "community": {
+        "title": "Didorong oleh Komunitas",
+        "description": "Semua orang dapat berkontribusi dan berbagi pengetahuan mereka. Bersama-sama kami membangun basis data komponen yang paling komprehensif."
+      },
+      "open": {
+        "title": "Sumber Terbuka",
+        "description": "Sepenuhnya transparan dan tersedia secara bebas di bawah Lisensi MIT."
+      }
+    },
+    "contribute": {
+      "title": "Terlibat",
+      "description": "ElectroVault berkembang dari komunitasnya. Berikut beberapa cara Anda dapat berkontribusi:",
+      "dataEntry": "Tambah atau edit komponen",
+      "datasheets": "Unggah lembar data",
+      "code": "Kontribusi kode di GitHub",
+      "feedback": "Umpan balik dan saran perbaikan"
+    }
+  },
+  "help": {
+    "title": "Bantuan & FAQ",
+    "subtitle": "Pertanyaan yang Sering Diajukan",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Jelajahi Komponen",
+        "description": "Temukan komponen dalam basis data kami"
+      },
+      "createAccount": {
+        "title": "Buat Akun",
+        "description": "Kontribusi ke basis data"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentasi dan masalah"
+      }
+    },
+    "contactCta": {
+      "title": "Pertanyaan Anda belum terjawab?",
+      "description": "Jangan ragu untuk menghubungi kami secara langsung.",
+      "button": "Hubungi Kami"
+    },
+    "general": {
+      "title": "Umum",
+      "what": {
+        "question": "Apa itu ElectroVault?",
+        "answer": "ElectroVault adalah basis data gratis yang dikelola komunitas untuk komponen listrik dan elektronik. Kami mendokumentasikan komponen dari tabung historis hingga IC modern dengan metadata komprehensif, lembar data, dan spesifikasi."
+      },
+      "free": {
+        "question": "Apakah ElectroVault gratis?",
+        "answer": "Ya, ElectroVault sepenuhnya gratis dan open source. Baik penggunaan maupun kode sumber tersedia secara bebas."
+      }
+    },
+    "search": {
+      "title": "Pencarian",
+      "how": {
+        "question": "Bagaimana cara menemukan komponen tertentu?",
+        "answer": "Gunakan fungsi pencarian di kanan atas atau navigasi melalui kategori. Anda dapat mencari berdasarkan nomor part, produsen, atau properti."
+      },
+      "filters": {
+        "question": "Filter apa yang tersedia?",
+        "answer": "Anda dapat memfilter berdasarkan kategori, produsen, status (aktif/usang), jenis kemasan, dan banyak parameter teknis lainnya."
+      }
+    },
+    "contribute": {
+      "title": "Berkontribusi",
+      "account": {
+        "question": "Apakah saya perlu akun untuk berkontribusi?",
+        "answer": "Ya, untuk menambah atau mengedit komponen, Anda memerlukan akun gratis. Ini membantu kami memastikan kualitas data."
+      },
+      "how": {
+        "question": "Bagaimana cara menambahkan komponen?",
+        "answer": "Setelah masuk, Anda dapat membuat komponen baru melalui tombol 'Komponen Baru' di ringkasan komponen. Seorang moderator akan meninjau kontribusi Anda sebelum publikasi."
+      },
+      "quality": {
+        "question": "Bagaimana kualitas data dijamin?",
+        "answer": "Semua kontribusi ditinjau oleh moderator berpengalaman. Selain itu, pengguna terdaftar dapat menyarankan koreksi."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontak",
+    "subtitle": "Apakah Anda memiliki pertanyaan atau saran?",
+    "form": {
+      "heading": "Kirim Pesan",
+      "name": "Nama",
+      "email": "Email",
+      "subject": "Subjek",
+      "message": "Pesan",
+      "namePlaceholder": "Max Mustermann",
+      "emailPlaceholder": "max@contoh.com",
+      "subjectPlaceholder": "Subjek pesan Anda",
+      "messagePlaceholder": "Pesan Anda...",
+      "demoNote": "Catatan: Formulir kontak saat ini adalah demo. Integrasi backend akan dilakukan di fase selanjutnya. Untuk pertanyaan penting, silakan gunakan GitHub atau alamat email yang disediakan.",
+      "send": "Kirim Pesan",
+      "sending": "Mengirim...",
+      "success": "Pesan berhasil dikirim!",
+      "error": "Kesalahan mengirim pesan"
+    },
+    "alternatives": {
+      "title": "Opsi Kontak Lain",
+      "githubTitle": "GitHub Issues",
+      "github": "Buat issue di GitHub",
+      "emailTitle": "Email",
+      "email": "Kirim email kepada kami"
+    },
+    "responseTime": {
+      "title": "Waktu Respons",
+      "description": "Karena ElectroVault adalah proyek komunitas, permintaan diproses oleh sukarelawan. Harap bersabar - kami biasanya merespons dalam waktu 48 jam."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Dukungan Komunitas",
+        "description": "Gunakan GitHub Discussions untuk pertanyaan umum"
+      },
+      "bugReports": {
+        "title": "Laporan Bug",
+        "description": "Laporkan masalah teknis langsung di GitHub"
+      },
+      "partnerships": {
+        "title": "Permintaan Kemitraan",
+        "description": "Untuk permintaan bisnis gunakan formulir"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Keterangan",
+    "responsible": "Bertanggung jawab atas konten",
+    "contact": "Kontak",
+    "disclaimer": {
+      "title": "Penafian",
+      "content": "Meskipun kontrol konten yang hati-hati, kami tidak bertanggung jawab atas konten link eksternal. Operator halaman yang ditautkan sepenuhnya bertanggung jawab atas kontennya.",
+      "liability": "Konten halaman ini dibuat dengan sangat hati-hati. Namun, kami tidak dapat menjamin keakuratan, kelengkapan, dan keterkinian konten."
+    },
+    "opensource": {
+      "title": "Sumber Terbuka",
+      "description": "ElectroVault adalah proyek sumber terbuka di bawah Lisensi MIT. Kode sumber tersedia di GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Kebijakan Privasi",
+    "lastUpdated": "Terakhir diperbarui",
+    "intro": "Kami sangat serius dalam melindungi data pribadi Anda. Kebijakan privasi ini memberi tahu Anda tentang sifat, lingkup, dan tujuan pemrosesan data pribadi.",
+    "responsible": {
+      "title": "Pengendali Data",
+      "description": "Bertanggung jawab atas pemrosesan data di situs web ini adalah:"
+    },
+    "collection": {
+      "title": "Pengumpulan dan Penyimpanan Data Pribadi",
+      "description": "Saat Anda mengunjungi situs web kami, informasi secara otomatis dikumpulkan yang dikirimkan oleh browser Anda:",
+      "data": "Alamat IP, tanggal dan waktu akses, jenis dan versi browser, sistem operasi yang digunakan, URL perujuk"
+    },
+    "cookies": {
+      "title": "Cookie",
+      "description": "Situs web kami menggunakan cookie. Cookie adalah file teks kecil yang disimpan di perangkat Anda.",
+      "essential": "Cookie yang diperlukan secara teknis untuk autentikasi dan manajemen sesi",
+      "functional": "Cookie fungsional untuk meningkatkan pengalaman pengguna"
+    },
+    "auth": {
+      "title": "Autentikasi",
+      "description": "Kami menggunakan Keycloak untuk pendaftaran dan login. Data berikut disimpan:",
+      "data": "Nama pengguna, alamat email, gambar profil (opsional), peran dan izin"
+    },
+    "rights": {
+      "title": "Hak Anda",
+      "description": "Anda memiliki hak berikut terkait data pribadi Anda:",
+      "access": "Hak akses",
+      "correction": "Hak untuk perbaikan",
+      "deletion": "Hak untuk penghapusan",
+      "restriction": "Hak untuk pembatasan pemrosesan",
+      "portability": "Hak untuk portabilitas data",
+      "objection": "Hak untuk keberatan"
+    },
+    "contact": {
+      "title": "Kontak untuk Pertanyaan Privasi",
+      "description": "Jika Anda memiliki pertanyaan tentang privasi, Anda dapat menghubungi kami kapan saja."
+    }
+  }
+}

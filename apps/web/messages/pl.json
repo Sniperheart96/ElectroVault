@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "create": "Utwórz",
+    "search": "Szukaj",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "previous": "Poprzedni",
+    "noResults": "Nie znaleziono wyników",
+    "all": "Wszystkie",
+    "yes": "Tak",
+    "no": "Nie",
+    "actions": {
+      "details": "Szczegóły"
+    }
+  },
+  "locale": {
+    "switch": "Zmień język",
+    "current": "Aktualny język",
+    "languages": {
+      "en": "Angielski",
+      "de": "Niemiecki",
+      "fr": "Francuski",
+      "es": "Hiszpański",
+      "zh": "Chiński",
+      "ja": "Japoński",
+      "ko": "Koreański",
+      "it": "Włoski"
+    }
+  },
+  "nav": {
+    "home": "Strona główna",
+    "components": "Komponenty",
+    "categories": "Kategorie",
+    "manufacturers": "Producenci",
+    "packages": "Obudowy",
+    "search": "Szukaj",
+    "admin": "Administrator",
+    "moderation": "Moderacja",
+    "myElectroVault": "Mój ElectroVault",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Baza danych komponentów elektronicznych utrzymywana przez społeczność",
+    "searchPlaceholder": "Szukaj komponentów...",
+    "featuredCategories": "Polecane kategorie",
+    "recentComponents": "Ostatnie komponenty",
+    "stats": {
+      "components": "Komponenty",
+      "manufacturers": "Producenci",
+      "categories": "Kategorie",
+      "users": "Użytkownicy"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Baza danych komponentów elektronicznych utrzymywana przez społeczność"
+    },
+    "stats": {
+      "components": "Komponenty",
+      "manufacturers": "Producenci",
+      "users": "Użytkownicy"
+    }
+  },
+  "packages": {
+    "title": "Obudowy",
+    "totalCount": "{count} obudów w bazie danych",
+    "addNew": "Nowa obudowa",
+    "searchPlaceholder": "Szukaj według nazwy lub slug...",
+    "filterPlaceholder": "Typ obudowy",
+    "filterAll": "Wszystkie typy",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radialny",
+      "AXIAL": "Osiowy",
+      "CHASSIS": "Montaż na obudowie",
+      "OTHER": "Inne"
+    },
+    "table": {
+      "name": "Nazwa",
+      "type": "Typ",
+      "pinCount": "Liczba pinów",
+      "dimensions": "Wymiary (L x S x W mm)",
+      "pitch": "Rozstaw",
+      "actions": "Akcje"
+    },
+    "loading": "Ładowanie...",
+    "noResults": "Nie znaleziono obudów",
+    "noPackagesFound": "Nie znaleziono obudów",
+    "createFirst": "Utwórz pierwszą obudowę",
+    "error": "Błąd",
+    "success": "Sukces",
+    "loadError": "Nie udało się załadować obudów.",
+    "deleteSuccess": "Obudowa została usunięta.",
+    "deleteError": "Nie udało się usunąć obudowy.",
+    "deleteDialog": {
+      "title": "Usunąć obudowę?",
+      "description": "Czy naprawdę chcesz usunąć obudowę \"{name}\"? Tej operacji nie można cofnąć."
+    }
+  },
+  "components": {
+    "title": "Komponenty",
+    "description": "Przeglądaj naszą obszerną bazę danych komponentów elektronicznych",
+    "filters": {
+      "category": "Kategoria",
+      "manufacturer": "Producent",
+      "status": "Status",
+      "mountingType": "Typ montażu"
+    },
+    "detail": {
+      "overview": "Przegląd",
+      "specifications": "Specyfikacje",
+      "datasheets": "Karty katalogowe",
+      "parts": "Części producentów",
+      "history": "Historia wersji",
+      "backToOverview": "Powrót do przeglądu",
+      "category": "Kategoria",
+      "statistics": "Statystyki",
+      "manufacturerVariants": "Warianty producentów",
+      "activeVariants": "Aktywne warianty",
+      "additionalProperties": "Dodatkowe właściwości",
+      "furtherProperties": "Dodatkowe właściwości tego komponentu",
+      "validForAllVariants": "Specyfikacje techniczne (ważne dla wszystkich wariantów)",
+      "variantCount": "{count} wariant producenta",
+      "variantCountPlural": "{count} wariantów producentów",
+      "noVariantsAvailable": "Brak dostępnych wariantów producentów",
+      "noVariantsForComponent": "Brak dostępnych wariantów producentów dla tego komponentu.",
+      "noAttributesAvailable": "Brak dostępnych atrybutów.",
+      "manufacturer": "Producent",
+      "orderingCode": "Kod zamówieniowy",
+      "details": "Szczegóły",
+      "allInCategory": "Wszystkie w kategorii",
+      "status": "Status",
+      "moreAttributes": "+{count} więcej"
+    },
+    "status": {
+      "DRAFT": "Szkic",
+      "PENDING": "Oczekujące",
+      "PUBLISHED": "Opublikowane",
+      "ARCHIVED": "Zarchiwizowane"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktywny",
+      "NRND": "Nie zalecany do nowych projektów",
+      "EOL": "Koniec żywotności",
+      "OBSOLETE": "Przestarzały"
+    }
+  },
+  "categories": {
+    "title": "Kategorie",
+    "browseAll": "Przeglądaj wszystkie kategorie",
+    "subcategories": "Podkategorie",
+    "componentsInCategory": "Komponenty w tej kategorii"
+  },
+  "manufacturers": {
+    "title": "Producenci",
+    "status": {
+      "ACTIVE": "Aktywny",
+      "ACQUIRED": "Przejęty",
+      "DEFUNCT": "Nieistniejący"
+    }
+  },
+  "auth": {
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "loginWith": "Zaloguj się przez {provider}",
+    "welcome": "Witaj ponownie",
+    "signInToContinue": "Zaloguj się, aby kontynuować",
+    "signIn": {
+      "title": "Zaloguj się",
+      "description": "Zaloguj się do swojego konta",
+      "button": "Zaloguj się przez Keycloak",
+      "loading": "Logowanie...",
+      "hint": "Zostaniesz przekierowany do Keycloak"
+    },
+    "signOut": {
+      "title": "Wyloguj się",
+      "description": "Czy na pewno chcesz się wylogować?",
+      "button": "Wyloguj się",
+      "loading": "Wylogowywanie...",
+      "cancel": "Anuluj"
+    },
+    "error": {
+      "title": "Błąd uwierzytelniania",
+      "description": "Wystąpił błąd podczas logowania",
+      "tryAgain": "Spróbuj ponownie",
+      "backHome": "Powrót do strony głównej"
+    },
+    "errors": {
+      "configuration": "Błąd konfiguracji serwera. Skontaktuj się z administratorem.",
+      "accessDenied": "Dostęp zabroniony. Nie masz uprawnień.",
+      "verification": "Link weryfikacyjny wygasł lub został już użyty.",
+      "oauthSignin": "Błąd podczas rozpoczynania logowania OAuth.",
+      "oauthCallback": "Błąd podczas przetwarzania wywołania zwrotnego OAuth.",
+      "oauthCreateAccount": "Błąd podczas tworzenia konta użytkownika.",
+      "emailCreateAccount": "Błąd podczas tworzenia konta e-mail.",
+      "callback": "Błąd podczas przetwarzania wywołania zwrotnego.",
+      "oauthAccountNotLinked": "Ten adres e-mail jest już powiązany z innym kontem.",
+      "sessionRequired": "Zaloguj się, aby uzyskać dostęp do tej strony.",
+      "default": "Wystąpił nieznany błąd. Spróbuj ponownie."
+    }
+  },
+  "admin": {
+    "dashboard": "Panel administratora",
+    "sidebar": {
+      "dashboard": "Panel",
+      "moderation": "Moderacja",
+      "moderationDescription": "Kolejka do zatwierdzenia",
+      "users": "Użytkownicy",
+      "backToHome": "Do strony głównej",
+      "user": "Użytkownik",
+      "logout": "Wyloguj się"
+    },
+    "components": {
+      "title": "Zarządzaj komponentami",
+      "new": "Nowy komponent",
+      "edit": "Edytuj komponent"
+    },
+    "moderation": {
+      "title": "Moderacja",
+      "pendingReviews": "Oczekujące recenzje",
+      "approve": "Zatwierdź",
+      "reject": "Odrzuć",
+      "batchApproval": "Zatwierdzanie wsadowe",
+      "confirmApprove": "Potwierdź zatwierdzenie",
+      "confirmApproveDescription": "Czy naprawdę chcesz zatwierdzić ten {type}? Będzie on publicznie widoczny.",
+      "confirmBatchApproval": "Czy chcesz zatwierdzić {count} elementów? Tej operacji nie można cofnąć.",
+      "rejectWithReason": "Odrzuć z uzasadnieniem",
+      "rejectDescription": "Podaj uzasadnienie odrzucenia. Zostanie ono pokazane twórcy.",
+      "rejectReasonLabel": "Uzasadnienie",
+      "rejectReasonPlaceholder": "Dlaczego ten element jest odrzucany?",
+      "rejectReasonHelp": "Przekonujące uzasadnienie pomaga twórcy zrozumieć odrzucenie.",
+      "batchApproveButton": "Zatwierdź {count}",
+      "typeComponent": "Komponent",
+      "typePart": "Część",
+      "draft": "Szkic"
+    },
+    "users": {
+      "title": "Użytkownicy",
+      "manage": "Zarządzaj użytkownikami"
+    },
+    "myDashboard": {
+      "title": "Mój panel",
+      "stats": {
+        "componentsTotal": "Komponenty razem",
+        "componentsTotalDesc": "Komponenty utworzone przez Ciebie",
+        "variants": "Warianty",
+        "variantsDesc": "Warianty producentów",
+        "drafts": "Szkice",
+        "draftsDesc": "Jeszcze nie przesłane",
+        "pending": "W recenzji",
+        "pendingDesc": "Oczekujące na moderację",
+        "published": "Opublikowane",
+        "archived": "Zarchiwizowane"
+      },
+      "draftsSection": {
+        "title": "Moje szkice",
+        "description": "Szkice to prywatne miejsca tymczasowe i nie zostały jeszcze przesłane do moderacji.",
+        "newComponent": "Nowy komponent",
+        "empty": "Brak szkiców. Utwórz nowy komponent i zapisz go jako szkic.",
+        "draftBadge": "Szkic",
+        "noName": "[Brak nazwy]"
+      },
+      "activitySection": {
+        "title": "Historia aktywności",
+        "description": "Twoje ostatnie działania w ElectroVault",
+        "empty": "Brak jeszcze aktywności."
+      },
+      "entities": {
+        "COMPONENT": "Komponent",
+        "PART": "Wariant",
+        "MANUFACTURER": "Producent",
+        "CATEGORY": "Kategoria",
+        "PACKAGE": "Obudowa"
+      },
+      "error": "Nie udało się załadować panelu. Spróbuj ponownie."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Nowy atrybut",
+        "titleEdit": "Edytuj atrybut",
+        "description": "Definicja atrybutu dla komponentów"
+      },
+      "category": {
+        "title": "Nowa kategoria",
+        "titleEdit": "Edytuj kategorię",
+        "description": "Zarządzaj informacjami o kategorii i atrybutami",
+        "saveFirst": "Najpierw zapisz kategorię, aby dodać atrybuty"
+      },
+      "component": {
+        "title": "Nowy komponent",
+        "titleEdit": "Edytuj komponent",
+        "description": "Utwórz nowy komponent - po zapisaniu możesz dodać warianty producentów",
+        "descriptionEdit": "Zarządzaj informacjami o komponencie i wariantami producentów",
+        "saveFirstPinMapping": "Najpierw zapisz komponent, aby edytować mapowanie pinów",
+        "saveFirstParts": "Najpierw zapisz komponent, aby dodać warianty producentów",
+        "saveFirstRelations": "Najpierw zapisz komponent, aby dodać relacje",
+        "createdWithVariants": "Komponent został utworzony. Teraz możesz dodać warianty producentów",
+        "noPartsWarning": "Ten komponent nie ma wariantów producentów. Wymagany jest co najmniej jeden wariant"
+      },
+      "manufacturer": {
+        "title": "Nowy producent",
+        "titleEdit": "Edytuj producenta",
+        "description": "Zarządzaj informacjami o producencie"
+      },
+      "part": {
+        "title": "Nowy wariant producenta",
+        "titleEdit": "Edytuj wariant producenta",
+        "description": "Utwórz nowy konkretny wariant producenta komponentu",
+        "descriptionEdit": "Zmień informacje o wariancie producenta",
+        "saveFirstFiles": "Najpierw zapisz wariant, aby przesłać pliki"
+      },
+      "package": {
+        "title": "Nowa obudowa",
+        "titleEdit": "Edytuj obudowę",
+        "description": "Informacje o obudowie/package"
+      },
+      "delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć ten element?",
+        "messageFile": "Czy naprawdę chcesz usunąć ten plik?",
+        "messagePin": "Czy naprawdę chcesz usunąć ten pin?",
+        "message3dModel": "Czy naprawdę chcesz usunąć ten model 3D?",
+        "messageRelation": "Czy naprawdę chcesz usunąć tę relację?"
+      }
+    },
+    "buttons": {
+      "saving": "Zapisywanie...",
+      "saveAsDraft": "Zapisz jako szkic",
+      "update": "Aktualizuj",
+      "addPin": "Dodaj pin",
+      "addRelation": "Dodaj relację"
+    },
+    "messages": {
+      "success": "Sukces",
+      "error": "Błąd",
+      "warning": "Ostrzeżenie",
+      "attribute": {
+        "created": "Atrybut został utworzony",
+        "updated": "Atrybut został zaktualizowany",
+        "deleted": "Atrybut został usunięty",
+        "loadFailed": "Nie udało się załadować atrybutów",
+        "saveFailed": "Nie udało się zapisać atrybutu",
+        "deleteFailed": "Nie udało się usunąć atrybutu"
+      },
+      "category": {
+        "created": "Kategoria została utworzona",
+        "updated": "Kategoria została zaktualizowana",
+        "deleted": "Kategoria została usunięta",
+        "loadFailed": "Nie udało się załadować kategorii",
+        "saveFailed": "Nie udało się zapisać kategorii",
+        "deleteFailed": "Nie udało się usunąć kategorii"
+      },
+      "component": {
+        "created": "Komponent został utworzony",
+        "updated": "Komponent został zaktualizowany",
+        "deleted": "Komponent został usunięty",
+        "loadFailed": "Nie udało się załadować komponentów",
+        "saveFailed": "Nie udało się zapisać komponentu",
+        "deleteFailed": "Nie udało się usunąć komponentu"
+      },
+      "manufacturer": {
+        "created": "Producent został utworzony",
+        "updated": "Producent został zaktualizowany",
+        "deleted": "Producent został usunięty",
+        "loadFailed": "Nie udało się załadować producentów",
+        "saveFailed": "Nie udało się zapisać producenta",
+        "deleteFailed": "Nie udało się usunąć producenta",
+        "logoUploaded": "Logo zostało przesłane",
+        "logoUploadFailed": "Nie udało się przesłać logo"
+      },
+      "part": {
+        "created": "Wariant został utworzony",
+        "updated": "Wariant został zaktualizowany",
+        "deleted": "Wariant został usunięty",
+        "loadFailed": "Nie udało się załadować wariantów",
+        "saveFailed": "Nie udało się zapisać wariantu",
+        "deleteFailed": "Nie udało się usunąć wariantu"
+      },
+      "package": {
+        "created": "Obudowa została utworzona",
+        "updated": "Obudowa została zaktualizowana",
+        "deleted": "Obudowa została usunięta",
+        "loadFailed": "Nie udało się załadować obudów",
+        "saveFailed": "Nie udało się zapisać obudowy",
+        "deleteFailed": "Nie udało się usunąć obudowy"
+      },
+      "file": {
+        "uploaded": "Plik został przesłany",
+        "deleted": "Plik został usunięty",
+        "uploadFailed": "Nie udało się przesłać pliku",
+        "deleteFailed": "Nie udało się usunąć pliku",
+        "loadFailed": "Nie udało się załadować plików",
+        "downloadUrlFailed": "Nie udało się wygenerować adresu URL pobierania"
+      },
+      "pin": {
+        "created": "Pin został dodany",
+        "updated": "Pin został zaktualizowany",
+        "deleted": "Pin został usunięty",
+        "createFailed": "Nie udało się utworzyć pinu",
+        "loadFailed": "Nie udało się załadować pinów",
+        "updateFailed": "Nie udało się zaktualizować pinu",
+        "deleteFailed": "Nie udało się usunąć pinu"
+      },
+      "relation": {
+        "created": "Relacja została dodana",
+        "deleted": "Relacja została usunięta",
+        "createFailed": "Nie udało się utworzyć relacji",
+        "deleteFailed": "Nie udało się usunąć relacji"
+      }
+    },
+    "pinMapping": {
+      "title": "Mapowanie pinów",
+      "addPin": "Dodaj pin",
+      "newPin": "Dodaj nowy pin",
+      "pinNumber": "Numer pinu (np. 1, VCC)",
+      "pinName": "Nazwa pinu",
+      "selectType": "Wybierz typ pinu",
+      "noDescription": "Brak opisu",
+      "noType": "Brak typu",
+      "loading": "Ładowanie pinów...",
+      "pinsCount": "{count} pinów",
+      "tabList": "Lista pinów",
+      "tabBulkImport": "Import zbiorczy",
+      "noPins": "Brak zdefiniowanych pinów. Dodaj piny pojedynczo lub użyj importu zbiorczego.",
+      "columnPinNumber": "Nr pinu",
+      "columnName": "Nazwa",
+      "columnType": "Typ",
+      "columnFunction": "Funkcja (PL)",
+      "columnActions": "Akcje",
+      "functionPlaceholder": "np. Napięcie zasilania",
+      "deleteTitle": "Usunąć pin?",
+      "deleteMessage": "Czy naprawdę chcesz usunąć pin {pinNumber} ({pinName})? Tej operacji nie można cofnąć.",
+      "reorderSuccess": "Kolejność pinów została zaktualizowana",
+      "reorderFailed": "Nie udało się zmienić kolejności",
+      "bulkImport": {
+        "formatLabel": "Format:",
+        "exampleLabel": "Przykład:",
+        "typeHint": "pinTyp jest opcjonalny. Dostępne typy: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Wprowadź piny w formacie CSV...",
+        "importButton": "Importuj piny",
+        "noPinsFound": "Nie znaleziono prawidłowych danych pinów.",
+        "success": "Zaimportowano {count} pinów.",
+        "failed": "Import zbiorczy nie powiódł się."
+      }
+    },
+    "files": {
+      "uploadImage": "Prześlij zdjęcie produktu",
+      "uploadDatasheet": "Prześlij kartę katalogową",
+      "uploadDocument": "Prześlij dokument",
+      "selectLanguage": "Wybierz język",
+      "noFiles": "Brak dostępnych plików",
+      "confirmDelete": "Usunąć plik?",
+      "productImage": "Zdjęcie produktu",
+      "productImageDescription": "Obraz podglądu dla tego wariantu producenta",
+      "addImage": "Obraz",
+      "imageDescription": "JPEG, PNG lub WebP (maks. 10 MB)",
+      "noImageUploaded": "Jeszcze nie przesłano zdjęcia",
+      "datasheets": "Karty katalogowe",
+      "datasheetsDescription": "Karty katalogowe PDF dla tego wariantu producenta",
+      "addDatasheet": "Karta katalogowa",
+      "languagesRequired": "Języki karty katalogowej",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Należy wybrać co najmniej jeden język",
+      "datasheetFileDescription": "Plik PDF karty katalogowej producenta",
+      "noDatasheets": "Jeszcze nie przesłano kart katalogowych",
+      "otherFiles": "Inne pliki",
+      "otherFilesDescription": "Dodatkowe dokumenty, notatki aplikacyjne itp.",
+      "addDocument": "Dokument",
+      "languagesOptional": "Języki (opcjonalnie)",
+      "anyFileDescription": "Dowolne pliki (PDF, TXT, ZIP itp.)",
+      "noDocuments": "Jeszcze nie przesłano dokumentów",
+      "fileName": "Plik",
+      "fileSize": "Rozmiar",
+      "languages": "Języki",
+      "actions": "Akcje",
+      "imageCount": "{count} obraz",
+      "fileCount": "{count} plik{plural}",
+      "datasheetCount": "{count} karta{plural} katalogowa{plural}",
+      "imageUploaded": "Zdjęcie zostało przesłane",
+      "imageRemoved": "Zdjęcie zostało usunięte"
+    },
+    "model3d": {
+      "title": "Modele 3D",
+      "confirmDelete": "Usunąć model 3D?",
+      "upload": "Prześlij model 3D",
+      "noModels": "Brak dostępnych modeli 3D"
+    },
+    "lists": {
+      "searchPlaceholder": "Szukaj...",
+      "searchByName": "Szukaj według nazwy lub slug...",
+      "searchByNameCage": "Szukaj według nazwy, slug lub kodu CAGE...",
+      "noResults": "Nie znaleziono wyników",
+      "createFirst": "Utwórz pierwszy wpis",
+      "noPackagesFound": "Nie znaleziono obudów",
+      "createFirstPackage": "Utwórz pierwszą obudowę"
+    },
+    "filters": {
+      "allStatus": "Wszystkie statusy",
+      "myDrafts": "Moje szkice"
+    },
+    "manufacturer": {
+      "title": "Producenci",
+      "count": "{count} producentów w bazie danych",
+      "create": "Nowy producent",
+      "createFirst": "Utwórz pierwszego producenta",
+      "deleteTitle": "Usunąć producenta?",
+      "deleteDescription": "Czy naprawdę chcesz usunąć producenta \"{name}\"? Tej operacji nie można cofnąć.",
+      "status": {
+        "active": "Aktywny",
+        "acquired": "Przejęty",
+        "defunct": "Nieaktywny"
+      }
+    },
+    "form": {
+      "package": "Obudowa (Package)",
+      "selectPackage": "Wybierz obudowę",
+      "noPackage": "Brak obudowy",
+      "editIn": "Edytuj w:",
+      "searchLanguage": "Szukaj języka...",
+      "noLanguageFound": "Nie znaleziono języka",
+      "original": "Oryginał",
+      "backToOverview": "Powrót do przeglądu",
+      "name": "Nazwa",
+      "nameDescription": "Nazwa po niemiecku i/lub angielsku. Pole wymagane, jeśli kategoria nie ma atrybutów etykiet",
+      "namePlaceholder": "Nazwa komponentu",
+      "series": "Seria",
+      "seriesDescription": "Opcjonalna seria lub rodzina komponentów",
+      "seriesPlaceholder": "np. 74HC, ATmega",
+      "packageDescription": "Fizyczna obudowa (np. DIP-8, SOIC-8)",
+      "shortDescription": "Krótki opis",
+      "shortDescriptionDescription": "Krótkie zdanie opisujące komponent",
+      "shortDescriptionPlaceholder": "Krótki opis",
+      "fullDescription": "Szczegółowy opis",
+      "fullDescriptionPlaceholder": "Szczegółowy opis",
+      "attributesDescription": "Atrybuty techniczne oparte na wybranej kategorii",
+      "selectCategoryFirst": "Najpierw wybierz kategorię w zakładce \"Dane podstawowe\"",
+      "pinMappingDescription": "Zdefiniuj mapowanie pinów dla tego komponentu. Mapowanie pinów jest ważne dla wszystkich wariantów producentów",
+      "partsDescription": "Warianty specyficzne dla producenta tego komponentu",
+      "newVariant": "Nowy wariant",
+      "close": "Zamknij",
+      "parentCategory": "Kategoria nadrzędna",
+      "parentCategoryPlaceholder": "Brak (kategoria główna)",
+      "parentCategoryDescription": "Pozostaw puste dla kategorii głównej (poziom 0)",
+      "categoryName": "Nazwa kategorii",
+      "categoryDescription": "Opis",
+      "categoryDescriptionPlaceholder": "Opis kategorii",
+      "sortOrder": "Kolejność sortowania",
+      "sortOrderDescription": "Niższe wartości = wyżej",
+      "status": "Status",
+      "active": "Aktywny",
+      "inactive": "Nieaktywny",
+      "icon": "Ikona",
+      "iconUploadDescription": "Prześlij ikonę kategorii. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Kliknij lub przeciągnij plik tutaj.",
+      "iconMaxSize": "Ikona może mieć maksymalnie 5 MB.",
+      "iconAllowedTypes": "Tylko JPEG, PNG, WebP lub SVG dozwolone.",
+      "iconUploaded": "Ikona została przesłana.",
+      "iconUploadFailed": "Nie udało się przesłać ikony.",
+      "categoryCreatedIconFailed": "Kategoria utworzona, ale przesyłanie ikony nie powiodło się.",
+      "loading": "Ładowanie...",
+      "newAttribute": "Nowy atrybut",
+      "ownAttributes": "Własne atrybuty ({count})",
+      "noOwnAttributes": "Brak zdefiniowanych własnych atrybutów.",
+      "inheritedAttributes": "Atrybuty dziedziczone ({count})",
+      "inheritedAttributesDescription": "Atrybuty dziedziczone można edytować tylko w ich kategorii źródłowej.",
+      "attributesInherited": "Atrybuty tej kategorii (będą dziedziczone do podkategorii)",
+      "cageCode": "Kod CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5-cyfrowy kod",
+      "country": "Kraj",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Strona internetowa",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Prześlij logo producenta. Maks. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Kliknij lub przeciągnij plik tutaj.",
+      "statusActive": "Aktywny",
+      "statusAcquired": "Przejęty",
+      "statusDefunct": "Nieaktywny",
+      "foundedYear": "Rok założenia",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Rok rozwiązania",
+      "defunctYearPlaceholder": "2020",
+      "description": "Opis",
+      "descriptionPlaceholder": "Opis",
+      "logoMaxSize": "Logo może mieć maksymalnie 5 MB.",
+      "logoAllowedTypes": "Tylko JPEG, PNG, WebP lub SVG dozwolone.",
+      "createdAsDraft": "Producent został zapisany jako szkic.",
+      "manufacturerCreatedLogoFailed": "Producent utworzony, ale przesyłanie logo nie powiodło się.",
+      "save": "Zapisz"
+    },
+    "audit": {
+      "created": "utworzono",
+      "updated": "zaktualizowano",
+      "deleted": "usunięto",
+      "restored": "przywrócono",
+      "approved": "zatwierdzono",
+      "rejected": "odrzucono"
+    },
+    "tabs": {
+      "basicInfo": "Informacje podstawowe",
+      "attributes": "Atrybuty",
+      "pinMapping": "Mapowanie pinów",
+      "parts": "Warianty producentów",
+      "relations": "Relacje",
+      "files": "Pliki",
+      "details": "Dane podstawowe",
+      "pins": "Mapowanie pinów",
+      "models": "Modele 3D"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Producent",
+      "status": "Status",
+      "lifecycle": "Cykl życia",
+      "actions": "Akcje",
+      "variantCount": "{count} wariant",
+      "variantCountPlural": "{count} wariantów",
+      "activeCount": "{count} aktywny",
+      "obsoleteCount": "{count} przestarzały",
+      "unknown": "Nieznany"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Unikalna nazwa obudowy",
+      "mountingType": "Typ obudowy",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radialny - przewody radialne",
+        "AXIAL": "Osiowy - przewody osiowe",
+        "CHASSIS": "Montaż na obudowie",
+        "OTHER": "Inne"
+      },
+      "pinCount": "Liczba pinów",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Długość (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Szerokość (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Wysokość (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Rozstaw (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Odległość między pinami",
+      "jedecStandard": "Standard JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "Standard EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL rysunku",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Link do rysunku technicznego lub karty katalogowej",
+      "description": "Opis",
+      "descriptionPlaceholder": "Dodatkowe informacje o obudowie...",
+      "saveFirstModels": "Najpierw zapisz obudowę, aby przesłać modele 3D.",
+      "modelsDescription": "Modele 3D dla tej obudowy (STEP, STL, 3MF, OBJ itp.)"
+    },
+    "partForm": {
+      "coreComponent": "Komponent generyczny",
+      "coreComponentDesc": "Komponent niezależny od producenta (np. 555 Timer)",
+      "manufacturer": "Producent",
+      "manufacturerDesc": "Producent tego konkretnego wariantu (np. Texas Instruments)",
+      "manufacturerPlaceholder": "Wybierz producenta",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "np. NE555P",
+      "mpnDesc": "Unikalna część numeru producenta",
+      "orderingCode": "Kod zamówieniowy",
+      "orderingCodePlaceholder": "Opcjonalnie",
+      "orderingCodeDesc": "Alternatywny kod zamówieniowy (jeśli różni się od MPN)",
+      "statusRecord": "Status zapisu",
+      "lifecycleStatus": "Status cyklu życia",
+      "introductionYear": "Rok wprowadzenia",
+      "introductionYearPlaceholder": "np. 1972",
+      "discontinuedYear": "Rok wycofania",
+      "discontinuedYearPlaceholder": "np. 2020",
+      "rohsCompliant": "Zgodny z RoHS",
+      "rohsDesc": "Spełnia dyrektywy RoHS",
+      "reachCompliant": "Zgodny z REACH",
+      "reachDesc": "Spełnia rozporządzenie REACH",
+      "weight": "Waga (gramy)",
+      "weightPlaceholder": "np. 0.5",
+      "dateCodeFormat": "Format kodu daty",
+      "dateCodePlaceholder": "np. YYWW",
+      "dateCodeDesc": "Format kodu daty na komponencie",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "np. 5962-01-123-4567",
+      "milSpec": "Specyfikacja wojskowa",
+      "milSpecPlaceholder": "np. MIL-PRF-38534",
+      "partAttributesDesc": "Atrybuty specyficzne dla producenta oparte na kategorii komponentu.",
+      "partAttributesLabel": "Atrybuty specyficzne dla producenta",
+      "filesDesc": "Zarządzaj kartami katalogowymi, zdjęciami i innymi plikami dla tego wariantu producenta.",
+      "close": "Zamknij",
+      "selectComponent": "Wybierz komponent"
+    }
+  },
+  "errors": {
+    "notFound": "Strona nie znaleziona",
+    "unauthorized": "Brak autoryzacji",
+    "serverError": "Błąd serwera"
+  },
+  "footer": {
+    "tagline": "Utrzymywana przez społeczność baza danych komponentów elektronicznych",
+    "navigation": "Nawigacja",
+    "community": "Społeczność",
+    "legal": "Prawne",
+    "about": "O nas",
+    "help": "Pomoc",
+    "contact": "Kontakt",
+    "contribute": "Wesprzyj",
+    "github": "GitHub",
+    "privacy": "Prywatność",
+    "imprint": "Stopka",
+    "copyright": "Open Source na licencji MIT"
+  },
+  "about": {
+    "title": "O ElectroVault",
+    "subtitle": "Baza danych komponentów elektronicznych utrzymywana przez społeczność",
+    "mission": {
+      "title": "Nasza misja",
+      "description": "ElectroVault to darmowa i otwarta baza danych komponentów elektronicznych - od historycznych lamp do nowoczesnej nanotechnologii. Naszym celem jest zachowanie wiedzy o komponentach elektronicznych i udostępnienie jej wszystkim."
+    },
+    "features": {
+      "title": "Funkcje",
+      "comprehensive": {
+        "title": "Kompleksowa baza danych",
+        "description": "Od rezystorów po kondensatory po wysoce zintegrowane układy scalone - rejestrujemy wszystkie ważne komponenty ze szczegółowymi specyfikacjami."
+      },
+      "historical": {
+        "title": "Archiwum historyczne",
+        "description": "Dokumentacja historycznych komponentów do naprawy i renowacji starszych urządzeń."
+      },
+      "community": {
+        "title": "Społecznościowe",
+        "description": "Każdy może wnieść swój wkład i podzielić się swoją wiedzą. Razem budujemy najbardziej kompleksową bazę danych komponentów."
+      },
+      "open": {
+        "title": "Open Source",
+        "description": "W pełni przejrzyste i swobodnie dostępne na licencji MIT."
+      }
+    },
+    "contribute": {
+      "title": "Zaangażuj się",
+      "description": "ElectroVault żyje dzięki swojej społeczności. Oto kilka sposobów, w jakie możesz się przyczynić:",
+      "dataEntry": "Dodawaj lub edytuj komponenty",
+      "datasheets": "Przesyłaj karty katalogowe",
+      "code": "Wkład w kod na GitHubie",
+      "feedback": "Opinie i sugestie ulepszeń"
+    }
+  },
+  "help": {
+    "title": "Pomoc i FAQ",
+    "subtitle": "Najczęściej zadawane pytania",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Przeglądaj komponenty",
+        "description": "Znajdź komponenty w naszej bazie danych"
+      },
+      "createAccount": {
+        "title": "Utwórz konto",
+        "description": "Wnieś wkład do bazy danych"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentacja i zgłoszenia"
+      }
+    },
+    "contactCta": {
+      "title": "Nie znalazłeś odpowiedzi na pytanie?",
+      "description": "Skontaktuj się z nami bezpośrednio.",
+      "button": "Skontaktuj się"
+    },
+    "general": {
+      "title": "Ogólne",
+      "what": {
+        "question": "Co to jest ElectroVault?",
+        "answer": "ElectroVault to darmowa, utrzymywana przez społeczność baza danych komponentów elektrycznych i elektronicznych. Dokumentujemy komponenty od historycznych lamp po nowoczesne układy scalone z kompleksowymi metadanymi, kartami katalogowymi i specyfikacjami."
+      },
+      "free": {
+        "question": "Czy ElectroVault jest darmowy?",
+        "answer": "Tak, ElectroVault jest całkowicie darmowy i open source. Zarówno użytkowanie, jak i kod źródłowy są swobodnie dostępne."
+      }
+    },
+    "search": {
+      "title": "Wyszukiwanie",
+      "how": {
+        "question": "Jak znaleźć konkretny komponent?",
+        "answer": "Użyj funkcji wyszukiwania w prawym górnym rogu lub nawiguj przez kategorie. Możesz wyszukiwać według numeru katalogowego, producenta lub właściwości."
+      },
+      "filters": {
+        "question": "Jakie filtry są dostępne?",
+        "answer": "Możesz filtrować według kategorii, producenta, statusu (aktywny/przestarzały), typu obudowy i wielu innych parametrów technicznych."
+      }
+    },
+    "contribute": {
+      "title": "Wkład",
+      "account": {
+        "question": "Czy potrzebuję konta, aby wnieść wkład?",
+        "answer": "Tak, aby dodawać lub edytować komponenty, potrzebujesz darmowego konta. Pomaga nam to zapewnić jakość danych."
+      },
+      "how": {
+        "question": "Jak mogę dodać komponent?",
+        "answer": "Po zalogowaniu możesz tworzyć nowe komponenty za pomocą przycisku 'Nowy komponent' w przeglądzie komponentów. Moderator sprawdzi Twój wkład przed publikacją."
+      },
+      "quality": {
+        "question": "Jak zapewniana jest jakość danych?",
+        "answer": "Wszystkie wkłady są sprawdzane przez doświadczonych moderatorów. Ponadto zarejestrowani użytkownicy mogą sugerować poprawki."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Masz pytania lub sugestie?",
+    "form": {
+      "heading": "Wyślij wiadomość",
+      "name": "Imię",
+      "email": "E-mail",
+      "subject": "Temat",
+      "message": "Wiadomość",
+      "namePlaceholder": "Jan Kowalski",
+      "emailPlaceholder": "jan@przyklad.pl",
+      "subjectPlaceholder": "Temat Twojej wiadomości",
+      "messagePlaceholder": "Twoja wiadomość...",
+      "demoNote": "Uwaga: Formularz kontaktowy jest obecnie wersją demonstracyjną. Integracja backendu nastąpi w późniejszym etapie. W przypadku ważnych zapytań skorzystaj z GitHub lub podanego adresu e-mail.",
+      "send": "Wyślij wiadomość",
+      "sending": "Wysyłanie...",
+      "success": "Wiadomość wysłana pomyślnie!",
+      "error": "Błąd podczas wysyłania wiadomości"
+    },
+    "alternatives": {
+      "title": "Inne opcje kontaktu",
+      "githubTitle": "GitHub Issues",
+      "github": "Utwórz zgłoszenie na GitHubie",
+      "emailTitle": "E-mail",
+      "email": "Wyślij nam e-mail"
+    },
+    "responseTime": {
+      "title": "Czasy odpowiedzi",
+      "description": "Ponieważ ElectroVault jest projektem społecznościowym, zapytania są obsługiwane przez wolontariuszy. Prosimy o cierpliwość - zazwyczaj odpowiadamy w ciągu 48 godzin."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Wsparcie społeczności",
+        "description": "Użyj GitHub Discussions dla ogólnych pytań"
+      },
+      "bugReports": {
+        "title": "Zgłoszenia błędów",
+        "description": "Zgłaszaj problemy techniczne bezpośrednio na GitHubie"
+      },
+      "partnerships": {
+        "title": "Zapytania o partnerstwo",
+        "description": "W sprawach biznesowych użyj formularza"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Stopka",
+    "responsible": "Odpowiedzialny za treść",
+    "contact": "Kontakt",
+    "disclaimer": {
+      "title": "Zrzeczenie się odpowiedzialności",
+      "content": "Pomimo starannej kontroli treści nie ponosimy odpowiedzialności za treść linków zewnętrznych. Za ich treść odpowiadają wyłącznie operatorzy połączonych stron.",
+      "liability": "Treści na tych stronach zostały stworzone z najwyższą starannością. Nie możemy jednak zagwarantować dokładności, kompletności i aktualności treści."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "ElectroVault to projekt open source na licencji MIT. Kod źródłowy jest dostępny na GitHubie."
+    }
+  },
+  "privacy": {
+    "title": "Polityka prywatności",
+    "lastUpdated": "Ostatnia aktualizacja",
+    "intro": "Bardzo poważnie traktujemy ochronę Twoich danych osobowych. Ta polityka prywatności informuje o charakterze, zakresie i celu przetwarzania danych osobowych.",
+    "responsible": {
+      "title": "Administrator danych",
+      "description": "Za przetwarzanie danych na tej stronie odpowiada:"
+    },
+    "collection": {
+      "title": "Gromadzenie i przechowywanie danych osobowych",
+      "description": "Podczas odwiedzania naszej strony internetowej automatycznie gromadzone są informacje przesyłane przez Twoją przeglądarkę:",
+      "data": "Adres IP, data i godzina dostępu, typ i wersja przeglądarki, używany system operacyjny, adres URL odsyłający"
+    },
+    "cookies": {
+      "title": "Pliki cookie",
+      "description": "Nasza strona internetowa używa plików cookie. Pliki cookie to małe pliki tekstowe przechowywane na Twoim urządzeniu.",
+      "essential": "Pliki cookie niezbędne technicznie do uwierzytelniania i zarządzania sesją",
+      "functional": "Pliki cookie funkcjonalne w celu poprawy doświadczenia użytkownika"
+    },
+    "auth": {
+      "title": "Uwierzytelnianie",
+      "description": "Do rejestracji i logowania używamy Keycloak. Przechowywane są następujące dane:",
+      "data": "Nazwa użytkownika, adres e-mail, zdjęcie profilowe (opcjonalnie), rola i uprawnienia"
+    },
+    "rights": {
+      "title": "Twoje prawa",
+      "description": "Masz następujące prawa dotyczące swoich danych osobowych:",
+      "access": "Prawo dostępu",
+      "correction": "Prawo do sprostowania",
+      "deletion": "Prawo do usunięcia",
+      "restriction": "Prawo do ograniczenia przetwarzania",
+      "portability": "Prawo do przenoszenia danych",
+      "objection": "Prawo do sprzeciwu"
+    },
+    "contact": {
+      "title": "Kontakt w sprawach prywatności",
+      "description": "Jeśli masz pytania dotyczące prywatności, możesz się z nami skontaktować w dowolnym momencie."
+    }
+  }
+}

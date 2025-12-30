@@ -1,0 +1,962 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "加载中...",
+    "error": "错误",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "search": "搜索",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "noResults": "未找到结果",
+    "all": "全部",
+    "yes": "是",
+    "no": "否",
+    "actions": {
+      "details": "详情"
+    }
+  },
+  "locale": {
+    "switch": "切换语言",
+    "current": "当前语言",
+    "languages": {
+      "en": "英语",
+      "de": "德语",
+      "fr": "法语",
+      "es": "西班牙语",
+      "zh": "中文",
+      "ja": "日语",
+      "ko": "韩语",
+      "it": "意大利语"
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "components": "元器件",
+    "categories": "分类",
+    "manufacturers": "制造商",
+    "packages": "封装",
+    "search": "搜索",
+    "admin": "管理",
+    "moderation": "审核",
+    "myElectroVault": "我的ElectroVault",
+    "login": "登录",
+    "logout": "退出",
+    "profile": "个人资料"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "社区维护的电子元器件数据库",
+    "searchPlaceholder": "搜索元器件...",
+    "featuredCategories": "热门分类",
+    "recentComponents": "最新元器件",
+    "stats": {
+      "components": "元器件",
+      "manufacturers": "制造商",
+      "categories": "分类",
+      "users": "用户"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "社区维护的电子元器件数据库"
+    },
+    "stats": {
+      "components": "元器件",
+      "manufacturers": "制造商",
+      "users": "用户"
+    }
+  },
+  "packages": {
+    "title": "封装",
+    "totalCount": "数据库中有 {count} 个封装",
+    "addNew": "新建封装",
+    "searchPlaceholder": "按名称或标识搜索...",
+    "filterPlaceholder": "封装类型",
+    "filterAll": "所有类型",
+    "mountingType": {
+      "THT": "通孔",
+      "SMD": "表贴",
+      "RADIAL": "径向引线",
+      "AXIAL": "轴向引线",
+      "CHASSIS": "机箱安装",
+      "OTHER": "其他"
+    },
+    "table": {
+      "name": "名称",
+      "type": "类型",
+      "pinCount": "引脚数",
+      "dimensions": "尺寸（长 x 宽 x 高 mm）",
+      "pitch": "引脚间距",
+      "actions": "操作"
+    },
+    "loading": "加载中...",
+    "noResults": "未找到封装",
+    "noPackagesFound": "未找到封装",
+    "createFirst": "创建第一个封装",
+    "error": "错误",
+    "success": "成功",
+    "loadError": "无法加载封装。",
+    "deleteSuccess": "封装已删除。",
+    "deleteError": "无法删除封装。",
+    "deleteDialog": {
+      "title": "删除封装？",
+      "description": "您真的要删除封装「{name}」吗？此操作无法撤销。"
+    }
+  },
+  "components": {
+    "title": "元器件",
+    "description": "浏览我们丰富的电子元器件数据库",
+    "filters": {
+      "category": "分类",
+      "manufacturer": "制造商",
+      "status": "状态",
+      "mountingType": "安装类型"
+    },
+    "detail": {
+      "overview": "概述",
+      "specifications": "规格",
+      "datasheets": "数据手册",
+      "parts": "制造商版本",
+      "history": "版本历史",
+      "backToOverview": "返回概览",
+      "category": "分类",
+      "statistics": "统计",
+      "manufacturerVariants": "制造商版本",
+      "activeVariants": "在产版本",
+      "additionalProperties": "附加属性",
+      "furtherProperties": "此元器件的其他属性",
+      "validForAllVariants": "技术规格（适用于所有版本）",
+      "variantCount": "{count} 个制造商版本",
+      "variantCountPlural": "{count} 个制造商版本",
+      "noVariantsAvailable": "无可用制造商版本",
+      "noVariantsForComponent": "此元器件无可用制造商版本。",
+      "noAttributesAvailable": "无可用属性。",
+      "manufacturer": "制造商",
+      "orderingCode": "订购代码",
+      "details": "详情",
+      "allInCategory": "分类中的所有",
+      "status": "状态",
+      "moreAttributes": "+{count} 个更多"
+    },
+    "status": {
+      "DRAFT": "草稿",
+      "PENDING": "待审核",
+      "PUBLISHED": "已发布",
+      "ARCHIVED": "已归档"
+    },
+    "lifecycle": {
+      "ACTIVE": "在产",
+      "NRND": "不推荐用于新设计",
+      "EOL": "停产",
+      "OBSOLETE": "淘汰"
+    }
+  },
+  "categories": {
+    "title": "分类",
+    "browseAll": "浏览所有分类",
+    "subcategories": "子分类",
+    "componentsInCategory": "该分类中的元器件"
+  },
+  "manufacturers": {
+    "title": "制造商",
+    "status": {
+      "ACTIVE": "活跃",
+      "ACQUIRED": "被收购",
+      "DEFUNCT": "已解散"
+    }
+  },
+  "auth": {
+    "login": "登录",
+    "logout": "退出",
+    "loginWith": "使用 {provider} 登录",
+    "welcome": "欢迎回来",
+    "signInToContinue": "请登录以继续",
+    "signIn": {
+      "title": "登录",
+      "description": "登录您的账户",
+      "button": "使用 Keycloak 登录",
+      "loading": "正在登录...",
+      "hint": "您将被重定向到 Keycloak"
+    },
+    "signOut": {
+      "title": "退出",
+      "description": "您确定要退出吗？",
+      "button": "退出",
+      "loading": "正在退出...",
+      "cancel": "取消"
+    },
+    "error": {
+      "title": "认证错误",
+      "description": "登录时发生错误",
+      "tryAgain": "重试",
+      "backHome": "返回首页"
+    },
+    "errors": {
+      "configuration": "服务器配置错误。请联系管理员。",
+      "accessDenied": "访问被拒绝。您没有权限。",
+      "verification": "验证链接已过期或已被使用。",
+      "oauthSignin": "启动 OAuth 登录时出错。",
+      "oauthCallback": "处理 OAuth 回调时出错。",
+      "oauthCreateAccount": "创建用户账户时出错。",
+      "emailCreateAccount": "创建电子邮件账户时出错。",
+      "callback": "处理回调时出错。",
+      "oauthAccountNotLinked": "此电子邮件已关联到其他账户。",
+      "sessionRequired": "请登录以访问此页面。",
+      "default": "发生未知错误。请重试。"
+    }
+  },
+  "admin": {
+    "dashboard": "控制面板",
+    "sidebar": {
+      "dashboard": "控制面板",
+      "moderation": "审核",
+      "moderationDescription": "审核队列",
+      "users": "用户",
+      "backToHome": "返回主页",
+      "user": "用户",
+      "logout": "退出"
+    },
+    "components": {
+      "title": "管理元器件",
+      "new": "新建元器件",
+      "edit": "编辑元器件"
+    },
+    "moderation": {
+      "title": "审核",
+      "pendingReviews": "待审核项",
+      "approve": "批准",
+      "reject": "拒绝",
+      "batchApproval": "批量审批",
+      "confirmApprove": "确认批准",
+      "confirmApproveDescription": "您真的要批准此{type}吗？它将随后公开可见。",
+      "confirmBatchApproval": "您要批准 {count} 个项目吗？此操作无法撤销。",
+      "rejectWithReason": "拒绝并说明原因",
+      "rejectDescription": "请说明拒绝的原因。这将显示给创建者。",
+      "rejectReasonLabel": "原因",
+      "rejectReasonPlaceholder": "为什么拒绝此项目？",
+      "rejectReasonHelp": "有意义的理由有助于创建者理解拒绝。",
+      "batchApproveButton": "批准 {count} 项",
+      "typeComponent": "元器件",
+      "typePart": "版本",
+      "draft": "草稿"
+    },
+    "users": {
+      "title": "用户",
+      "manage": "管理用户"
+    },
+    "myDashboard": {
+      "title": "我的控制面板",
+      "stats": {
+        "componentsTotal": "元器件总数",
+        "componentsTotalDesc": "您创建的元器件",
+        "variants": "版本",
+        "variantsDesc": "制造商版本",
+        "drafts": "草稿",
+        "draftsDesc": "尚未提交",
+        "pending": "审核中",
+        "pendingDesc": "等待审核",
+        "published": "已发布",
+        "archived": "已归档"
+      },
+      "draftsSection": {
+        "title": "我的草稿",
+        "description": "草稿是私人临时保存，尚未提交审核。",
+        "newComponent": "新建元器件",
+        "empty": "无草稿。创建新元器件并将其保存为草稿。",
+        "draftBadge": "草稿",
+        "noName": "[无名称]"
+      },
+      "activitySection": {
+        "title": "活动历史",
+        "description": "您在 ElectroVault 中的最新操作",
+        "empty": "尚无活动。"
+      },
+      "entities": {
+        "COMPONENT": "元器件",
+        "PART": "版本",
+        "MANUFACTURER": "制造商",
+        "CATEGORY": "分类",
+        "PACKAGE": "封装"
+      },
+      "error": "无法加载控制面板。请重试。"
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "新建属性",
+        "titleEdit": "编辑属性",
+        "description": "元器件的属性定义"
+      },
+      "category": {
+        "title": "新建分类",
+        "titleEdit": "编辑分类",
+        "description": "管理分类信息和属性",
+        "saveFirst": "请先保存分类再添加属性"
+      },
+      "component": {
+        "title": "新建元器件",
+        "titleEdit": "编辑元器件",
+        "description": "创建新元器件 - 保存后可添加制造商版本",
+        "descriptionEdit": "管理元器件信息和制造商版本",
+        "saveFirstPinMapping": "请先保存元器件再编辑引脚映射",
+        "saveFirstParts": "请先保存元器件再添加制造商版本",
+        "saveFirstRelations": "请先保存元器件再添加关联",
+        "createdWithVariants": "元器件已创建。现在可以添加制造商版本",
+        "noPartsWarning": "此元器件没有制造商版本。至少需要一个版本"
+      },
+      "manufacturer": {
+        "title": "新建制造商",
+        "titleEdit": "编辑制造商",
+        "description": "管理制造商信息"
+      },
+      "part": {
+        "title": "新建版本",
+        "titleEdit": "编辑版本",
+        "description": "制造商特定版本",
+        "descriptionEdit": "更改制造商版本信息",
+        "saveFirstFiles": "请先保存版本再上传文件"
+      },
+      "package": {
+        "title": "新建封装",
+        "titleEdit": "编辑封装",
+        "description": "封装/足迹信息"
+      },
+      "delete": {
+        "title": "确认删除",
+        "message": "您确定要删除此项吗？",
+        "messageFile": "您真的要删除此文件吗？",
+        "messagePin": "您真的要删除此引脚吗？",
+        "message3dModel": "您真的要删除此3D模型吗？",
+        "messageRelation": "您真的要删除此关联吗？"
+      }
+    },
+    "buttons": {
+      "saving": "保存中...",
+      "saveAsDraft": "另存为草稿",
+      "update": "更新",
+      "addPin": "添加引脚",
+      "addRelation": "添加关联"
+    },
+    "messages": {
+      "success": "成功",
+      "error": "错误",
+      "warning": "警告",
+      "attribute": {
+        "created": "属性已创建",
+        "updated": "属性已更新",
+        "deleted": "属性已删除",
+        "loadFailed": "加载属性失败",
+        "saveFailed": "保存属性失败",
+        "deleteFailed": "删除属性失败"
+      },
+      "category": {
+        "created": "分类已创建",
+        "updated": "分类已更新",
+        "deleted": "分类已删除",
+        "loadFailed": "加载分类失败",
+        "saveFailed": "保存分类失败",
+        "deleteFailed": "删除分类失败"
+      },
+      "component": {
+        "created": "元器件已创建",
+        "updated": "元器件已更新",
+        "deleted": "元器件已删除",
+        "loadFailed": "加载元器件失败",
+        "saveFailed": "保存元器件失败",
+        "deleteFailed": "删除元器件失败"
+      },
+      "manufacturer": {
+        "created": "制造商已创建",
+        "updated": "制造商已更新",
+        "deleted": "制造商已删除",
+        "loadFailed": "加载制造商失败",
+        "saveFailed": "保存制造商失败",
+        "deleteFailed": "删除制造商失败",
+        "logoUploaded": "徽标已上传",
+        "logoUploadFailed": "上传徽标失败"
+      },
+      "part": {
+        "created": "版本已创建",
+        "updated": "版本已更新",
+        "deleted": "版本已删除",
+        "loadFailed": "加载版本失败",
+        "saveFailed": "保存版本失败",
+        "deleteFailed": "删除版本失败"
+      },
+      "package": {
+        "created": "封装已创建",
+        "updated": "封装已更新",
+        "deleted": "封装已删除",
+        "loadFailed": "加载封装失败",
+        "saveFailed": "保存封装失败",
+        "deleteFailed": "删除封装失败"
+      },
+      "file": {
+        "uploaded": "文件已上传",
+        "deleted": "文件已删除",
+        "uploadFailed": "上传文件失败",
+        "deleteFailed": "删除文件失败",
+        "loadFailed": "无法加载文件",
+        "downloadUrlFailed": "无法生成下载URL"
+      },
+      "pin": {
+        "created": "引脚已添加",
+        "updated": "引脚已更新",
+        "deleted": "引脚已删除",
+        "createFailed": "创建引脚失败",
+        "loadFailed": "加载引脚失败",
+        "updateFailed": "无法更新引脚",
+        "deleteFailed": "无法删除引脚"
+      },
+      "relation": {
+        "created": "关联已添加",
+        "deleted": "关联已删除",
+        "createFailed": "创建关联失败",
+        "deleteFailed": "删除关联失败"
+      }
+    },
+    "pinMapping": {
+      "title": "引脚映射",
+      "addPin": "添加引脚",
+      "newPin": "添加新引脚",
+      "pinNumber": "引脚编号（例如 1、VCC）",
+      "pinName": "引脚名称",
+      "selectType": "选择引脚类型",
+      "noDescription": "无描述",
+      "noType": "无类型",
+      "loading": "加载引脚中...",
+      "pinsCount": "{count} 个引脚",
+      "tabList": "引脚列表",
+      "tabBulkImport": "批量导入",
+      "noPins": "未定义引脚。单独添加引脚或使用批量导入。",
+      "columnPinNumber": "引脚号",
+      "columnName": "名称",
+      "columnType": "类型",
+      "columnFunction": "功能（中文）",
+      "columnActions": "操作",
+      "functionPlaceholder": "例如 供电电压",
+      "deleteTitle": "删除引脚？",
+      "deleteMessage": "您真的要删除引脚 {pinNumber}（{pinName}）吗？此操作无法撤销。",
+      "reorderSuccess": "引脚顺序已更新",
+      "reorderFailed": "无法更改顺序",
+      "bulkImport": {
+        "formatLabel": "格式：",
+        "exampleLabel": "示例：",
+        "typeHint": "pinType 是可选的。可用类型：POWER、GROUND、INPUT、OUTPUT、BIDIRECTIONAL、NC、ANALOG、DIGITAL、CLOCK、OTHER",
+        "placeholder": "以 CSV 格式输入引脚...",
+        "importButton": "导入引脚",
+        "noPinsFound": "未找到有效的引脚数据。",
+        "success": "已导入 {count} 个引脚。",
+        "failed": "批量导入失败。"
+      }
+    },
+    "files": {
+      "uploadImage": "上传产品图片",
+      "uploadDatasheet": "上传数据手册",
+      "uploadDocument": "上传文档",
+      "selectLanguage": "选择语言",
+      "noFiles": "无可用文件",
+      "confirmDelete": "删除文件？",
+      "productImage": "产品图片",
+      "productImageDescription": "此制造商版本的预览图片",
+      "addImage": "图片",
+      "imageDescription": "JPEG、PNG 或 WebP（最大 10 MB）",
+      "noImageUploaded": "尚未上传图片",
+      "datasheets": "数据手册",
+      "datasheetsDescription": "此制造商版本的 PDF 数据手册",
+      "addDatasheet": "数据手册",
+      "languagesRequired": "数据手册的语言",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "必须选择至少一种语言",
+      "datasheetFileDescription": "制造商数据手册的 PDF 文件",
+      "noDatasheets": "尚未上传数据手册",
+      "otherFiles": "其他文件",
+      "otherFilesDescription": "附加文档、应用说明等",
+      "addDocument": "文档",
+      "languagesOptional": "语言（可选）",
+      "anyFileDescription": "任意文件（PDF、TXT、ZIP 等）",
+      "noDocuments": "尚未上传文档",
+      "fileName": "文件",
+      "fileSize": "大小",
+      "languages": "语言",
+      "actions": "操作",
+      "imageCount": "{count} 张图片",
+      "fileCount": "{count} 个文件",
+      "datasheetCount": "{count} 份数据手册",
+      "imageUploaded": "图片已上传",
+      "imageRemoved": "图片已删除"
+    },
+    "model3d": {
+      "title": "3D模型",
+      "confirmDelete": "删除3D模型？",
+      "upload": "上传3D模型",
+      "noModels": "无可用3D模型"
+    },
+    "lists": {
+      "searchPlaceholder": "搜索...",
+      "searchByName": "按名称或标识搜索...",
+      "searchByNameCage": "按名称、标识或CAGE代码搜索...",
+      "noResults": "未找到结果",
+      "createFirst": "创建第一条记录",
+      "noPackagesFound": "未找到封装",
+      "createFirstPackage": "创建第一个封装"
+    },
+    "filters": {
+      "allStatus": "所有状态",
+      "myDrafts": "我的草稿"
+    },
+    "manufacturer": {
+      "title": "制造商",
+      "count": "数据库中有 {count} 个制造商",
+      "create": "新建制造商",
+      "createFirst": "创建第一个制造商",
+      "deleteTitle": "删除制造商？",
+      "deleteDescription": "您真的要删除制造商「{name}」吗？此操作无法撤销。",
+      "status": {
+        "active": "活跃",
+        "acquired": "被收购",
+        "defunct": "已解散"
+      }
+    },
+    "form": {
+      "package": "封装",
+      "selectPackage": "选择封装",
+      "noPackage": "无封装",
+      "editIn": "编辑语言：",
+      "searchLanguage": "搜索语言...",
+      "noLanguageFound": "未找到语言",
+      "original": "原文",
+      "backToOverview": "返回概览",
+      "name": "名称",
+      "nameDescription": "德语和/或英语名称。如果分类没有标签属性，则为必填",
+      "namePlaceholder": "元器件名称",
+      "series": "系列",
+      "seriesDescription": "可选的元器件系列或族",
+      "seriesPlaceholder": "例如 74HC、ATmega",
+      "packageDescription": "物理封装（例如 DIP-8、SOIC-8）",
+      "shortDescription": "简短描述",
+      "shortDescriptionDescription": "描述元器件的简短句子",
+      "shortDescriptionPlaceholder": "简短描述",
+      "fullDescription": "详细描述",
+      "fullDescriptionPlaceholder": "详细描述",
+      "attributesDescription": "基于所选分类的技术属性",
+      "selectCategoryFirst": "请先在「基本数据」选项卡中选择分类",
+      "pinMappingDescription": "定义此元器件的引脚分配。引脚映射适用于所有制造商版本",
+      "partsDescription": "此元器件的制造商特定版本",
+      "newVariant": "新建版本",
+      "close": "关闭",
+      "parentCategory": "父分类",
+      "parentCategoryPlaceholder": "无（根分类）",
+      "parentCategoryDescription": "留空表示主分类（0 级）",
+      "categoryName": "分类名称",
+      "categoryDescription": "描述",
+      "categoryDescriptionPlaceholder": "分类描述",
+      "sortOrder": "排序顺序",
+      "sortOrderDescription": "较低的值 = 更靠前",
+      "status": "状态",
+      "active": "活跃",
+      "inactive": "非活跃",
+      "icon": "图标",
+      "iconUploadDescription": "上传分类图标。最大 5 MB，JPEG/PNG/WebP/SVG。",
+      "iconUploadHint": "点击或拖拽文件到此处。",
+      "iconMaxSize": "图标最大为 5 MB。",
+      "iconAllowedTypes": "仅允许 JPEG、PNG、WebP 或 SVG。",
+      "iconUploaded": "图标已上传。",
+      "iconUploadFailed": "图标上传失败。",
+      "categoryCreatedIconFailed": "分类已创建，但图标上传失败。",
+      "loading": "加载中...",
+      "newAttribute": "新建属性",
+      "ownAttributes": "自有属性（{count}）",
+      "noOwnAttributes": "未定义自有属性。",
+      "inheritedAttributes": "继承属性（{count}）",
+      "inheritedAttributesDescription": "继承属性只能在其原始分类中编辑。",
+      "attributesInherited": "此分类的属性（将继承给子分类）",
+      "cageCode": "CAGE 代码",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5 位代码",
+      "country": "国家",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "网站",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "徽标",
+      "logoUploadHint": "上传制造商徽标。最大 5 MB，JPEG/PNG/WebP/SVG。",
+      "logoClickOrDrag": "点击或拖拽文件到此处。",
+      "statusActive": "活跃",
+      "statusAcquired": "被收购",
+      "statusDefunct": "已解散",
+      "foundedYear": "成立年份",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "解散年份",
+      "defunctYearPlaceholder": "2020",
+      "description": "描述",
+      "descriptionPlaceholder": "描述",
+      "logoMaxSize": "徽标最大为 5 MB。",
+      "logoAllowedTypes": "仅允许 JPEG、PNG、WebP 或 SVG。",
+      "createdAsDraft": "制造商已保存为草稿。",
+      "manufacturerCreatedLogoFailed": "制造商已创建，但徽标上传失败。",
+      "save": "保存"
+    },
+    "audit": {
+      "created": "已创建",
+      "updated": "已更新",
+      "deleted": "已删除",
+      "restored": "已恢复",
+      "approved": "已批准",
+      "rejected": "已拒绝"
+    },
+    "tabs": {
+      "basicInfo": "基本信息",
+      "attributes": "属性",
+      "pinMapping": "引脚映射",
+      "parts": "制造商版本",
+      "relations": "关联",
+      "files": "文件",
+      "details": "基本数据",
+      "pins": "引脚映射",
+      "models": "3D模型"
+    },
+    "parts": {
+      "mpn": "制造商型号",
+      "manufacturer": "制造商",
+      "status": "状态",
+      "lifecycle": "生命周期",
+      "actions": "操作",
+      "variantCount": "{count} 个版本",
+      "variantCountPlural": "{count} 个版本",
+      "activeCount": "{count} 个在产",
+      "obsoleteCount": "{count} 个淘汰",
+      "unknown": "未知"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "封装的唯一名称",
+      "mountingType": "封装类型",
+      "mountingTypes": {
+        "SMD": "SMD - 表面贴装",
+        "THT": "THT - 通孔技术",
+        "RADIAL": "径向 - 径向引线",
+        "AXIAL": "轴向 - 轴向引线",
+        "CHASSIS": "机箱 - 机箱安装",
+        "OTHER": "其他"
+      },
+      "pinCount": "引脚数",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "长度（mm）",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "宽度（mm）",
+      "widthPlaceholder": "4.0",
+      "heightMm": "高度（mm）",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "引脚间距（mm）",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "引脚之间的距离",
+      "jedecStandard": "JEDEC 标准",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA 标准",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "图纸 URL",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "技术图纸或数据手册的链接",
+      "description": "描述",
+      "descriptionPlaceholder": "封装的附加信息...",
+      "saveFirstModels": "请先保存封装再上传3D模型。",
+      "modelsDescription": "此封装的3D模型（STEP、STL、3MF、OBJ 等）"
+    },
+    "partForm": {
+      "coreComponent": "通用元器件",
+      "coreComponentDesc": "制造商无关的元器件（例如 555 定时器）",
+      "manufacturer": "制造商",
+      "manufacturerDesc": "此具体版本的制造商（例如德州仪器）",
+      "manufacturerPlaceholder": "选择制造商",
+      "mpn": "制造商型号",
+      "mpnPlaceholder": "例如 NE555P",
+      "mpnDesc": "唯一的制造商零件编号",
+      "orderingCode": "订购代码",
+      "orderingCodePlaceholder": "可选",
+      "orderingCodeDesc": "替代订购编号（如果与 MPN 不同）",
+      "statusRecord": "记录状态",
+      "lifecycleStatus": "生命周期状态",
+      "introductionYear": "推出年份",
+      "introductionYearPlaceholder": "例如 1972",
+      "discontinuedYear": "停产年份",
+      "discontinuedYearPlaceholder": "例如 2020",
+      "rohsCompliant": "符合 RoHS",
+      "rohsDesc": "符合 RoHS 指令",
+      "reachCompliant": "符合 REACH",
+      "reachDesc": "符合 REACH 法规",
+      "weight": "重量（克）",
+      "weightPlaceholder": "例如 0.5",
+      "dateCodeFormat": "日期代码",
+      "dateCodePlaceholder": "例如 YYWW",
+      "dateCodeDesc": "元器件上日期代码的格式",
+      "nsn": "北约库存编号",
+      "nsnPlaceholder": "例如 5962-01-123-4567",
+      "milSpec": "军用规格",
+      "milSpecPlaceholder": "例如 MIL-PRF-38534",
+      "partAttributesDesc": "基于元器件分类的制造商特定属性。",
+      "partAttributesLabel": "制造商特定属性",
+      "filesDesc": "管理此制造商版本的数据手册、图片和其他文件。",
+      "close": "关闭",
+      "selectComponent": "选择元器件"
+    }
+  },
+  "errors": {
+    "notFound": "页面未找到",
+    "unauthorized": "未授权",
+    "serverError": "服务器错误"
+  },
+  "footer": {
+    "tagline": "社区维护的电子元件数据库",
+    "navigation": "导航",
+    "community": "社区",
+    "legal": "法律信息",
+    "about": "关于",
+    "help": "帮助",
+    "contact": "联系",
+    "contribute": "贡献",
+    "github": "GitHub",
+    "privacy": "隐私",
+    "imprint": "版权信息",
+    "copyright": "MIT许可证开源"
+  },
+  "about": {
+    "title": "关于 ElectroVault",
+    "subtitle": "社区维护的电子元器件数据库",
+    "mission": {
+      "title": "我们的使命",
+      "description": "ElectroVault 是一个免费开放的电子元器件数据库——从历史悠久的电子管到现代纳米技术。我们的目标是保存电子元器件的知识，并使其对每个人都可访问。"
+    },
+    "features": {
+      "title": "功能特点",
+      "comprehensive": {
+        "title": "全面的数据库",
+        "description": "从电阻、电容到高度集成的电路——我们收录所有重要的元器件及其详细规格。"
+      },
+      "historical": {
+        "title": "历史档案",
+        "description": "历史元器件的文档，用于老旧设备的维修和修复。"
+      },
+      "community": {
+        "title": "社区驱动",
+        "description": "每个人都可以贡献和分享知识。我们共同构建最全面的元器件数据库。"
+      },
+      "open": {
+        "title": "开源",
+        "description": "完全透明，采用MIT许可证免费提供。"
+      }
+    },
+    "contribute": {
+      "title": "参与贡献",
+      "description": "ElectroVault 依靠社区蓬勃发展。以下是一些您可以贡献的方式：",
+      "dataEntry": "添加或编辑元器件",
+      "datasheets": "上传数据手册",
+      "code": "在 GitHub 上贡献代码",
+      "feedback": "反馈和改进建议"
+    }
+  },
+  "help": {
+    "title": "帮助与常见问题",
+    "subtitle": "常见问题解答",
+    "general": {
+      "title": "常规",
+      "what": {
+        "question": "什么是 ElectroVault？",
+        "answer": "ElectroVault 是一个免费的、社区维护的电气和电子元器件数据库。我们记录从历史电子管到现代集成电路的元器件，包含全面的元数据、数据手册和规格。"
+      },
+      "free": {
+        "question": "ElectroVault 是免费的吗？",
+        "answer": "是的，ElectroVault 完全免费且开源。使用和源代码都是免费提供的。"
+      }
+    },
+    "search": {
+      "title": "搜索",
+      "how": {
+        "question": "如何查找特定的元器件？",
+        "answer": "使用右上角的搜索功能或浏览分类。您可以按型号、制造商或属性进行搜索。"
+      },
+      "filters": {
+        "question": "有哪些过滤器可用？",
+        "answer": "您可以按分类、制造商、状态（在产/淘汰）、封装类型和许多其他技术参数进行过滤。"
+      }
+    },
+    "contribute": {
+      "title": "贡献",
+      "account": {
+        "question": "我需要账户才能贡献吗？",
+        "answer": "是的，要添加或编辑元器件，您需要一个免费账户。这有助于我们确保数据质量。"
+      },
+      "how": {
+        "question": "如何添加元器件？",
+        "answer": "登录后，您可以通过元器件概览中的「新建元器件」按钮创建新元器件。审核员将在发布前审查您的贡献。"
+      },
+      "quality": {
+        "question": "如何确保数据质量？",
+        "answer": "所有贡献都由经验丰富的审核员审查。此外，注册用户可以建议更正。"
+      }
+    }
+  },
+  "help": {
+    "title": "帮助与常见问题",
+    "subtitle": "常见问题解答",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "浏览元器件",
+        "description": "在我们的数据库中查找元器件"
+      },
+      "createAccount": {
+        "title": "创建账户",
+        "description": "为数据库做出贡献"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "文档和问题"
+      }
+    },
+    "contactCta": {
+      "title": "您的问题没有得到解答？",
+      "description": "请随时直接联系我们。",
+      "button": "联系我们"
+    },
+    "general": {
+      "title": "常规",
+      "what": {
+        "question": "什么是 ElectroVault？",
+        "answer": "ElectroVault 是一个免费的、社区维护的电气和电子元器件数据库。我们记录从历史电子管到现代集成电路的元器件，包含全面的元数据、数据手册和规格。"
+      },
+      "free": {
+        "question": "ElectroVault 是免费的吗？",
+        "answer": "是的，ElectroVault 完全免费且开源。使用和源代码都是免费提供的。"
+      }
+    },
+    "search": {
+      "title": "搜索",
+      "how": {
+        "question": "如何查找特定的元器件？",
+        "answer": "使用右上角的搜索功能或浏览分类。您可以按型号、制造商或属性进行搜索。"
+      },
+      "filters": {
+        "question": "有哪些过滤器可用？",
+        "answer": "您可以按分类、制造商、状态（在产/淘汰）、封装类型和许多其他技术参数进行过滤。"
+      }
+    },
+    "contribute": {
+      "title": "贡献",
+      "account": {
+        "question": "我需要账户才能贡献吗？",
+        "answer": "是的，要添加或编辑元器件，您需要一个免费账户。这有助于我们确保数据质量。"
+      },
+      "how": {
+        "question": "如何添加元器件？",
+        "answer": "登录后，您可以通过元器件概览中的「新建元器件」按钮创建新元器件。审核员将在发布前审查您的贡献。"
+      },
+      "quality": {
+        "question": "如何确保数据质量？",
+        "answer": "所有贡献都由经验丰富的审核员审查。此外，注册用户可以建议更正。"
+      }
+    }
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "您有问题或建议吗？",
+    "form": {
+      "heading": "发送消息",
+      "name": "姓名",
+      "email": "电子邮件",
+      "subject": "主题",
+      "message": "消息",
+      "namePlaceholder": "张三",
+      "emailPlaceholder": "zhang@example.com",
+      "subjectPlaceholder": "您消息的主题",
+      "messagePlaceholder": "您的消息...",
+      "demoNote": "注意：联系表单目前是一个演示。后端集成将在后期阶段进行。如有重要问题，请使用 GitHub 或提供的电子邮件地址。",
+      "send": "发送消息",
+      "sending": "发送中...",
+      "success": "消息发送成功！",
+      "error": "发送消息时出错"
+    },
+    "alternatives": {
+      "title": "其他联系方式",
+      "githubTitle": "GitHub Issues",
+      "github": "在 GitHub 上创建问题",
+      "emailTitle": "电子邮件",
+      "email": "给我们发送电子邮件"
+    },
+    "responseTime": {
+      "title": "响应时间",
+      "description": "由于 ElectroVault 是一个社区项目，问题由志愿者处理。请耐心等待 - 我们通常在 48 小时内回复。"
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "社区支持",
+        "description": "使用 GitHub Discussions 提出一般问题"
+      },
+      "bugReports": {
+        "title": "错误报告",
+        "description": "直接在 GitHub 上报告技术问题"
+      },
+      "partnerships": {
+        "title": "合作咨询",
+        "description": "商业咨询请使用表单"
+      }
+    }
+  },
+  "imprint": {
+    "title": "版权信息",
+    "responsible": "内容负责人",
+    "contact": "联系方式",
+    "disclaimer": {
+      "title": "免责声明",
+      "content": "尽管我们仔细控制内容，但我们对外部链接的内容不承担任何责任。链接页面的运营商对其内容承担全部责任。",
+      "liability": "这些页面的内容是以最大的谨慎创建的。但是，我们不能保证内容的准确性、完整性和时效性。"
+    },
+    "opensource": {
+      "title": "开源",
+      "description": "ElectroVault 是一个采用MIT许可证的开源项目。源代码可在 GitHub 上获取。"
+    }
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新",
+    "intro": "我们非常重视您个人数据的保护。本隐私政策告知您有关个人数据处理的性质、范围和目的。",
+    "responsible": {
+      "title": "数据控制者",
+      "description": "本网站数据处理的负责人："
+    },
+    "collection": {
+      "title": "个人数据的收集和存储",
+      "description": "当您访问我们的网站时，会自动收集您的浏览器传输的信息：",
+      "data": "IP地址、访问日期和时间、浏览器类型和版本、使用的操作系统、引用URL"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "我们的网站使用cookies。Cookies是存储在您设备上的小文本文件。",
+      "essential": "用于身份验证和会话管理的技术必需cookies",
+      "functional": "用于改善用户体验的功能性cookies"
+    },
+    "auth": {
+      "title": "身份验证",
+      "description": "我们使用Keycloak进行注册和登录。存储以下数据：",
+      "data": "用户名、电子邮件地址、个人资料图片（可选）、角色和权限"
+    },
+    "rights": {
+      "title": "您的权利",
+      "description": "您对个人数据享有以下权利：",
+      "access": "访问权",
+      "correction": "更正权",
+      "deletion": "删除权",
+      "restriction": "限制处理权",
+      "portability": "数据可携权",
+      "objection": "反对权"
+    },
+    "contact": {
+      "title": "隐私问题联系方式",
+      "description": "如果您对隐私有任何疑问，可以随时联系我们。"
+    }
+  }
+}

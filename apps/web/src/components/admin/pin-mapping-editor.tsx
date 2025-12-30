@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { CreatePinSchema, type CreatePinInput, type PinType } from '@electrovault/schemas';
 import {
   Table,
@@ -80,6 +81,7 @@ const PIN_TYPE_COLORS: Record<string, string> = {
 export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
   const api = useApi();
   const { toast } = useToast();
+  const t = useTranslations('admin');
 
   const [pins, setPins] = useState<Pin[]>([]);
   const [loading, setLoading] = useState(true);
@@ -108,8 +110,8 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
       } catch (error) {
         console.error('Failed to load pins:', error);
         toast({
-          title: 'Fehler',
-          description: 'Pins konnten nicht geladen werden.',
+          title: t('messages.error'),
+          description: t('messages.pin.loadFailed'),
           variant: 'destructive',
         });
       } finally {
@@ -124,8 +126,8 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
     try {
       await api.createPin(componentId, data);
       toast({
-        title: 'Erfolg',
-        description: 'Pin wurde hinzugefügt.',
+        title: t('messages.success'),
+        description: t('messages.pin.created'),
       });
       form.reset();
       setIsAddingNew(false);
@@ -133,8 +135,8 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
     } catch (error) {
       console.error('Failed to create pin:', error);
       toast({
-        title: 'Fehler',
-        description: 'Pin konnte nicht erstellt werden.',
+        title: t('messages.error'),
+        description: t('messages.pin.createFailed'),
         variant: 'destructive',
       });
     }
@@ -147,8 +149,8 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
     } catch (error) {
       console.error('Failed to update pin:', error);
       toast({
-        title: 'Fehler',
-        description: 'Pin konnte nicht aktualisiert werden.',
+        title: t('messages.error'),
+        description: t('messages.pin.updateFailed'),
         variant: 'destructive',
       });
     }
@@ -158,15 +160,15 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
     try {
       await api.deletePin(pinId);
       toast({
-        title: 'Erfolg',
-        description: 'Pin wurde gelöscht.',
+        title: t('messages.success'),
+        description: t('messages.pin.deleted'),
       });
       setRefreshKey((prev) => prev + 1);
     } catch (error) {
       console.error('Failed to delete pin:', error);
       toast({
-        title: 'Fehler',
-        description: 'Pin konnte nicht gelöscht werden.',
+        title: t('messages.error'),
+        description: t('messages.pin.deleteFailed'),
         variant: 'destructive',
       });
     }
@@ -178,8 +180,8 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
 
     if (lines.length === 0) {
       toast({
-        title: 'Fehler',
-        description: 'Keine gültigen Pin-Daten gefunden.',
+        title: t('messages.error'),
+        description: t('pinMapping.bulkImport.noPinsFound'),
         variant: 'destructive',
       });
       return;
@@ -207,16 +209,16 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
 
       await api.bulkCreatePins(componentId, pinsToCreate);
       toast({
-        title: 'Erfolg',
-        description: `${pinsToCreate.length} Pins wurden importiert.`,
+        title: t('messages.success'),
+        description: t('pinMapping.bulkImport.success', { count: pinsToCreate.length }),
       });
       setBulkImportText('');
       setRefreshKey((prev) => prev + 1);
     } catch (error) {
       console.error('Failed to bulk import pins:', error);
       toast({
-        title: 'Fehler',
-        description: error instanceof Error ? error.message : 'Bulk-Import fehlgeschlagen.',
+        title: t('messages.error'),
+        description: error instanceof Error ? error.message : t('pinMapping.bulkImport.failed'),
         variant: 'destructive',
       });
     }
@@ -240,30 +242,30 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
     try {
       await api.reorderPins(componentId, reorderedPins);
       toast({
-        title: 'Erfolg',
-        description: 'Pin-Reihenfolge wurde aktualisiert.',
+        title: t('messages.success'),
+        description: t('pinMapping.reorderSuccess'),
       });
       setRefreshKey((prev) => prev + 1);
     } catch (error) {
       console.error('Failed to reorder pins:', error);
       toast({
-        title: 'Fehler',
-        description: 'Reihenfolge konnte nicht geändert werden.',
+        title: t('messages.error'),
+        description: t('pinMapping.reorderFailed'),
         variant: 'destructive',
       });
     }
   };
 
   if (loading) {
-    return <div className="text-center py-4 text-muted-foreground">Lädt Pins...</div>;
+    return <div className="text-center py-4 text-muted-foreground">{t('pinMapping.loading')}</div>;
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold">Pin-Mapping</h3>
-          <Badge variant="secondary">{pins.length} Pins</Badge>
+          <h3 className="text-lg font-semibold">{t('pinMapping.title')}</h3>
+          <Badge variant="secondary">{t('pinMapping.pinsCount', { count: pins.length })}</Badge>
         </div>
         <div className="flex gap-2">
           <Button
@@ -272,14 +274,14 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
             onClick={() => setIsAddingNew(!isAddingNew)}
           >
             <Plus className="h-4 w-4 mr-1" />
-            Pin hinzufügen
+            {t('pinMapping.addPin')}
           </Button>
         </div>
       </div>
 
       {isAddingNew && (
         <div className="border rounded-lg p-4 bg-muted/50">
-          <h4 className="font-medium mb-3">Neuen Pin hinzufügen</h4>
+          <h4 className="font-medium mb-3">{t('pinMapping.newPin')}</h4>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleAddPin)} className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
@@ -289,7 +291,7 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Pin-Nummer (z.B. 1, VCC)" {...field} />
+                        <Input placeholder={t('pinMapping.pinNumber')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -301,7 +303,7 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Pin-Name" {...field} />
+                        <Input placeholder={t('pinMapping.pinName')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -319,11 +321,11 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Pin-Typ auswählen" />
+                          <SelectValue placeholder={t('pinMapping.selectType')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="__none__">Kein Typ</SelectItem>
+                        <SelectItem value="__none__">{t('pinMapping.noType')}</SelectItem>
                         {Object.entries(PIN_TYPE_LABELS).map(([value, label]) => (
                           <SelectItem key={value} value={value}>
                             {label}
@@ -340,9 +342,9 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                   setIsAddingNew(false);
                   form.reset();
                 }}>
-                  Abbrechen
+                  {t('common.cancel')}
                 </Button>
-                <Button type="submit">Pin hinzufügen</Button>
+                <Button type="submit">{t('pinMapping.addPin')}</Button>
               </div>
             </form>
           </Form>
@@ -351,25 +353,25 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
 
       <Tabs defaultValue="list" className="w-full">
         <TabsList>
-          <TabsTrigger value="list">Pin-Liste</TabsTrigger>
-          <TabsTrigger value="bulk">Bulk-Import</TabsTrigger>
+          <TabsTrigger value="list">{t('pinMapping.tabList')}</TabsTrigger>
+          <TabsTrigger value="bulk">{t('pinMapping.tabBulkImport')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="list" className="mt-4">
           {pins.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground border rounded-lg">
-              Keine Pins definiert. Fügen Sie Pins einzeln hinzu oder nutzen Sie den Bulk-Import.
+              {t('pinMapping.noPins')}
             </div>
           ) : (
             <div className="border rounded-lg overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[100px]">Pin-Nr.</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead className="w-[300px]">Funktion (DE)</TableHead>
-                    <TableHead className="text-right">Aktionen</TableHead>
+                    <TableHead className="w-[100px]">{t('pinMapping.columnPinNumber')}</TableHead>
+                    <TableHead>{t('pinMapping.columnName')}</TableHead>
+                    <TableHead>{t('pinMapping.columnType')}</TableHead>
+                    <TableHead className="w-[300px]">{t('pinMapping.columnFunction')}</TableHead>
+                    <TableHead className="text-right">{t('pinMapping.columnActions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -399,7 +401,7 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="__none__">Kein Typ</SelectItem>
+                            <SelectItem value="__none__">{t('pinMapping.noType')}</SelectItem>
                             {Object.entries(PIN_TYPE_LABELS).map(([value, label]) => (
                               <SelectItem key={value} value={value}>
                                 <Badge className={PIN_TYPE_COLORS[value]} variant="default">
@@ -419,7 +421,7 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                               de: e.target.value,
                             })
                           }
-                          placeholder="z.B. Versorgungsspannung"
+                          placeholder={t('pinMapping.functionPlaceholder')}
                         />
                       </TableCell>
                       <TableCell>
@@ -448,16 +450,15 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Pin löschen?</AlertDialogTitle>
+                                <AlertDialogTitle>{t('pinMapping.deleteTitle')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Möchten Sie Pin {pin.pinNumber} ({pin.pinName}) wirklich löschen?
-                                  Diese Aktion kann nicht rückgängig gemacht werden.
+                                  {t('pinMapping.deleteMessage', { pinNumber: pin.pinNumber, pinName: pin.pinName })}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                                <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => handleDeletePin(pin.id)}>
-                                  Löschen
+                                  {t('common.delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -475,28 +476,28 @@ export function PinMappingEditor({ componentId }: PinMappingEditorProps) {
         <TabsContent value="bulk" className="mt-4">
           <div className="space-y-3">
             <div className="text-sm text-muted-foreground">
-              <p className="font-medium mb-2">Format:</p>
+              <p className="font-medium mb-2">{t('pinMapping.bulkImport.formatLabel')}</p>
               <code className="block bg-muted p-2 rounded text-xs">
                 pinNummer,pinName,pinTyp;pinNummer,pinName,pinTyp
               </code>
-              <p className="mt-2">Beispiel:</p>
+              <p className="mt-2">{t('pinMapping.bulkImport.exampleLabel')}</p>
               <code className="block bg-muted p-2 rounded text-xs">
                 1,VCC,POWER;2,GND,GROUND;3,IN,INPUT;4,OUT,OUTPUT
               </code>
               <p className="mt-2 text-xs">
-                pinTyp ist optional. Verfügbare Typen: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER
+                {t('pinMapping.bulkImport.typeHint')}
               </p>
             </div>
             <Textarea
               value={bulkImportText}
               onChange={(e) => setBulkImportText(e.target.value)}
-              placeholder="Pins im CSV-Format eingeben..."
+              placeholder={t('pinMapping.bulkImport.placeholder')}
               rows={6}
             />
             <div className="flex justify-end">
               <Button onClick={handleBulkImport} disabled={!bulkImportText.trim()}>
                 <Upload className="h-4 w-4 mr-2" />
-                Pins importieren
+                {t('pinMapping.bulkImport.importButton')}
               </Button>
             </div>
           </div>

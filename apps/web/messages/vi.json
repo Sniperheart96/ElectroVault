@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "create": "Tạo",
+    "search": "Tìm kiếm",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước",
+    "noResults": "Không tìm thấy kết quả",
+    "all": "Tất cả",
+    "yes": "Có",
+    "no": "Không",
+    "actions": {
+      "details": "Chi tiết"
+    }
+  },
+  "locale": {
+    "switch": "Thay đổi ngôn ngữ",
+    "current": "Ngôn ngữ hiện tại",
+    "languages": {
+      "en": "Tiếng Anh",
+      "de": "Tiếng Đức",
+      "fr": "Tiếng Pháp",
+      "es": "Tiếng Tây Ban Nha",
+      "zh": "Tiếng Trung",
+      "ja": "Tiếng Nhật",
+      "ko": "Tiếng Hàn",
+      "it": "Tiếng Ý"
+    }
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "components": "Linh kiện",
+    "categories": "Danh mục",
+    "manufacturers": "Nhà sản xuất",
+    "packages": "Vỏ linh kiện",
+    "search": "Tìm kiếm",
+    "admin": "Quản trị",
+    "moderation": "Kiểm duyệt",
+    "myElectroVault": "ElectroVault của tôi",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "profile": "Hồ sơ"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Cơ sở dữ liệu linh kiện điện tử do cộng đồng duy trì",
+    "searchPlaceholder": "Tìm kiếm linh kiện...",
+    "featuredCategories": "Danh mục nổi bật",
+    "recentComponents": "Linh kiện gần đây",
+    "stats": {
+      "components": "Linh kiện",
+      "manufacturers": "Nhà sản xuất",
+      "categories": "Danh mục",
+      "users": "Người dùng"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Cơ sở dữ liệu linh kiện điện tử do cộng đồng duy trì"
+    },
+    "stats": {
+      "components": "Linh kiện",
+      "manufacturers": "Nhà sản xuất",
+      "users": "Người dùng"
+    }
+  },
+  "packages": {
+    "title": "Vỏ linh kiện",
+    "totalCount": "{count} vỏ linh kiện trong cơ sở dữ liệu",
+    "addNew": "Vỏ linh kiện mới",
+    "searchPlaceholder": "Tìm kiếm theo tên hoặc slug...",
+    "filterPlaceholder": "Loại vỏ",
+    "filterAll": "Tất cả các loại",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Hướng tâm",
+      "AXIAL": "Trục",
+      "CHASSIS": "Khung",
+      "OTHER": "Khác"
+    },
+    "table": {
+      "name": "Tên",
+      "type": "Loại",
+      "pinCount": "Số chân",
+      "dimensions": "Kích thước (D x R x C mm)",
+      "pitch": "Khoảng cách chân",
+      "actions": "Hành động"
+    },
+    "loading": "Đang tải...",
+    "noResults": "Không tìm thấy vỏ linh kiện",
+    "noPackagesFound": "Không tìm thấy vỏ linh kiện",
+    "createFirst": "Tạo vỏ linh kiện đầu tiên",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "loadError": "Không thể tải vỏ linh kiện.",
+    "deleteSuccess": "Vỏ linh kiện đã được xóa.",
+    "deleteError": "Không thể xóa vỏ linh kiện.",
+    "deleteDialog": {
+      "title": "Xóa vỏ linh kiện?",
+      "description": "Bạn có thực sự muốn xóa vỏ linh kiện \"{name}\"? Hành động này không thể hoàn tác."
+    }
+  },
+  "components": {
+    "title": "Linh kiện",
+    "description": "Duyệt cơ sở dữ liệu linh kiện điện tử đồ sộ của chúng tôi",
+    "filters": {
+      "category": "Danh mục",
+      "manufacturer": "Nhà sản xuất",
+      "status": "Trạng thái",
+      "mountingType": "Kiểu lắp đặt"
+    },
+    "detail": {
+      "overview": "Tổng quan",
+      "specifications": "Thông số kỹ thuật",
+      "datasheets": "Tài liệu kỹ thuật",
+      "parts": "Sản phẩm nhà sản xuất",
+      "history": "Lịch sử phiên bản",
+      "backToOverview": "Quay lại tổng quan",
+      "category": "Danh mục",
+      "statistics": "Thống kê",
+      "manufacturerVariants": "Biến thể nhà sản xuất",
+      "activeVariants": "Biến thể hoạt động",
+      "additionalProperties": "Thuộc tính bổ sung",
+      "furtherProperties": "Các thuộc tính khác của linh kiện này",
+      "validForAllVariants": "Thông số kỹ thuật (hợp lệ cho tất cả các biến thể)",
+      "variantCount": "{count} biến thể nhà sản xuất",
+      "variantCountPlural": "{count} biến thể nhà sản xuất",
+      "noVariantsAvailable": "Không có biến thể nhà sản xuất",
+      "noVariantsForComponent": "Không có biến thể nhà sản xuất cho linh kiện này.",
+      "noAttributesAvailable": "Không có thuộc tính.",
+      "manufacturer": "Nhà sản xuất",
+      "orderingCode": "Mã đặt hàng",
+      "details": "Chi tiết",
+      "allInCategory": "Tất cả trong danh mục",
+      "status": "Trạng thái",
+      "moreAttributes": "+{count} thêm"
+    },
+    "status": {
+      "DRAFT": "Nháp",
+      "PENDING": "Chờ xử lý",
+      "PUBLISHED": "Đã xuất bản",
+      "ARCHIVED": "Đã lưu trữ"
+    },
+    "lifecycle": {
+      "ACTIVE": "Đang hoạt động",
+      "NRND": "Không khuyến nghị cho thiết kế mới",
+      "EOL": "Ngừng sản xuất",
+      "OBSOLETE": "Lỗi thời"
+    }
+  },
+  "categories": {
+    "title": "Danh mục",
+    "browseAll": "Duyệt tất cả danh mục",
+    "subcategories": "Danh mục con",
+    "componentsInCategory": "Linh kiện trong danh mục này"
+  },
+  "manufacturers": {
+    "title": "Nhà sản xuất",
+    "status": {
+      "ACTIVE": "Đang hoạt động",
+      "ACQUIRED": "Đã mua lại",
+      "DEFUNCT": "Ngừng hoạt động"
+    }
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "loginWith": "Đăng nhập với {provider}",
+    "welcome": "Chào mừng trở lại",
+    "signInToContinue": "Đăng nhập để tiếp tục",
+    "signIn": {
+      "title": "Đăng nhập",
+      "description": "Đăng nhập vào tài khoản của bạn",
+      "button": "Đăng nhập với Keycloak",
+      "loading": "Đang đăng nhập...",
+      "hint": "Bạn sẽ được chuyển hướng đến Keycloak"
+    },
+    "signOut": {
+      "title": "Đăng xuất",
+      "description": "Bạn có chắc chắn muốn đăng xuất?",
+      "button": "Đăng xuất",
+      "loading": "Đang đăng xuất...",
+      "cancel": "Hủy"
+    },
+    "error": {
+      "title": "Lỗi xác thực",
+      "description": "Đã xảy ra lỗi trong quá trình đăng nhập",
+      "tryAgain": "Thử lại",
+      "backHome": "Quay lại Trang chủ"
+    },
+    "errors": {
+      "configuration": "Lỗi cấu hình máy chủ. Vui lòng liên hệ quản trị viên.",
+      "accessDenied": "Truy cập bị từ chối. Bạn không có quyền.",
+      "verification": "Liên kết xác minh đã hết hạn hoặc đã được sử dụng.",
+      "oauthSignin": "Lỗi khi bắt đầu đăng nhập OAuth.",
+      "oauthCallback": "Lỗi khi xử lý callback OAuth.",
+      "oauthCreateAccount": "Lỗi khi tạo tài khoản người dùng.",
+      "emailCreateAccount": "Lỗi khi tạo tài khoản email.",
+      "callback": "Lỗi khi xử lý callback.",
+      "oauthAccountNotLinked": "Email này đã được liên kết với tài khoản khác.",
+      "sessionRequired": "Vui lòng đăng nhập để truy cập trang này.",
+      "default": "Đã xảy ra lỗi không xác định. Vui lòng thử lại."
+    }
+  },
+  "admin": {
+    "dashboard": "Bảng điều khiển",
+    "sidebar": {
+      "dashboard": "Bảng điều khiển",
+      "moderation": "Kiểm duyệt",
+      "moderationDescription": "Hàng đợi phê duyệt",
+      "users": "Người dùng",
+      "backToHome": "Về trang chủ",
+      "user": "Người dùng",
+      "logout": "Đăng xuất"
+    },
+    "components": {
+      "title": "Quản lý Linh kiện",
+      "new": "Linh kiện mới",
+      "edit": "Chỉnh sửa Linh kiện"
+    },
+    "moderation": {
+      "title": "Kiểm duyệt",
+      "pendingReviews": "Chờ duyệt",
+      "approve": "Phê duyệt",
+      "reject": "Từ chối",
+      "batchApproval": "Phê duyệt hàng loạt",
+      "confirmApprove": "Xác nhận phê duyệt",
+      "confirmApproveDescription": "Bạn có thực sự muốn phê duyệt {type} này? Nó sẽ được công khai sau đó.",
+      "confirmBatchApproval": "Bạn có muốn phê duyệt {count} mục? Hành động này không thể hoàn tác.",
+      "rejectWithReason": "Từ chối với lý do",
+      "rejectDescription": "Vui lòng cung cấp lý do từ chối. Điều này sẽ được hiển thị cho người tạo.",
+      "rejectReasonLabel": "Lý do",
+      "rejectReasonPlaceholder": "Tại sao mục này bị từ chối?",
+      "rejectReasonHelp": "Lý do rõ ràng giúp người tạo hiểu được sự từ chối.",
+      "batchApproveButton": "Phê duyệt {count}",
+      "typeComponent": "Linh kiện",
+      "typePart": "Phần",
+      "draft": "Nháp"
+    },
+    "users": {
+      "title": "Người dùng",
+      "manage": "Quản lý Người dùng"
+    },
+    "myDashboard": {
+      "title": "Bảng điều khiển của tôi",
+      "stats": {
+        "componentsTotal": "Tổng số linh kiện",
+        "componentsTotalDesc": "Linh kiện do bạn tạo",
+        "variants": "Biến thể",
+        "variantsDesc": "Biến thể nhà sản xuất",
+        "drafts": "Nháp",
+        "draftsDesc": "Chưa gửi",
+        "pending": "Đang xem xét",
+        "pendingDesc": "Chờ kiểm duyệt",
+        "published": "Đã xuất bản",
+        "archived": "Đã lưu trữ"
+      },
+      "draftsSection": {
+        "title": "Nháp của tôi",
+        "description": "Nháp là bộ nhớ tạm thời riêng tư và chưa được gửi để kiểm duyệt.",
+        "newComponent": "Linh kiện mới",
+        "empty": "Không có nháp. Tạo linh kiện mới và lưu dưới dạng nháp.",
+        "draftBadge": "Nháp",
+        "noName": "[Không có tên]"
+      },
+      "activitySection": {
+        "title": "Lịch sử hoạt động",
+        "description": "Các hoạt động gần đây của bạn trong ElectroVault",
+        "empty": "Chưa có hoạt động nào."
+      },
+      "entities": {
+        "COMPONENT": "Linh kiện",
+        "PART": "Biến thể",
+        "MANUFACTURER": "Nhà sản xuất",
+        "CATEGORY": "Danh mục",
+        "PACKAGE": "Vỏ linh kiện"
+      },
+      "error": "Không thể tải bảng điều khiển. Vui lòng thử lại."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Thuộc tính mới",
+        "titleEdit": "Chỉnh sửa Thuộc tính",
+        "description": "Định nghĩa thuộc tính cho linh kiện"
+      },
+      "category": {
+        "title": "Danh mục mới",
+        "titleEdit": "Chỉnh sửa Danh mục",
+        "description": "Quản lý thông tin danh mục và thuộc tính",
+        "saveFirst": "Lưu danh mục trước để thêm thuộc tính"
+      },
+      "component": {
+        "title": "Linh kiện mới",
+        "titleEdit": "Chỉnh sửa Linh kiện",
+        "description": "Tạo linh kiện mới - sau khi lưu bạn có thể thêm biến thể nhà sản xuất",
+        "descriptionEdit": "Quản lý thông tin linh kiện và biến thể nhà sản xuất",
+        "saveFirstPinMapping": "Lưu linh kiện trước để chỉnh sửa sơ đồ chân",
+        "saveFirstParts": "Lưu linh kiện trước để thêm biến thể nhà sản xuất",
+        "saveFirstRelations": "Lưu linh kiện trước để thêm mối quan hệ",
+        "createdWithVariants": "Linh kiện đã được tạo. Bạn có thể thêm biến thể nhà sản xuất ngay bây giờ",
+        "noPartsWarning": "Linh kiện này không có biến thể nhà sản xuất. Cần ít nhất một biến thể"
+      },
+      "manufacturer": {
+        "title": "Nhà sản xuất mới",
+        "titleEdit": "Chỉnh sửa Nhà sản xuất",
+        "description": "Quản lý thông tin nhà sản xuất"
+      },
+      "part": {
+        "title": "Biến thể mới",
+        "titleEdit": "Chỉnh sửa Biến thể",
+        "description": "Tạo biến thể cụ thể của nhà sản xuất cho một linh kiện",
+        "descriptionEdit": "Thay đổi thông tin biến thể nhà sản xuất",
+        "saveFirstFiles": "Lưu biến thể trước để tải lên tệp"
+      },
+      "package": {
+        "title": "Vỏ linh kiện mới",
+        "titleEdit": "Chỉnh sửa Vỏ linh kiện",
+        "description": "Thông tin vỏ/chân linh kiện"
+      },
+      "delete": {
+        "title": "Xác nhận Xóa",
+        "message": "Bạn có chắc chắn muốn xóa mục này?",
+        "messageFile": "Bạn có thực sự muốn xóa tệp này?",
+        "messagePin": "Bạn có thực sự muốn xóa chân này?",
+        "message3dModel": "Bạn có thực sự muốn xóa mô hình 3D này?",
+        "messageRelation": "Bạn có thực sự muốn xóa mối quan hệ này?"
+      }
+    },
+    "buttons": {
+      "saving": "Đang lưu...",
+      "saveAsDraft": "Lưu dưới dạng Nháp",
+      "update": "Cập nhật",
+      "addPin": "Thêm Chân",
+      "addRelation": "Thêm Mối quan hệ"
+    },
+    "messages": {
+      "success": "Thành công",
+      "error": "Lỗi",
+      "warning": "Cảnh báo",
+      "attribute": {
+        "created": "Thuộc tính đã được tạo",
+        "updated": "Thuộc tính đã được cập nhật",
+        "deleted": "Thuộc tính đã được xóa",
+        "loadFailed": "Không thể tải thuộc tính",
+        "saveFailed": "Không thể lưu thuộc tính",
+        "deleteFailed": "Không thể xóa thuộc tính"
+      },
+      "category": {
+        "created": "Danh mục đã được tạo",
+        "updated": "Danh mục đã được cập nhật",
+        "deleted": "Danh mục đã được xóa",
+        "loadFailed": "Không thể tải danh mục",
+        "saveFailed": "Không thể lưu danh mục",
+        "deleteFailed": "Không thể xóa danh mục"
+      },
+      "component": {
+        "created": "Linh kiện đã được tạo",
+        "updated": "Linh kiện đã được cập nhật",
+        "deleted": "Linh kiện đã được xóa",
+        "loadFailed": "Không thể tải linh kiện",
+        "saveFailed": "Không thể lưu linh kiện",
+        "deleteFailed": "Không thể xóa linh kiện"
+      },
+      "manufacturer": {
+        "created": "Nhà sản xuất đã được tạo",
+        "updated": "Nhà sản xuất đã được cập nhật",
+        "deleted": "Nhà sản xuất đã được xóa",
+        "loadFailed": "Không thể tải nhà sản xuất",
+        "saveFailed": "Không thể lưu nhà sản xuất",
+        "deleteFailed": "Không thể xóa nhà sản xuất",
+        "logoUploaded": "Logo đã được tải lên",
+        "logoUploadFailed": "Không thể tải lên logo"
+      },
+      "part": {
+        "created": "Biến thể đã được tạo",
+        "updated": "Biến thể đã được cập nhật",
+        "deleted": "Biến thể đã được xóa",
+        "loadFailed": "Không thể tải biến thể",
+        "saveFailed": "Không thể lưu biến thể",
+        "deleteFailed": "Không thể xóa biến thể"
+      },
+      "package": {
+        "created": "Vỏ linh kiện đã được tạo",
+        "updated": "Vỏ linh kiện đã được cập nhật",
+        "deleted": "Vỏ linh kiện đã được xóa",
+        "loadFailed": "Không thể tải vỏ linh kiện",
+        "saveFailed": "Không thể lưu vỏ linh kiện",
+        "deleteFailed": "Không thể xóa vỏ linh kiện"
+      },
+      "file": {
+        "uploaded": "Tệp đã được tải lên",
+        "deleted": "Tệp đã được xóa",
+        "uploadFailed": "Không thể tải lên tệp",
+        "deleteFailed": "Không thể xóa tệp",
+        "loadFailed": "Không thể tải tệp",
+        "downloadUrlFailed": "Không thể tạo URL tải xuống"
+      },
+      "pin": {
+        "created": "Chân đã được thêm",
+        "updated": "Chân đã được cập nhật",
+        "deleted": "Chân đã được xóa",
+        "createFailed": "Không thể tạo chân",
+        "loadFailed": "Không thể tải chân",
+        "updateFailed": "Không thể cập nhật chân",
+        "deleteFailed": "Không thể xóa chân"
+      },
+      "relation": {
+        "created": "Mối quan hệ đã được thêm",
+        "deleted": "Mối quan hệ đã được xóa",
+        "createFailed": "Không thể tạo mối quan hệ",
+        "deleteFailed": "Không thể xóa mối quan hệ"
+      }
+    },
+    "pinMapping": {
+      "title": "Sơ đồ Chân",
+      "addPin": "Thêm Chân",
+      "newPin": "Thêm Chân Mới",
+      "pinNumber": "Số Chân (ví dụ: 1, VCC)",
+      "pinName": "Tên Chân",
+      "selectType": "Chọn Loại Chân",
+      "noDescription": "Không có mô tả",
+      "noType": "Không có loại",
+      "loading": "Đang tải chân...",
+      "pinsCount": "{count} chân",
+      "tabList": "Danh sách Chân",
+      "tabBulkImport": "Nhập hàng loạt",
+      "noPins": "Không có chân được xác định. Thêm chân từng cái một hoặc sử dụng nhập hàng loạt.",
+      "columnPinNumber": "Số Chân",
+      "columnName": "Tên",
+      "columnType": "Loại",
+      "columnFunction": "Chức năng (VI)",
+      "columnActions": "Hành động",
+      "functionPlaceholder": "ví dụ: Điện áp nguồn",
+      "deleteTitle": "Xóa chân?",
+      "deleteMessage": "Bạn có thực sự muốn xóa chân {pinNumber} ({pinName})? Hành động này không thể hoàn tác.",
+      "reorderSuccess": "Thứ tự chân đã được cập nhật",
+      "reorderFailed": "Không thể thay đổi thứ tự",
+      "bulkImport": {
+        "formatLabel": "Định dạng:",
+        "exampleLabel": "Ví dụ:",
+        "typeHint": "pinType là tùy chọn. Các loại có sẵn: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Nhập chân ở định dạng CSV...",
+        "importButton": "Nhập chân",
+        "noPinsFound": "Không tìm thấy dữ liệu chân hợp lệ.",
+        "success": "{count} chân đã được nhập.",
+        "failed": "Nhập hàng loạt thất bại."
+      }
+    },
+    "files": {
+      "uploadImage": "Tải lên Hình ảnh Sản phẩm",
+      "uploadDatasheet": "Tải lên Tài liệu Kỹ thuật",
+      "uploadDocument": "Tải lên Tài liệu",
+      "selectLanguage": "Chọn Ngôn ngữ",
+      "noFiles": "Không có tệp nào",
+      "confirmDelete": "Xóa tệp?",
+      "productImage": "Hình ảnh Sản phẩm",
+      "productImageDescription": "Hình ảnh xem trước cho biến thể nhà sản xuất này",
+      "addImage": "Hình ảnh",
+      "imageDescription": "JPEG, PNG hoặc WebP (tối đa 10 MB)",
+      "noImageUploaded": "Chưa có hình ảnh được tải lên",
+      "datasheets": "Tài liệu Kỹ thuật",
+      "datasheetsDescription": "Tài liệu kỹ thuật PDF cho biến thể nhà sản xuất này",
+      "addDatasheet": "Tài liệu Kỹ thuật",
+      "languagesRequired": "Ngôn ngữ của tài liệu kỹ thuật",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Cần chọn ít nhất một ngôn ngữ",
+      "datasheetFileDescription": "Tệp PDF tài liệu kỹ thuật của nhà sản xuất",
+      "noDatasheets": "Chưa có tài liệu kỹ thuật được tải lên",
+      "otherFiles": "Tệp khác",
+      "otherFilesDescription": "Tài liệu bổ sung, ghi chú ứng dụng, v.v.",
+      "addDocument": "Tài liệu",
+      "languagesOptional": "Ngôn ngữ (tùy chọn)",
+      "anyFileDescription": "Bất kỳ tệp nào (PDF, TXT, ZIP, v.v.)",
+      "noDocuments": "Chưa có tài liệu được tải lên",
+      "fileName": "Tệp",
+      "fileSize": "Kích thước",
+      "languages": "Ngôn ngữ",
+      "actions": "Hành động",
+      "imageCount": "{count} hình ảnh",
+      "fileCount": "{count} tệp",
+      "datasheetCount": "{count} tài liệu kỹ thuật",
+      "imageUploaded": "Hình ảnh đã được tải lên",
+      "imageRemoved": "Hình ảnh đã được xóa"
+    },
+    "model3d": {
+      "title": "Mô hình 3D",
+      "confirmDelete": "Xóa mô hình 3D?",
+      "upload": "Tải lên Mô hình 3D",
+      "noModels": "Không có mô hình 3D nào"
+    },
+    "lists": {
+      "searchPlaceholder": "Tìm kiếm...",
+      "searchByName": "Tìm kiếm theo tên hoặc slug...",
+      "searchByNameCage": "Tìm kiếm theo tên, slug hoặc mã CAGE...",
+      "noResults": "Không tìm thấy kết quả",
+      "createFirst": "Tạo mục đầu tiên",
+      "noPackagesFound": "Không tìm thấy vỏ linh kiện",
+      "createFirstPackage": "Tạo vỏ linh kiện đầu tiên"
+    },
+    "filters": {
+      "allStatus": "Tất cả trạng thái",
+      "myDrafts": "Nháp của tôi"
+    },
+    "manufacturer": {
+      "title": "Nhà sản xuất",
+      "count": "{count} nhà sản xuất trong cơ sở dữ liệu",
+      "create": "Nhà sản xuất mới",
+      "createFirst": "Tạo nhà sản xuất đầu tiên",
+      "deleteTitle": "Xóa nhà sản xuất?",
+      "deleteDescription": "Bạn có thực sự muốn xóa nhà sản xuất \"{name}\"? Hành động này không thể hoàn tác.",
+      "status": {
+        "active": "Hoạt động",
+        "acquired": "Đã mua lại",
+        "defunct": "Không hoạt động"
+      }
+    },
+    "form": {
+      "package": "Vỏ linh kiện",
+      "selectPackage": "Chọn Vỏ linh kiện",
+      "noPackage": "Không có Vỏ linh kiện",
+      "editIn": "Chỉnh sửa trong:",
+      "searchLanguage": "Tìm kiếm ngôn ngữ...",
+      "noLanguageFound": "Không tìm thấy ngôn ngữ",
+      "original": "Gốc",
+      "backToOverview": "Quay lại Tổng quan",
+      "name": "Tên",
+      "nameDescription": "Tên bằng tiếng Đức và/hoặc tiếng Anh. Trường bắt buộc nếu danh mục không có thuộc tính nhãn",
+      "namePlaceholder": "Tên linh kiện",
+      "series": "Chuỗi",
+      "seriesDescription": "Chuỗi hoặc họ linh kiện tùy chọn",
+      "seriesPlaceholder": "ví dụ: 74HC, ATmega",
+      "packageDescription": "Dạng vật lý (ví dụ: DIP-8, SOIC-8)",
+      "shortDescription": "Mô tả ngắn",
+      "shortDescriptionDescription": "Một câu ngắn mô tả linh kiện",
+      "shortDescriptionPlaceholder": "Mô tả ngắn",
+      "fullDescription": "Mô tả chi tiết",
+      "fullDescriptionPlaceholder": "Mô tả chi tiết",
+      "attributesDescription": "Thuộc tính kỹ thuật dựa trên danh mục được chọn",
+      "selectCategoryFirst": "Vui lòng chọn danh mục trước trong tab \"Dữ liệu chính\"",
+      "pinMappingDescription": "Xác định sơ đồ chân cho linh kiện này. Sơ đồ chân áp dụng cho tất cả các biến thể nhà sản xuất",
+      "partsDescription": "Biến thể cụ thể của nhà sản xuất cho linh kiện này",
+      "newVariant": "Biến thể mới",
+      "close": "Đóng",
+      "parentCategory": "Danh mục cha",
+      "parentCategoryPlaceholder": "Không có (Danh mục gốc)",
+      "parentCategoryDescription": "Để trống cho danh mục chính (Cấp 0)",
+      "categoryName": "Tên danh mục",
+      "categoryDescription": "Mô tả",
+      "categoryDescriptionPlaceholder": "Mô tả danh mục",
+      "sortOrder": "Thứ tự sắp xếp",
+      "sortOrderDescription": "Giá trị thấp hơn = cao hơn",
+      "status": "Trạng thái",
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "icon": "Biểu tượng",
+      "iconUploadDescription": "Tải lên biểu tượng danh mục. Tối đa 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Nhấp hoặc kéo tệp vào đây.",
+      "iconMaxSize": "Biểu tượng không được vượt quá 5 MB.",
+      "iconAllowedTypes": "Chỉ cho phép JPEG, PNG, WebP hoặc SVG.",
+      "iconUploaded": "Biểu tượng đã được tải lên.",
+      "iconUploadFailed": "Không thể tải lên biểu tượng.",
+      "categoryCreatedIconFailed": "Danh mục đã được tạo, nhưng tải lên biểu tượng thất bại.",
+      "loading": "Đang tải...",
+      "newAttribute": "Thuộc tính mới",
+      "ownAttributes": "Thuộc tính riêng ({count})",
+      "noOwnAttributes": "Không có thuộc tính riêng được xác định.",
+      "inheritedAttributes": "Thuộc tính kế thừa ({count})",
+      "inheritedAttributesDescription": "Thuộc tính kế thừa chỉ có thể chỉnh sửa trong danh mục gốc của chúng.",
+      "attributesInherited": "Thuộc tính của danh mục này (được kế thừa cho các danh mục con)",
+      "cageCode": "Mã CAGE",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "Mã 5 chữ số",
+      "country": "Quốc gia",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Website",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Tải lên logo nhà sản xuất. Tối đa 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Nhấp hoặc kéo tệp vào đây.",
+      "statusActive": "Hoạt động",
+      "statusAcquired": "Đã mua lại",
+      "statusDefunct": "Không hoạt động",
+      "foundedYear": "Năm thành lập",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Năm ngừng hoạt động",
+      "defunctYearPlaceholder": "2020",
+      "description": "Mô tả",
+      "descriptionPlaceholder": "Mô tả",
+      "logoMaxSize": "Logo không được vượt quá 5 MB.",
+      "logoAllowedTypes": "Chỉ cho phép JPEG, PNG, WebP hoặc SVG.",
+      "createdAsDraft": "Nhà sản xuất đã được lưu dưới dạng nháp.",
+      "manufacturerCreatedLogoFailed": "Nhà sản xuất đã được tạo, nhưng tải lên logo thất bại.",
+      "save": "Lưu"
+    },
+    "audit": {
+      "created": "đã tạo",
+      "updated": "đã cập nhật",
+      "deleted": "đã xóa",
+      "restored": "đã khôi phục",
+      "approved": "đã phê duyệt",
+      "rejected": "đã từ chối"
+    },
+    "tabs": {
+      "basicInfo": "Thông tin Cơ bản",
+      "attributes": "Thuộc tính",
+      "pinMapping": "Sơ đồ Chân",
+      "parts": "Biến thể Nhà sản xuất",
+      "relations": "Mối quan hệ",
+      "files": "Tệp",
+      "details": "Dữ liệu chính",
+      "pins": "Sơ đồ Chân",
+      "models": "Mô hình 3D"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Nhà sản xuất",
+      "status": "Trạng thái",
+      "lifecycle": "Chu kỳ sống",
+      "actions": "Hành động",
+      "variantCount": "{count} biến thể",
+      "variantCountPlural": "{count} biến thể",
+      "activeCount": "{count} hoạt động",
+      "obsoleteCount": "{count} lỗi thời",
+      "unknown": "Không rõ"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Tên duy nhất của vỏ linh kiện",
+      "mountingType": "Loại vỏ",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radial - Dây dẫn hướng tâm",
+        "AXIAL": "Axial - Dây dẫn trục",
+        "CHASSIS": "Chassis - Lắp khung",
+        "OTHER": "Khác"
+      },
+      "pinCount": "Số chân",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Chiều dài (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Chiều rộng (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Chiều cao (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Khoảng cách chân (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Khoảng cách giữa các chân",
+      "jedecStandard": "Tiêu chuẩn JEDEC",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "Tiêu chuẩn EIA",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL Bản vẽ",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Liên kết đến bản vẽ kỹ thuật hoặc tài liệu kỹ thuật",
+      "description": "Mô tả",
+      "descriptionPlaceholder": "Thông tin bổ sung về vỏ linh kiện...",
+      "saveFirstModels": "Lưu vỏ linh kiện trước để tải lên mô hình 3D.",
+      "modelsDescription": "Mô hình 3D cho vỏ linh kiện này (STEP, STL, 3MF, OBJ, v.v.)"
+    },
+    "partForm": {
+      "coreComponent": "Linh kiện chung",
+      "coreComponentDesc": "Linh kiện độc lập với nhà sản xuất (ví dụ: 555 Timer)",
+      "manufacturer": "Nhà sản xuất",
+      "manufacturerDesc": "Nhà sản xuất của biến thể cụ thể này (ví dụ: Texas Instruments)",
+      "manufacturerPlaceholder": "Chọn nhà sản xuất",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "ví dụ: NE555P",
+      "mpnDesc": "Số phần nhà sản xuất duy nhất",
+      "orderingCode": "Mã đặt hàng",
+      "orderingCodePlaceholder": "Tùy chọn",
+      "orderingCodeDesc": "Mã đặt hàng thay thế (nếu khác MPN)",
+      "statusRecord": "Trạng thái bản ghi",
+      "lifecycleStatus": "Trạng thái chu kỳ sống",
+      "introductionYear": "Năm giới thiệu",
+      "introductionYearPlaceholder": "ví dụ: 1972",
+      "discontinuedYear": "Năm ngừng sản xuất",
+      "discontinuedYearPlaceholder": "ví dụ: 2020",
+      "rohsCompliant": "Tuân thủ RoHS",
+      "rohsDesc": "Đáp ứng các chỉ thị RoHS",
+      "reachCompliant": "Tuân thủ REACH",
+      "reachDesc": "Đáp ứng quy định REACH",
+      "weight": "Trọng lượng (gram)",
+      "weightPlaceholder": "ví dụ: 0.5",
+      "dateCodeFormat": "Mã hóa ngày",
+      "dateCodePlaceholder": "ví dụ: YYWW",
+      "dateCodeDesc": "Định dạng mã ngày trên linh kiện",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "ví dụ: 5962-01-123-4567",
+      "milSpec": "Đặc tả quân sự",
+      "milSpecPlaceholder": "ví dụ: MIL-PRF-38534",
+      "partAttributesDesc": "Thuộc tính cụ thể của nhà sản xuất dựa trên danh mục linh kiện.",
+      "partAttributesLabel": "Thuộc tính cụ thể của nhà sản xuất",
+      "filesDesc": "Quản lý tài liệu kỹ thuật, hình ảnh và các tệp khác cho biến thể nhà sản xuất này.",
+      "close": "Đóng",
+      "selectComponent": "Chọn linh kiện"
+    }
+  },
+  "errors": {
+    "notFound": "Không tìm thấy trang",
+    "unauthorized": "Không có quyền",
+    "serverError": "Lỗi máy chủ"
+  },
+  "footer": {
+    "tagline": "Cơ sở dữ liệu linh kiện điện tử do cộng đồng duy trì",
+    "navigation": "Điều hướng",
+    "community": "Cộng đồng",
+    "legal": "Pháp lý",
+    "about": "Giới thiệu",
+    "help": "Trợ giúp",
+    "contact": "Liên hệ",
+    "contribute": "Đóng góp",
+    "github": "GitHub",
+    "privacy": "Bảo mật",
+    "imprint": "Thông tin xuất bản",
+    "copyright": "Mã nguồn mở theo Giấy phép MIT"
+  },
+  "about": {
+    "title": "Về ElectroVault",
+    "subtitle": "Cơ sở dữ liệu linh kiện điện tử do cộng đồng duy trì",
+    "mission": {
+      "title": "Sứ mệnh của chúng tôi",
+      "description": "ElectroVault là cơ sở dữ liệu miễn phí và mở cho linh kiện điện tử - từ đèn điện tử lịch sử đến công nghệ nano hiện đại. Mục tiêu của chúng tôi là bảo tồn kiến thức về linh kiện điện tử và làm cho nó có thể truy cập được cho tất cả mọi người."
+    },
+    "features": {
+      "title": "Tính năng",
+      "comprehensive": {
+        "title": "Cơ sở dữ liệu toàn diện",
+        "description": "Từ điện trở đến tụ điện đến mạch tích hợp cao - chúng tôi ghi lại tất cả các linh kiện quan trọng với thông số kỹ thuật chi tiết."
+      },
+      "historical": {
+        "title": "Lưu trữ lịch sử",
+        "description": "Tài liệu về các linh kiện lịch sử để sửa chữa và phục hồi thiết bị cổ điển."
+      },
+      "community": {
+        "title": "Hướng đến cộng đồng",
+        "description": "Mọi người đều có thể đóng góp và chia sẻ kiến thức của họ. Cùng nhau chúng ta xây dựng cơ sở dữ liệu linh kiện toàn diện nhất."
+      },
+      "open": {
+        "title": "Mã nguồn mở",
+        "description": "Hoàn toàn minh bạch và sẵn có miễn phí theo Giấy phép MIT."
+      }
+    },
+    "contribute": {
+      "title": "Tham gia",
+      "description": "ElectroVault phát triển nhờ vào cộng đồng của nó. Dưới đây là một số cách bạn có thể đóng góp:",
+      "dataEntry": "Thêm hoặc chỉnh sửa linh kiện",
+      "datasheets": "Tải lên tài liệu kỹ thuật",
+      "code": "Đóng góp mã trên GitHub",
+      "feedback": "Phản hồi và đề xuất cải tiến"
+    }
+  },
+  "help": {
+    "title": "Trợ giúp & Câu hỏi thường gặp",
+    "subtitle": "Các câu hỏi thường gặp",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Duyệt linh kiện",
+        "description": "Tìm linh kiện trong cơ sở dữ liệu của chúng tôi"
+      },
+      "createAccount": {
+        "title": "Tạo tài khoản",
+        "description": "Đóng góp vào cơ sở dữ liệu"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Tài liệu và vấn đề"
+      }
+    },
+    "contactCta": {
+      "title": "Câu hỏi của bạn chưa được trả lời?",
+      "description": "Vui lòng liên hệ trực tiếp với chúng tôi.",
+      "button": "Liên hệ"
+    },
+    "general": {
+      "title": "Tổng quan",
+      "what": {
+        "question": "ElectroVault là gì?",
+        "answer": "ElectroVault là cơ sở dữ liệu miễn phí, do cộng đồng duy trì cho các linh kiện điện và điện tử. Chúng tôi tài liệu hóa các linh kiện từ đèn điện tử lịch sử đến IC hiện đại với siêu dữ liệu toàn diện, tài liệu kỹ thuật và thông số kỹ thuật."
+      },
+      "free": {
+        "question": "ElectroVault có miễn phí không?",
+        "answer": "Có, ElectroVault hoàn toàn miễn phí và mã nguồn mở. Cả việc sử dụng và mã nguồn đều có sẵn miễn phí."
+      }
+    },
+    "search": {
+      "title": "Tìm kiếm",
+      "how": {
+        "question": "Làm cách nào để tìm một linh kiện cụ thể?",
+        "answer": "Sử dụng chức năng tìm kiếm ở góc trên bên phải hoặc điều hướng qua các danh mục. Bạn có thể tìm kiếm theo số phần, nhà sản xuất hoặc thuộc tính."
+      },
+      "filters": {
+        "question": "Những bộ lọc nào có sẵn?",
+        "answer": "Bạn có thể lọc theo danh mục, nhà sản xuất, trạng thái (hoạt động/lỗi thời), loại vỏ và nhiều tham số kỹ thuật khác."
+      }
+    },
+    "contribute": {
+      "title": "Đóng góp",
+      "account": {
+        "question": "Tôi có cần tài khoản để đóng góp không?",
+        "answer": "Có, để thêm hoặc chỉnh sửa linh kiện, bạn cần một tài khoản miễn phí. Điều này giúp chúng tôi đảm bảo chất lượng dữ liệu."
+      },
+      "how": {
+        "question": "Làm cách nào để thêm một linh kiện?",
+        "answer": "Sau khi đăng nhập, bạn có thể tạo linh kiện mới qua nút 'Linh kiện mới' trong tổng quan linh kiện. Người kiểm duyệt sẽ xem xét đóng góp của bạn trước khi xuất bản."
+      },
+      "quality": {
+        "question": "Chất lượng dữ liệu được đảm bảo như thế nào?",
+        "answer": "Tất cả các đóng góp đều được xem xét bởi các người kiểm duyệt có kinh nghiệm. Ngoài ra, người dùng đã đăng ký có thể đề xuất sửa chữa."
+      }
+    }
+  },
+  "contact": {
+    "title": "Liên hệ",
+    "subtitle": "Bạn có câu hỏi hoặc đề xuất?",
+    "form": {
+      "heading": "Gửi tin nhắn",
+      "name": "Tên",
+      "email": "Email",
+      "subject": "Chủ đề",
+      "message": "Tin nhắn",
+      "namePlaceholder": "Nguyễn Văn A",
+      "emailPlaceholder": "nguyen@example.com",
+      "subjectPlaceholder": "Chủ đề tin nhắn của bạn",
+      "messagePlaceholder": "Tin nhắn của bạn...",
+      "demoNote": "Lưu ý: Biểu mẫu liên hệ hiện tại là bản demo. Tích hợp backend sẽ được thực hiện trong giai đoạn sau. Đối với các yêu cầu quan trọng, vui lòng sử dụng GitHub hoặc địa chỉ email được cung cấp.",
+      "send": "Gửi tin nhắn",
+      "sending": "Đang gửi...",
+      "success": "Tin nhắn đã được gửi thành công!",
+      "error": "Lỗi khi gửi tin nhắn"
+    },
+    "alternatives": {
+      "title": "Tùy chọn liên hệ khác",
+      "githubTitle": "GitHub Issues",
+      "github": "Tạo vấn đề trên GitHub",
+      "emailTitle": "Email",
+      "email": "Gửi email cho chúng tôi"
+    },
+    "responseTime": {
+      "title": "Thời gian phản hồi",
+      "description": "Vì ElectroVault là dự án cộng đồng, các yêu cầu được xử lý bởi tình nguyện viên. Vui lòng kiên nhẫn - chúng tôi thường phản hồi trong vòng 48 giờ."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Hỗ trợ cộng đồng",
+        "description": "Sử dụng GitHub Discussions cho các câu hỏi chung"
+      },
+      "bugReports": {
+        "title": "Báo cáo lỗi",
+        "description": "Báo cáo vấn đề kỹ thuật trực tiếp trên GitHub"
+      },
+      "partnerships": {
+        "title": "Yêu cầu đối tác",
+        "description": "Sử dụng biểu mẫu cho các yêu cầu kinh doanh"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Thông tin xuất bản",
+    "responsible": "Chịu trách nhiệm về nội dung",
+    "contact": "Liên hệ",
+    "disclaimer": {
+      "title": "Tuyên bố miễn trừ trách nhiệm",
+      "content": "Mặc dù kiểm soát nội dung cẩn thận, chúng tôi không chịu trách nhiệm về nội dung của các liên kết bên ngoài. Các nhà điều hành của các trang được liên kết chịu trách nhiệm hoàn toàn về nội dung của họ.",
+      "liability": "Nội dung của các trang này được tạo ra với sự chăm sóc tối đa. Tuy nhiên, chúng tôi không thể đảm bảo tính chính xác, đầy đủ và kịp thời của nội dung."
+    },
+    "opensource": {
+      "title": "Mã nguồn mở",
+      "description": "ElectroVault là một dự án mã nguồn mở theo Giấy phép MIT. Mã nguồn có sẵn trên GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Chính sách bảo mật",
+    "lastUpdated": "Cập nhật lần cuối",
+    "intro": "Chúng tôi rất coi trọng việc bảo vệ dữ liệu cá nhân của bạn. Chính sách bảo mật này thông báo cho bạn về bản chất, phạm vi và mục đích của việc xử lý dữ liệu cá nhân.",
+    "responsible": {
+      "title": "Bên kiểm soát dữ liệu",
+      "description": "Chịu trách nhiệm xử lý dữ liệu trên trang web này là:"
+    },
+    "collection": {
+      "title": "Thu thập và lưu trữ dữ liệu cá nhân",
+      "description": "Khi bạn truy cập trang web của chúng tôi, thông tin được tự động thu thập mà trình duyệt của bạn truyền:",
+      "data": "Địa chỉ IP, ngày và giờ truy cập, loại và phiên bản trình duyệt, hệ điều hành được sử dụng, URL giới thiệu"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "description": "Trang web của chúng tôi sử dụng cookies. Cookies là các tệp văn bản nhỏ được lưu trữ trên thiết bị của bạn.",
+      "essential": "Cookies cần thiết về mặt kỹ thuật cho xác thực và quản lý phiên",
+      "functional": "Cookies chức năng để cải thiện trải nghiệm người dùng"
+    },
+    "auth": {
+      "title": "Xác thực",
+      "description": "Chúng tôi sử dụng Keycloak để đăng ký và đăng nhập. Dữ liệu sau được lưu trữ:",
+      "data": "Tên người dùng, địa chỉ email, ảnh hồ sơ (tùy chọn), vai trò và quyền"
+    },
+    "rights": {
+      "title": "Quyền của bạn",
+      "description": "Bạn có các quyền sau liên quan đến dữ liệu cá nhân của mình:",
+      "access": "Quyền truy cập",
+      "correction": "Quyền sửa chữa",
+      "deletion": "Quyền xóa",
+      "restriction": "Quyền hạn chế xử lý",
+      "portability": "Quyền chuyển dữ liệu",
+      "objection": "Quyền phản đối"
+    },
+    "contact": {
+      "title": "Liên hệ cho câu hỏi về quyền riêng tư",
+      "description": "Nếu bạn có câu hỏi về quyền riêng tư, bạn có thể liên hệ với chúng tôi bất cứ lúc nào."
+    }
+  }
+}

@@ -1,0 +1,921 @@
+{
+  "common": {
+    "appName": "ElectroVault",
+    "loading": "Načítání...",
+    "error": "Chyba",
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "delete": "Smazat",
+    "edit": "Upravit",
+    "create": "Vytvořit",
+    "search": "Hledat",
+    "back": "Zpět",
+    "next": "Další",
+    "previous": "Předchozí",
+    "noResults": "Nebyly nalezeny žádné výsledky",
+    "all": "Vše",
+    "yes": "Ano",
+    "no": "Ne",
+    "actions": {
+      "details": "Podrobnosti"
+    }
+  },
+  "locale": {
+    "switch": "Změnit jazyk",
+    "current": "Aktuální jazyk",
+    "languages": {
+      "en": "Angličtina",
+      "de": "Němčina",
+      "fr": "Francouzština",
+      "es": "Španělština",
+      "zh": "Čínština",
+      "ja": "Japonština",
+      "ko": "Korejština",
+      "it": "Italština"
+    }
+  },
+  "nav": {
+    "home": "Domů",
+    "components": "Komponenty",
+    "categories": "Kategorie",
+    "manufacturers": "Výrobci",
+    "packages": "Pouzdra",
+    "search": "Hledat",
+    "admin": "Administrace",
+    "moderation": "Moderování",
+    "myElectroVault": "Můj ElectroVault",
+    "login": "Přihlásit se",
+    "logout": "Odhlásit se",
+    "profile": "Profil"
+  },
+  "home": {
+    "title": "ElectroVault",
+    "subtitle": "Komunitou spravovaná databáze elektronických součástek",
+    "searchPlaceholder": "Hledat komponenty...",
+    "featuredCategories": "Doporučené kategorie",
+    "recentComponents": "Nedávné komponenty",
+    "stats": {
+      "components": "Komponenty",
+      "manufacturers": "Výrobci",
+      "categories": "Kategorie",
+      "users": "Uživatelé"
+    }
+  },
+  "Home": {
+    "hero": {
+      "title": "ElectroVault",
+      "subtitle": "Komunitou spravovaná databáze elektronických součástek"
+    },
+    "stats": {
+      "components": "Komponenty",
+      "manufacturers": "Výrobci",
+      "users": "Uživatelé"
+    }
+  },
+  "packages": {
+    "title": "Pouzdra",
+    "totalCount": "{count} pouzder v databázi",
+    "addNew": "Nové pouzdro",
+    "searchPlaceholder": "Hledat podle názvu nebo slug...",
+    "filterPlaceholder": "Typ pouzdra",
+    "filterAll": "Všechny typy",
+    "mountingType": {
+      "THT": "THT",
+      "SMD": "SMD",
+      "RADIAL": "Radiální",
+      "AXIAL": "Axiální",
+      "CHASSIS": "Šasi",
+      "OTHER": "Ostatní"
+    },
+    "table": {
+      "name": "Název",
+      "type": "Typ",
+      "pinCount": "Počet pinů",
+      "dimensions": "Rozměry (D x Š x V mm)",
+      "pitch": "Rozteč",
+      "actions": "Akce"
+    },
+    "loading": "Načítání...",
+    "noResults": "Nebyla nalezena žádná pouzdra",
+    "noPackagesFound": "Nebyla nalezena žádná pouzdra",
+    "createFirst": "Vytvořit první pouzdro",
+    "error": "Chyba",
+    "success": "Úspěch",
+    "loadError": "Nepodařilo se načíst pouzdra.",
+    "deleteSuccess": "Pouzdro bylo smazáno.",
+    "deleteError": "Nepodařilo se smazat pouzdro.",
+    "deleteDialog": {
+      "title": "Smazat pouzdro?",
+      "description": "Opravdu chcete smazat pouzdro \"{name}\"? Tuto akci nelze vrátit zpět."
+    }
+  },
+  "components": {
+    "title": "Komponenty",
+    "description": "Procházejte naši rozsáhlou databázi elektronických součástek",
+    "filters": {
+      "category": "Kategorie",
+      "manufacturer": "Výrobce",
+      "status": "Stav",
+      "mountingType": "Typ montáže"
+    },
+    "detail": {
+      "overview": "Přehled",
+      "specifications": "Specifikace",
+      "datasheets": "Technické listy",
+      "parts": "Součástky výrobců",
+      "history": "Historie verzí",
+      "backToOverview": "Zpět na přehled",
+      "category": "Kategorie",
+      "statistics": "Statistiky",
+      "manufacturerVariants": "Varianty výrobců",
+      "activeVariants": "Aktivní varianty",
+      "additionalProperties": "Další vlastnosti",
+      "furtherProperties": "Další vlastnosti této komponenty",
+      "validForAllVariants": "Technické specifikace (platné pro všechny varianty)",
+      "variantCount": "{count} varianta výrobce",
+      "variantCountPlural": "{count} variant výrobců",
+      "noVariantsAvailable": "Žádné varianty výrobců k dispozici",
+      "noVariantsForComponent": "Pro tuto komponentu nejsou k dispozici žádné varianty výrobců.",
+      "noAttributesAvailable": "Žádné atributy k dispozici.",
+      "manufacturer": "Výrobce",
+      "orderingCode": "Objednací číslo",
+      "details": "Podrobnosti",
+      "allInCategory": "Vše v kategorii",
+      "status": "Stav",
+      "moreAttributes": "+{count} dalších"
+    },
+    "status": {
+      "DRAFT": "Koncept",
+      "PENDING": "Čeká na schválení",
+      "PUBLISHED": "Publikováno",
+      "ARCHIVED": "Archivováno"
+    },
+    "lifecycle": {
+      "ACTIVE": "Aktivní",
+      "NRND": "Nedoporučeno pro nové návrhy",
+      "EOL": "Ukončení výroby",
+      "OBSOLETE": "Zastaralé"
+    }
+  },
+  "categories": {
+    "title": "Kategorie",
+    "browseAll": "Procházet všechny kategorie",
+    "subcategories": "Podkategorie",
+    "componentsInCategory": "Komponenty v této kategorii"
+  },
+  "manufacturers": {
+    "title": "Výrobci",
+    "status": {
+      "ACTIVE": "Aktivní",
+      "ACQUIRED": "Získáno",
+      "DEFUNCT": "Zaniklý"
+    }
+  },
+  "auth": {
+    "login": "Přihlásit se",
+    "logout": "Odhlásit se",
+    "loginWith": "Přihlásit se přes {provider}",
+    "welcome": "Vítejte zpět",
+    "signInToContinue": "Pro pokračování se přihlaste",
+    "signIn": {
+      "title": "Přihlášení",
+      "description": "Přihlaste se ke svému účtu",
+      "button": "Přihlásit se přes Keycloak",
+      "loading": "Přihlašování...",
+      "hint": "Budete přesměrováni na Keycloak"
+    },
+    "signOut": {
+      "title": "Odhlášení",
+      "description": "Opravdu se chcete odhlásit?",
+      "button": "Odhlásit se",
+      "loading": "Odhlašování...",
+      "cancel": "Zrušit"
+    },
+    "error": {
+      "title": "Chyba autentizace",
+      "description": "Při přihlašování došlo k chybě",
+      "tryAgain": "Zkusit znovu",
+      "backHome": "Zpět na domovskou stránku"
+    },
+    "errors": {
+      "configuration": "Chyba konfigurace serveru. Kontaktujte prosím správce.",
+      "accessDenied": "Přístup odepřen. Nemáte dostatečná oprávnění.",
+      "verification": "Platnost ověřovacího odkazu vypršela nebo již byl použit.",
+      "oauthSignin": "Chyba při zahájení OAuth přihlášení.",
+      "oauthCallback": "Chyba při zpracování OAuth odpovědi.",
+      "oauthCreateAccount": "Chyba při vytváření uživatelského účtu.",
+      "emailCreateAccount": "Chyba při vytváření emailového účtu.",
+      "callback": "Chyba při zpracování odpovědi.",
+      "oauthAccountNotLinked": "Tento email je již přiřazen k jinému účtu.",
+      "sessionRequired": "Pro přístup k této stránce se prosím přihlaste.",
+      "default": "Došlo k neznámé chybě. Zkuste to prosím znovu."
+    }
+  },
+  "admin": {
+    "dashboard": "Přehled",
+    "sidebar": {
+      "dashboard": "Přehled",
+      "moderation": "Moderování",
+      "moderationDescription": "Fronta ke schválení",
+      "users": "Uživatelé",
+      "backToHome": "Na hlavní stránku",
+      "user": "Uživatel",
+      "logout": "Odhlásit se"
+    },
+    "components": {
+      "title": "Správa komponent",
+      "new": "Nová komponenta",
+      "edit": "Upravit komponentu"
+    },
+    "moderation": {
+      "title": "Moderování",
+      "pendingReviews": "Čekající kontroly",
+      "approve": "Schválit",
+      "reject": "Zamítnout",
+      "batchApproval": "Hromadné schvalování",
+      "confirmApprove": "Potvrdit schválení",
+      "confirmApproveDescription": "Opravdu chcete schválit tuto {type}? Bude poté veřejně viditelná.",
+      "confirmBatchApproval": "Chcete schválit {count} položek? Tuto akci nelze vrátit zpět.",
+      "rejectWithReason": "Zamítnout s důvodem",
+      "rejectDescription": "Prosím uveďte důvod zamítnutí. Ten bude zobrazen tvůrci.",
+      "rejectReasonLabel": "Důvod",
+      "rejectReasonPlaceholder": "Proč je tato položka zamítnuta?",
+      "rejectReasonHelp": "Výstižný důvod pomůže tvůrci pochopit zamítnutí.",
+      "batchApproveButton": "Schválit {count}",
+      "typeComponent": "Komponenta",
+      "typePart": "Part",
+      "draft": "Koncept"
+    },
+    "users": {
+      "title": "Uživatelé",
+      "manage": "Spravovat uživatele"
+    },
+    "myDashboard": {
+      "title": "Můj přehled",
+      "stats": {
+        "componentsTotal": "Celkem komponent",
+        "componentsTotalDesc": "Komponenty, které jste vytvořili",
+        "variants": "Varianty",
+        "variantsDesc": "Varianty výrobců",
+        "drafts": "Koncepty",
+        "draftsDesc": "Ještě neodesláno",
+        "pending": "V kontrole",
+        "pendingDesc": "Čeká na moderování",
+        "published": "Publikováno",
+        "archived": "Archivováno"
+      },
+      "draftsSection": {
+        "title": "Moje koncepty",
+        "description": "Koncepty jsou soukromé mezipřeklady a nejsou ještě odeslány k moderování.",
+        "newComponent": "Nová komponenta",
+        "empty": "Žádné koncepty k dispozici. Vytvořte novou komponentu a uložte ji jako koncept.",
+        "draftBadge": "Koncept",
+        "noName": "[Bez názvu]"
+      },
+      "activitySection": {
+        "title": "Historie aktivit",
+        "description": "Vaše poslední akce v ElectroVault",
+        "empty": "Žádné aktivity zatím nebyly zaznamenány."
+      },
+      "entities": {
+        "COMPONENT": "Komponenta",
+        "PART": "Varianta",
+        "MANUFACTURER": "Výrobce",
+        "CATEGORY": "Kategorie",
+        "PACKAGE": "Pouzdro"
+      },
+      "error": "Přehled se nepodařilo načíst. Zkuste to prosím znovu."
+    },
+    "dialogs": {
+      "attribute": {
+        "title": "Nový atribut",
+        "titleEdit": "Upravit atribut",
+        "description": "Definice atributu pro komponenty"
+      },
+      "category": {
+        "title": "Nová kategorie",
+        "titleEdit": "Upravit kategorii",
+        "description": "Správa informací o kategorii a atributů",
+        "saveFirst": "Nejprve uložte kategorii pro přidání atributů"
+      },
+      "component": {
+        "title": "Nová komponenta",
+        "titleEdit": "Upravit komponentu",
+        "description": "Vytvořit novou komponentu - po uložení můžete přidat varianty výrobců",
+        "descriptionEdit": "Správa informací o komponentě a variantách výrobců",
+        "saveFirstPinMapping": "Nejprve uložte komponentu pro úpravu mapování pinů",
+        "saveFirstParts": "Nejprve uložte komponentu pro přidání variant výrobců",
+        "saveFirstRelations": "Nejprve uložte komponentu pro přidání vztahů",
+        "createdWithVariants": "Komponenta byla vytvořena. Nyní můžete přidat varianty výrobců",
+        "noPartsWarning": "Tato komponenta nemá žádné varianty výrobců. Alespoň jedna varianta je vyžadována"
+      },
+      "manufacturer": {
+        "title": "Nový výrobce",
+        "titleEdit": "Upravit výrobce",
+        "description": "Správa informací o výrobci"
+      },
+      "part": {
+        "title": "Nová varianta",
+        "titleEdit": "Upravit variantu",
+        "description": "Vytvořit novou konkrétní variantu výrobce komponenty",
+        "descriptionEdit": "Změnit informace o variantě výrobce",
+        "saveFirstFiles": "Nejprve uložte variantu pro nahrání souborů"
+      },
+      "package": {
+        "title": "Nové pouzdro",
+        "titleEdit": "Upravit pouzdro",
+        "description": "Informace o pouzdru/otisku"
+      },
+      "delete": {
+        "title": "Potvrdit smazání",
+        "message": "Opravdu chcete smazat tuto položku?",
+        "messageFile": "Opravdu chcete smazat tento soubor?",
+        "messagePin": "Opravdu chcete smazat tento pin?",
+        "message3dModel": "Opravdu chcete smazat tento 3D model?",
+        "messageRelation": "Opravdu chcete smazat tento vztah?"
+      }
+    },
+    "buttons": {
+      "saving": "Ukládání...",
+      "saveAsDraft": "Uložit jako koncept",
+      "update": "Aktualizovat",
+      "addPin": "Přidat pin",
+      "addRelation": "Přidat vztah"
+    },
+    "messages": {
+      "success": "Úspěch",
+      "error": "Chyba",
+      "warning": "Varování",
+      "attribute": {
+        "created": "Atribut byl vytvořen",
+        "updated": "Atribut byl aktualizován",
+        "deleted": "Atribut byl smazán",
+        "loadFailed": "Nepodařilo se načíst atributy",
+        "saveFailed": "Nepodařilo se uložit atribut",
+        "deleteFailed": "Nepodařilo se smazat atribut"
+      },
+      "category": {
+        "created": "Kategorie byla vytvořena",
+        "updated": "Kategorie byla aktualizována",
+        "deleted": "Kategorie byla smazána",
+        "loadFailed": "Nepodařilo se načíst kategorie",
+        "saveFailed": "Nepodařilo se uložit kategorii",
+        "deleteFailed": "Nepodařilo se smazat kategorii"
+      },
+      "component": {
+        "created": "Komponenta byla vytvořena",
+        "updated": "Komponenta byla aktualizována",
+        "deleted": "Komponenta byla smazána",
+        "loadFailed": "Nepodařilo se načíst komponenty",
+        "saveFailed": "Nepodařilo se uložit komponentu",
+        "deleteFailed": "Nepodařilo se smazat komponentu"
+      },
+      "manufacturer": {
+        "created": "Výrobce byl vytvořen",
+        "updated": "Výrobce byl aktualizován",
+        "deleted": "Výrobce byl smazán",
+        "loadFailed": "Nepodařilo se načíst výrobce",
+        "saveFailed": "Nepodařilo se uložit výrobce",
+        "deleteFailed": "Nepodařilo se smazat výrobce",
+        "logoUploaded": "Logo bylo nahráno",
+        "logoUploadFailed": "Nepodařilo se nahrát logo"
+      },
+      "part": {
+        "created": "Varianta byla vytvořena",
+        "updated": "Varianta byla aktualizována",
+        "deleted": "Varianta byla smazána",
+        "loadFailed": "Nepodařilo se načíst varianty",
+        "saveFailed": "Nepodařilo se uložit variantu",
+        "deleteFailed": "Nepodařilo se smazat variantu"
+      },
+      "package": {
+        "created": "Pouzdro bylo vytvořeno",
+        "updated": "Pouzdro bylo aktualizováno",
+        "deleted": "Pouzdro bylo smazáno",
+        "loadFailed": "Nepodařilo se načíst pouzdra",
+        "saveFailed": "Nepodařilo se uložit pouzdro",
+        "deleteFailed": "Nepodařilo se smazat pouzdro"
+      },
+      "file": {
+        "uploaded": "Soubor byl nahrán",
+        "deleted": "Soubor byl smazán",
+        "uploadFailed": "Nepodařilo se nahrát soubor",
+        "deleteFailed": "Nepodařilo se smazat soubor",
+        "loadFailed": "Nepodařilo se načíst soubory",
+        "downloadUrlFailed": "Nepodařilo se vygenerovat URL pro stažení"
+      },
+      "pin": {
+        "created": "Pin byl přidán",
+        "updated": "Pin byl aktualizován",
+        "deleted": "Pin byl smazán",
+        "createFailed": "Nepodařilo se vytvořit pin",
+        "loadFailed": "Nepodařilo se načíst piny",
+        "updateFailed": "Nepodařilo se aktualizovat pin",
+        "deleteFailed": "Nepodařilo se smazat pin"
+      },
+      "relation": {
+        "created": "Vztah byl přidán",
+        "deleted": "Vztah byl smazán",
+        "createFailed": "Nepodařilo se vytvořit vztah",
+        "deleteFailed": "Nepodařilo se smazat vztah"
+      }
+    },
+    "pinMapping": {
+      "title": "Mapování pinů",
+      "addPin": "Přidat pin",
+      "newPin": "Přidat nový pin",
+      "pinNumber": "Číslo pinu (např. 1, VCC)",
+      "pinName": "Název pinu",
+      "selectType": "Vybrat typ pinu",
+      "noDescription": "Bez popisu",
+      "noType": "Bez typu",
+      "loading": "Načítání pinů...",
+      "pinsCount": "{count} pinů",
+      "tabList": "Seznam pinů",
+      "tabBulkImport": "Hromadný import",
+      "noPins": "Nejsou definovány žádné piny. Přidejte piny jednotlivě nebo použijte hromadný import.",
+      "columnPinNumber": "Č. pinu",
+      "columnName": "Název",
+      "columnType": "Typ",
+      "columnFunction": "Funkce (CS)",
+      "columnActions": "Akce",
+      "functionPlaceholder": "např. Napájecí napětí",
+      "deleteTitle": "Smazat pin?",
+      "deleteMessage": "Opravdu chcete smazat pin {pinNumber} ({pinName})? Tuto akci nelze vrátit zpět.",
+      "reorderSuccess": "Pořadí pinů bylo aktualizováno",
+      "reorderFailed": "Nepodařilo se změnit pořadí",
+      "bulkImport": {
+        "formatLabel": "Formát:",
+        "exampleLabel": "Příklad:",
+        "typeHint": "pinTyp je volitelný. Dostupné typy: POWER, GROUND, INPUT, OUTPUT, BIDIRECTIONAL, NC, ANALOG, DIGITAL, CLOCK, OTHER",
+        "placeholder": "Zadejte piny ve formátu CSV...",
+        "importButton": "Importovat piny",
+        "noPinsFound": "Nebyla nalezena žádná platná data pinů.",
+        "success": "Bylo importováno {count} pinů.",
+        "failed": "Hromadný import selhal."
+      }
+    },
+    "files": {
+      "uploadImage": "Nahrát obrázek produktu",
+      "uploadDatasheet": "Nahrát technický list",
+      "uploadDocument": "Nahrát dokument",
+      "selectLanguage": "Vybrat jazyk",
+      "noFiles": "Žádné soubory k dispozici",
+      "confirmDelete": "Smazat soubor?",
+      "productImage": "Obrázek produktu",
+      "productImageDescription": "Náhledový obrázek pro tuto variantu výrobce",
+      "addImage": "Obrázek",
+      "imageDescription": "JPEG, PNG nebo WebP (max. 10 MB)",
+      "noImageUploaded": "Zatím nebyl nahrán žádný obrázek",
+      "datasheets": "Technické listy",
+      "datasheetsDescription": "PDF technické listy pro tuto variantu výrobce",
+      "addDatasheet": "Technický list",
+      "languagesRequired": "Jazyky technického listu",
+      "requiredField": "*",
+      "selectAtLeastOneLanguage": "Musí být vybrán alespoň jeden jazyk",
+      "datasheetFileDescription": "PDF soubor technického listu výrobce",
+      "noDatasheets": "Zatím nebyly nahrány žádné technické listy",
+      "otherFiles": "Ostatní soubory",
+      "otherFilesDescription": "Doplňkové dokumenty, aplikační poznámky atd.",
+      "addDocument": "Dokument",
+      "languagesOptional": "Jazyky (volitelné)",
+      "anyFileDescription": "Libovolné soubory (PDF, TXT, ZIP atd.)",
+      "noDocuments": "Zatím nebyly nahrány žádné dokumenty",
+      "fileName": "Soubor",
+      "fileSize": "Velikost",
+      "languages": "Jazyky",
+      "actions": "Akce",
+      "imageCount": "{count} obrázek",
+      "fileCount": "{count} soubor{plural}",
+      "datasheetCount": "{count} technický list{plural}",
+      "imageUploaded": "Obrázek byl nahrán",
+      "imageRemoved": "Obrázek byl odstraněn"
+    },
+    "model3d": {
+      "title": "3D modely",
+      "confirmDelete": "Smazat 3D model?",
+      "upload": "Nahrát 3D model",
+      "noModels": "Žádné 3D modely k dispozici"
+    },
+    "lists": {
+      "searchPlaceholder": "Hledat...",
+      "searchByName": "Hledat podle názvu nebo slug...",
+      "searchByNameCage": "Hledat podle názvu, slug nebo CAGE kódu...",
+      "noResults": "Nebyly nalezeny žádné výsledky",
+      "createFirst": "Vytvořit první položku",
+      "noPackagesFound": "Nebyla nalezena žádná pouzdra",
+      "createFirstPackage": "Vytvořit první pouzdro"
+    },
+    "filters": {
+      "allStatus": "Všechny stavy",
+      "myDrafts": "Moje koncepty"
+    },
+    "manufacturer": {
+      "title": "Výrobci",
+      "count": "{count} výrobců v databázi",
+      "create": "Nový výrobce",
+      "createFirst": "Vytvořit prvního výrobce",
+      "deleteTitle": "Smazat výrobce?",
+      "deleteDescription": "Opravdu chcete smazat výrobce \"{name}\"? Tuto akci nelze vrátit zpět.",
+      "status": {
+        "active": "Aktivní",
+        "acquired": "Získáno",
+        "defunct": "Neaktivní"
+      }
+    },
+    "form": {
+      "package": "Pouzdro",
+      "selectPackage": "Vybrat pouzdro",
+      "noPackage": "Bez pouzdra",
+      "editIn": "Upravit v:",
+      "searchLanguage": "Hledat jazyk...",
+      "noLanguageFound": "Nebyl nalezen žádný jazyk",
+      "original": "Originál",
+      "backToOverview": "Zpět na přehled",
+      "name": "Název",
+      "nameDescription": "Název v češtině a/nebo angličtině. Povinné pole, pokud kategorie nemá atributy štítku",
+      "namePlaceholder": "Název komponenty",
+      "series": "Série",
+      "seriesDescription": "Volitelná série nebo rodina součástek",
+      "seriesPlaceholder": "např. 74HC, ATmega",
+      "packageDescription": "Fyzické pouzdro (např. DIP-8, SOIC-8)",
+      "shortDescription": "Stručný popis",
+      "shortDescriptionDescription": "Jedna stručná věta popisující komponentu",
+      "shortDescriptionPlaceholder": "Stručný popis",
+      "fullDescription": "Podrobný popis",
+      "fullDescriptionPlaceholder": "Podrobný popis",
+      "attributesDescription": "Technické atributy založené na vybrané kategorii",
+      "selectCategoryFirst": "Prosím vyberte nejprve kategorii v záložce \"Základní údaje\"",
+      "pinMappingDescription": "Definujte rozložení pinů pro tuto komponentu. Mapování pinů platí pro všechny varianty výrobců",
+      "partsDescription": "Varianty specifické pro výrobce této komponenty",
+      "newVariant": "Nová varianta",
+      "close": "Zavřít",
+      "parentCategory": "Nadřazená kategorie",
+      "parentCategoryPlaceholder": "Žádná (kořenová kategorie)",
+      "parentCategoryDescription": "Ponechat prázdné pro hlavní kategorii (úroveň 0)",
+      "categoryName": "Název kategorie",
+      "categoryDescription": "Popis",
+      "categoryDescriptionPlaceholder": "Popis kategorie",
+      "sortOrder": "Pořadí řazení",
+      "sortOrderDescription": "Nižší hodnoty = výše",
+      "status": "Stav",
+      "active": "Aktivní",
+      "inactive": "Neaktivní",
+      "icon": "Ikona",
+      "iconUploadDescription": "Nahrát ikonu kategorie. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "iconUploadHint": "Klikněte nebo přetáhněte soubor sem.",
+      "iconMaxSize": "Ikona může mít maximálně 5 MB.",
+      "iconAllowedTypes": "Povoleny pouze JPEG, PNG, WebP nebo SVG.",
+      "iconUploaded": "Ikona byla nahrána.",
+      "iconUploadFailed": "Nepodařilo se nahrát ikonu.",
+      "categoryCreatedIconFailed": "Kategorie byla vytvořena, ale nahrání ikony selhalo.",
+      "loading": "Načítání...",
+      "newAttribute": "Nový atribut",
+      "ownAttributes": "Vlastní atributy ({count})",
+      "noOwnAttributes": "Nejsou definovány žádné vlastní atributy.",
+      "inheritedAttributes": "Zděděné atributy ({count})",
+      "inheritedAttributesDescription": "Zděděné atributy lze upravovat pouze v jejich původní kategorii.",
+      "attributesInherited": "Atributy této kategorie (budou zděděny podkategoriemi)",
+      "cageCode": "CAGE kód",
+      "cageCodePlaceholder": "01295",
+      "cageCodeHint": "5místný kód",
+      "country": "Země",
+      "countryPlaceholder": "US",
+      "countryHint": "ISO 3166-1 alpha-2",
+      "website": "Web",
+      "websitePlaceholder": "https://www.ti.com",
+      "logo": "Logo",
+      "logoUploadHint": "Nahrát logo výrobce. Max. 5 MB, JPEG/PNG/WebP/SVG.",
+      "logoClickOrDrag": "Klikněte nebo přetáhněte soubor sem.",
+      "statusActive": "Aktivní",
+      "statusAcquired": "Získáno",
+      "statusDefunct": "Neaktivní",
+      "foundedYear": "Rok založení",
+      "foundedYearPlaceholder": "1930",
+      "defunctYear": "Rok zániku",
+      "defunctYearPlaceholder": "2020",
+      "description": "Popis",
+      "descriptionPlaceholder": "Popis",
+      "logoMaxSize": "Logo může mít maximálně 5 MB.",
+      "logoAllowedTypes": "Povoleny pouze JPEG, PNG, WebP nebo SVG.",
+      "createdAsDraft": "Výrobce byl uložen jako koncept.",
+      "manufacturerCreatedLogoFailed": "Výrobce byl vytvořen, ale nahrání loga selhalo.",
+      "save": "Uložit"
+    },
+    "audit": {
+      "created": "vytvořeno",
+      "updated": "aktualizováno",
+      "deleted": "smazáno",
+      "restored": "obnoveno",
+      "approved": "schváleno",
+      "rejected": "zamítnuto"
+    },
+    "tabs": {
+      "basicInfo": "Základní informace",
+      "attributes": "Atributy",
+      "pinMapping": "Mapování pinů",
+      "parts": "Varianty výrobců",
+      "relations": "Vztahy",
+      "files": "Soubory",
+      "details": "Základní údaje",
+      "pins": "Mapování pinů",
+      "models": "3D modely"
+    },
+    "parts": {
+      "mpn": "MPN",
+      "manufacturer": "Výrobce",
+      "status": "Stav",
+      "lifecycle": "Životní cyklus",
+      "actions": "Akce",
+      "variantCount": "{count} varianta",
+      "variantCountPlural": "{count} variant",
+      "activeCount": "{count} aktivní",
+      "obsoleteCount": "{count} zastaralých",
+      "unknown": "Neznámý"
+    },
+    "packageForm": {
+      "namePlaceholder": "SOIC-8",
+      "nameDescription": "Jedinečný název pouzdra",
+      "mountingType": "Typ pouzdra",
+      "mountingTypes": {
+        "SMD": "SMD - Surface Mount Device",
+        "THT": "THT - Through-Hole Technology",
+        "RADIAL": "Radiální - Radiálně zapojený",
+        "AXIAL": "Axiální - Axiálně zapojený",
+        "CHASSIS": "Šasi - Montáž na šasi",
+        "OTHER": "Ostatní"
+      },
+      "pinCount": "Počet pinů",
+      "pinCountPlaceholder": "8",
+      "lengthMm": "Délka (mm)",
+      "lengthPlaceholder": "5.0",
+      "widthMm": "Šířka (mm)",
+      "widthPlaceholder": "4.0",
+      "heightMm": "Výška (mm)",
+      "heightPlaceholder": "1.5",
+      "pitchMm": "Rozteč (mm)",
+      "pitchPlaceholder": "1.27",
+      "pitchDescription": "Vzdálenost mezi piny",
+      "jedecStandard": "JEDEC standard",
+      "jedecPlaceholder": "MS-012",
+      "eiaStandard": "EIA standard",
+      "eiaPlaceholder": "0805",
+      "drawingUrl": "URL výkresu",
+      "drawingUrlPlaceholder": "https://example.com/drawing.pdf",
+      "drawingUrlDescription": "Odkaz na technický výkres nebo technický list",
+      "description": "Popis",
+      "descriptionPlaceholder": "Další informace o pouzdru...",
+      "saveFirstModels": "Nejprve uložte pouzdro pro nahrání 3D modelů.",
+      "modelsDescription": "3D modely pro toto pouzdro (STEP, STL, 3MF, OBJ atd.)"
+    },
+    "partForm": {
+      "coreComponent": "Generická komponenta",
+      "coreComponentDesc": "Komponenta nezávislá na výrobci (např. 555 Timer)",
+      "manufacturer": "Výrobce",
+      "manufacturerDesc": "Výrobce této konkrétní varianty (např. Texas Instruments)",
+      "manufacturerPlaceholder": "Vybrat výrobce",
+      "mpn": "MPN (Manufacturer Part Number)",
+      "mpnPlaceholder": "např. NE555P",
+      "mpnDesc": "Jedinečné číslo dílu výrobce",
+      "orderingCode": "Objednací číslo",
+      "orderingCodePlaceholder": "Volitelné",
+      "orderingCodeDesc": "Alternativní objednací číslo (pokud se liší od MPN)",
+      "statusRecord": "Stav záznamu",
+      "lifecycleStatus": "Stav životního cyklu",
+      "introductionYear": "Rok uvedení",
+      "introductionYearPlaceholder": "např. 1972",
+      "discontinuedYear": "Rok ukončení",
+      "discontinuedYearPlaceholder": "např. 2020",
+      "rohsCompliant": "RoHS kompatibilní",
+      "rohsDesc": "Splňuje směrnice RoHS",
+      "reachCompliant": "REACH kompatibilní",
+      "reachDesc": "Splňuje nařízení REACH",
+      "weight": "Hmotnost (gramy)",
+      "weightPlaceholder": "např. 0.5",
+      "dateCodeFormat": "Formát kódu data",
+      "dateCodePlaceholder": "např. YYWW",
+      "dateCodeDesc": "Formát kódu data na komponentě",
+      "nsn": "NSN (NATO Stock Number)",
+      "nsnPlaceholder": "např. 5962-01-123-4567",
+      "milSpec": "Vojenská specifikace",
+      "milSpecPlaceholder": "např. MIL-PRF-38534",
+      "partAttributesDesc": "Atributy specifické pro výrobce založené na kategorii komponenty.",
+      "partAttributesLabel": "Atributy specifické pro výrobce",
+      "filesDesc": "Správa technických listů, obrázků a dalších souborů pro tuto variantu výrobce.",
+      "close": "Zavřít",
+      "selectComponent": "Vybrat komponentu"
+    }
+  },
+  "errors": {
+    "notFound": "Stránka nenalezena",
+    "unauthorized": "Neautorizováno",
+    "serverError": "Chyba serveru"
+  },
+  "footer": {
+    "tagline": "Komunitou spravovaná databáze elektronických součástek",
+    "navigation": "Navigace",
+    "community": "Komunita",
+    "legal": "Právní informace",
+    "about": "O projektu",
+    "help": "Nápověda",
+    "contact": "Kontakt",
+    "contribute": "Přispět",
+    "github": "GitHub",
+    "privacy": "Ochrana soukromí",
+    "imprint": "Právní upozornění",
+    "copyright": "Open Source pod MIT License"
+  },
+  "about": {
+    "title": "O ElectroVault",
+    "subtitle": "Komunitou spravovaná databáze elektronických součástek",
+    "mission": {
+      "title": "Naše mise",
+      "description": "ElectroVault je bezplatná a otevřená databáze elektronických součástek - od historických elektronek po moderní nanotechnologie. Naším cílem je uchovat znalosti o elektronických součástkách a zpřístupnit je každému."
+    },
+    "features": {
+      "title": "Funkce",
+      "comprehensive": {
+        "title": "Komplexní databáze",
+        "description": "Od rezistorů přes kondenzátory až po vysoce integrované obvody - zaznamenáváme všechny důležité komponenty s podrobnými specifikacemi."
+      },
+      "historical": {
+        "title": "Historický archiv",
+        "description": "Dokumentace historických komponent pro opravu a restaurování starších zařízení."
+      },
+      "community": {
+        "title": "Řízeno komunitou",
+        "description": "Každý může přispět a sdílet své znalosti. Společně budujeme nejkomplexnější databázi součástek."
+      },
+      "open": {
+        "title": "Open Source",
+        "description": "Plně transparentní a volně dostupné pod MIT License."
+      }
+    },
+    "contribute": {
+      "title": "Zapojte se",
+      "description": "ElectroVault žije ze své komunity. Zde je několik způsobů, jak můžete přispět:",
+      "dataEntry": "Přidávat nebo upravovat komponenty",
+      "datasheets": "Nahrávat technické listy",
+      "code": "Příspěvky do kódu na GitHub",
+      "feedback": "Zpětná vazba a návrhy na vylepšení"
+    }
+  },
+  "help": {
+    "title": "Nápověda a FAQ",
+    "subtitle": "Často kladené otázky",
+    "quickLinks": {
+      "browseComponents": {
+        "title": "Procházet komponenty",
+        "description": "Najděte komponenty v naší databázi"
+      },
+      "createAccount": {
+        "title": "Vytvořit účet",
+        "description": "Přispějte do databáze"
+      },
+      "github": {
+        "title": "GitHub",
+        "description": "Dokumentace a issues"
+      }
+    },
+    "contactCta": {
+      "title": "Nebyla zodpovězena vaše otázka?",
+      "description": "Neváhejte nás kontaktovat přímo.",
+      "button": "Kontaktovat nás"
+    },
+    "general": {
+      "title": "Obecné",
+      "what": {
+        "question": "Co je ElectroVault?",
+        "answer": "ElectroVault je bezplatná, komunitou spravovaná databáze elektrických a elektronických součástek. Dokumentujeme komponenty od historických elektronek po moderní integrované obvody s komplexními metadaty, technickými listy a specifikacemi."
+      },
+      "free": {
+        "question": "Je ElectroVault zdarma?",
+        "answer": "Ano, ElectroVault je zcela zdarma a open source. Jak používání, tak zdrojový kód jsou volně dostupné."
+      }
+    },
+    "search": {
+      "title": "Vyhledávání",
+      "how": {
+        "question": "Jak najdu konkrétní komponentu?",
+        "answer": "Použijte vyhledávací funkci v pravém horním rohu nebo procházejte kategoriemi. Můžete vyhledávat podle katalogového čísla, výrobce nebo vlastností."
+      },
+      "filters": {
+        "question": "Jaké filtry jsou k dispozici?",
+        "answer": "Můžete filtrovat podle kategorie, výrobce, stavu (aktivní/zastaralé), typu pouzdra a mnoha dalších technických parametrů."
+      }
+    },
+    "contribute": {
+      "title": "Přispívání",
+      "account": {
+        "question": "Potřebuji účet pro přispívání?",
+        "answer": "Ano, pro přidávání nebo úpravu komponent potřebujete bezplatný účet. To nám pomáhá zajistit kvalitu dat."
+      },
+      "how": {
+        "question": "Jak mohu přidat komponentu?",
+        "answer": "Po přihlášení můžete vytvářet nové komponenty pomocí tlačítka 'Nová komponenta' v přehledu komponent. Moderátor zkontroluje váš příspěvek před publikací."
+      },
+      "quality": {
+        "question": "Jak je zajištěna kvalita dat?",
+        "answer": "Všechny příspěvky jsou kontrolovány zkušenými moderátory. Navíc registrovaní uživatelé mohou navrhovat opravy."
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Máte dotazy nebo návrhy?",
+    "form": {
+      "heading": "Odeslat zprávu",
+      "name": "Jméno",
+      "email": "Email",
+      "subject": "Předmět",
+      "message": "Zpráva",
+      "namePlaceholder": "Jan Novák",
+      "emailPlaceholder": "jan@priklad.cz",
+      "subjectPlaceholder": "Předmět vaší zprávy",
+      "messagePlaceholder": "Vaše zpráva...",
+      "demoNote": "Poznámka: Kontaktní formulář je v tuto chvíli demo. Integrace backendu proběhne v pozdější fázi. Pro důležité dotazy prosím použijte GitHub nebo uvedenou emailovou adresu.",
+      "send": "Odeslat zprávu",
+      "sending": "Odesílání...",
+      "success": "Zpráva byla úspěšně odeslána!",
+      "error": "Chyba při odesílání zprávy"
+    },
+    "alternatives": {
+      "title": "Další možnosti kontaktu",
+      "githubTitle": "GitHub Issues",
+      "github": "Vytvořit issue na GitHub",
+      "emailTitle": "Email",
+      "email": "Pošlete nám email"
+    },
+    "responseTime": {
+      "title": "Doba odpovědi",
+      "description": "Protože ElectroVault je komunitní projekt, jsou dotazy zpracovávány dobrovolníky. Prosíme o trpělivost - obvykle odpovídáme do 48 hodin."
+    },
+    "infoCards": {
+      "communitySupport": {
+        "title": "Podpora komunity",
+        "description": "Použijte GitHub Discussions pro obecné otázky"
+      },
+      "bugReports": {
+        "title": "Hlášení chyb",
+        "description": "Hlaste technické problémy přímo na GitHub"
+      },
+      "partnerships": {
+        "title": "Partnerské dotazy",
+        "description": "Pro obchodní dotazy použijte formulář"
+      }
+    }
+  },
+  "imprint": {
+    "title": "Právní upozornění",
+    "responsible": "Odpovědný za obsah",
+    "contact": "Kontakt",
+    "disclaimer": {
+      "title": "Vyloučení odpovědnosti",
+      "content": "Přes pečlivou kontrolu obsahu nepřebíráme žádnou odpovědnost za obsah externích odkazů. Za jejich obsah jsou odpovědní výhradně provozovatelé odkazovaných stránek.",
+      "liability": "Obsah těchto stránek byl vytvořen s nejvyšší pečlivostí. Nemůžeme však zaručit správnost, úplnost a aktuálnost obsahu."
+    },
+    "opensource": {
+      "title": "Open Source",
+      "description": "ElectroVault je projekt s otevřeným zdrojovým kódem pod MIT License. Zdrojový kód je dostupný na GitHub."
+    }
+  },
+  "privacy": {
+    "title": "Zásady ochrany osobních údajů",
+    "lastUpdated": "Naposledy aktualizováno",
+    "intro": "Ochranu vašich osobních údajů bereme velmi vážně. Tyto zásady ochrany osobních údajů vás informují o povaze, rozsahu a účelu zpracování osobních údajů.",
+    "responsible": {
+      "title": "Správce údajů",
+      "description": "Za zpracování údajů na této webové stránce zodpovídá:"
+    },
+    "collection": {
+      "title": "Shromažďování a ukládání osobních údajů",
+      "description": "Při návštěvě našich webových stránek jsou automaticky shromažďovány informace, které váš prohlížeč přenáší:",
+      "data": "IP adresa, datum a čas přístupu, typ a verze prohlížeče, použitý operační systém, URL odkazující stránky"
+    },
+    "cookies": {
+      "title": "Soubory cookie",
+      "description": "Naše webové stránky používají soubory cookie. Cookies jsou malé textové soubory ukládané na vašem zařízení.",
+      "essential": "Technicky nezbytné cookies pro autentizaci a správu relací",
+      "functional": "Funkční cookies pro zlepšení uživatelského komfortu"
+    },
+    "auth": {
+      "title": "Autentizace",
+      "description": "Pro registraci a přihlášení používáme Keycloak. Jsou ukládány následující údaje:",
+      "data": "Uživatelské jméno, emailová adresa, profilový obrázek (volitelně), role a oprávnění"
+    },
+    "rights": {
+      "title": "Vaše práva",
+      "description": "Máte následující práva ohledně vašich osobních údajů:",
+      "access": "Právo na přístup",
+      "correction": "Právo na opravu",
+      "deletion": "Právo na výmaz",
+      "restriction": "Právo na omezení zpracování",
+      "portability": "Právo na přenositelnost údajů",
+      "objection": "Právo vznést námitku"
+    },
+    "contact": {
+      "title": "Kontakt pro otázky ochrany soukromí",
+      "description": "Pokud máte dotazy ohledně ochrany soukromí, můžete nás kdykoliv kontaktovat."
+    }
+  }
+}

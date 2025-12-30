@@ -27,6 +27,7 @@ export class PackageService {
     const { skip, take } = getPrismaOffsets(query);
 
     const where = {
+      ...(query.groupId && { groupId: query.groupId }),
       ...(query.mountingType && { mountingType: query.mountingType }),
       ...(query.pinCount && { pinCount: query.pinCount }),
       ...(query.minPinCount && { pinCount: { gte: query.minPinCount } }),
@@ -51,6 +52,9 @@ export class PackageService {
         skip,
         take,
         orderBy,
+        include: {
+          group: true,
+        },
       }),
       prisma.packageMaster.count({ where }),
     ]);
@@ -121,6 +125,7 @@ export class PackageService {
         data: {
           name: data.name,
           slug,
+          groupId: data.groupId,
           lengthMm: data.lengthMm,
           widthMm: data.widthMm,
           heightMm: data.heightMm,
@@ -131,8 +136,10 @@ export class PackageService {
           pinCountMax: data.pinCountMax,
           jedecStandard: data.jedecStandard,
           eiaStandard: data.eiaStandard,
-          drawingUrl: data.drawingUrl,
           description: data.description,
+        },
+        include: {
+          group: true,
         },
       });
 
@@ -175,6 +182,7 @@ export class PackageService {
       data: {
         name: data.name,
         slug: data.slug,
+        groupId: data.groupId,
         lengthMm: data.lengthMm,
         widthMm: data.widthMm,
         heightMm: data.heightMm,
@@ -185,8 +193,10 @@ export class PackageService {
         pinCountMax: data.pinCountMax,
         jedecStandard: data.jedecStandard,
         eiaStandard: data.eiaStandard,
-        drawingUrl: data.drawingUrl,
         description: data.description,
+      },
+      include: {
+        group: true,
       },
     });
 
@@ -201,7 +211,7 @@ export class PackageService {
       where: { id },
       include: {
         _count: {
-          select: { parts: true },
+          select: { components: true },
         },
       },
     });
@@ -210,9 +220,9 @@ export class PackageService {
       throw new NotFoundError('Package', id);
     }
 
-    if (pkg._count.parts > 0) {
+    if (pkg._count.components > 0) {
       throw new ConflictError(
-        `Cannot delete package with ${pkg._count.parts} associated parts. Remove or reassign parts first.`
+        `Cannot delete package with ${pkg._count.components} associated components. Remove or reassign components first.`
       );
     }
 

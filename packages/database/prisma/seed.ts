@@ -2,16 +2,57 @@
 // Initiale Stammdaten für Kategorien und Bauformen
 
 import { PrismaClient, MountingType, AttributeScope, AttributeDataType } from '@prisma/client';
+import { seedActiveComponents } from './seeds/02-active-components';
 
 const prisma = new PrismaClient();
 
+/**
+ * LocalizedString mit _original Marker
+ * Alle 26 UI-Sprachen werden unterstützt
+ */
 type LocalizedString = {
-  de: string;
-  en: string;
+  _original?: 'en' | 'de' | 'fr' | 'es' | 'it' | 'nl' | 'pt' | 'da' | 'fi' | 'no' | 'sv' | 'pl' | 'ru' | 'tr' | 'cs' | 'uk' | 'el' | 'zh' | 'ja' | 'ko' | 'hi' | 'id' | 'vi' | 'th' | 'ar' | 'he';
+  en?: string;
+  de?: string;
   fr?: string;
   es?: string;
+  it?: string;
+  nl?: string;
+  pt?: string;
+  da?: string;
+  fi?: string;
+  no?: string;
+  sv?: string;
+  pl?: string;
+  ru?: string;
+  tr?: string;
+  cs?: string;
+  uk?: string;
+  el?: string;
   zh?: string;
+  ja?: string;
+  ko?: string;
+  hi?: string;
+  id?: string;
+  vi?: string;
+  th?: string;
+  ar?: string;
+  he?: string;
 };
+
+/**
+ * Helper-Funktion um LocalizedString mit _original zu erstellen
+ * Die erste Sprache im Objekt wird als _original markiert
+ */
+function ls(strings: Omit<LocalizedString, '_original'>): LocalizedString {
+  // Bestimme die erste Sprache als Original
+  const keys = Object.keys(strings) as (keyof typeof strings)[];
+  const firstLocale = keys.find(k => strings[k]) as LocalizedString['_original'];
+  return {
+    _original: firstLocale,
+    ...strings,
+  };
+}
 
 async function main() {
   console.log('🌱 Starting seed...');
@@ -27,7 +68,7 @@ async function main() {
     update: {},
     create: {
       slug: 'passive-components',
-      name: { de: 'Passive Bauelemente', en: 'Passive Components' } as LocalizedString,
+      name: ls({ en: 'Passive Components', de: 'Passive Bauelemente', fr: 'Composants passifs', es: 'Componentes pasivos', it: 'Componenti passivi' }),
       level: 0,
       sortOrder: 1,
     },
@@ -39,7 +80,7 @@ async function main() {
     update: {},
     create: {
       slug: 'capacitors',
-      name: { de: 'Kondensatoren', en: 'Capacitors', fr: 'Condensateurs' } as LocalizedString,
+      name: ls({ en: 'Capacitors', de: 'Kondensatoren', fr: 'Condensateurs', es: 'Condensadores', it: 'Condensatori' }),
       level: 1,
       parentId: passiveComponents.id,
       sortOrder: 1,
@@ -52,7 +93,7 @@ async function main() {
     update: {},
     create: {
       slug: 'electrolytic-capacitors',
-      name: { de: 'Elektrolytkondensatoren', en: 'Electrolytic Capacitors' } as LocalizedString,
+      name: ls({ en: 'Electrolytic Capacitors', de: 'Elektrolytkondensatoren', fr: 'Condensateurs électrolytiques' }),
       level: 2,
       parentId: capacitors.id,
       sortOrder: 1,
@@ -65,7 +106,7 @@ async function main() {
     update: {},
     create: {
       slug: 'aluminum-electrolytic',
-      name: { de: 'Aluminium-Elektrolytkondensatoren', en: 'Aluminum Electrolytic' } as LocalizedString,
+      name: ls({ en: 'Aluminum Electrolytic', de: 'Aluminium-Elektrolytkondensatoren', fr: 'Électrolytiques aluminium' }),
       level: 3,
       parentId: electrolyticCaps.id,
       sortOrder: 1,
@@ -78,7 +119,7 @@ async function main() {
     update: {},
     create: {
       slug: 'ceramic-capacitors',
-      name: { de: 'Keramik-Kondensatoren', en: 'Ceramic Capacitors' } as LocalizedString,
+      name: ls({ en: 'Ceramic Capacitors', de: 'Keramik-Kondensatoren', fr: 'Condensateurs céramiques' }),
       level: 2,
       parentId: capacitors.id,
       sortOrder: 2,
@@ -91,7 +132,7 @@ async function main() {
     update: {},
     create: {
       slug: 'film-capacitors',
-      name: { de: 'Folienkondensatoren', en: 'Film Capacitors' } as LocalizedString,
+      name: ls({ en: 'Film Capacitors', de: 'Folienkondensatoren', fr: 'Condensateurs à film' }),
       level: 2,
       parentId: capacitors.id,
       sortOrder: 3,
@@ -104,7 +145,7 @@ async function main() {
     update: {},
     create: {
       slug: 'resistors',
-      name: { de: 'Widerstände', en: 'Resistors' } as LocalizedString,
+      name: ls({ en: 'Resistors', de: 'Widerstände', fr: 'Résistances', es: 'Resistencias', it: 'Resistori' }),
       level: 1,
       parentId: passiveComponents.id,
       sortOrder: 2,
@@ -117,7 +158,7 @@ async function main() {
     update: {},
     create: {
       slug: 'inductors',
-      name: { de: 'Spulen', en: 'Inductors' } as LocalizedString,
+      name: ls({ en: 'Inductors', de: 'Spulen', fr: 'Inductances', es: 'Inductores', it: 'Induttori' }),
       level: 1,
       parentId: passiveComponents.id,
       sortOrder: 3,
@@ -130,7 +171,7 @@ async function main() {
     update: {},
     create: {
       slug: 'semiconductors',
-      name: { de: 'Halbleiter', en: 'Semiconductors' } as LocalizedString,
+      name: ls({ en: 'Semiconductors', de: 'Halbleiter', fr: 'Semi-conducteurs', es: 'Semiconductores', it: 'Semiconduttori' }),
       level: 0,
       sortOrder: 2,
     },
@@ -142,7 +183,7 @@ async function main() {
     update: {},
     create: {
       slug: 'integrated-circuits',
-      name: { de: 'Integrierte Schaltungen', en: 'Integrated Circuits' } as LocalizedString,
+      name: ls({ en: 'Integrated Circuits', de: 'Integrierte Schaltungen', fr: 'Circuits intégrés', es: 'Circuitos integrados' }),
       level: 1,
       parentId: semiconductors.id,
       sortOrder: 1,
@@ -155,7 +196,7 @@ async function main() {
     update: {},
     create: {
       slug: 'analog-ics',
-      name: { de: 'Analoge ICs', en: 'Analog ICs' } as LocalizedString,
+      name: ls({ en: 'Analog ICs', de: 'Analoge ICs', fr: 'CI analogiques', es: 'CI analógicos' }),
       level: 2,
       parentId: integratedCircuits.id,
       sortOrder: 1,
@@ -168,11 +209,11 @@ async function main() {
     update: {},
     create: {
       slug: 'timers',
-      name: { de: 'Timer-ICs', en: 'Timer ICs' } as LocalizedString,
+      name: ls({ en: 'Timer ICs', de: 'Timer-ICs', fr: 'Circuits de minuterie' }),
       level: 3,
       parentId: analogICs.id,
       sortOrder: 1,
-      description: { de: 'z.B. 555, 556 Timer', en: 'e.g. 555, 556 Timers' } as LocalizedString,
+      description: ls({ en: 'e.g. 555, 556 Timers', de: 'z.B. 555, 556 Timer', fr: 'p.ex. minuteries 555, 556' }),
     },
   });
 
@@ -182,10 +223,10 @@ async function main() {
     update: {},
     create: {
       slug: 'vacuum-tubes',
-      name: { de: 'Vakuumröhren', en: 'Vacuum Tubes' } as LocalizedString,
+      name: ls({ en: 'Vacuum Tubes', de: 'Vakuumröhren', fr: 'Tubes à vide' }),
       level: 0,
       sortOrder: 3,
-      description: { de: 'Historische Elektronenröhren', en: 'Historic Vacuum Tubes' } as LocalizedString,
+      description: ls({ en: 'Historic Vacuum Tubes', de: 'Historische Elektronenröhren', fr: 'Tubes électroniques historiques' }),
     },
   });
 
@@ -195,7 +236,7 @@ async function main() {
     update: {},
     create: {
       slug: 'triodes',
-      name: { de: 'Trioden', en: 'Triodes' } as LocalizedString,
+      name: ls({ en: 'Triodes', de: 'Trioden', fr: 'Triodes' }),
       level: 1,
       parentId: vacuumTubes.id,
       sortOrder: 1,
@@ -205,57 +246,65 @@ async function main() {
   console.log('✅ Categories seeded');
 
   // ============================================
+  // MODULARE SEEDS
+  // ============================================
+  await seedActiveComponents(prisma);
+
+  // ============================================
   // ATTRIBUT-DEFINITIONEN
   // ============================================
   console.log('🏷️  Seeding attribute definitions...');
 
-  // Attribute für Kondensatoren
-  await prisma.attributeDefinition.upsert({
+  // ================================================
+  // KONDENSATOR-ATTRIBUTE (umfangreich)
+  // ================================================
+
+  // Kapazität (Label-Attribut für automatische Benennung)
+  const capacitanceAttr = await prisma.attributeDefinition.upsert({
     where: { categoryId_name: { categoryId: capacitors.id, name: 'capacitance' } },
-    update: {},
+    update: { isLabel: true, allowedPrefixes: ['p', 'n', 'µ', 'm', ''] },
     create: {
       categoryId: capacitors.id,
       name: 'capacitance',
       displayName: { de: 'Kapazität', en: 'Capacitance' } as LocalizedString,
       unit: 'F',
-      siUnit: 'F',
-      siMultiplier: 1,
       dataType: AttributeDataType.DECIMAL,
       scope: AttributeScope.COMPONENT,
       isFilterable: true,
       isRequired: true,
+      isLabel: true,
+      allowedPrefixes: ['p', 'n', 'µ', 'm', ''],
       sortOrder: 1,
     },
   });
 
-  await prisma.attributeDefinition.upsert({
+  // Spannungsfestigkeit
+  const voltageRatingAttr = await prisma.attributeDefinition.upsert({
     where: { categoryId_name: { categoryId: capacitors.id, name: 'voltage_rating' } },
-    update: {},
+    update: { allowedPrefixes: ['m', '', 'k'] },
     create: {
       categoryId: capacitors.id,
       name: 'voltage_rating',
       displayName: { de: 'Spannungsfestigkeit', en: 'Voltage Rating' } as LocalizedString,
       unit: 'V',
-      siUnit: 'V',
-      siMultiplier: 1,
       dataType: AttributeDataType.DECIMAL,
       scope: AttributeScope.BOTH,
       isFilterable: true,
       isRequired: true,
+      allowedPrefixes: ['m', '', 'k'],
       sortOrder: 2,
     },
   });
 
-  await prisma.attributeDefinition.upsert({
-    where: { categoryId_name: { categoryId: electrolyticCaps.id, name: 'esr' } },
+  // Toleranz für Kondensatoren
+  const capToleranceAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'tolerance' } },
     update: {},
     create: {
-      categoryId: electrolyticCaps.id,
-      name: 'esr',
-      displayName: { de: 'ESR', en: 'ESR (Equivalent Series Resistance)' } as LocalizedString,
-      unit: 'Ω',
-      siUnit: 'Ω',
-      siMultiplier: 1,
+      categoryId: capacitors.id,
+      name: 'tolerance',
+      displayName: { de: 'Toleranz', en: 'Tolerance' } as LocalizedString,
+      unit: '%',
       dataType: AttributeDataType.DECIMAL,
       scope: AttributeScope.PART,
       isFilterable: true,
@@ -264,26 +313,289 @@ async function main() {
     },
   });
 
-  // Attribute für Widerstände
-  await prisma.attributeDefinition.upsert({
-    where: { categoryId_name: { categoryId: resistors.id, name: 'resistance' } },
+  // Dielektrikum / Temperaturkoeffizient (z.B. X7R, X5R, C0G/NP0, Y5V)
+  const dielectricAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'dielectric' } },
     update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'dielectric',
+      displayName: { de: 'Dielektrikum', en: 'Dielectric' } as LocalizedString,
+      dataType: AttributeDataType.STRING,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 4,
+    },
+  });
+
+  // Temperaturbereich Min
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'temp_min' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'temp_min',
+      displayName: { de: 'Min. Betriebstemperatur', en: 'Min Operating Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 5,
+    },
+  });
+
+  // Temperaturbereich Max
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'temp_max' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'temp_max',
+      displayName: { de: 'Max. Betriebstemperatur', en: 'Max Operating Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 6,
+    },
+  });
+
+  // Isolationswiderstand
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'insulation_resistance' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'insulation_resistance',
+      displayName: { de: 'Isolationswiderstand', en: 'Insulation Resistance' } as LocalizedString,
+      unit: 'Ω',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      allowedPrefixes: ['M', 'G'],
+      sortOrder: 7,
+    },
+  });
+
+  // Verlustfaktor (tan δ)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'dissipation_factor' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'dissipation_factor',
+      displayName: { de: 'Verlustfaktor (tan δ)', en: 'Dissipation Factor (tan δ)' } as LocalizedString,
+      unit: '%',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 8,
+    },
+  });
+
+  // Selbstresonanzfrequenz
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'self_resonant_freq' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'self_resonant_freq',
+      displayName: { de: 'Selbstresonanzfrequenz', en: 'Self-Resonant Frequency' } as LocalizedString,
+      unit: 'Hz',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      allowedPrefixes: ['k', 'M', 'G'],
+      sortOrder: 9,
+    },
+  });
+
+  // Äquivalente Serieninduktivität (ESL)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'esl' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'esl',
+      displayName: { de: 'ESL', en: 'ESL (Equivalent Series Inductance)' } as LocalizedString,
+      unit: 'H',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      allowedPrefixes: ['p', 'n'],
+      sortOrder: 10,
+    },
+  });
+
+  // Ripplestrom (für Elkos)
+  const rippleCurrentAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: electrolyticCaps.id, name: 'ripple_current' } },
+    update: {},
+    create: {
+      categoryId: electrolyticCaps.id,
+      name: 'ripple_current',
+      displayName: { de: 'Ripplestrom', en: 'Ripple Current' } as LocalizedString,
+      unit: 'A',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      allowedPrefixes: ['m', ''],
+      sortOrder: 11,
+    },
+  });
+
+  // ESR (Äquivalenter Serienwiderstand)
+  const esrAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: electrolyticCaps.id, name: 'esr' } },
+    update: { allowedPrefixes: ['m', ''] },
+    create: {
+      categoryId: electrolyticCaps.id,
+      name: 'esr',
+      displayName: { de: 'ESR', en: 'ESR (Equivalent Series Resistance)' } as LocalizedString,
+      unit: 'Ω',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      allowedPrefixes: ['m', ''],
+      sortOrder: 12,
+    },
+  });
+
+  // Lebensdauer (für Elkos) - Bei Nenntemperatur und Nenn-Ripplestrom
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: electrolyticCaps.id, name: 'lifetime_hours' } },
+    update: {},
+    create: {
+      categoryId: electrolyticCaps.id,
+      name: 'lifetime_hours',
+      displayName: { de: 'Lebensdauer', en: 'Lifetime' } as LocalizedString,
+      unit: 'h',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 13,
+    },
+  });
+
+  // Lebensdauer-Referenztemperatur
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: electrolyticCaps.id, name: 'lifetime_temp' } },
+    update: {},
+    create: {
+      categoryId: electrolyticCaps.id,
+      name: 'lifetime_temp',
+      displayName: { de: 'Referenztemperatur Lebensdauer', en: 'Lifetime Reference Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 14,
+    },
+  });
+
+  // Polarität
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'polarized' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'polarized',
+      displayName: { de: 'Polarisiert', en: 'Polarized' } as LocalizedString,
+      dataType: AttributeDataType.BOOLEAN,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 15,
+    },
+  });
+
+  // Spannungsderating
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'voltage_derating' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'voltage_derating',
+      displayName: { de: 'Spannungsderating', en: 'Voltage Derating' } as LocalizedString,
+      unit: '%/°C',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 16,
+    },
+  });
+
+  // Kapazitätsänderung über Temperatur
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'temp_coefficient' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'temp_coefficient',
+      displayName: { de: 'Temperaturkoeffizient', en: 'Temperature Coefficient' } as LocalizedString,
+      unit: 'ppm/°C',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 17,
+    },
+  });
+
+  // Kapazitätsänderung über DC-Bias (für MLCCs) - Kapazitätsverlust bei Nennspannung
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: capacitors.id, name: 'dc_bias_derating' } },
+    update: {},
+    create: {
+      categoryId: capacitors.id,
+      name: 'dc_bias_derating',
+      displayName: { de: 'DC-Bias Kapazitätsverlust', en: 'DC Bias Capacitance Loss' } as LocalizedString,
+      unit: '%',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 18,
+    },
+  });
+
+  // ================================================
+  // WIDERSTAND-ATTRIBUTE (umfangreich)
+  // ================================================
+
+  // Widerstandswert (Label-Attribut für automatische Benennung)
+  const resistanceAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'resistance' } },
+    update: { isLabel: true, allowedPrefixes: ['m', '', 'k', 'M', 'G'] },
     create: {
       categoryId: resistors.id,
       name: 'resistance',
       displayName: { de: 'Widerstandswert', en: 'Resistance' } as LocalizedString,
       unit: 'Ω',
-      siUnit: 'Ω',
-      siMultiplier: 1,
       dataType: AttributeDataType.DECIMAL,
       scope: AttributeScope.COMPONENT,
       isFilterable: true,
       isRequired: true,
+      isLabel: true,
+      allowedPrefixes: ['m', '', 'k', 'M', 'G'],
       sortOrder: 1,
     },
   });
 
-  await prisma.attributeDefinition.upsert({
+  // Toleranz
+  const toleranceAttr = await prisma.attributeDefinition.upsert({
     where: { categoryId_name: { categoryId: resistors.id, name: 'tolerance' } },
     update: {},
     create: {
@@ -298,6 +610,370 @@ async function main() {
       sortOrder: 2,
     },
   });
+
+  // Belastbarkeit
+  const powerRatingAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'power_rating' } },
+    update: { allowedPrefixes: ['m', '', 'k'] },
+    create: {
+      categoryId: resistors.id,
+      name: 'power_rating',
+      displayName: { de: 'Belastbarkeit', en: 'Power Rating' } as LocalizedString,
+      unit: 'W',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.BOTH,
+      isFilterable: true,
+      isRequired: false,
+      allowedPrefixes: ['m', '', 'k'],
+      sortOrder: 3,
+    },
+  });
+
+  // Temperaturkoeffizient (TCR)
+  const tcrAttr = await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'tcr' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'tcr',
+      displayName: { de: 'Temperaturkoeffizient (TCR)', en: 'Temperature Coefficient (TCR)' } as LocalizedString,
+      unit: 'ppm/°C',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 4,
+    },
+  });
+
+  // Maximale Betriebsspannung
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'max_voltage' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'max_voltage',
+      displayName: { de: 'Max. Betriebsspannung', en: 'Max Working Voltage' } as LocalizedString,
+      unit: 'V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 5,
+    },
+  });
+
+  // Überlastelement-Spannung
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'overload_voltage' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'overload_voltage',
+      displayName: { de: 'Überlastspannung', en: 'Overload Voltage' } as LocalizedString,
+      unit: 'V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 6,
+    },
+  });
+
+  // Temperaturbereich Min
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'temp_min' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'temp_min',
+      displayName: { de: 'Min. Betriebstemperatur', en: 'Min Operating Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 7,
+    },
+  });
+
+  // Temperaturbereich Max
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'temp_max' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'temp_max',
+      displayName: { de: 'Max. Betriebstemperatur', en: 'Max Operating Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 8,
+    },
+  });
+
+  // Widerstandstyp (z.B. Dickschicht, Dünnschicht, Metallschicht, Kohleschicht)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'resistor_type' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'resistor_type',
+      displayName: { de: 'Widerstandstyp', en: 'Resistor Type' } as LocalizedString,
+      dataType: AttributeDataType.STRING,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 9,
+    },
+  });
+
+  // Spannungskoeffizient
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'voltage_coefficient' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'voltage_coefficient',
+      displayName: { de: 'Spannungskoeffizient', en: 'Voltage Coefficient' } as LocalizedString,
+      unit: 'ppm/V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 10,
+    },
+  });
+
+  // Rauschspannung (Stromrauschen in µV pro angelegter Spannung)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'noise' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'noise',
+      displayName: { de: 'Rauschspannung', en: 'Noise' } as LocalizedString,
+      unit: 'µV/V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 11,
+    },
+  });
+
+  // Leistungsderating
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'power_derating_temp' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'power_derating_temp',
+      displayName: { de: 'Derating-Starttemperatur', en: 'Derating Start Temperature' } as LocalizedString,
+      unit: '°C',
+      dataType: AttributeDataType.INTEGER,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 12,
+    },
+  });
+
+  // Induktivität (parasitär)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'inductance' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'inductance',
+      displayName: { de: 'Parasitäre Induktivität', en: 'Parasitic Inductance' } as LocalizedString,
+      unit: 'H',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      allowedPrefixes: ['p', 'n'],
+      sortOrder: 13,
+    },
+  });
+
+  // Kapazität (parasitär)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'capacitance' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'capacitance',
+      displayName: { de: 'Parasitäre Kapazität', en: 'Parasitic Capacitance' } as LocalizedString,
+      unit: 'F',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      allowedPrefixes: ['p'],
+      sortOrder: 14,
+    },
+  });
+
+  // Sicherungswiderstand (Widerstand mit Sicherungsfunktion bei Überlast)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'fusible' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'fusible',
+      displayName: { de: 'Sicherungswiderstand', en: 'Fusible' } as LocalizedString,
+      dataType: AttributeDataType.BOOLEAN,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 15,
+    },
+  });
+
+  // Anti-Schwefel
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'anti_sulfur' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'anti_sulfur',
+      displayName: { de: 'Schwefelresistent', en: 'Anti-Sulfur' } as LocalizedString,
+      dataType: AttributeDataType.BOOLEAN,
+      scope: AttributeScope.PART,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 16,
+    },
+  });
+
+  // Puls-Belastbarkeit
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'pulse_power' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'pulse_power',
+      displayName: { de: 'Puls-Belastbarkeit', en: 'Pulse Power Rating' } as LocalizedString,
+      unit: 'W',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.PART,
+      isFilterable: false,
+      isRequired: false,
+      sortOrder: 17,
+    },
+  });
+
+  // E-Reihe (z.B. E24, E96, E192)
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: resistors.id, name: 'e_series' } },
+    update: {},
+    create: {
+      categoryId: resistors.id,
+      name: 'e_series',
+      displayName: { de: 'E-Reihe', en: 'E-Series' } as LocalizedString,
+      dataType: AttributeDataType.STRING,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 18,
+    },
+  });
+
+  // ================================================
+  // ANALOG IC ATTRIBUTE
+  // ================================================
+
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: analogICs.id, name: 'supply_voltage_min' } },
+    update: {},
+    create: {
+      categoryId: analogICs.id,
+      name: 'supply_voltage_min',
+      displayName: { de: 'Min. Versorgungsspannung', en: 'Min Supply Voltage' } as LocalizedString,
+      unit: 'V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 1,
+    },
+  });
+
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: analogICs.id, name: 'supply_voltage_max' } },
+    update: {},
+    create: {
+      categoryId: analogICs.id,
+      name: 'supply_voltage_max',
+      displayName: { de: 'Max. Versorgungsspannung', en: 'Max Supply Voltage' } as LocalizedString,
+      unit: 'V',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 2,
+    },
+  });
+
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: analogICs.id, name: 'gbw' } },
+    update: {},
+    create: {
+      categoryId: analogICs.id,
+      name: 'gbw',
+      displayName: { de: 'Verstärkungs-Bandbreite-Produkt', en: 'Gain Bandwidth Product' } as LocalizedString,
+      unit: 'Hz',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      allowedPrefixes: ['k', 'M', 'G'],
+      sortOrder: 3,
+    },
+  });
+
+  await prisma.attributeDefinition.upsert({
+    where: { categoryId_name: { categoryId: analogICs.id, name: 'slew_rate' } },
+    update: {},
+    create: {
+      categoryId: analogICs.id,
+      name: 'slew_rate',
+      displayName: { de: 'Anstiegsrate', en: 'Slew Rate' } as LocalizedString,
+      unit: 'V/µs',
+      dataType: AttributeDataType.DECIMAL,
+      scope: AttributeScope.COMPONENT,
+      isFilterable: true,
+      isRequired: false,
+      sortOrder: 4,
+    },
+  });
+
+  // ================================================
+  // TIMER IC ATTRIBUTE
+  // ================================================
+
+  const timerCategory = await prisma.categoryTaxonomy.findUnique({ where: { slug: 'timers' } });
+  if (timerCategory) {
+    await prisma.attributeDefinition.upsert({
+      where: { categoryId_name: { categoryId: timerCategory.id, name: 'frequency_max' } },
+      update: {},
+      create: {
+        categoryId: timerCategory.id,
+        name: 'frequency_max',
+        displayName: { de: 'Max. Frequenz', en: 'Max Frequency' } as LocalizedString,
+        unit: 'Hz',
+        dataType: AttributeDataType.DECIMAL,
+        scope: AttributeScope.COMPONENT,
+        isFilterable: true,
+        isRequired: false,
+        allowedPrefixes: ['', 'k', 'M'],
+        sortOrder: 1,
+      },
+    });
+  }
 
   console.log('✅ Attribute definitions seeded');
 
@@ -434,13 +1110,16 @@ async function main() {
   console.log('✅ Package masters seeded');
 
   // ============================================
-  // HERSTELLER (Beispiele)
+  // HERSTELLER (Umfangreiche Beispieldaten)
   // ============================================
   console.log('🏭 Seeding manufacturers...');
 
-  await prisma.manufacturerMaster.upsert({
+  // Aktive Hersteller
+  const texasInstruments = await prisma.manufacturerMaster.upsert({
     where: { slug: 'texas-instruments' },
-    update: {},
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
     create: {
       slug: 'texas-instruments',
       name: 'Texas Instruments',
@@ -448,13 +1127,16 @@ async function main() {
       countryCode: 'US',
       website: 'https://www.ti.com',
       foundedYear: 1930,
-      description: { de: 'US-amerikanischer Halbleiterhersteller', en: 'American semiconductor manufacturer' } as LocalizedString,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ en: 'American semiconductor manufacturer, leader in analog ICs and DSPs', de: 'US-amerikanischer Halbleiterhersteller, führend bei Analog-ICs und DSPs', fr: 'Fabricant américain de semi-conducteurs, leader des CI analogiques et DSP' }),
     },
   });
 
-  await prisma.manufacturerMaster.upsert({
+  const nxp = await prisma.manufacturerMaster.upsert({
     where: { slug: 'nxp' },
-    update: {},
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
     create: {
       slug: 'nxp',
       name: 'NXP Semiconductors',
@@ -462,13 +1144,314 @@ async function main() {
       countryCode: 'NL',
       website: 'https://www.nxp.com',
       foundedYear: 2006,
-      description: { de: 'Niederländischer Halbleiterhersteller', en: 'Dutch semiconductor manufacturer' } as LocalizedString,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ en: 'Dutch semiconductor manufacturer, specialized in automotive and IoT', de: 'Niederländischer Halbleiterhersteller, spezialisiert auf Automotive und IoT', nl: 'Nederlandse halfgeleiderfabrikant, gespecialiseerd in automotive en IoT' }),
     },
   });
 
+  const stMicroelectronics = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'stmicroelectronics' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'stmicroelectronics',
+      name: 'STMicroelectronics',
+      cageCode: 'F0889',
+      countryCode: 'CH',
+      website: 'https://www.st.com',
+      foundedYear: 1987,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ en: 'European semiconductor manufacturer, known for STM32 microcontrollers', de: 'Europäischer Halbleiterhersteller, bekannt für STM32 Mikrocontroller', fr: 'Fabricant européen de semi-conducteurs, connu pour les microcontrôleurs STM32' }),
+    },
+  });
+
+  const infineon = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'infineon' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'infineon',
+      name: 'Infineon Technologies',
+      cageCode: 'D5988',
+      countryCode: 'DE',
+      website: 'https://www.infineon.com',
+      foundedYear: 1999,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ de: 'Deutscher Halbleiterhersteller, führend bei Leistungselektronik', en: 'German semiconductor manufacturer, leader in power electronics', fr: 'Fabricant allemand de semi-conducteurs, leader en électronique de puissance' }),
+    },
+  });
+
+  const microchip = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'microchip' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'microchip',
+      name: 'Microchip Technology',
+      cageCode: '1HYH7',
+      countryCode: 'US',
+      website: 'https://www.microchip.com',
+      foundedYear: 1989,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ en: 'US manufacturer of microcontrollers (PIC, AVR) and analog ICs', de: 'US-Hersteller von Mikrocontrollern (PIC, AVR) und Analog-ICs' }),
+    },
+  });
+
+  const onsemi = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'onsemi' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'onsemi',
+      name: 'onsemi',
+      cageCode: '0Y8P5',
+      countryCode: 'US',
+      website: 'https://www.onsemi.com',
+      foundedYear: 1999,
+      moderationStatus: 'PUBLISHED',
+      description: ls({ en: 'US semiconductor manufacturer for power semiconductors and sensors', de: 'US-Halbleiterhersteller für Leistungshalbleiter und Sensoren' }),
+    },
+  });
+
+  const analogDevices = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'analog-devices' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'analog-devices',
+      name: 'Analog Devices',
+      cageCode: '07981',
+      countryCode: 'US',
+      website: 'https://www.analog.com',
+      foundedYear: 1965,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'US-Hersteller hochpräziser Analog-ICs und Signalverarbeitung', en: 'US manufacturer of high-precision analog ICs and signal processing' } as LocalizedString,
+    },
+  });
+
+  const murata = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'murata' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'murata',
+      name: 'Murata Manufacturing',
+      countryCode: 'JP',
+      website: 'https://www.murata.com',
+      foundedYear: 1944,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Hersteller passiver Bauelemente, führend bei MLCC', en: 'Japanese manufacturer of passive components, leader in MLCC' } as LocalizedString,
+    },
+  });
+
+  const tdk = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'tdk' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'tdk',
+      name: 'TDK Corporation',
+      countryCode: 'JP',
+      website: 'https://www.tdk.com',
+      foundedYear: 1935,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Hersteller von Kondensatoren, Induktivitäten und Sensoren', en: 'Japanese manufacturer of capacitors, inductors and sensors' } as LocalizedString,
+    },
+  });
+
+  const vishay = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'vishay' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'vishay',
+      name: 'Vishay Intertechnology',
+      cageCode: '1L5D6',
+      countryCode: 'US',
+      website: 'https://www.vishay.com',
+      foundedYear: 1962,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'US-Hersteller passiver und diskreter Halbleiter', en: 'US manufacturer of passive and discrete semiconductors' } as LocalizedString,
+    },
+  });
+
+  const yageo = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'yageo' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'yageo',
+      name: 'Yageo Corporation',
+      countryCode: 'TW',
+      website: 'https://www.yageo.com',
+      foundedYear: 1977,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Taiwanesischer Hersteller passiver Bauelemente', en: 'Taiwanese manufacturer of passive components' } as LocalizedString,
+    },
+  });
+
+  const samsung = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'samsung-electro-mechanics' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'samsung-electro-mechanics',
+      name: 'Samsung Electro-Mechanics',
+      countryCode: 'KR',
+      website: 'https://www.samsungsem.com',
+      foundedYear: 1973,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Koreanischer Hersteller von MLCCs und Leiterplatten', en: 'Korean manufacturer of MLCCs and PCBs' } as LocalizedString,
+    },
+  });
+
+  const panasonic = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'panasonic' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'panasonic',
+      name: 'Panasonic Industry',
+      countryCode: 'JP',
+      website: 'https://industrial.panasonic.com',
+      foundedYear: 1918,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Hersteller von Kondensatoren und Relais', en: 'Japanese manufacturer of capacitors and relays' } as LocalizedString,
+    },
+  });
+
+  const nichicon = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'nichicon' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'nichicon',
+      name: 'Nichicon Corporation',
+      countryCode: 'JP',
+      website: 'https://www.nichicon.co.jp',
+      foundedYear: 1950,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Spezialist für Elektrolytkondensatoren', en: 'Japanese specialist for electrolytic capacitors' } as LocalizedString,
+    },
+  });
+
+  const rubycon = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'rubycon' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'rubycon',
+      name: 'Rubycon Corporation',
+      countryCode: 'JP',
+      website: 'https://www.rubycon.co.jp',
+      foundedYear: 1952,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Hersteller hochwertiger Elektrolytkondensatoren', en: 'Japanese manufacturer of high-quality electrolytic capacitors' } as LocalizedString,
+    },
+  });
+
+  const bourns = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'bourns' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'bourns',
+      name: 'Bourns Inc.',
+      cageCode: '71400',
+      countryCode: 'US',
+      website: 'https://www.bourns.com',
+      foundedYear: 1947,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'US-Hersteller von Potentiometern und Schutzbauelementen', en: 'US manufacturer of potentiometers and protection devices' } as LocalizedString,
+    },
+  });
+
+  const littelfuse = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'littelfuse' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'littelfuse',
+      name: 'Littelfuse Inc.',
+      cageCode: '05418',
+      countryCode: 'US',
+      website: 'https://www.littelfuse.com',
+      foundedYear: 1927,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'US-Hersteller von Sicherungen und Schutzbauelementen', en: 'US manufacturer of fuses and protection devices' } as LocalizedString,
+    },
+  });
+
+  const renesas = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'renesas' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'renesas',
+      name: 'Renesas Electronics',
+      countryCode: 'JP',
+      website: 'https://www.renesas.com',
+      foundedYear: 2010,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Halbleiterhersteller, entstanden aus NEC und Hitachi', en: 'Japanese semiconductor manufacturer, formed from NEC and Hitachi' } as LocalizedString,
+    },
+  });
+
+  const rohm = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'rohm' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'rohm',
+      name: 'ROHM Semiconductor',
+      countryCode: 'JP',
+      website: 'https://www.rohm.com',
+      foundedYear: 1958,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Japanischer Hersteller von ICs und diskreten Halbleitern', en: 'Japanese manufacturer of ICs and discrete semiconductors' } as LocalizedString,
+    },
+  });
+
+  const wurth = await prisma.manufacturerMaster.upsert({
+    where: { slug: 'wurth-elektronik' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'wurth-elektronik',
+      name: 'Würth Elektronik',
+      countryCode: 'DE',
+      website: 'https://www.we-online.com',
+      foundedYear: 1971,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Deutscher Hersteller von Induktivitäten und Steckverbindern', en: 'German manufacturer of inductors and connectors' } as LocalizedString,
+    },
+  });
+
+  // Übernommene/Historische Hersteller
   await prisma.manufacturerMaster.upsert({
     where: { slug: 'signetics' },
-    update: {},
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: nxp.id,
+    },
     create: {
       slug: 'signetics',
       name: 'Signetics',
@@ -477,11 +1460,1488 @@ async function main() {
       foundedYear: 1961,
       defunctYear: 1997,
       status: 'ACQUIRED',
-      description: { de: 'Historischer US-Halbleiterhersteller, übernommen von Philips/NXP', en: 'Historic US semiconductor manufacturer, acquired by Philips/NXP' } as LocalizedString,
+      moderationStatus: 'PUBLISHED',
+      acquiredById: nxp.id,
+      description: { de: 'Historischer US-Halbleiterhersteller, Erfinder des 555 Timers', en: 'Historic US semiconductor manufacturer, inventor of the 555 timer' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'fairchild' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: onsemi.id,
+    },
+    create: {
+      slug: 'fairchild',
+      name: 'Fairchild Semiconductor',
+      cageCode: '02040',
+      countryCode: 'US',
+      foundedYear: 1957,
+      defunctYear: 2016,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: onsemi.id,
+      description: { de: 'Pionier der Halbleiterindustrie, 2016 von ON Semiconductor übernommen', en: 'Pioneer of semiconductor industry, acquired by ON Semiconductor in 2016' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'motorola-semiconductor' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: onsemi.id,
+    },
+    create: {
+      slug: 'motorola-semiconductor',
+      name: 'Motorola Semiconductor',
+      cageCode: '07422',
+      countryCode: 'US',
+      foundedYear: 1955,
+      defunctYear: 1999,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: onsemi.id,
+      description: { de: 'Ausgegliedert als ON Semiconductor 1999', en: 'Spun off as ON Semiconductor in 1999' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'national-semiconductor' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: texasInstruments.id,
+    },
+    create: {
+      slug: 'national-semiconductor',
+      name: 'National Semiconductor',
+      cageCode: '07295',
+      countryCode: 'US',
+      foundedYear: 1959,
+      defunctYear: 2011,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: texasInstruments.id,
+      description: { de: 'US-Halbleiterhersteller, 2011 von TI übernommen', en: 'US semiconductor manufacturer, acquired by TI in 2011' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'atmel' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: microchip.id,
+    },
+    create: {
+      slug: 'atmel',
+      name: 'Atmel Corporation',
+      cageCode: '1DPN7',
+      countryCode: 'US',
+      foundedYear: 1984,
+      defunctYear: 2016,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: microchip.id,
+      description: { de: 'Erfinder der AVR-Architektur, 2016 von Microchip übernommen', en: 'Inventor of AVR architecture, acquired by Microchip in 2016' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'linear-technology' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: analogDevices.id,
+    },
+    create: {
+      slug: 'linear-technology',
+      name: 'Linear Technology',
+      cageCode: '1CZH5',
+      countryCode: 'US',
+      foundedYear: 1981,
+      defunctYear: 2017,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: analogDevices.id,
+      description: { de: 'Premium-Analog-Hersteller, 2017 von Analog Devices übernommen', en: 'Premium analog manufacturer, acquired by Analog Devices in 2017' } as LocalizedString,
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'siemens-semiconductor' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+      acquiredById: infineon.id,
+    },
+    create: {
+      slug: 'siemens-semiconductor',
+      name: 'Siemens Semiconductor',
+      cageCode: 'F1111',
+      countryCode: 'DE',
+      foundedYear: 1960,
+      defunctYear: 1999,
+      status: 'ACQUIRED',
+      moderationStatus: 'PUBLISHED',
+      acquiredById: infineon.id,
+      description: { de: 'Deutsche Halbleitersparte von Siemens, 1999 ausgegliedert als Infineon', en: 'German semiconductor division of Siemens, spun off as Infineon in 1999' } as LocalizedString,
+    },
+  });
+
+  // Weitere europäische Hersteller
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'nexperia' },
+    update: {
+      moderationStatus: 'PUBLISHED',
+    },
+    create: {
+      slug: 'nexperia',
+      name: 'Nexperia',
+      countryCode: 'NL',
+      website: 'https://www.nexperia.com',
+      foundedYear: 2017,
+      moderationStatus: 'PUBLISHED',
+      description: { de: 'Niederländischer Hersteller diskreter Halbleiter, Ausgründung von NXP', en: 'Dutch discrete semiconductor manufacturer, spin-off from NXP' } as LocalizedString,
     },
   });
 
   console.log('✅ Manufacturers seeded');
+
+  // ============================================
+  // BAUTEILE (CoreComponents)
+  // ============================================
+  console.log('🔧 Seeding core components...');
+
+  // Packages für Referenz laden
+  const dip8 = await prisma.packageMaster.findUnique({ where: { slug: 'dip-8' } });
+  const dip14 = await prisma.packageMaster.findUnique({ where: { slug: 'dip-14' } });
+  const soic8 = await prisma.packageMaster.findUnique({ where: { slug: 'soic-8' } });
+  const pkg0805 = await prisma.packageMaster.findUnique({ where: { slug: '0805' } });
+  const pkg1206 = await prisma.packageMaster.findUnique({ where: { slug: '1206' } });
+  const radial5mm = await prisma.packageMaster.findUnique({ where: { slug: 'radial-5mm' } });
+  const radial10mm = await prisma.packageMaster.findUnique({ where: { slug: 'radial-10mm' } });
+  const to220 = await prisma.packageMaster.findUnique({ where: { slug: 'to-220' } });
+
+  // Kategorien für CoreComponents (timerCategory bereits definiert weiter oben)
+  const ceramicCapsCategory = await prisma.categoryTaxonomy.findUnique({ where: { slug: 'ceramic-capacitors' } });
+  const electrolyticCapsCategory = await prisma.categoryTaxonomy.findUnique({ where: { slug: 'aluminum-electrolytic' } });
+  const resistorCategory = await prisma.categoryTaxonomy.findUnique({ where: { slug: 'resistors' } });
+
+  // 555 Timer IC (DIP-8 Package)
+  const timer555 = await prisma.coreComponent.upsert({
+    where: { slug: 'ne555-timer' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: dip8?.id,
+    },
+    create: {
+      slug: 'ne555-timer',
+      name: ls({ en: '555 Timer IC', de: '555 Timer IC', fr: 'CI minuterie 555' }),
+      categoryId: timerCategory?.id || capacitors.id,
+      status: 'PUBLISHED',
+      packageId: dip8?.id,
+      shortDescription: ls({
+        en: 'Universal timer IC for monostable, astable and bistable operating modes',
+        de: 'Universeller Timer-IC für monostabile, astabile und bistabile Betriebsarten',
+        fr: 'CI minuterie universel pour modes monostable, astable et bistable',
+        es: 'CI temporizador universal para modos monoestable, astable y biestable',
+      }),
+    },
+  });
+
+  // 556 Dual Timer (DIP-14 Package)
+  const timer556 = await prisma.coreComponent.upsert({
+    where: { slug: 'ne556-dual-timer' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: dip14?.id,
+    },
+    create: {
+      slug: 'ne556-dual-timer',
+      name: ls({ en: '556 Dual Timer IC', de: '556 Dual Timer IC', fr: 'CI double minuterie 556' }),
+      categoryId: timerCategory?.id || capacitors.id,
+      status: 'PUBLISHED',
+      packageId: dip14?.id,
+      shortDescription: ls({
+        en: 'Two independent 555 timers in one package',
+        de: 'Zwei unabhängige 555 Timer in einem Gehäuse',
+        fr: 'Deux minuteries 555 indépendantes dans un seul boîtier',
+      }),
+    },
+  });
+
+  // LM741 Operationsverstärker (DIP-8 Package)
+  const opAmpCategory = await prisma.categoryTaxonomy.findUnique({ where: { slug: 'analog-ics' } });
+
+  const lm741 = await prisma.coreComponent.upsert({
+    where: { slug: 'lm741-opamp' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: dip8?.id,
+    },
+    create: {
+      slug: 'lm741-opamp',
+      name: ls({ en: 'LM741 Operational Amplifier', de: 'LM741 Operationsverstärker', fr: 'Amplificateur opérationnel LM741' }),
+      categoryId: opAmpCategory?.id || integratedCircuits.id,
+      status: 'PUBLISHED',
+      packageId: dip8?.id,
+      shortDescription: ls({
+        en: 'Classic general-purpose operational amplifier',
+        de: 'Klassischer universeller Operationsverstärker',
+        fr: 'Amplificateur opérationnel classique à usage général',
+      }),
+    },
+  });
+
+  // LM7805 Spannungsregler (TO-220 Package)
+  const lm7805 = await prisma.coreComponent.upsert({
+    where: { slug: 'lm7805-voltage-regulator' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: to220?.id,
+    },
+    create: {
+      slug: 'lm7805-voltage-regulator',
+      name: ls({ en: 'LM7805 5V Voltage Regulator', de: 'LM7805 5V Spannungsregler', fr: 'Régulateur de tension LM7805 5V' }),
+      categoryId: opAmpCategory?.id || integratedCircuits.id,
+      status: 'PUBLISHED',
+      packageId: to220?.id,
+      shortDescription: ls({
+        en: 'Positive fixed voltage regulator 5V, 1A',
+        de: 'Positiver Festspannungsregler 5V, 1A',
+        fr: 'Régulateur de tension fixe positif 5V, 1A',
+      }),
+    },
+  });
+
+  // LM317 Einstellbarer Spannungsregler (TO-220 Package)
+  const lm317 = await prisma.coreComponent.upsert({
+    where: { slug: 'lm317-adjustable-regulator' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: to220?.id,
+    },
+    create: {
+      slug: 'lm317-adjustable-regulator',
+      name: ls({ en: 'LM317 Adjustable Voltage Regulator', de: 'LM317 Einstellbarer Spannungsregler', fr: 'Régulateur de tension ajustable LM317' }),
+      categoryId: opAmpCategory?.id || integratedCircuits.id,
+      status: 'PUBLISHED',
+      packageId: to220?.id,
+      shortDescription: ls({
+        en: 'Positive adjustable voltage regulator 1.25V-37V, 1.5A',
+        de: 'Positiver einstellbarer Spannungsregler 1.25V-37V, 1.5A',
+        fr: 'Régulateur de tension ajustable positif 1.25V-37V, 1.5A',
+      }),
+    },
+  });
+
+  // Keramik-Kondensator 100nF (0805 Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const cap100nF = await prisma.coreComponent.upsert({
+    where: { slug: 'ceramic-cap-100nf' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'ceramic-cap-100nf',
+      name: ls({ en: '', de: '' }),
+      categoryId: ceramicCapsCategory?.id || capacitors.id,
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      shortDescription: ls({
+        en: 'Standard decoupling capacitor for IC power supply',
+        de: 'Standard Abblockkondensator für IC-Versorgung',
+        fr: 'Condensateur de découplage standard pour alimentation CI',
+      }),
+    },
+  });
+
+  // Keramik-Kondensator 10µF (0805 Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const cap10uF = await prisma.coreComponent.upsert({
+    where: { slug: 'ceramic-cap-10uf' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'ceramic-cap-10uf',
+      name: ls({ en: '', de: '' }),
+      categoryId: ceramicCapsCategory?.id || capacitors.id,
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      shortDescription: ls({
+        en: 'High-capacitance MLCC for decoupling',
+        de: 'Hochkapazitiver MLCC für Entkopplung',
+        fr: 'MLCC haute capacité pour découplage',
+      }),
+    },
+  });
+
+  // Elektrolyt-Kondensator 100µF (Radial 5mm Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const elko100uF = await prisma.coreComponent.upsert({
+    where: { slug: 'electrolytic-cap-100uf-25v' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: radial5mm?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'electrolytic-cap-100uf-25v',
+      name: ls({ en: '', de: '' }),
+      categoryId: electrolyticCapsCategory?.id || electrolyticCaps.id,
+      status: 'PUBLISHED',
+      packageId: radial5mm?.id,
+      shortDescription: ls({
+        en: 'Aluminum electrolytic capacitor for power supply filtering',
+        de: 'Aluminium-Elektrolytkondensator für Netzteil-Filterung',
+        fr: 'Condensateur électrolytique aluminium pour filtrage alimentation',
+      }),
+    },
+  });
+
+  // Elektrolyt-Kondensator 1000µF (Radial 10mm Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const elko1000uF = await prisma.coreComponent.upsert({
+    where: { slug: 'electrolytic-cap-1000uf-25v' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: radial10mm?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'electrolytic-cap-1000uf-25v',
+      name: ls({ en: '', de: '' }),
+      categoryId: electrolyticCapsCategory?.id || electrolyticCaps.id,
+      status: 'PUBLISHED',
+      packageId: radial10mm?.id,
+      shortDescription: ls({
+        en: 'Large electrolytic capacitor for main filtering',
+        de: 'Großer Elektrolytkondensator für Hauptfilterung',
+        fr: 'Grand condensateur électrolytique pour filtrage principal',
+      }),
+    },
+  });
+
+  // Widerstand 10kΩ (0805 Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const res10k = await prisma.coreComponent.upsert({
+    where: { slug: 'resistor-10k' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'resistor-10k',
+      name: ls({ en: '', de: '' }),
+      categoryId: resistorCategory?.id || resistors.id,
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      shortDescription: ls({
+        en: 'Standard resistor for pull-up/pull-down',
+        de: 'Standard-Widerstand für Pull-Up/Pull-Down',
+        fr: 'Résistance standard pour pull-up/pull-down',
+      }),
+    },
+  });
+
+  // Widerstand 1kΩ (0805 Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const res1k = await prisma.coreComponent.upsert({
+    where: { slug: 'resistor-1k' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'resistor-1k',
+      name: ls({ en: '', de: '' }),
+      categoryId: resistorCategory?.id || resistors.id,
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      shortDescription: ls({
+        en: 'Universal resistor',
+        de: 'Universeller Widerstand',
+        fr: 'Résistance universelle',
+      }),
+    },
+  });
+
+  // Widerstand 470Ω (0805 Package)
+  // Name bleibt leer - wird dynamisch aus isLabel-Attributen generiert
+  const res470 = await prisma.coreComponent.upsert({
+    where: { slug: 'resistor-470' },
+    update: {
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      name: ls({ en: '', de: '' }),
+    },
+    create: {
+      slug: 'resistor-470',
+      name: ls({ en: '', de: '' }),
+      categoryId: resistorCategory?.id || resistors.id,
+      status: 'PUBLISHED',
+      packageId: pkg0805?.id,
+      shortDescription: ls({
+        en: 'Typical LED current limiting resistor for 5V',
+        de: 'Typischer LED-Vorwiderstand für 5V',
+        fr: 'Résistance de limitation de courant LED typique pour 5V',
+      }),
+    },
+  });
+
+  console.log('✅ Core components seeded');
+
+  // ============================================
+  // ATTRIBUTWERTE FÜR BAUTEILE
+  // ============================================
+  console.log('📊 Seeding component attribute values...');
+
+  // Kondensator 100nF - Kapazitätswert (100nF = 100e-9 F = 0.0000001 F)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap100nF.id, definitionId: capacitanceAttr.id } },
+    update: { normalizedValue: 0.0000001, prefix: 'n' },
+    create: {
+      componentId: cap100nF.id,
+      definitionId: capacitanceAttr.id,
+      normalizedValue: 0.0000001, // 100nF in Farad
+      prefix: 'n', // Anzeige als nF
+    },
+  });
+
+  // Kondensator 100nF - Spannungsfestigkeit (50V)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap100nF.id, definitionId: voltageRatingAttr.id } },
+    update: { normalizedValue: 50, prefix: '' },
+    create: {
+      componentId: cap100nF.id,
+      definitionId: voltageRatingAttr.id,
+      normalizedValue: 50,
+      prefix: '',
+    },
+  });
+
+  // Kondensator 10µF - Kapazitätswert (10µF = 10e-6 F)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap10uF.id, definitionId: capacitanceAttr.id } },
+    update: { normalizedValue: 0.00001, prefix: 'µ' },
+    create: {
+      componentId: cap10uF.id,
+      definitionId: capacitanceAttr.id,
+      normalizedValue: 0.00001, // 10µF in Farad
+      prefix: 'µ',
+    },
+  });
+
+  // Kondensator 10µF - Spannungsfestigkeit (25V)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap10uF.id, definitionId: voltageRatingAttr.id } },
+    update: { normalizedValue: 25, prefix: '' },
+    create: {
+      componentId: cap10uF.id,
+      definitionId: voltageRatingAttr.id,
+      normalizedValue: 25,
+      prefix: '',
+    },
+  });
+
+  // Elko 100µF - Kapazitätswert
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko100uF.id, definitionId: capacitanceAttr.id } },
+    update: { normalizedValue: 0.0001, prefix: 'µ' },
+    create: {
+      componentId: elko100uF.id,
+      definitionId: capacitanceAttr.id,
+      normalizedValue: 0.0001, // 100µF in Farad
+      prefix: 'µ',
+    },
+  });
+
+  // Elko 100µF - Spannungsfestigkeit (25V)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko100uF.id, definitionId: voltageRatingAttr.id } },
+    update: { normalizedValue: 25, prefix: '' },
+    create: {
+      componentId: elko100uF.id,
+      definitionId: voltageRatingAttr.id,
+      normalizedValue: 25,
+      prefix: '',
+    },
+  });
+
+  // Elko 1000µF - Kapazitätswert
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko1000uF.id, definitionId: capacitanceAttr.id } },
+    update: { normalizedValue: 0.001, prefix: 'm' },
+    create: {
+      componentId: elko1000uF.id,
+      definitionId: capacitanceAttr.id,
+      normalizedValue: 0.001, // 1000µF = 1mF in Farad
+      prefix: 'm',
+    },
+  });
+
+  // Elko 1000µF - Spannungsfestigkeit (25V)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko1000uF.id, definitionId: voltageRatingAttr.id } },
+    update: { normalizedValue: 25, prefix: '' },
+    create: {
+      componentId: elko1000uF.id,
+      definitionId: voltageRatingAttr.id,
+      normalizedValue: 25,
+      prefix: '',
+    },
+  });
+
+  // Widerstand 10kΩ - Widerstandswert (10000 Ω)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res10k.id, definitionId: resistanceAttr.id } },
+    update: { normalizedValue: 10000, prefix: 'k' },
+    create: {
+      componentId: res10k.id,
+      definitionId: resistanceAttr.id,
+      normalizedValue: 10000,
+      prefix: 'k', // Anzeige als kΩ
+    },
+  });
+
+  // Widerstand 1kΩ - Widerstandswert (1000 Ω)
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res1k.id, definitionId: resistanceAttr.id } },
+    update: { normalizedValue: 1000, prefix: 'k' },
+    create: {
+      componentId: res1k.id,
+      definitionId: resistanceAttr.id,
+      normalizedValue: 1000,
+      prefix: 'k',
+    },
+  });
+
+  // Widerstand 470Ω - Widerstandswert
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res470.id, definitionId: resistanceAttr.id } },
+    update: { normalizedValue: 470, prefix: '' },
+    create: {
+      componentId: res470.id,
+      definitionId: resistanceAttr.id,
+      normalizedValue: 470,
+      prefix: '', // Anzeige als Ω
+    },
+  });
+
+  // ================================================
+  // ERWEITERTE ATTRIBUTWERTE FÜR PASSIVE BAUTEILE
+  // ================================================
+
+  // --- Keramik-Kondensator 100nF - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap100nF.id, definitionId: capToleranceAttr.id } },
+    update: { normalizedValue: 10 },
+    create: {
+      componentId: cap100nF.id,
+      definitionId: capToleranceAttr.id,
+      normalizedValue: 10, // ±10%
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap100nF.id, definitionId: dielectricAttr.id } },
+    update: { stringValue: 'X7R' },
+    create: {
+      componentId: cap100nF.id,
+      definitionId: dielectricAttr.id,
+      stringValue: 'X7R',
+    },
+  });
+
+  // --- Keramik-Kondensator 10µF - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap10uF.id, definitionId: capToleranceAttr.id } },
+    update: { normalizedValue: 20 },
+    create: {
+      componentId: cap10uF.id,
+      definitionId: capToleranceAttr.id,
+      normalizedValue: 20, // ±20%
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: cap10uF.id, definitionId: dielectricAttr.id } },
+    update: { stringValue: 'X5R' },
+    create: {
+      componentId: cap10uF.id,
+      definitionId: dielectricAttr.id,
+      stringValue: 'X5R',
+    },
+  });
+
+  // --- Elko 100µF - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko100uF.id, definitionId: rippleCurrentAttr.id } },
+    update: { normalizedValue: 0.18, prefix: '' },
+    create: {
+      componentId: elko100uF.id,
+      definitionId: rippleCurrentAttr.id,
+      normalizedValue: 0.18, // 180mA
+      prefix: '',
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko100uF.id, definitionId: esrAttr.id } },
+    update: { normalizedValue: 0.5, prefix: '' },
+    create: {
+      componentId: elko100uF.id,
+      definitionId: esrAttr.id,
+      normalizedValue: 0.5, // 500mΩ = 0.5Ω
+      prefix: '',
+    },
+  });
+
+  // --- Elko 1000µF - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko1000uF.id, definitionId: rippleCurrentAttr.id } },
+    update: { normalizedValue: 0.85, prefix: '' },
+    create: {
+      componentId: elko1000uF.id,
+      definitionId: rippleCurrentAttr.id,
+      normalizedValue: 0.85, // 850mA
+      prefix: '',
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: elko1000uF.id, definitionId: esrAttr.id } },
+    update: { normalizedValue: 0.05, prefix: '' },
+    create: {
+      componentId: elko1000uF.id,
+      definitionId: esrAttr.id,
+      normalizedValue: 0.05, // 50mΩ = 0.05Ω
+      prefix: '',
+    },
+  });
+
+  // --- Widerstand 10kΩ - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res10k.id, definitionId: toleranceAttr.id } },
+    update: { normalizedValue: 1 },
+    create: {
+      componentId: res10k.id,
+      definitionId: toleranceAttr.id,
+      normalizedValue: 1, // ±1%
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res10k.id, definitionId: powerRatingAttr.id } },
+    update: { normalizedValue: 0.125, prefix: '' },
+    create: {
+      componentId: res10k.id,
+      definitionId: powerRatingAttr.id,
+      normalizedValue: 0.125, // 125mW = 0.125W
+      prefix: '',
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res10k.id, definitionId: tcrAttr.id } },
+    update: { normalizedValue: 100 },
+    create: {
+      componentId: res10k.id,
+      definitionId: tcrAttr.id,
+      normalizedValue: 100, // ±100 ppm/°C
+    },
+  });
+
+  // --- Widerstand 1kΩ - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res1k.id, definitionId: toleranceAttr.id } },
+    update: { normalizedValue: 1 },
+    create: {
+      componentId: res1k.id,
+      definitionId: toleranceAttr.id,
+      normalizedValue: 1, // ±1%
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res1k.id, definitionId: powerRatingAttr.id } },
+    update: { normalizedValue: 0.125, prefix: '' },
+    create: {
+      componentId: res1k.id,
+      definitionId: powerRatingAttr.id,
+      normalizedValue: 0.125, // 125mW = 0.125W
+      prefix: '',
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res1k.id, definitionId: tcrAttr.id } },
+    update: { normalizedValue: 100 },
+    create: {
+      componentId: res1k.id,
+      definitionId: tcrAttr.id,
+      normalizedValue: 100, // ±100 ppm/°C
+    },
+  });
+
+  // --- Widerstand 470Ω - Erweiterte Attribute ---
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res470.id, definitionId: toleranceAttr.id } },
+    update: { normalizedValue: 5 },
+    create: {
+      componentId: res470.id,
+      definitionId: toleranceAttr.id,
+      normalizedValue: 5, // ±5%
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res470.id, definitionId: powerRatingAttr.id } },
+    update: { normalizedValue: 0.125, prefix: '' },
+    create: {
+      componentId: res470.id,
+      definitionId: powerRatingAttr.id,
+      normalizedValue: 0.125, // 125mW = 0.125W
+      prefix: '',
+    },
+  });
+
+  await prisma.componentAttributeValue.upsert({
+    where: { componentId_definitionId: { componentId: res470.id, definitionId: tcrAttr.id } },
+    update: { normalizedValue: 200 },
+    create: {
+      componentId: res470.id,
+      definitionId: tcrAttr.id,
+      normalizedValue: 200, // ±200 ppm/°C (Kohleschicht)
+    },
+  });
+
+  console.log('✅ Component attribute values seeded');
+
+  // ============================================
+  // PIN-MAPPINGS FÜR ICs
+  // ============================================
+  console.log('📍 Seeding pin mappings...');
+
+  // 555 Timer Pinout (DIP-8)
+  const timer555Pins = [
+    { pinNumber: '1', pinName: 'GND', pinType: 'GROUND' as const, pinFunction: { de: 'Masse', en: 'Ground' } },
+    { pinNumber: '2', pinName: 'TRIG', pinType: 'INPUT' as const, pinFunction: { de: 'Trigger-Eingang', en: 'Trigger Input' } },
+    { pinNumber: '3', pinName: 'OUT', pinType: 'OUTPUT' as const, pinFunction: { de: 'Ausgang', en: 'Output' } },
+    { pinNumber: '4', pinName: 'RESET', pinType: 'INPUT' as const, pinFunction: { de: 'Reset (aktiv low)', en: 'Reset (active low)' } },
+    { pinNumber: '5', pinName: 'CTRL', pinType: 'INPUT' as const, pinFunction: { de: 'Steuerspannung', en: 'Control Voltage' } },
+    { pinNumber: '6', pinName: 'THR', pinType: 'INPUT' as const, pinFunction: { de: 'Schwellwert-Eingang', en: 'Threshold Input' } },
+    { pinNumber: '7', pinName: 'DIS', pinType: 'OUTPUT' as const, pinFunction: { de: 'Entladung', en: 'Discharge' } },
+    { pinNumber: '8', pinName: 'VCC', pinType: 'POWER' as const, pinFunction: { de: 'Versorgungsspannung', en: 'Supply Voltage' }, maxVoltage: 16 },
+  ];
+
+  for (const pin of timer555Pins) {
+    await prisma.pinMapping.upsert({
+      where: { componentId_pinNumber: { componentId: timer555.id, pinNumber: pin.pinNumber } },
+      update: {},
+      create: {
+        componentId: timer555.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinType: pin.pinType,
+        pinFunction: pin.pinFunction as LocalizedString,
+        maxVoltage: pin.maxVoltage,
+      },
+    });
+  }
+
+  // LM741 Op-Amp Pinout (DIP-8)
+  const lm741Pins = [
+    { pinNumber: '1', pinName: 'OFFSET N1', pinType: 'ANALOG' as const, pinFunction: { de: 'Offset-Nullabgleich 1', en: 'Offset Null 1' } },
+    { pinNumber: '2', pinName: 'IN-', pinType: 'INPUT' as const, pinFunction: { de: 'Invertierender Eingang', en: 'Inverting Input' } },
+    { pinNumber: '3', pinName: 'IN+', pinType: 'INPUT' as const, pinFunction: { de: 'Nicht-invertierender Eingang', en: 'Non-inverting Input' } },
+    { pinNumber: '4', pinName: 'V-', pinType: 'POWER' as const, pinFunction: { de: 'Negative Versorgung', en: 'Negative Supply' }, maxVoltage: 22 },
+    { pinNumber: '5', pinName: 'OFFSET N2', pinType: 'ANALOG' as const, pinFunction: { de: 'Offset-Nullabgleich 2', en: 'Offset Null 2' } },
+    { pinNumber: '6', pinName: 'OUT', pinType: 'OUTPUT' as const, pinFunction: { de: 'Ausgang', en: 'Output' } },
+    { pinNumber: '7', pinName: 'V+', pinType: 'POWER' as const, pinFunction: { de: 'Positive Versorgung', en: 'Positive Supply' }, maxVoltage: 22 },
+    { pinNumber: '8', pinName: 'NC', pinType: 'NC' as const, pinFunction: { de: 'Nicht verbunden', en: 'No Connection' } },
+  ];
+
+  for (const pin of lm741Pins) {
+    await prisma.pinMapping.upsert({
+      where: { componentId_pinNumber: { componentId: lm741.id, pinNumber: pin.pinNumber } },
+      update: {},
+      create: {
+        componentId: lm741.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinType: pin.pinType,
+        pinFunction: pin.pinFunction as LocalizedString,
+        maxVoltage: pin.maxVoltage,
+      },
+    });
+  }
+
+  // LM7805 Spannungsregler Pinout (TO-220)
+  const lm7805Pins = [
+    { pinNumber: '1', pinName: 'IN', pinType: 'INPUT' as const, pinFunction: { de: 'Eingangsspannung', en: 'Input Voltage' }, maxVoltage: 35 },
+    { pinNumber: '2', pinName: 'GND', pinType: 'GROUND' as const, pinFunction: { de: 'Masse', en: 'Ground' } },
+    { pinNumber: '3', pinName: 'OUT', pinType: 'OUTPUT' as const, pinFunction: { de: 'Ausgangsspannung (5V)', en: 'Output Voltage (5V)' } },
+  ];
+
+  for (const pin of lm7805Pins) {
+    await prisma.pinMapping.upsert({
+      where: { componentId_pinNumber: { componentId: lm7805.id, pinNumber: pin.pinNumber } },
+      update: {},
+      create: {
+        componentId: lm7805.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinType: pin.pinType,
+        pinFunction: pin.pinFunction as LocalizedString,
+        maxVoltage: pin.maxVoltage,
+      },
+    });
+  }
+
+  // LM317 Spannungsregler Pinout (TO-220)
+  const lm317Pins = [
+    { pinNumber: '1', pinName: 'ADJ', pinType: 'INPUT' as const, pinFunction: { de: 'Einstelleingang', en: 'Adjust' } },
+    { pinNumber: '2', pinName: 'OUT', pinType: 'OUTPUT' as const, pinFunction: { de: 'Ausgangsspannung', en: 'Output Voltage' } },
+    { pinNumber: '3', pinName: 'IN', pinType: 'INPUT' as const, pinFunction: { de: 'Eingangsspannung', en: 'Input Voltage' }, maxVoltage: 40 },
+  ];
+
+  for (const pin of lm317Pins) {
+    await prisma.pinMapping.upsert({
+      where: { componentId_pinNumber: { componentId: lm317.id, pinNumber: pin.pinNumber } },
+      update: {},
+      create: {
+        componentId: lm317.id,
+        pinNumber: pin.pinNumber,
+        pinName: pin.pinName,
+        pinType: pin.pinType,
+        pinFunction: pin.pinFunction as LocalizedString,
+        maxVoltage: pin.maxVoltage,
+      },
+    });
+  }
+
+  console.log('✅ Pin mappings seeded');
+
+  // ============================================
+  // HERSTELLERVARIANTEN (ManufacturerParts)
+  // ============================================
+  console.log('�icing Manufacturer parts...');
+
+  // 555 Timer Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'NE555P' } },
+    update: {},
+    create: {
+      mpn: 'NE555P',
+      coreComponentId: timer555.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+      introductionYear: 1972,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'NE555D' } },
+    update: {},
+    create: {
+      mpn: 'NE555D',
+      coreComponentId: timer555.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'LM555CN' } },
+    update: {},
+    create: {
+      mpn: 'LM555CN',
+      coreComponentId: timer555.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: renesas.id, mpn: 'ICM7555IPA' } },
+    update: {},
+    create: {
+      mpn: 'ICM7555IPA',
+      coreComponentId: timer555.id,
+      manufacturerId: renesas.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: stMicroelectronics.id, mpn: 'TS555CN' } },
+    update: {},
+    create: {
+      mpn: 'TS555CN',
+      coreComponentId: timer555.id,
+      manufacturerId: stMicroelectronics.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // 556 Dual Timer Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'NE556N' } },
+    update: {},
+    create: {
+      mpn: 'NE556N',
+      coreComponentId: timer556.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // LM741 OpAmp Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'LM741CN' } },
+    update: {},
+    create: {
+      mpn: 'LM741CN',
+      coreComponentId: lm741.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'UA741CP' } },
+    update: {},
+    create: {
+      mpn: 'UA741CP',
+      coreComponentId: lm741.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'NRND',
+      rohsCompliant: true,
+      introductionYear: 1968,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'LM741CD' } },
+    update: {},
+    create: {
+      mpn: 'LM741CD',
+      coreComponentId: lm741.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: stMicroelectronics.id, mpn: 'UA741CN' } },
+    update: {},
+    create: {
+      mpn: 'UA741CN',
+      coreComponentId: lm741.id,
+      manufacturerId: stMicroelectronics.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // LM7805 Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: stMicroelectronics.id, mpn: 'L7805CV' } },
+    update: {},
+    create: {
+      mpn: 'L7805CV',
+      coreComponentId: lm7805.id,
+      manufacturerId: stMicroelectronics.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: onsemi.id, mpn: 'LM7805CT' } },
+    update: {},
+    create: {
+      mpn: 'LM7805CT',
+      coreComponentId: lm7805.id,
+      manufacturerId: onsemi.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'UA7805CKCT' } },
+    update: {},
+    create: {
+      mpn: 'UA7805CKCT',
+      coreComponentId: lm7805.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // LM317 Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: texasInstruments.id, mpn: 'LM317T' } },
+    update: {},
+    create: {
+      mpn: 'LM317T',
+      coreComponentId: lm317.id,
+      manufacturerId: texasInstruments.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: onsemi.id, mpn: 'LM317TG' } },
+    update: {},
+    create: {
+      mpn: 'LM317TG',
+      coreComponentId: lm317.id,
+      manufacturerId: onsemi.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: stMicroelectronics.id, mpn: 'LM317T-DG' } },
+    update: {},
+    create: {
+      mpn: 'LM317T-DG',
+      coreComponentId: lm317.id,
+      manufacturerId: stMicroelectronics.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Keramik-Kondensator 100nF Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: murata.id, mpn: 'GRM21BR71H104KA01' } },
+    update: {},
+    create: {
+      mpn: 'GRM21BR71H104KA01',
+      coreComponentId: cap100nF.id,
+      manufacturerId: murata.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: yageo.id, mpn: 'CC0805KRX7R9BB104' } },
+    update: {},
+    create: {
+      mpn: 'CC0805KRX7R9BB104',
+      coreComponentId: cap100nF.id,
+      manufacturerId: yageo.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: samsung.id, mpn: 'CL21B104KBCNNNC' } },
+    update: {},
+    create: {
+      mpn: 'CL21B104KBCNNNC',
+      coreComponentId: cap100nF.id,
+      manufacturerId: samsung.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: tdk.id, mpn: 'C2012X7R1H104K125AA' } },
+    update: {},
+    create: {
+      mpn: 'C2012X7R1H104K125AA',
+      coreComponentId: cap100nF.id,
+      manufacturerId: tdk.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Keramik-Kondensator 10µF Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: murata.id, mpn: 'GRM21BR61C106KE15' } },
+    update: {},
+    create: {
+      mpn: 'GRM21BR61C106KE15',
+      coreComponentId: cap10uF.id,
+      manufacturerId: murata.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: samsung.id, mpn: 'CL21A106KPFNNNE' } },
+    update: {},
+    create: {
+      mpn: 'CL21A106KPFNNNE',
+      coreComponentId: cap10uF.id,
+      manufacturerId: samsung.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Elektrolyt-Kondensator 100µF Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: nichicon.id, mpn: 'UVR1E101MDD' } },
+    update: {},
+    create: {
+      mpn: 'UVR1E101MDD',
+      coreComponentId: elko100uF.id,
+      manufacturerId: nichicon.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: rubycon.id, mpn: '25YXF100MEFC5X11' } },
+    update: {},
+    create: {
+      mpn: '25YXF100MEFC5X11',
+      coreComponentId: elko100uF.id,
+      manufacturerId: rubycon.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: panasonic.id, mpn: 'EEUFR1E101' } },
+    update: {},
+    create: {
+      mpn: 'EEUFR1E101',
+      coreComponentId: elko100uF.id,
+      manufacturerId: panasonic.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Elektrolyt-Kondensator 1000µF Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: nichicon.id, mpn: 'UVR1E102MHD' } },
+    update: {},
+    create: {
+      mpn: 'UVR1E102MHD',
+      coreComponentId: elko1000uF.id,
+      manufacturerId: nichicon.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: rubycon.id, mpn: '25YXF1000MEFC10X20' } },
+    update: {},
+    create: {
+      mpn: '25YXF1000MEFC10X20',
+      coreComponentId: elko1000uF.id,
+      manufacturerId: rubycon.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: panasonic.id, mpn: 'EEUFR1E102' } },
+    update: {},
+    create: {
+      mpn: 'EEUFR1E102',
+      coreComponentId: elko1000uF.id,
+      manufacturerId: panasonic.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Widerstand 10kΩ Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: yageo.id, mpn: 'RC0805FR-0710KL' } },
+    update: {},
+    create: {
+      mpn: 'RC0805FR-0710KL',
+      coreComponentId: res10k.id,
+      manufacturerId: yageo.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: vishay.id, mpn: 'CRCW080510K0FKEA' } },
+    update: {},
+    create: {
+      mpn: 'CRCW080510K0FKEA',
+      coreComponentId: res10k.id,
+      manufacturerId: vishay.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: panasonic.id, mpn: 'ERJ-6ENF1002V' } },
+    update: {},
+    create: {
+      mpn: 'ERJ-6ENF1002V',
+      coreComponentId: res10k.id,
+      manufacturerId: panasonic.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Widerstand 1kΩ Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: yageo.id, mpn: 'RC0805FR-071KL' } },
+    update: {},
+    create: {
+      mpn: 'RC0805FR-071KL',
+      coreComponentId: res1k.id,
+      manufacturerId: yageo.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: vishay.id, mpn: 'CRCW08051K00FKEA' } },
+    update: {},
+    create: {
+      mpn: 'CRCW08051K00FKEA',
+      coreComponentId: res1k.id,
+      manufacturerId: vishay.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: panasonic.id, mpn: 'ERJ-6ENF1001V' } },
+    update: {},
+    create: {
+      mpn: 'ERJ-6ENF1001V',
+      coreComponentId: res1k.id,
+      manufacturerId: panasonic.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  // Widerstand 470Ω Varianten
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: yageo.id, mpn: 'RC0805FR-07470RL' } },
+    update: {},
+    create: {
+      mpn: 'RC0805FR-07470RL',
+      coreComponentId: res470.id,
+      manufacturerId: yageo.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: vishay.id, mpn: 'CRCW0805470RFKEA' } },
+    update: {},
+    create: {
+      mpn: 'CRCW0805470RFKEA',
+      coreComponentId: res470.id,
+      manufacturerId: vishay.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  await prisma.manufacturerPart.upsert({
+    where: { manufacturerId_mpn: { manufacturerId: panasonic.id, mpn: 'ERJ-6ENF4700V' } },
+    update: {},
+    create: {
+      mpn: 'ERJ-6ENF4700V',
+      coreComponentId: res470.id,
+      manufacturerId: panasonic.id,
+      lifecycleStatus: 'ACTIVE',
+      rohsCompliant: true,
+    },
+  });
+
+  console.log('✅ Manufacturer parts seeded');
+
+  // ============================================
+  // BEISPIEL-BENUTZER & ENTWÜRFE
+  // ============================================
+  console.log('👤 Seeding example users and drafts...');
+
+  // Beispiel-Benutzer erstellen
+  const demoContributor = await prisma.user.upsert({
+    where: { email: 'contributor@electrovault.dev' },
+    update: {},
+    create: {
+      externalId: 'demo-contributor-keycloak-id',
+      email: 'contributor@electrovault.dev',
+      username: 'demo_contributor',
+      displayName: 'Demo Contributor',
+      role: 'CONTRIBUTOR',
+      bio: 'Beispiel-Benutzer für Tests und Entwicklung',
+    },
+  });
+
+  const demoModerator = await prisma.user.upsert({
+    where: { email: 'moderator@electrovault.dev' },
+    update: {},
+    create: {
+      externalId: 'demo-moderator-keycloak-id',
+      email: 'moderator@electrovault.dev',
+      username: 'demo_moderator',
+      displayName: 'Demo Moderator',
+      role: 'MODERATOR',
+      bio: 'Moderator für Inhaltsfreigabe',
+    },
+  });
+
+  // Hersteller-Entwürfe (unvollständig)
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'draft-toshiba' },
+    update: {},
+    create: {
+      slug: 'draft-toshiba',
+      name: 'Toshiba Electronic Devices',
+      countryCode: 'JP',
+      moderationStatus: 'DRAFT',
+      createdById: demoContributor.id,
+      // Unvollständig: keine Website, kein CAGE Code, keine Beschreibung
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'draft-broadcom' },
+    update: {},
+    create: {
+      slug: 'draft-broadcom',
+      name: 'Broadcom Inc.',
+      countryCode: 'US',
+      website: 'https://www.broadcom.com',
+      moderationStatus: 'DRAFT',
+      createdById: demoContributor.id,
+      // Unvollständig: keine Beschreibung, kein Gründungsjahr
+    },
+  });
+
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'draft-maxim' },
+    update: {},
+    create: {
+      slug: 'draft-maxim',
+      name: 'Maxim Integrated',
+      // Unvollständig: nur Name, Rest fehlt
+      moderationStatus: 'DRAFT',
+      createdById: demoModerator.id,
+    },
+  });
+
+  // Bauteil-Entwürfe (unvollständig)
+  await prisma.coreComponent.upsert({
+    where: { slug: 'draft-atmega328p' },
+    update: {},
+    create: {
+      slug: 'draft-atmega328p',
+      name: { de: 'ATmega328P Mikrocontroller', en: 'ATmega328P Microcontroller' } as LocalizedString,
+      categoryId: integratedCircuits.id,
+      status: 'DRAFT',
+      createdById: demoContributor.id,
+      // Unvollständig: keine Beschreibung
+    },
+  });
+
+  await prisma.coreComponent.upsert({
+    where: { slug: 'draft-lm358' },
+    update: {},
+    create: {
+      slug: 'draft-lm358',
+      name: { de: 'LM358 Dual Op-Amp', en: 'LM358 Dual Op-Amp' } as LocalizedString,
+      categoryId: opAmpCategory?.id || integratedCircuits.id,
+      status: 'DRAFT',
+      shortDescription: {
+        de: 'Dual-Operationsverstärker...',
+        en: 'Dual operational amplifier...'
+      } as LocalizedString,
+      createdById: demoContributor.id,
+      // Unvollständig: Beschreibung abgebrochen
+    },
+  });
+
+  await prisma.coreComponent.upsert({
+    where: { slug: 'draft-bc547' },
+    update: {},
+    create: {
+      slug: 'draft-bc547',
+      name: { de: 'BC547 NPN Transistor', en: 'BC547 NPN Transistor' } as LocalizedString,
+      categoryId: semiconductors.id,
+      status: 'DRAFT',
+      createdById: demoModerator.id,
+      // Unvollständig: komplett ohne Beschreibung
+    },
+  });
+
+  // Pending-Einträge (zur Moderation eingereicht)
+  await prisma.manufacturerMaster.upsert({
+    where: { slug: 'pending-diodes-inc' },
+    update: {},
+    create: {
+      slug: 'pending-diodes-inc',
+      name: 'Diodes Incorporated',
+      countryCode: 'US',
+      website: 'https://www.diodes.com',
+      foundedYear: 1959,
+      moderationStatus: 'PENDING',
+      createdById: demoContributor.id,
+      description: { de: 'US-Hersteller von Dioden und diskreten Halbleitern', en: 'US manufacturer of diodes and discrete semiconductors' } as LocalizedString,
+    },
+  });
+
+  await prisma.coreComponent.upsert({
+    where: { slug: 'pending-1n4148' },
+    update: {},
+    create: {
+      slug: 'pending-1n4148',
+      name: { de: '1N4148 Schaltdiode', en: '1N4148 Switching Diode' } as LocalizedString,
+      categoryId: semiconductors.id,
+      status: 'PENDING',
+      shortDescription: {
+        de: 'Standard-Schaltdiode für Signalverarbeitung',
+        en: 'Standard switching diode for signal processing'
+      } as LocalizedString,
+      createdById: demoContributor.id,
+    },
+  });
+
+  console.log('✅ Example users and drafts seeded');
 
   console.log('🎉 Seed completed successfully!');
 }

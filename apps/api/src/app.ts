@@ -13,6 +13,7 @@ import { prisma } from '@electrovault/database';
 import categoryRoutes from './routes/categories/index';
 import manufacturerRoutes from './routes/manufacturers/index';
 import packageRoutes from './routes/packages/index';
+import packageGroupRoutes from './routes/package-groups/index';
 import componentRoutes from './routes/components/index';
 import partRoutes from './routes/parts/index';
 import attributeRoutes from './routes/attributes/index';
@@ -21,6 +22,8 @@ import moderationRoutes from './routes/moderation/index';
 import fileRoutes from './routes/files/index';
 import pinRoutes from './routes/pins/index';
 import statsRoutes from './routes/stats/index';
+import userRoutes from './routes/users/index';
+import importRoutes from './routes/import/index';
 
 // Custom Error Types
 import { ApiError } from './lib/errors';
@@ -169,6 +172,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       await api.register(categoryRoutes, { prefix: '/categories' });
       await api.register(manufacturerRoutes, { prefix: '/manufacturers' });
       await api.register(packageRoutes, { prefix: '/packages' });
+      await api.register(packageGroupRoutes, { prefix: '/package-groups' });
       await api.register(componentRoutes, { prefix: '/components' });
       await api.register(partRoutes, { prefix: '/parts' });
       await api.register(attributeRoutes, { prefix: '/attributes' });
@@ -177,6 +181,8 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
       await api.register(fileRoutes, { prefix: '/files' });
       await api.register(pinRoutes);
       await api.register(statsRoutes, { prefix: '/stats' });
+      await api.register(userRoutes, { prefix: '/users' });
+      await api.register(importRoutes, { prefix: '/import' });
     },
     { prefix: '/api/v1' }
   );

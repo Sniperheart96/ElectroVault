@@ -27,9 +27,21 @@ export default async function manufacturerRoutes(
   /**
    * GET /manufacturers
    * Liste aller Hersteller mit Paginierung
+   * optionalAuth: User-Info verfügbar falls eingeloggt (für eigene Entwürfe)
    */
-  app.get('/', async (request, reply) => {
-    const query = ManufacturerListQuerySchema.parse(request.query);
+  app.get('/', {
+    onRequest: app.optionalAuth,
+  }, async (request, reply) => {
+    const parsedQuery = ManufacturerListQuerySchema.parse(request.query);
+
+    // userId nur setzen wenn includeDrafts aktiv UND User eingeloggt
+    const query = {
+      ...parsedQuery,
+      userId: parsedQuery.includeDrafts && request.user?.dbId
+        ? request.user.dbId
+        : undefined,
+    };
+
     const result = await manufacturerService.list(query);
 
     // Ersetze MinIO-URLs mit API-Proxy-URLs

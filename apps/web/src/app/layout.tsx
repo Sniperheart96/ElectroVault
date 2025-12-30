@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { SessionProvider } from '@/components/providers/session-provider';
+import { IntlProvider } from '@/components/providers/intl-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 import './globals.css';
@@ -39,10 +39,10 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={inter.className}>
         <SessionProvider>
-          <NextIntlClientProvider messages={messages}>
+          <IntlProvider locale={locale} messages={messages}>
             {children}
             <Toaster />
-          </NextIntlClientProvider>
+          </IntlProvider>
         </SessionProvider>
       </body>
     </html>

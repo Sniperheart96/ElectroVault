@@ -171,10 +171,11 @@ KeycloakProvider({
 
 **Strategie:** JWT (clientseitig verschlüsselt im Cookie)
 
-**Session-Dauer:**
+**Session-Dauer:** 30 Tage (Rolling Session)
 
-- Production: 7 Tage
-- Development: 30 Tage
+- Bei jeder Aktivität wird die Session um 30 Tage verlängert
+- `updateAge: 24h` - Session wird mindestens alle 24 Stunden aktualisiert
+- Besucht der User die Seite innerhalb von 30 Tagen erneut, beginnt der Countdown von vorne
 
 **Cookie-Konfiguration:**
 
@@ -820,10 +821,23 @@ fastify.get('/api/components/:slug', {
 
 ### Token Refresh
 
-- Access Token: Kurze Lebensdauer (Keycloak Default: 5 Minuten)
+- Access Token: Kurze Lebensdauer (Keycloak Default: 5 Minuten, **empfohlen: 30 Minuten**)
 - Refresh Token: Längere Lebensdauer (30 Tage)
 - Automatischer Refresh im JWT Callback
-- Bei Fehler: Session wird ungültig, User muss neu einloggen
+- Bei Fehler: Automatisches Logout, User muss neu einloggen
+- Frontend reagiert auf `session.error === 'RefreshAccessTokenError'` mit Auto-Logout
+
+**Empfohlene Keycloak-Einstellung:**
+
+In der Keycloak Admin Console unter **Realm Settings → Tokens**:
+
+| Einstellung | Empfohlener Wert | Begründung |
+|-------------|------------------|------------|
+| Access Token Lifespan | 30 Minuten | Reduziert Token-Refresh-Last |
+| Client Session Idle | 30 Tage | Passend zur NextAuth-Session |
+| Client Session Max | 30 Tage | Passend zur NextAuth-Session |
+| SSO Session Idle | 30 Tage | Konsistenz mit App-Session |
+| SSO Session Max | 30 Tage | Konsistenz mit App-Session |
 
 ---
 
@@ -865,4 +879,4 @@ fastify.get('/api/components/:slug', {
 
 ---
 
-*Letzte Aktualisierung: 2025-12-29*
+*Letzte Aktualisierung: 2025-12-30*
